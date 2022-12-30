@@ -29,16 +29,26 @@ addEventListener("load", function () {
 
     addEventListener("keydown", function (e) {
         if (e.code == "KeyW") {
-            sprite.animateIndex = 3;
+            sprite.move(3);
         }
-        if (e.code == "KeyS") {
-            sprite.animateIndex = 0;
+        else if (e.code == "KeyS") {
+            sprite.move(0);
         }
-        if (e.code == "KeyA") {
-            sprite.animateIndex = 2;
+        else if (e.code == "KeyA") {
+            sprite.move(2);
         }
-        if (e.code == "KeyD") {
-            sprite.animateIndex = 1;
+        else if (e.code == "KeyD") {
+            sprite.move(1);
+        } else {
+            sprite.move(-1)
+        }
+    })
+
+    addEventListener("keyup", function (e) {
+        switch (e.code) {
+            case "KeyW": case "KeyS":
+            case "KeyA": case "KeyD":
+                sprite.move(-1);
         }
     })
 });
@@ -76,9 +86,13 @@ class AnimatedImage {
     }
 
     tick() {
-        this._time += 1 / FPS * (1000 / this.delay);
+        if (this.delay == -1) {
+            return this.images[0];
+        } else {
+            this._time += 1 / FPS * (1000 / this.delay);
 
-        return this.images[Math.floor(this._time) % this.images.length];
+            return this.images[Math.floor(this._time) % this.images.length];
+        }
     }
 
     draw(ctx, x = 0, y = 0) {
@@ -112,11 +126,20 @@ class Sprite {
                         spriteWidth - 1, spriteHeight - 1)
                 });
             }
-            this.animations.push(new AnimatedImage(newImages, 200))
+            this.animations.push(new AnimatedImage(newImages, -1))
         }
 
         this.x = 50;
         this.y = 50;
+    }
+
+    move(key) {
+        if (key == -1) {
+            this.animations[this.animateIndex].delay = -1;
+        } else {
+            this.animateIndex = key;
+            this.animations[this.animateIndex].delay = 200;
+        }
     }
 
     tick() {

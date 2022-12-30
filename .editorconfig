@@ -4,4 +4,5 @@ root = true
 indent_style = space
 
 [*.html]
+indent_style = space
 indent_size = 4

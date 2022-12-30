@@ -31,14 +31,14 @@ addEventListener("load", function () {
         if (e.code == "KeyW") {
             sprite.animateIndex = 3;
         }
-        if (e.code == "KeyD") {
-            sprite.animateIndex = 1;
-        }
         if (e.code == "KeyS") {
             sprite.animateIndex = 0;
         }
         if (e.code == "KeyA") {
             sprite.animateIndex = 2;
+        }
+        if (e.code == "KeyD") {
+            sprite.animateIndex = 1;
         }
     })
 });

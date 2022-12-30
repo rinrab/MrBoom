@@ -65,3 +65,17 @@ class AnimatedImage {
         ctx.drawImage(this.tick(), 0, 0);
     }
 }
+
+class Rect {
+    x;
+    y;
+    width;
+    height;
+
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+}

@@ -29,18 +29,18 @@ addEventListener("load", function () {
 
     addEventListener("keydown", function (e) {
         if (e.code == "KeyW") {
-            sprite.move(3);
+            sprite.key = 3;
         }
         else if (e.code == "KeyS") {
-            sprite.move(0);
+            sprite.key = 0;
         }
         else if (e.code == "KeyA") {
-            sprite.move(2);
+            sprite.key = 2;
         }
         else if (e.code == "KeyD") {
-            sprite.move(1);
+            sprite.key = 1;
         } else {
-            sprite.move(-1)
+            sprite.key = -1;
         }
     })
 
@@ -48,13 +48,14 @@ addEventListener("load", function () {
         switch (e.code) {
             case "KeyW": case "KeyS":
             case "KeyA": case "KeyD":
-                sprite.move(-1);
+                sprite.key = -1;
         }
     })
 });
 
 function timerTick() {
     time += 1000 / FPS;
+    sprite.move();
     drawAll();
 }
 
@@ -109,10 +110,18 @@ class Sprite {
 
     animateIndex;
 
+    key;
+
+    speed;
+
     constructor(index) {
         this.animations = [];
 
         this.animateIndex = 0;
+
+        this.key = -1;
+
+        this.speed = 2;
 
         let y = 0;
         const framesIndex = [0, 1, 0, 2];
@@ -133,12 +142,21 @@ class Sprite {
         this.y = 50;
     }
 
-    move(key) {
-        if (key == -1) {
+    move() {
+        const delta = [
+            { x: 0, y: 1 },
+            { x: 1, y: 0 },
+            { x: -1, y: 0 },
+            { x: 0, y: -1 },
+        ]
+
+        if (this.key == -1) {
             this.animations[this.animateIndex].delay = -1;
         } else {
-            this.animateIndex = key;
-            this.animations[this.animateIndex].delay = 200;
+            this.animateIndex = this.key;
+            this.animations[this.animateIndex].delay = (5 - this.speed) * 75;
+            this.x += delta[this.key].x * this.speed;
+            this.y += delta[this.key].y * this.speed;
         }
     }
 

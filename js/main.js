@@ -23,24 +23,7 @@ addEventListener("load", function () {
         { id: "NEIGE3", rect: new Rect(0, 0, 320, 200) },
     ], 200);
 
-    sprite = new AnimatedImage([
-        {
-            id: "SPRITE", rect: new Rect(spriteWidth * 0, spriteHeight * 0,
-                spriteWidth - 1, spriteHeight - 1)
-        },
-        {
-            id: "SPRITE", rect: new Rect(spriteWidth * 1, spriteHeight * 0,
-                spriteWidth - 1, spriteHeight - 1)
-        },
-        {
-            id: "SPRITE", rect: new Rect(spriteWidth * 2, spriteHeight * 0,
-                spriteWidth - 1, spriteHeight - 1)
-        },
-        {
-            id: "SPRITE", rect: new Rect(spriteWidth * 3, spriteHeight * 0,
-                spriteWidth - 1, spriteHeight - 1)
-        },
-    ], 100)
+    sprite = new Sprite(0);
 
     setInterval(timerTick, 1000 / FPS);
 });
@@ -86,6 +69,49 @@ class AnimatedImage {
     draw(ctx) {
         const img = this.tick();
         ctx.drawImage(img.img, img.rect.x, img.rect.y, img.rect.width, img.rect.height, 0, 0, img.rect.width, img.rect.height);
+    }
+}
+
+class Sprite {
+    animations;
+
+    x;
+    y;
+
+    animateIndex;
+
+    constructor(index) {
+        this.animations = [];
+
+        this.animateIndex = 0;
+
+        let newImages = [];
+        let y = 0;
+        const framesIndex = [0, 1, 0, 2];
+        for (let x = 0; x < 4; x++) {
+            for (let index of framesIndex) {
+                newImages.push({
+                    id: "SPRITE",
+                    rect: new Rect((index + x) * spriteWidth, y * spriteHeight, spriteWidth - 1, spriteHeight - 1)
+                });
+            }
+        }
+
+        this.animations.push(new AnimatedImage(newImages, 200))
+    }
+
+    tick() {
+        for (let img of this.animations) {
+            img.tick();
+        }
+
+        if (Math.random() < 0.01) {
+            this.animateIndex = 2;
+        }
+    }
+
+    draw(ctx) {
+        this.animations[this.animateIndex].draw(ctx);
     }
 }
 

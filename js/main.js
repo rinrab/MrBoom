@@ -38,6 +38,7 @@ class AnimatedImage {
     images;
     currentImage;
     delay;
+
     _time;
 
     constructor(imagesId, delay) {
@@ -51,7 +52,7 @@ class AnimatedImage {
     }
 
     tick() {
-        this._time += 1 / FPS * (1000/this.delay);
+        this._time += 1 / FPS * (1000 / this.delay);
 
         return this.images[Math.floor(this._time) % this.images.length];
     }

@@ -15,9 +15,9 @@ addEventListener("load", function () {
     ctx = canvas.getContext("2d");
 
     bg = new AnimatedImage([
-        "NEIGE1",
-        "NEIGE2",
-        "NEIGE3",
+        { id: "NEIGE1", rect: new Rect(0, 0, 320, 200) },
+        { id: "NEIGE2", rect: new Rect(0, 0, 320, 200) },
+        { id: "NEIGE3", rect: new Rect(0, 0, 320, 200) },
     ], 200);
 
     sprite = new AnimatedImage([
@@ -45,10 +45,13 @@ class AnimatedImage {
 
     _time;
 
-    constructor(imagesId, delay) {
+    constructor(images, delay) {
         this.images = [];
-        for (var id of imagesId) {
-            this.images.push(document.getElementById(id));
+        for (let img of images) {
+            this.images.push({
+                img: document.getElementById(img.id),
+                rect: img.rect,
+            });
         }
 
         this.delay = delay;
@@ -62,7 +65,8 @@ class AnimatedImage {
     }
 
     draw(ctx) {
-        ctx.drawImage(this.tick(), 0, 0);
+        const img = this.tick();
+        ctx.drawImage(img.img, img.rect.x, img.rect.y, img.rect.width, img.rect.height, 0, 0, img.rect.width, img.rect.height);
     }
 }
 

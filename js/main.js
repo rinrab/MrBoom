@@ -6,6 +6,7 @@ let images;
 let time = 0;
 
 let bg;
+let sprite;
 
 const FPS = 30;
 
@@ -18,6 +19,10 @@ addEventListener("load", function () {
         "NEIGE2",
         "NEIGE3",
     ], 200);
+
+    sprite = new AnimatedImage([
+        "SPRITE"
+    ], 100)
 
     setInterval(timerTick, 1000 / FPS);
 });

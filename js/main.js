@@ -154,7 +154,7 @@ class Sprite {
             this.animations[this.animateIndex].delay = -1;
         } else {
             this.animateIndex = this.key;
-            this.animations[this.animateIndex].delay = (5 - this.speed) * 75;
+            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
             this.x += delta[this.key].x * this.speed;
             this.y += delta[this.key].y * this.speed;
         }

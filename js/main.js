@@ -8,6 +8,9 @@ let time = 0;
 let bg;
 let sprite;
 
+const spriteWidth = 24;
+const spriteHeight = 24;
+
 const FPS = 30;
 
 addEventListener("load", function () {
@@ -21,7 +24,22 @@ addEventListener("load", function () {
     ], 200);
 
     sprite = new AnimatedImage([
-        "SPRITE"
+        {
+            id: "SPRITE", rect: new Rect(spriteWidth * 0, spriteHeight * 0,
+                spriteWidth - 1, spriteHeight - 1)
+        },
+        {
+            id: "SPRITE", rect: new Rect(spriteWidth * 1, spriteHeight * 0,
+                spriteWidth - 1, spriteHeight - 1)
+        },
+        {
+            id: "SPRITE", rect: new Rect(spriteWidth * 2, spriteHeight * 0,
+                spriteWidth - 1, spriteHeight - 1)
+        },
+        {
+            id: "SPRITE", rect: new Rect(spriteWidth * 3, spriteHeight * 0,
+                spriteWidth - 1, spriteHeight - 1)
+        },
     ], 100)
 
     setInterval(timerTick, 1000 / FPS);
@@ -36,6 +54,7 @@ function drawAll() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     bg.draw(ctx);
+    sprite.draw(ctx)
 }
 
 class AnimatedImage {

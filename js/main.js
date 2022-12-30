@@ -34,9 +34,8 @@ function timerTick() {
 
 function drawAll() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let bgImg = bg.tick();
 
-    ctx.drawImage(bgImg, 0, 0, 320, 200);
+    bg.draw(ctx);
 }
 
 class AnimatedImage {
@@ -60,5 +59,9 @@ class AnimatedImage {
         this._time += 1 / FPS * (1000 / this.delay);
 
         return this.images[Math.floor(this._time) % this.images.length];
+    }
+
+    draw(ctx) {
+        ctx.drawImage(this.tick(), 0, 0);
     }
 }

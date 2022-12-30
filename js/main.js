@@ -36,7 +36,6 @@ function checkLoadedImages() {
             loadedImagesCount++;
         }
     }
-    console.log(loadedImagesCount);
 
     if (loadedImagesCount == ImagesData.length) {
         return true;

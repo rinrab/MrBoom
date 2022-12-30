@@ -81,9 +81,9 @@ class AnimatedImage {
         return this.images[Math.floor(this._time) % this.images.length];
     }
 
-    draw(ctx) {
+    draw(ctx, x = 0, y = 0) {
         const img = this.tick();
-        ctx.drawImage(img.img, img.rect.x, img.rect.y, img.rect.width, img.rect.height, 0, 0, img.rect.width, img.rect.height);
+        ctx.drawImage(img.img, img.rect.x, img.rect.y, img.rect.width, img.rect.height, x, y, img.rect.width, img.rect.height);
     }
 }
 
@@ -115,6 +115,8 @@ class Sprite {
             this.animations.push(new AnimatedImage(newImages, 200))
         }
 
+        this.x = 50;
+        this.y = 50;
     }
 
     tick() {
@@ -122,7 +124,7 @@ class Sprite {
     }
 
     draw(ctx) {
-        this.animations[this.animateIndex].draw(ctx);
+        this.animations[this.animateIndex].draw(ctx, this.x, this.y);
     }
 }
 

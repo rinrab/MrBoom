@@ -21,7 +21,7 @@ addEventListener("load", function () {
         { id: "NEIGE1", rect: new Rect(0, 0, 320, 200) },
         { id: "NEIGE2", rect: new Rect(0, 0, 320, 200) },
         { id: "NEIGE3", rect: new Rect(0, 0, 320, 200) },
-    ], 200);
+    ], 1000 / FPS * 8);
 
     sprite = new Sprite(0);
 

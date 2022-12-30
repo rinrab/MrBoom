@@ -27,7 +27,7 @@ addEventListener("load", function () {
 
     setInterval(timerTick, 1000 / FPS);
 
-    addEventListener("keydown", function(e) {
+    addEventListener("keydown", function (e) {
         if (e.code == "KeyW") {
             sprite.animateIndex = 3;
         }
@@ -107,7 +107,9 @@ class Sprite {
             for (let index of framesIndex) {
                 newImages.push({
                     id: "SPRITE",
-                    rect: new Rect((index + x * 3) * spriteWidth, y * spriteHeight, spriteWidth - 1, spriteHeight - 1)
+                    rect: new Rect(
+                        (index + x * 3) * spriteWidth, y * spriteHeight,
+                        spriteWidth - 1, spriteHeight - 1)
                 });
             }
             this.animations.push(new AnimatedImage(newImages, 200))

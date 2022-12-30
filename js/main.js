@@ -26,6 +26,21 @@ addEventListener("load", function () {
     sprite = new Sprite(0);
 
     setInterval(timerTick, 1000 / FPS);
+
+    addEventListener("keydown", function(e) {
+        if (e.code == "KeyW") {
+            sprite.animateIndex = 3;
+        }
+        if (e.code == "KeyD") {
+            sprite.animateIndex = 1;
+        }
+        if (e.code == "KeyS") {
+            sprite.animateIndex = 0;
+        }
+        if (e.code == "KeyA") {
+            sprite.animateIndex = 2;
+        }
+    })
 });
 
 function timerTick() {
@@ -85,29 +100,23 @@ class Sprite {
 
         this.animateIndex = 0;
 
-        let newImages = [];
         let y = 0;
         const framesIndex = [0, 1, 0, 2];
         for (let x = 0; x < 4; x++) {
+            let newImages = [];
             for (let index of framesIndex) {
                 newImages.push({
                     id: "SPRITE",
-                    rect: new Rect((index + x) * spriteWidth, y * spriteHeight, spriteWidth - 1, spriteHeight - 1)
+                    rect: new Rect((index + x * 3) * spriteWidth, y * spriteHeight, spriteWidth - 1, spriteHeight - 1)
                 });
             }
+            this.animations.push(new AnimatedImage(newImages, 200))
         }
 
-        this.animations.push(new AnimatedImage(newImages, 200))
     }
 
     tick() {
-        for (let img of this.animations) {
-            img.tick();
-        }
-
-        if (Math.random() < 0.01) {
-            this.animateIndex = 2;
-        }
+        this.animations[this.animateIndex].tick();
     }
 
     draw(ctx) {

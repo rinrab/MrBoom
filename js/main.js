@@ -23,7 +23,7 @@ addEventListener("load", function () {
         { id: "NEIGE3", rect: new Rect(0, 0, 320, 200) },
     ], 1000 / FPS * 8);
 
-    sprite = new Sprite(0);
+    sprite = new Sprite(1);
 
     setInterval(timerTick, 1000 / FPS);
 
@@ -139,7 +139,7 @@ class Sprite {
 
     speed;
 
-    constructor(index) {
+    constructor(spriteIndex) {
         this.animations = [];
 
         this.animateIndex = 0;
@@ -148,15 +148,18 @@ class Sprite {
 
         this.speed = 2;
 
-        let y = 0;
+        let y = 1;
+
+        const framesCount = 20;
         const framesIndex = [0, 1, 0, 2];
         for (let x = 0; x < 4; x++) {
             let newImages = [];
             for (let index of framesIndex) {
+                let frameX = index + x * 3 + spriteIndex * framesCount;
                 newImages.push({
                     id: "SPRITE",
                     rect: new Rect(
-                        (index + x * 3) * spriteWidth, y * spriteHeight,
+                        (frameX % 13) * spriteWidth, Math.floor(frameX / 13) * spriteHeight,
                         spriteWidth - 1, spriteHeight - 1)
                 });
             }

@@ -27,6 +27,9 @@ addEventListener("load", function () {
 
     setInterval(timerTick, 1000 / FPS);
 
+    addEventListener("resize", resize);
+    resize();
+
     addEventListener("keydown", function (e) {
         if (e.code == "KeyW") {
             sprite.key = 3;
@@ -52,6 +55,14 @@ addEventListener("load", function () {
         }
     })
 });
+
+function resize() {
+    if (window.innerHeight / 200 < window.innerWidth / 320) {
+        canvas.style.scale = window.innerHeight / 200;
+    } else {
+        canvas.style.scale = window.innerWidth / 320;
+    }
+}
 
 function timerTick() {
     time += 1000 / FPS;

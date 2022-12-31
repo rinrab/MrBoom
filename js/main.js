@@ -48,21 +48,21 @@ addEventListener("load", function () {
     ], 1000 / FPS * 8);
 
     banana = new AnimatedImage([
-            { id: "SPRITE2", rect: new Rect(0 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(1 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(2 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(3 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(4 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(5 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(6 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(7 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(8 * 16, 0 * 16, 16, 16) },
-            { id: "SPRITE2", rect: new Rect(9 * 16, 0 * 16, 16, 16) },
-        ], 1000 / FPS * 5);
+        { id: "SPRITE2", rect: new Rect(0 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(4 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(5 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(6 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(7 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(8 * 16, 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(9 * 16, 0 * 16, 16, 16) },
+    ], 1000 / FPS * 5);
 
-        igloo = new AnimatedImage([
-            { id: "MED3", rect: new Rect(0, 77, 6 * 8, 44) },
-        ], -1)
+    igloo = new AnimatedImage([
+        { id: "MED3", rect: new Rect(0, 77, 6 * 8, 44) },
+    ], -1)
 
     penguin = new Penguin();
 
@@ -267,10 +267,21 @@ class Sprite {
         if (this.key == -1) {
             this.animations[this.animateIndex].delay = -1;
         } else {
-            this.animateIndex = this.key;
-            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-            this.x += delta[this.key].x * this.speed;
-            this.y += delta[this.key].y * this.speed;
+
+            // this.animateIndex = this.key;
+            // this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+            const newX1 = Math.round((this.x + delta[this.key].x * this.speed - 4) / 16);
+            const newY1 = Math.round((this.y + delta[this.key].y * this.speed - 10) / 16);
+            const newX2 = Math.round((this.x + delta[this.key].x * this.speed + 10) / 16);
+            const newY2 = Math.round((this.y + delta[this.key].y * this.speed + 4) / 16);
+            if (
+                mapNeige[newY1][newX1] != "#" &&
+                mapNeige[newY2][newX1] != "#" &&
+                mapNeige[newY1][newX2] != "#" &&
+                mapNeige[newY2][newX2] != "#") {
+                this.x += delta[this.key].x * this.speed;
+                this.y += delta[this.key].y * this.speed;
+            }
         }
     }
 
@@ -279,7 +290,7 @@ class Sprite {
     }
 
     draw(ctx) {
-        this.animations[this.animateIndex].draw(ctx, this.x, this.y);
+        this.animations[this.animateIndex].draw(ctx, this.x + 8, this.y + 24);
     }
 }
 

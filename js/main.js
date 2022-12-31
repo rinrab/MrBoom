@@ -9,6 +9,7 @@ let bg;
 let sprite;
 let banana;
 let tree;
+let penguin;
 
 const spriteWidth = 24;
 const spriteHeight = 24;
@@ -37,7 +38,29 @@ addEventListener("load", function () {
             { id: "SPRITE2", rect: new Rect(7 * 16, 0 * 16, 16, 16) },
             { id: "SPRITE2", rect: new Rect(8 * 16, 0 * 16, 16, 16) },
             { id: "SPRITE2", rect: new Rect(9 * 16, 0 * 16, 16, 16) },
-        ], 1000 / FPS * 5)
+        ], 1000 / FPS * 5);
+
+    penguin = new AnimatedImage([
+        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
+
+        { id: "MED3", rect: new Rect(13 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(15 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(17 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(19 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(21 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(23 * 8 - 2, 3 * 8, 15, 15) },
+        { id: "MED3", rect: new Rect(25 * 8 - 2, 3 * 8, 15, 15) },
+    ], 1000 / FPS * 7)
 
     tree = new AnimatedImage([
         { id: "MED3", rect: new Rect(0, 17 * 8, 32, 49) },
@@ -104,6 +127,15 @@ function drawAll() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     bg.draw(ctx);
+
+    penguin.draw(ctx, 17 * 1 - 8, 0, true);
+    penguin.draw(ctx, 17 * 2 - 8, 0, false);
+    penguin.draw(ctx, 17 * 3 - 8, 0, false);
+    penguin.draw(ctx, 17 * 7 - 8, 0, false);
+    penguin.draw(ctx, 17 * 10 - 8, 0, false);
+    penguin.draw(ctx, 17 * 12 - 8, 0, false);
+    penguin.draw(ctx, 17 * 15 - 8, 0, false);
+
     banana.draw(ctx, 50, 50)
     sprite.draw(ctx)
     tree.draw(ctx, 112, 30);
@@ -127,20 +159,25 @@ class AnimatedImage {
 
         this.delay = delay;
         this._time = 0;
+
+        this.tick();
     }
 
     tick() {
         if (this.delay == -1) {
-            return this.images[0];
+            return this.currentImage = this.images[0];
         } else {
             this._time += 1 / FPS * (1000 / this.delay);
 
-            return this.images[Math.floor(this._time) % this.images.length];
+            return this.currentImage = this.images[Math.floor(this._time) % this.images.length];
         }
     }
 
-    draw(ctx, x = 0, y = 0) {
-        const img = this.tick();
+    draw(ctx, x = 0, y = 0, doTick = true) {
+        let img = this.currentImage;
+        if (doTick) {
+            let img = this.tick();
+        }
         ctx.drawImage(
             img.img,
             img.rect.x, img.rect.y,

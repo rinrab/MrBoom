@@ -40,27 +40,7 @@ addEventListener("load", function () {
             { id: "SPRITE2", rect: new Rect(9 * 16, 0 * 16, 16, 16) },
         ], 1000 / FPS * 5);
 
-    penguin = new AnimatedImage([
-        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
-
-        { id: "MED3", rect: new Rect(13 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(15 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(17 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(19 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(21 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(23 * 8 - 2, 3 * 8, 15, 15) },
-        { id: "MED3", rect: new Rect(25 * 8 - 2, 3 * 8, 15, 15) },
-    ], 1000 / FPS * 7)
+    penguin = new Penguin();
 
     tree = new AnimatedImage([
         { id: "MED3", rect: new Rect(0, 17 * 8, 32, 49) },
@@ -129,12 +109,12 @@ function drawAll() {
     bg.draw(ctx);
 
     penguin.draw(ctx, 17 * 1 - 8, 0, true);
-    penguin.draw(ctx, 17 * 2 - 8, 0, false);
-    penguin.draw(ctx, 17 * 3 - 8, 0, false);
-    penguin.draw(ctx, 17 * 7 - 8, 0, false);
-    penguin.draw(ctx, 17 * 10 - 8, 0, false);
-    penguin.draw(ctx, 17 * 12 - 8, 0, false);
-    penguin.draw(ctx, 17 * 15 - 8, 0, false);
+    penguin.draw(ctx, 17 * 2 - 8, 0);
+    penguin.draw(ctx, 17 * 3 - 8, 0);
+    penguin.draw(ctx, 17 * 7 - 8, 0);
+    penguin.draw(ctx, 17 * 10 - 8, 0);
+    penguin.draw(ctx, 17 * 12 - 8, 0);
+    penguin.draw(ctx, 17 * 15 - 8, 0);
 
     banana.draw(ctx, 50, 50)
     sprite.draw(ctx)
@@ -254,6 +234,33 @@ class Sprite {
 
     draw(ctx) {
         this.animations[this.animateIndex].draw(ctx, this.x, this.y);
+    }
+}
+
+class Penguin {
+    animation;
+
+    constructor () {
+        let newData = [];
+        for (let i = 0; i < 5; i++) {
+            newData.push(
+                { id: "MED3", rect: new Rect(9 * 8 - 2, 3 * 8, 15, 15) },
+                { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) });
+        }
+        newData.push(
+            { id: "MED3", rect: new Rect(13 * 8 - 2, 3 * 8, 15, 15) },
+            { id: "MED3", rect: new Rect(11 * 8 - 2, 3 * 8, 15, 15) },
+            { id: "MED3", rect: new Rect(15 * 8 - 2, 3 * 8, 15, 15) },
+            { id: "MED3", rect: new Rect(17 * 8 - 2, 3 * 8, 15, 15) },
+            { id: "MED3", rect: new Rect(19 * 8 - 2, 3 * 8, 15, 15) },
+            { id: "MED3", rect: new Rect(21 * 8 - 2, 3 * 8, 15, 15) },
+            { id: "MED3", rect: new Rect(23 * 8 - 2, 3 * 8, 15, 15) },
+            { id: "MED3", rect: new Rect(25 * 8 - 2, 3 * 8, 15, 15) })
+        this.animation = new AnimatedImage(newData, 1000 / FPS * 7);
+    }
+
+    draw(ctx, x, y, doTick = false) {
+        this.animation.draw(ctx, x, y, doTick);
     }
 }
 

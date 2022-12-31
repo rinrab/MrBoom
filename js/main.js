@@ -7,6 +7,7 @@ let time = 0;
 
 let bg;
 let sprite;
+let banana;
 
 const spriteWidth = 24;
 const spriteHeight = 24;
@@ -22,6 +23,20 @@ addEventListener("load", function () {
         { id: "NEIGE2", rect: new Rect(0, 0, 320, 200) },
         { id: "NEIGE3", rect: new Rect(0, 0, 320, 200) },
     ], 1000 / FPS * 8);
+
+    banana = new AnimatedImage(
+        [
+            { id: "SPRITE2", rect: new Rect(0 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(1 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(2 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(3 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(4 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(5 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(6 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(7 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(8 * 16, 0 * 16, 16, 16) },
+            { id: "SPRITE2", rect: new Rect(9 * 16, 0 * 16, 16, 16) },
+        ], 1000 / FPS * 5)
 
     sprite = new Sprite(1);
 
@@ -83,6 +98,7 @@ function drawAll() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     bg.draw(ctx);
+    banana.draw(ctx, 50, 50)
     sprite.draw(ctx)
 }
 

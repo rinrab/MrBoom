@@ -10,6 +10,7 @@ let sprite;
 let banana;
 let tree;
 let penguin;
+let igloo;
 
 const spriteWidth = 24;
 const spriteHeight = 24;
@@ -46,8 +47,7 @@ addEventListener("load", function () {
         { id: "NEIGE3", rect: new Rect(0, 0, 320, 200) },
     ], 1000 / FPS * 8);
 
-    banana = new AnimatedImage(
-        [
+    banana = new AnimatedImage([
             { id: "SPRITE2", rect: new Rect(0 * 16, 0 * 16, 16, 16) },
             { id: "SPRITE2", rect: new Rect(1 * 16, 0 * 16, 16, 16) },
             { id: "SPRITE2", rect: new Rect(2 * 16, 0 * 16, 16, 16) },
@@ -59,6 +59,10 @@ addEventListener("load", function () {
             { id: "SPRITE2", rect: new Rect(8 * 16, 0 * 16, 16, 16) },
             { id: "SPRITE2", rect: new Rect(9 * 16, 0 * 16, 16, 16) },
         ], 1000 / FPS * 5);
+
+        igloo = new AnimatedImage([
+            { id: "MED3", rect: new Rect(0, 77, 6 * 8, 44) },
+        ], -1)
 
     penguin = new Penguin();
 
@@ -159,7 +163,7 @@ function drawAll() {
     banana.draw(ctx, 16 * 4 + 8, 16 * 3)
     sprite.draw(ctx)
 
-
+    igloo.draw(ctx, 232, 57);
     tree.draw(ctx, 112, 30);
 }
 

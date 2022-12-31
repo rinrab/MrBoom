@@ -57,11 +57,20 @@ addEventListener("load", function () {
 });
 
 function resize() {
+    let scale;
     if (window.innerHeight / 200 < window.innerWidth / 320) {
-        canvas.style.scale = window.innerHeight / 200;
+        scale = window.innerHeight / 200;
     } else {
-        canvas.style.scale = window.innerWidth / 320;
+        scale = window.innerWidth / 320;
     }
+
+    canvas.style.scale = scale;
+    canvas.style.left = formatCssPx((window.innerWidth - 320 * scale) / 2);
+    canvas.style.top = formatCssPx((window.innerHeight - 200 * scale) / 2);
+}
+
+function formatCssPx(val) {
+    return (val.toFixed(3)) + "px";
 }
 
 function timerTick() {

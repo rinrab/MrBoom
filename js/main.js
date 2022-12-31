@@ -8,6 +8,7 @@ let time = 0;
 let bg;
 let sprite;
 let banana;
+let tree;
 
 const spriteWidth = 24;
 const spriteHeight = 24;
@@ -37,6 +38,11 @@ addEventListener("load", function () {
             { id: "SPRITE2", rect: new Rect(8 * 16, 0 * 16, 16, 16) },
             { id: "SPRITE2", rect: new Rect(9 * 16, 0 * 16, 16, 16) },
         ], 1000 / FPS * 5)
+
+    tree = new AnimatedImage([
+        { id: "MED3", rect: new Rect(0, 17 * 8, 32, 49) },
+        { id: "MED3", rect: new Rect(33, 17 * 8, 32, 49) },
+    ], 1000 / FPS * 15)
 
     sprite = new Sprite(1);
 
@@ -100,6 +106,7 @@ function drawAll() {
     bg.draw(ctx);
     banana.draw(ctx, 50, 50)
     sprite.draw(ctx)
+    tree.draw(ctx, 112, 30);
 }
 
 class AnimatedImage {

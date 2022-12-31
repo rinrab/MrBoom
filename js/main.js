@@ -118,7 +118,12 @@ class AnimatedImage {
 
     draw(ctx, x = 0, y = 0) {
         const img = this.tick();
-        ctx.drawImage(img.img, img.rect.x, img.rect.y, img.rect.width, img.rect.height, x, y, img.rect.width, img.rect.height);
+        ctx.drawImage(
+            img.img,
+            img.rect.x, img.rect.y,
+            img.rect.width, img.rect.height,
+            x, y,
+            img.rect.width, img.rect.height);
     }
 }
 

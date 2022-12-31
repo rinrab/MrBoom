@@ -14,6 +14,26 @@ let penguin;
 const spriteWidth = 24;
 const spriteHeight = 24;
 
+const mapNeige = [
+    "###################",
+    "#..-------------..#",
+    "#.#-#.#-#-#-#-#-#.#",
+    "#---..------..----#",
+    "#-#-#-###-#-#.#.#-#",
+    "#-----###-----...-#",
+    "#-#-#-###-#-#-#.#-#",
+    "#---------..------#",
+    "#-#-#-#.#-#.#-#-#-#",
+    "#-----..----------#",
+    "#.#-#-#-#-#-#-#.###",
+    "#..-----------..###",
+    "###################"
+]
+const mapWidth = mapNeige[0].length;
+const mapHeight = mapNeige.length;
+
+let gridImage;
+
 const FPS = 30;
 
 addEventListener("load", function () {
@@ -46,6 +66,17 @@ addEventListener("load", function () {
         { id: "MED3", rect: new Rect(0, 17 * 8, 32, 49) },
         { id: "MED3", rect: new Rect(33, 17 * 8, 32, 49) },
     ], 1000 / FPS * 15)
+
+    gridImage = new AnimatedImage([
+        { id: "PAUSE", rect: new Rect(0 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(1 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(2 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(3 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(4 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(5 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(6 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(7 * 16, 80, 16, 16) },
+    ], -1);
 
     sprite = new Sprite(1);
 
@@ -116,8 +147,19 @@ function drawAll() {
     penguin.draw(ctx, 17 * 12 - 8, 0);
     penguin.draw(ctx, 17 * 15 - 8, 0);
 
-    banana.draw(ctx, 50, 50)
+
+    for (let y in mapNeige) {
+        for (let x in mapNeige[y]) {
+            if (mapNeige[y][x] == "-") {
+                gridImage.draw(ctx, x * 16 + 8, y * 16);
+            }
+        }
+    }
+
+    banana.draw(ctx, 16 * 4 + 8, 16 * 3)
     sprite.draw(ctx)
+
+
     tree.draw(ctx, 112, 30);
 }
 
@@ -240,7 +282,7 @@ class Sprite {
 class Penguin {
     animation;
 
-    constructor () {
+    constructor() {
         let newData = [];
         for (let i = 0; i < 5; i++) {
             newData.push(

@@ -124,20 +124,6 @@ function formatCssPx(val) {
 function timerTick() {
     time += 1000 / FPS;
 
-    // if (keys["KeyW"] == true) {
-    //     sprite.key = 3;
-    // } else if (keys["KeyS"] == true) {
-    //     sprite.key = 0;
-    // } else if (keys["KeyA"] == true) {
-    //     sprite.key = 2;
-    // } else if (keys["KeyD"] == true) {
-    //     sprite.key = 1;
-    // } else {
-    //     sprite.key = -1;
-    // }
-
-    // console.log(sprite.key);
-
     sprite.move();
     drawAll();
 }

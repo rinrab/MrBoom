@@ -15,23 +15,27 @@ let igloo;
 const spriteWidth = 24;
 const spriteHeight = 24;
 
-const mapNeige = [
-    "###################",
-    "#..-------------..#",
-    "#.#-#.#-#-#-#-#-#.#",
-    "#---..------..----#",
-    "#-#-#-###-#-#.#.#-#",
-    "#-----###-----...-#",
-    "#-#-#-###-#-#-#.#-#",
-    "#---------..------#",
-    "#-#-#-#.#-#.#-#-#-#",
-    "#-----..----------#",
-    "#.#-#-#-#-#-#-#.###",
-    "#..-----------..###",
-    "###################"
-]
-const mapWidth = mapNeige[0].length;
-const mapHeight = mapNeige.length;
+class Terrain {
+    data;
+
+    get width() {
+        return this.data[0].length;
+    }
+
+    get height() {
+        return this.data.length;
+    }
+
+    constructor(initial) {
+        this.data = initial;
+    }
+
+    get(x, y) {
+        return this.data[y][x];
+    }
+}
+
+let mapNeige;
 
 let gridImage;
 
@@ -40,6 +44,22 @@ const FPS = 30;
 let keys = {};
 
 addEventListener("load", function () {
+    mapNeige = new Terrain([
+        "###################",
+        "#..-------------..#",
+        "#.#-#.#-#-#-#-#-#.#",
+        "#---..------..----#",
+        "#-#-#-###-#-#.#.#-#",
+        "#-----###-----...-#",
+        "#-#-#-###-#-#-#.#-#",
+        "#---------..------#",
+        "#-#-#-#.#-#.#-#-#-#",
+        "#-----..----------#",
+        "#.#-#-#-#-#-#-#.###",
+        "#..-----------..###",
+        "###################"
+    ]);
+
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d");
 
@@ -136,9 +156,9 @@ function drawAll() {
     penguin.draw(ctx, 17 * 15 - 8, 0);
 
 
-    for (let y in mapNeige) {
-        for (let x in mapNeige[y]) {
-            if (mapNeige[y][x] == "-") {
+    for (let y = 0; y < mapNeige.height; y++) {
+        for (let x = 0; x < mapNeige.width; x++) {
+            if (mapNeige.get(x, y) == "-") {
                 gridImage.draw(ctx, x * 16 + 8, y * 16);
             }
         }
@@ -263,29 +283,6 @@ class Sprite {
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else {
             this.animations[this.animateIndex].delay = -1;
-        }
-    }
-
-    checkNextBlock() {
-        const delta = [
-            { x: 0, y: 1 },
-            { x: 1, y: 0 },
-            { x: -1, y: 0 },
-            { x: 0, y: -1 },
-        ]
-
-        const newX1 = Math.round((this.x + delta[this.key].x * this.speed - 4) / 16);
-        const newY1 = Math.round((this.y + delta[this.key].y * this.speed - 10) / 16);
-        const newX2 = Math.round((this.x + delta[this.key].x * this.speed + 10) / 16);
-        const newY2 = Math.round((this.y + delta[this.key].y * this.speed + 4) / 16);
-        if (
-            mapNeige[newY1][newX1] != "#" &&
-            mapNeige[newY2][newX1] != "#" &&
-            mapNeige[newY1][newX2] != "#" &&
-            mapNeige[newY2][newX2] != "#") {
-            return ".";
-        } else {
-            return "#";
         }
     }
 

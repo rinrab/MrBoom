@@ -43,6 +43,9 @@ const FPS = 30;
 
 let keys = {};
 
+let bombSprite;
+let bombs = [];
+
 addEventListener("load", function () {
     map = new Terrain([
         "###################",
@@ -59,6 +62,13 @@ addEventListener("load", function () {
         "#..-----------..###",
         "###################"
     ]);
+
+    bombSprite = new AnimatedImage([
+        { id: "SPRITE2", rect: new Rect(0 * 16, 1 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 1 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 1 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 1 * 16, 16, 16) },
+    ], 1000 / FPS * 10)
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d");
@@ -150,11 +160,27 @@ function drawAll() {
         }
     }
 
+    bombSprite.tick();
+    for (let bomb of bombs) {
+        bombSprite.draw(ctx, bomb.x * 16 + 8, bomb.y * 16, false);
+    }
+
     banana.draw(ctx, 16 * 4 + 8, 16 * 3)
     sprite.draw(ctx)
 
     igloo.draw(ctx, 232, 57);
     tree.draw(ctx, 112, 30);
+}
+
+function placeBomb(x, y) {
+    if (!bombs.find(function (val) {
+        return val.x == x && val.y == y;
+    })) {
+        bombs.push({
+            x: x,
+            y: y
+        })
+    }
 }
 
 class AnimatedImage {
@@ -304,6 +330,10 @@ class Sprite {
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else {
             this.animations[this.animateIndex].delay = -1;
+        }
+
+        if (keys["Space"]) {
+            placeBomb(Math.floor(this.x / 16), Math.floor(this.y / 16));
         }
     }
 

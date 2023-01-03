@@ -14,15 +14,26 @@
 
   <style>
     #grafic {
-      transform-origin: left top;
       margin: auto;
       position: absolute;
+      width: calc(min(100vw / 320, 100vh / 200) * 320);
     }
 
     body {
       background: var(--bs-black);
       margin: 0;
       min-height: 100vh;
+    }
+
+    .container {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
   </style>
 </head>
@@ -37,7 +48,8 @@
     <img src="Gfx/MED3.GIF" id="MED3">
     <img src="gfx/PAUSE.GIF" id="PAUSE">
   </div>
-  <canvas id="grafic" width="320" height="200"></canvas>
+  <div class="container">
+    <canvas id="grafic" width="320" height="200"></canvas>
+  </div>
 </body>
-
 </html>

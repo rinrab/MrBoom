@@ -86,9 +86,6 @@ addEventListener("load", function () {
 
     setInterval(timerTick, 1000 / FPS);
 
-    addEventListener("resize", resize);
-    resize();
-
     addEventListener("keydown", function (e) {
         if (e.code == "KeyW") {
             sprite.key = 3;
@@ -114,19 +111,6 @@ addEventListener("load", function () {
         }
     })
 });
-
-function resize() {
-    let scale;
-    if (window.innerHeight / 200 < window.innerWidth / 320) {
-        scale = window.innerHeight / 200;
-    } else {
-        scale = window.innerWidth / 320;
-    }
-
-    canvas.style.scale = scale;
-    canvas.style.left = formatCssPx((window.innerWidth - 320 * scale) / 2);
-    canvas.style.top = formatCssPx((window.innerHeight - 200 * scale) / 2);
-}
 
 function formatCssPx(val) {
     return (val.toFixed(3)) + "px";

@@ -37,6 +37,8 @@ let gridImage;
 
 const FPS = 30;
 
+let keys = {};
+
 addEventListener("load", function () {
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d");
@@ -87,28 +89,11 @@ addEventListener("load", function () {
     setInterval(timerTick, 1000 / FPS);
 
     addEventListener("keydown", function (e) {
-        if (e.code == "KeyW") {
-            sprite.key = 3;
-        }
-        else if (e.code == "KeyS") {
-            sprite.key = 0;
-        }
-        else if (e.code == "KeyA") {
-            sprite.key = 2;
-        }
-        else if (e.code == "KeyD") {
-            sprite.key = 1;
-        } else {
-            sprite.key = -1;
-        }
+        keys[e.code] = true;
     })
 
     addEventListener("keyup", function (e) {
-        switch (e.code) {
-            case "KeyW": case "KeyS":
-            case "KeyA": case "KeyD":
-                sprite.key = -1;
-        }
+        keys[e.code] = false;
     })
 });
 
@@ -118,6 +103,21 @@ function formatCssPx(val) {
 
 function timerTick() {
     time += 1000 / FPS;
+
+    // if (keys["KeyW"] == true) {
+    //     sprite.key = 3;
+    // } else if (keys["KeyS"] == true) {
+    //     sprite.key = 0;
+    // } else if (keys["KeyA"] == true) {
+    //     sprite.key = 2;
+    // } else if (keys["KeyD"] == true) {
+    //     sprite.key = 1;
+    // } else {
+    //     sprite.key = -1;
+    // }
+
+    // console.log(sprite.key);
+
     sprite.move();
     drawAll();
 }
@@ -241,25 +241,28 @@ class Sprite {
     }
 
     move() {
-        const delta = [
-            { x: 0, y: 1 },
-            { x: 1, y: 0 },
-            { x: -1, y: 0 },
-            { x: 0, y: -1 },
-        ]
+        if (keys["KeyW"]) {
+            this.y -= this.speed;
 
-        if (this.key == -1) {
-            this.animations[this.animateIndex].delay = -1;
+            this.animateIndex = 3;
+            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+        } else if (keys["KeyS"]) {
+            this.y += this.speed;
+
+            this.animateIndex = 0;
+            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+        } else if (keys["KeyA"]) {
+            this.x -= this.speed;
+
+            this.animateIndex = 2;
+            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+        } else if (keys["KeyD"]) {
+            this.x += this.speed;
+
+            this.animateIndex = 1;
+            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else {
-            if (this.checkNextBlock() != "#") {
-                this.animateIndex = this.key;
-                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-
-                this.x += delta[this.key].x * this.speed;
-                this.y += delta[this.key].y * this.speed;
-            } else {
-                // this.x = Math.round((this.x - 8) / 16) * 16 + 12;
-            }
+            this.animations[this.animateIndex].delay = -1;
         }
     }
 

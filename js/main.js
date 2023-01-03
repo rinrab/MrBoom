@@ -242,28 +242,39 @@ class Sprite {
             this.animations.push(new AnimatedImage(newImages, -1))
         }
 
-        this.x = 50;
-        this.y = 50;
+        this.x = 64;
+        this.y = 48;
     }
 
     move() {
         if (keys["KeyW"]) {
-            this.y -= this.speed;
+            if (map.get(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) != "#" &&
+                map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16)) != "#") {
+                this.y -= this.speed;
+            }
 
             this.animateIndex = 3;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyS"]) {
-            this.y += this.speed;
+            if (map.get(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) != "#" &&
+                map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16)) != "#") {
+                this.y += this.speed;
+            }
 
             this.animateIndex = 0;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyA"]) {
-            this.x -= this.speed;
-
+            if (map.get(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) != "#" &&
+                map.get(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16)) != "#") {
+                this.x -= this.speed;
+            }
             this.animateIndex = 2;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyD"]) {
-            this.x += this.speed;
+            if (map.get(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) != "#" &&
+                map.get(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16)) != "#") {
+                this.x += this.speed;
+            }
 
             this.animateIndex = 1;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
@@ -277,7 +288,7 @@ class Sprite {
     }
 
     draw(ctx) {
-        this.animations[this.animateIndex].draw(ctx, this.x + 8, this.y + 24);
+        this.animations[this.animateIndex].draw(ctx, this.x + 5, this.y - 7);
     }
 }
 

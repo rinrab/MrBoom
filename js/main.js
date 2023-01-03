@@ -35,7 +35,7 @@ class Terrain {
     }
 }
 
-let mapNeige;
+let map;
 
 let gridImage;
 
@@ -44,7 +44,7 @@ const FPS = 30;
 let keys = {};
 
 addEventListener("load", function () {
-    mapNeige = new Terrain([
+    map = new Terrain([
         "###################",
         "#..-------------..#",
         "#.#-#.#-#-#-#-#-#.#",
@@ -156,9 +156,9 @@ function drawAll() {
     penguin.draw(ctx, 17 * 15 - 8, 0);
 
 
-    for (let y = 0; y < mapNeige.height; y++) {
-        for (let x = 0; x < mapNeige.width; x++) {
-            if (mapNeige.get(x, y) == "-") {
+    for (let y = 0; y < map.height; y++) {
+        for (let x = 0; x < map.width; x++) {
+            if (map.get(x, y) == "-") {
                 gridImage.draw(ctx, x * 16 + 8, y * 16);
             }
         }

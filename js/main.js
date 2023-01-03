@@ -251,6 +251,12 @@ class Sprite {
             if (map.get(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) != "#" &&
                 map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16)) != "#") {
                 this.y -= this.speed;
+            } else {
+                const newPos = Math.floor((this.x + 8) / 16) * 16;
+                if (newPos > this.x)
+                    this.x += this.speed;
+                else if (newPos < this.x)
+                    this.x -= this.speed;
             }
 
             this.animateIndex = 3;
@@ -259,6 +265,12 @@ class Sprite {
             if (map.get(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) != "#" &&
                 map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16)) != "#") {
                 this.y += this.speed;
+            } else {
+                const newPos = Math.floor((this.x + 8) / 16) * 16;
+                if (newPos > this.x)
+                    this.x += this.speed;
+                else if (newPos < this.x)
+                    this.x -= this.speed;
             }
 
             this.animateIndex = 0;
@@ -267,6 +279,12 @@ class Sprite {
             if (map.get(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) != "#" &&
                 map.get(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16)) != "#") {
                 this.x -= this.speed;
+            } else {
+                const newPos = Math.floor((this.y + 8) / 16) * 16;
+                if (newPos > this.y)
+                    this.y += this.speed;
+                else if (newPos < this.y)
+                    this.y -= this.speed;
             }
             this.animateIndex = 2;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
@@ -274,6 +292,12 @@ class Sprite {
             if (map.get(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) != "#" &&
                 map.get(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16)) != "#") {
                 this.x += this.speed;
+            } else {
+                const newPos = Math.floor((this.y + 8) / 16) * 16;
+                if (newPos > this.y)
+                    this.y += this.speed;
+                else if (newPos < this.y)
+                    this.y -= this.speed;
             }
 
             this.animateIndex = 1;

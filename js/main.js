@@ -112,10 +112,6 @@ addEventListener("load", function () {
     })
 });
 
-function formatCssPx(val) {
-    return (val.toFixed(3)) + "px";
-}
-
 function timerTick() {
     time += 1000 / FPS;
     sprite.move();

@@ -33,6 +33,13 @@
         justify-content: center;
         align-items: center;
     }
+
+    #fps-display {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 20px;
+    }
   </style>
 </head>
 
@@ -47,7 +54,9 @@
     <img src="gfx/PAUSE.GIF" id="PAUSE">
   </div>
   <div class="container">
+   
     <canvas id="grafic" width="320" height="200"></canvas>
+    <label id="fps-display" ></label>
   </div>
 </body>
 </html>

@@ -3,7 +3,9 @@ let ctx;
 
 let images;
 
-let time = 0;
+let tickTime = 0;
+let tickCount = 0;
+let prevAnimationTimestamp;
 
 let bg;
 let sprite;
@@ -39,7 +41,7 @@ let map;
 
 let gridImage;
 
-const FPS = 30;
+const FPS = 20;
 
 let keys = {};
 
@@ -116,7 +118,8 @@ addEventListener("load", function () {
 
     sprite = new Sprite(1);
 
-    setInterval(timerTick, 1000 / FPS);
+    prevAnimationTimestamp = performance.now();
+    requestAnimationFrame(animationCallback);
 
     addEventListener("keydown", function (e) {
         keys[e.code] = true;
@@ -127,11 +130,55 @@ addEventListener("load", function () {
     })
 });
 
-function timerTick() {
-    time += 1000 / FPS;
-
-    sprite.move();
+function tick(deltaTime) {
+    sprite.move(deltaTime);
     drawAll();
+}
+
+function animationCallback(timestamp) {
+    // console.time("animation");
+
+    let totalDeltaTime = timestamp - prevAnimationTimestamp;
+
+    if (totalDeltaTime < 1000) {
+        while (true) {
+            if (totalDeltaTime < 50) {
+                tick(totalDeltaTime / (1000 / 60));
+                break;
+            }
+            else {
+                tick(50 / (1000 / 60));
+                totalDeltaTime -= 50;
+            }
+        }
+    }
+
+    prevAnimationTimestamp = timestamp;
+    requestAnimationFrame(animationCallback);
+
+    tickCount++;
+    if (performance.now() - tickTime > 0.5 * 1000) {
+        document.getElementById("fps-display").innerText = (tickCount * 1000 / (performance.now() - tickTime)).toFixed(0);
+
+        tickCount = 0;
+        tickTime = performance.now();
+    }
+    // console.timeEnd("animation");
+}
+
+function timerTick() {
+    tick(1);
+
+    drawAll();
+
+    tickCount++;
+    if (performance.now() - tickTime > 0.5 * 1000) {
+        document.getElementById("fps-display").innerText = (tickCount * 1000 / (performance.now() - tickTime)).toFixed(0);
+
+        tickCount = 0;
+        tickTime = performance.now();
+    }
+
 }
 
 function drawAll() {
@@ -213,14 +260,14 @@ class AnimatedImage {
 
     draw(ctx, x = 0, y = 0, doTick = true) {
         let img = this.currentImage;
-        if (doTick) {
-            let img = this.tick();
-        }
+        //if (doTick) {
+        //    let img = this.tick();
+        //}
         ctx.drawImage(
             img.img,
             img.rect.x, img.rect.y,
             img.rect.width, img.rect.height,
-            x, y,
+            Math.round(x), Math.round(y),
             img.rect.width, img.rect.height);
     }
 }
@@ -244,7 +291,7 @@ class Sprite {
 
         this.key = -1;
 
-        this.speed = 2;
+        this.speed = 1;
 
         let y = 1;
 
@@ -268,17 +315,17 @@ class Sprite {
         this.y = 48;
     }
 
-    move() {
+    move(deltaTime) {
         if (keys["KeyW"]) {
             if (map.get(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) != "#" &&
                 map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16)) != "#") {
-                this.y -= this.speed;
+                this.y -= this.speed * deltaTime;
             } else {
                 const newPos = Math.floor((this.x + 8) / 16) * 16;
                 if (newPos > this.x)
-                    this.x += this.speed;
+                    this.x += this.speed * deltaTime;
                 else if (newPos < this.x)
-                    this.x -= this.speed;
+                    this.x -= this.speed * deltaTime;
             }
 
             this.animateIndex = 3;
@@ -286,13 +333,13 @@ class Sprite {
         } else if (keys["KeyS"]) {
             if (map.get(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) != "#" &&
                 map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16)) != "#") {
-                this.y += this.speed;
+                this.y += this.speed * deltaTime;
             } else {
                 const newPos = Math.floor((this.x + 8) / 16) * 16;
                 if (newPos > this.x)
-                    this.x += this.speed;
+                    this.x += this.speed * deltaTime;
                 else if (newPos < this.x)
-                    this.x -= this.speed;
+                    this.x -= this.speed * deltaTime;
             }
 
             this.animateIndex = 0;
@@ -300,26 +347,26 @@ class Sprite {
         } else if (keys["KeyA"]) {
             if (map.get(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) != "#" &&
                 map.get(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16)) != "#") {
-                this.x -= this.speed;
+                this.x -= this.speed * deltaTime;
             } else {
                 const newPos = Math.floor((this.y + 8) / 16) * 16;
                 if (newPos > this.y)
-                    this.y += this.speed;
+                    this.y += this.speed * deltaTime;
                 else if (newPos < this.y)
-                    this.y -= this.speed;
+                    this.y -= this.speed * deltaTime;
             }
             this.animateIndex = 2;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyD"]) {
             if (map.get(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) != "#" &&
                 map.get(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16)) != "#") {
-                this.x += this.speed;
+                this.x += this.speed * deltaTime;
             } else {
                 const newPos = Math.floor((this.y + 8) / 16) * 16;
                 if (newPos > this.y)
-                    this.y += this.speed;
+                    this.y += this.speed * deltaTime;
                 else if (newPos < this.y)
-                    this.y -= this.speed;
+                    this.y -= this.speed * deltaTime;
             }
 
             this.animateIndex = 1;

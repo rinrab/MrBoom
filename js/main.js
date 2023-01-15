@@ -355,8 +355,8 @@ class Sprite {
             this.animations.push(new AnimatedImage(newImages, -1))
         }
 
-        this.x = 64;
-        this.y = 48;
+        this.x = 1 * 16;
+        this.y = 1 * 16;
     }
 
     update() {

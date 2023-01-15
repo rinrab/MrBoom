@@ -99,8 +99,12 @@ class Int {
         return Math.floor(val) % divider;
     }
 
-    static div(val, divider) {
+    static divFloor(val, divider) {
         return Math.floor(val / divider);
+    }
+
+    static divCeil(val, divider) {
+        return Math.floor((val + divider - 1) / divider);
     }
 }
 
@@ -369,66 +373,92 @@ class Sprite {
         }
 
         if (direction == Direction.Up) {
-            if (map.isWalkable(Int.div(this.x, 16), Int.div(this.y - 1, 16)) &&
-                map.isWalkable(Int.div(this.x + 15, 16), Int.div(this.y - 1, 16))) {
-                this.y -= this.speed;
+            if (Int.mod(this.x, 16) == 0) {
+                if (map.isWalkable(Int.divFloor(this.x, 16), Int.divFloor(this.y - this.speed, 16))) {
+                    this.y -= this.speed;
+                }
+
+                this.animateIndex = 3;
             } else {
-                const newPos = Int.div(this.x + 8, 16) * 16;
-                if (newPos > this.x)
-                    this.x += this.speed;
-                else if (newPos < this.x)
+                if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divFloor(this.y - this.speed, 16))) {
                     this.x -= this.speed;
+
+                    this.animateIndex = 2;
+                } else if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divFloor(this.y - this.speed, 16))) {
+                    this.x += this.speed;
+
+                    this.animateIndex = 1;
+                }
             }
 
-            this.animateIndex = 3;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (direction == Direction.Down) {
-            if (map.isWalkable(Int.div(this.x, 16), Int.div(this.y + 16, 16)) &&
-                map.isWalkable(Int.div(this.x + 15, 16), Int.div(this.y + 16, 16))) {
-                this.y += this.speed;
+            if (Int.mod(this.x, 16) == 0) {
+                if (map.isWalkable(Int.divFloor(this.x, 16), Int.divCeil(this.y + this.speed, 16))) {
+                    this.y += this.speed;
+                }
+
+                this.animateIndex = 0;
             } else {
-                const newPos = Int.div(this.x + 8, 16) * 16;
-                if (newPos > this.x)
-                    this.x += this.speed;
-                else if (newPos < this.x)
+                if (map.isWalkable(Int.divFloor(this.x, 16), Int.divCeil(this.y + this.speed, 16))) {
                     this.x -= this.speed;
+
+                    this.animateIndex = 2;
+                } else if (map.isWalkable(Int.divFloor(this.x + 15, 16), Int.divCeil(this.y + this.speed, 16))) {
+                    this.x += this.speed;
+
+                    this.animateIndex = 1;
+                }
             }
 
-            this.animateIndex = 0;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (direction == Direction.Left) {
-            if (map.isWalkable(Int.div(this.x - 1, 16), Int.div(this.y, 16)) &&
-                map.isWalkable(Int.div(this.x - 1, 16), Int.div(this.y + 15, 16))) {
-                this.x -= this.speed;
-            } else {
-                const newPos = Int.div(this.y + 8, 16) * 16;
-                if (newPos > this.y)
-                    this.y += this.speed;
-                else if (newPos < this.y)
-                    this.y -= this.speed;
+            if (Int.mod(this.y, 16) == 0) {
+                if (map.isWalkable(Int.divFloor(this.x - this.speed, 16), Int.divFloor(this.y, 16))) {
+                    this.x -= this.speed;
+                }
+
+                this.animateIndex = 2;
             }
-            this.animateIndex = 2;
-            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-        } else if (direction == Direction.Right) {
-            if (map.isWalkable(Int.div(this.x + 16, 16), Int.div(this.y, 16)) &&
-                map.isWalkable(Int.div(this.x + 16, 16), Int.div(this.y + 15, 16))) {
-                this.x += this.speed;
-            } else {
-                const newPos = Int.div(this.y + 8, 16) * 16;
-                if (newPos > this.y)
-                    this.y += this.speed;
-                else if (newPos < this.y)
+            else {
+                if (map.isWalkable(Int.divFloor(this.x - this.speed, 16), Int.divFloor(this.y - 1, 16))) {
                     this.y -= this.speed;
+
+                    this.animateIndex = 3;
+                } else if (map.isWalkable(Int.divFloor(this.x - this.speed, 16), Int.divCeil(this.y + 1, 16))) {
+                    this.y += this.speed;
+
+                    this.animateIndex = 0;
+                }
             }
 
-            this.animateIndex = 1;
+            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+        } else if (direction == Direction.Right) {
+            if (Int.mod(this.y, 16) == 0) {
+                if (map.isWalkable(Int.divCeil(this.x + this.speed, 16), Int.divFloor(this.y, 16))) {
+                    this.x += this.speed;
+                }
+
+                this.animateIndex = 1;
+            } else {
+                if (map.isWalkable(Int.divCeil(this.x + this.speed, 16), Int.divFloor(this.y, 16))) {
+                    this.y -= this.speed;
+
+                    this.animateIndex = 3;
+                } else if (map.isWalkable(Int.divCeil(this.y + this.speed, 16), Int.divFloor(this.y + 15, 16))) {
+                    this.y += this.speed;
+
+                    this.animateIndex = 0;
+                }
+            }
+
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else {
             this.animations[this.animateIndex].delay = -1;
         }
 
         if (keys["Space"]) {
-            placeBomb(Int.div(this.x, 16), Int.div(this.y, 16));
+            placeBomb(Int.divFloor(this.x, 16), Int.divFloor(this.y, 16));
         }
     }
 

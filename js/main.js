@@ -164,7 +164,7 @@ function init() {
 }
 
 function update(deltaTime) {
-    sprite.move(1);
+    sprite.update(1);
 }
 
 function drawAll(interpolationPercentage) {
@@ -315,7 +315,7 @@ class Sprite {
         this.y = 48;
     }
 
-    move() {
+    update() {
         if (keys["KeyW"]) {
             if (map.get(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) != TerrainType.PermanentWall &&
                 map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16)) != TerrainType.PermanentWall) {

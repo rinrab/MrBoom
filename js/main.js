@@ -15,17 +15,21 @@ const spriteHeight = 24;
 
 class Terrain {
     data;
+    width;
+    height;
 
     get width() {
-        return this.data[0].length;
+        return this.width;
     }
 
     get height() {
-        return this.data.length;
+        return this.height;
     }
 
     constructor(initial) {
         this.data = initial;
+        this.width = this.data[0].length;
+        this.height = this.data.length;
     }
 
     get(x, y) {

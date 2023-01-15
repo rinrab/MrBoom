@@ -13,6 +13,10 @@ let igloo;
 const spriteWidth = 24;
 const spriteHeight = 24;
 
+let cheats = {
+    noClip: false
+};
+
 const TerrainType =
 {
     Free: 0,
@@ -60,6 +64,24 @@ class Terrain {
         }
         else {
             return TerrainType.PermanentWall;
+        }
+    }
+
+    isWalkable(x, y) {
+        let cellType = this.get(x, y);
+
+        switch (cellType) {
+            case TerrainType.Free:
+                return true;
+
+            case TerrainType.PermanentWall:
+                return false;
+
+            case TerrainType.TemporaryWall:
+                return cheats.noClip;
+
+            default:
+                return true;
         }
     }
 }
@@ -317,8 +339,8 @@ class Sprite {
 
     update() {
         if (keys["KeyW"]) {
-            if (map.get(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) != TerrainType.PermanentWall &&
-                map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16)) != TerrainType.PermanentWall) {
+            if (map.isWalkable(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) &&
+                map.isWalkable(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16))) {
                 this.y -= this.speed;
             } else {
                 const newPos = Math.floor((this.x + 8) / 16) * 16;
@@ -331,8 +353,8 @@ class Sprite {
             this.animateIndex = 3;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyS"]) {
-            if (map.get(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) != TerrainType.PermanentWall &&
-                map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16)) != TerrainType.PermanentWall) {
+            if (map.isWalkable(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) &&
+                map.isWalkable(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16))) {
                 this.y += this.speed;
             } else {
                 const newPos = Math.floor((this.x + 8) / 16) * 16;
@@ -345,8 +367,8 @@ class Sprite {
             this.animateIndex = 0;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyA"]) {
-            if (map.get(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) != TerrainType.PermanentWall &&
-                map.get(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16)) != TerrainType.PermanentWall) {
+            if (map.isWalkable(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) &&
+                map.isWalkable(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16))) {
                 this.x -= this.speed;
             } else {
                 const newPos = Math.floor((this.y + 8) / 16) * 16;
@@ -358,8 +380,8 @@ class Sprite {
             this.animateIndex = 2;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyD"]) {
-            if (map.get(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) != TerrainType.PermanentWall &&
-                map.get(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16)) != TerrainType.PermanentWall) {
+            if (map.isWalkable(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) &&
+                map.isWalkable(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16))) {
                 this.x += this.speed;
             } else {
                 const newPos = Math.floor((this.y + 8) / 16) * 16;

@@ -3,10 +3,6 @@ let ctx;
 
 let images;
 
-let tickTime = 0;
-let tickCount = 0;
-let prevAnimationTimestamp;
-
 let bg;
 let sprite;
 let banana;
@@ -41,7 +37,7 @@ let map;
 
 let gridImage;
 
-const FPS = 20;
+const FPS = 60;
 
 let keys = {};
 
@@ -118,8 +114,10 @@ addEventListener("load", function () {
 
     sprite = new Sprite(1);
 
-    prevAnimationTimestamp = performance.now();
-    requestAnimationFrame(animationCallback);
+    MainLoop.setUpdate(tick);
+    MainLoop.setDraw(drawAll);
+    MainLoop.setEnd(end);
+    MainLoop.start();
 
     addEventListener("keydown", function (e) {
         keys[e.code] = true;
@@ -131,57 +129,10 @@ addEventListener("load", function () {
 });
 
 function tick(deltaTime) {
-    sprite.move(deltaTime);
-    drawAll();
+    sprite.move(1);
 }
 
-function animationCallback(timestamp) {
-    // console.time("animation");
-
-    let totalDeltaTime = timestamp - prevAnimationTimestamp;
-
-    if (totalDeltaTime < 1000) {
-        while (true) {
-            if (totalDeltaTime < 50) {
-                tick(totalDeltaTime / (1000 / 60));
-                break;
-            }
-            else {
-                tick(50 / (1000 / 60));
-                totalDeltaTime -= 50;
-            }
-        }
-    }
-
-    prevAnimationTimestamp = timestamp;
-    requestAnimationFrame(animationCallback);
-
-    tickCount++;
-    if (performance.now() - tickTime > 0.5 * 1000) {
-        document.getElementById("fps-display").innerText = (tickCount * 1000 / (performance.now() - tickTime)).toFixed(0);
-
-        tickCount = 0;
-        tickTime = performance.now();
-    }
-    // console.timeEnd("animation");
-}
-
-function timerTick() {
-    tick(1);
-
-    drawAll();
-
-    tickCount++;
-    if (performance.now() - tickTime > 0.5 * 1000) {
-        document.getElementById("fps-display").innerText = (tickCount * 1000 / (performance.now() - tickTime)).toFixed(0);
-
-        tickCount = 0;
-        tickTime = performance.now();
-    }
-
-}
-
-function drawAll() {
+function drawAll(interpolationPercentage) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     bg.draw(ctx);
@@ -213,6 +164,20 @@ function drawAll() {
 
     igloo.draw(ctx, 232, 57);
     tree.draw(ctx, 112, 30);
+}
+
+function end(fps, panic) {
+    document.getElementById("fps-display").innerText = Math.round(fps) + ' FPS';
+
+    if (panic) {
+        // This pattern introduces non-deterministic behavior, but in this case
+        // it's better than the alternative (the application would look like it
+        // was running very quickly until the simulation caught up to real
+        // time). See the documentation for `MainLoop.setEnd()` for additional
+        // explanation.
+        var discardedTime = Math.round(MainLoop.resetFrameDelta());
+        console.warn('Main loop panicked, probably because the browser tab was put in the background. Discarding ' + discardedTime + 'ms');
+    }
 }
 
 function placeBomb(x, y) {
@@ -315,17 +280,17 @@ class Sprite {
         this.y = 48;
     }
 
-    move(deltaTime) {
+    move() {
         if (keys["KeyW"]) {
             if (map.get(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) != "#" &&
                 map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16)) != "#") {
-                this.y -= this.speed * deltaTime;
+                this.y -= this.speed;
             } else {
                 const newPos = Math.floor((this.x + 8) / 16) * 16;
                 if (newPos > this.x)
-                    this.x += this.speed * deltaTime;
+                    this.x += this.speed;
                 else if (newPos < this.x)
-                    this.x -= this.speed * deltaTime;
+                    this.x -= this.speed;
             }
 
             this.animateIndex = 3;
@@ -333,13 +298,13 @@ class Sprite {
         } else if (keys["KeyS"]) {
             if (map.get(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) != "#" &&
                 map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16)) != "#") {
-                this.y += this.speed * deltaTime;
+                this.y += this.speed;
             } else {
                 const newPos = Math.floor((this.x + 8) / 16) * 16;
                 if (newPos > this.x)
-                    this.x += this.speed * deltaTime;
+                    this.x += this.speed;
                 else if (newPos < this.x)
-                    this.x -= this.speed * deltaTime;
+                    this.x -= this.speed;
             }
 
             this.animateIndex = 0;
@@ -347,26 +312,26 @@ class Sprite {
         } else if (keys["KeyA"]) {
             if (map.get(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) != "#" &&
                 map.get(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16)) != "#") {
-                this.x -= this.speed * deltaTime;
+                this.x -= this.speed;
             } else {
                 const newPos = Math.floor((this.y + 8) / 16) * 16;
                 if (newPos > this.y)
-                    this.y += this.speed * deltaTime;
+                    this.y += this.speed;
                 else if (newPos < this.y)
-                    this.y -= this.speed * deltaTime;
+                    this.y -= this.speed;
             }
             this.animateIndex = 2;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyD"]) {
             if (map.get(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) != "#" &&
                 map.get(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16)) != "#") {
-                this.x += this.speed * deltaTime;
+                this.x += this.speed;
             } else {
                 const newPos = Math.floor((this.y + 8) / 16) * 16;
                 if (newPos > this.y)
-                    this.y += this.speed * deltaTime;
+                    this.y += this.speed;
                 else if (newPos < this.y)
-                    this.y -= this.speed * deltaTime;
+                    this.y -= this.speed;
             }
 
             this.animateIndex = 1;

@@ -24,6 +24,14 @@ const TerrainType =
     TemporaryWall: 2
 };
 
+const Direction =
+{
+    Up: 0,
+    Left: 1,
+    Right: 2,
+    Down: 3
+};
+
 class Terrain {
     data;
     width;
@@ -338,7 +346,19 @@ class Sprite {
     }
 
     update() {
+        let direction;
+
         if (keys["KeyW"]) {
+            direction = Direction.Up;
+        } else if (keys["KeyA"]) {
+            direction = Direction.Left;
+        } else if (keys["KeyD"]) {
+            direction = Direction.Right;
+        } else if (keys["KeyS"]) {
+            direction = Direction.Down;
+        }
+
+        if (direction == Direction.Up) {
             if (map.isWalkable(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) &&
                 map.isWalkable(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16))) {
                 this.y -= this.speed;
@@ -352,7 +372,7 @@ class Sprite {
 
             this.animateIndex = 3;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-        } else if (keys["KeyS"]) {
+        } else if (direction == Direction.Down) {
             if (map.isWalkable(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) &&
                 map.isWalkable(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16))) {
                 this.y += this.speed;
@@ -366,7 +386,7 @@ class Sprite {
 
             this.animateIndex = 0;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-        } else if (keys["KeyA"]) {
+        } else if (direction == Direction.Left) {
             if (map.isWalkable(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) &&
                 map.isWalkable(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16))) {
                 this.x -= this.speed;
@@ -379,7 +399,7 @@ class Sprite {
             }
             this.animateIndex = 2;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-        } else if (keys["KeyD"]) {
+        } else if (direction == Direction.Right) {
             if (map.isWalkable(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) &&
                 map.isWalkable(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16))) {
                 this.x += this.speed;

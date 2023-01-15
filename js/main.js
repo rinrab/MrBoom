@@ -13,6 +13,13 @@ let igloo;
 const spriteWidth = 24;
 const spriteHeight = 24;
 
+const TerrainType =
+{
+    Free: 0,
+    PermanentWall: 1,
+    TemporaryWall: 2
+};
+
 class Terrain {
     data;
     width;
@@ -27,13 +34,33 @@ class Terrain {
     }
 
     constructor(initial) {
-        this.data = initial;
-        this.width = this.data[0].length;
-        this.height = this.data.length;
+        this.width = initial[0].length;
+        this.height = initial.length;
+
+        this.data = new Uint8Array(this.width * this.height);
+
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                let src = initial[y][x];
+
+                if (src == '#') {
+                    this.data[y * this.width + x] = TerrainType.PermanentWall;
+                } else if (src == '-') {
+                    this.data[y * this.width + x] = TerrainType.TemporaryWall;
+                } else {
+                    this.data[y * this.width + x] = TerrainType.Free;
+                }
+            }
+        }
     }
 
     get(x, y) {
-        return this.data[y][x];
+        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+            return this.data[y * this.width + x];
+        }
+        else {
+            return TerrainType.PermanentWall;
+        }
     }
 }
 
@@ -156,7 +183,7 @@ function drawAll(interpolationPercentage) {
 
     for (let y = 0; y < map.height; y++) {
         for (let x = 0; x < map.width; x++) {
-            if (map.get(x, y) == "-") {
+            if (map.get(x, y) == TerrainType.TemporaryWall) {
                 gridImage.draw(ctx, x * 16 + 8, y * 16);
             }
         }
@@ -290,8 +317,8 @@ class Sprite {
 
     move() {
         if (keys["KeyW"]) {
-            if (map.get(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) != "#" &&
-                map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16)) != "#") {
+            if (map.get(Math.floor(this.x / 16), Math.floor((this.y - 1) / 16)) != TerrainType.PermanentWall &&
+                map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y - 1) / 16)) != TerrainType.PermanentWall) {
                 this.y -= this.speed;
             } else {
                 const newPos = Math.floor((this.x + 8) / 16) * 16;
@@ -304,8 +331,8 @@ class Sprite {
             this.animateIndex = 3;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyS"]) {
-            if (map.get(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) != "#" &&
-                map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16)) != "#") {
+            if (map.get(Math.floor(this.x / 16), Math.floor((this.y + 16) / 16)) != TerrainType.PermanentWall &&
+                map.get(Math.floor((this.x + 15) / 16), Math.floor((this.y + 16) / 16)) != TerrainType.PermanentWall) {
                 this.y += this.speed;
             } else {
                 const newPos = Math.floor((this.x + 8) / 16) * 16;
@@ -318,8 +345,8 @@ class Sprite {
             this.animateIndex = 0;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyA"]) {
-            if (map.get(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) != "#" &&
-                map.get(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16)) != "#") {
+            if (map.get(Math.floor((this.x - 1) / 16), Math.floor(this.y / 16)) != TerrainType.PermanentWall &&
+                map.get(Math.floor((this.x - 1) / 16), Math.floor((this.y + 15) / 16)) != TerrainType.PermanentWall) {
                 this.x -= this.speed;
             } else {
                 const newPos = Math.floor((this.y + 8) / 16) * 16;
@@ -331,8 +358,8 @@ class Sprite {
             this.animateIndex = 2;
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
         } else if (keys["KeyD"]) {
-            if (map.get(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) != "#" &&
-                map.get(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16)) != "#") {
+            if (map.get(Math.floor((this.x + 16) / 16), Math.floor(this.y / 16)) != TerrainType.PermanentWall &&
+                map.get(Math.floor((this.x + 16) / 16), Math.floor((this.y + 15) / 16)) != TerrainType.PermanentWall) {
                 this.x += this.speed;
             } else {
                 const newPos = Math.floor((this.y + 8) / 16) * 16;

@@ -96,7 +96,7 @@ class Terrain {
 
 class Int {
     static mod(val, divider) {
-        return Math.floor(val) % diveder;
+        return Math.floor(val) % divider;
     }
 
     static div(val, divider) {

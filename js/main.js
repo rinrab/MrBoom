@@ -114,7 +114,7 @@ addEventListener("load", function () {
 
     sprite = new Sprite(1);
 
-    MainLoop.setUpdate(tick);
+    MainLoop.setUpdate(update);
     MainLoop.setDraw(drawAll);
     MainLoop.setEnd(end);
     MainLoop.start();
@@ -128,7 +128,7 @@ addEventListener("load", function () {
     })
 });
 
-function tick(deltaTime) {
+function update(deltaTime) {
     sprite.move(1);
 }
 

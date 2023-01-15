@@ -45,6 +45,10 @@ let bombSprite;
 let bombs = [];
 
 addEventListener("load", function () {
+    init();
+});
+
+function init() {
     map = new Terrain([
         "###################",
         "#..-------------..#",
@@ -126,7 +130,7 @@ addEventListener("load", function () {
     addEventListener("keyup", function (e) {
         keys[e.code] = false;
     })
-});
+}
 
 function update(deltaTime) {
     sprite.move(1);

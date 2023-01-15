@@ -445,7 +445,7 @@ class Sprite {
                     this.y -= this.speed;
 
                     this.animateIndex = 3;
-                } else if (map.isWalkable(Int.divCeil(this.y + this.speed, 16), Int.divFloor(this.y + 15, 16))) {
+                } else if (map.isWalkable(Int.divCeil(this.x + this.speed, 16), Int.divFloor(this.y + 15, 16))) {
                     this.y += this.speed;
 
                     this.animateIndex = 0;

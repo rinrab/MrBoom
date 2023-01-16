@@ -363,6 +363,30 @@ class Sprite {
         this.y = 1 * 16;
     }
 
+    xAlign(deltaY) {
+        if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divRound(this.y, 16) + deltaY)) {
+            this.x -= this.speed;
+
+            this.animateIndex = 2;
+        } else if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divRound(this.y, 16) + deltaY)) {
+            this.x += this.speed;
+
+            this.animateIndex = 1;
+        }
+    }
+
+    yAlign(deltaX) {
+        if (map.isWalkable(Int.divRound(this.x, 16) + deltaX, Int.divFloor(this.y - 1, 16))) {
+            this.y -= this.speed;
+
+            this.animateIndex = 3;
+        } else if (map.isWalkable(Int.divRound(this.x, 16) + deltaX) , Int.divCeil(this.y + 1, 16)) {
+            this.y += this.speed;
+
+            this.animateIndex = 0;
+        }
+    }
+
     update() {
         let direction;
 
@@ -384,15 +408,7 @@ class Sprite {
 
                 this.animateIndex = 3;
             } else {
-                if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divRound(this.y, 16) - 1)) {
-                    this.x -= this.speed;
-
-                    this.animateIndex = 2;
-                } else if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divRound(this.y, 16) - 1)) {
-                    this.x += this.speed;
-
-                    this.animateIndex = 1;
-                }
+                this.xAlign(-1);
             }
 
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
@@ -404,15 +420,7 @@ class Sprite {
 
                 this.animateIndex = 0;
             } else {
-                if (map.isWalkable(Int.divFloor(this.x, 16), Int.divRound(this.y, 16) + 1)) {
-                    this.x -= this.speed;
-
-                    this.animateIndex = 2;
-                } else if (map.isWalkable(Int.divFloor(this.x + 15, 16), Int.divRound(this.y, 16) + 1)) {
-                    this.x += this.speed;
-
-                    this.animateIndex = 1;
-                }
+                this.xAlign(1);
             }
 
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
@@ -425,15 +433,7 @@ class Sprite {
                 this.animateIndex = 2;
             }
             else {
-                if (map.isWalkable(Int.divFloor(this.x - this.speed, 16), Int.divFloor(this.y - 1, 16))) {
-                    this.y -= this.speed;
-
-                    this.animateIndex = 3;
-                } else if (map.isWalkable(Int.divFloor(this.x - this.speed, 16), Int.divCeil(this.y + 1, 16))) {
-                    this.y += this.speed;
-
-                    this.animateIndex = 0;
-                }
+                this.yAlign(-1);
             }
 
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;
@@ -445,15 +445,7 @@ class Sprite {
 
                 this.animateIndex = 1;
             } else {
-                if (map.isWalkable(Int.divCeil(this.x + this.speed, 16), Int.divFloor(this.y, 16))) {
-                    this.y -= this.speed;
-
-                    this.animateIndex = 3;
-                } else if (map.isWalkable(Int.divCeil(this.x + this.speed, 16), Int.divFloor(this.y + 15, 16))) {
-                    this.y += this.speed;
-
-                    this.animateIndex = 0;
-                }
+                this.yAlign(1);
             }
 
             this.animations[this.animateIndex].delay = 1000 / FPS * 7;

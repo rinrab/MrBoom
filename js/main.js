@@ -352,7 +352,7 @@ class Sprite {
                 newImages.push({
                     id: "SPRITE",
                     rect: new Rect(
-                        (frameX % 13) * spriteWidth, Math.floor(frameX / 13) * spriteHeight,
+                        Int.mod(frameX, 13) * spriteWidth, Int.divFloor(frameX, 13) * spriteHeight,
                         spriteWidth - 1, spriteHeight - 1)
                 });
             }

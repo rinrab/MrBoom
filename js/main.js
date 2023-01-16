@@ -454,7 +454,7 @@ class Sprite {
         }
 
         if (keys["Space"]) {
-            placeBomb(Int.divFloor(this.x, 16), Int.divFloor(this.y, 16));
+            placeBomb(Int.divRound(this.x, 16), Int.divRound(this.y, 16));
         }
     }
 

@@ -106,6 +106,10 @@ class Int {
     static divCeil(val, divider) {
         return Math.floor((val + divider - 1) / divider);
     }
+
+    static divRound(val, divider) {
+        return Math.round(val / divider);
+    }
 }
 
 let map;
@@ -380,11 +384,11 @@ class Sprite {
 
                 this.animateIndex = 3;
             } else {
-                if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divFloor(this.y - this.speed, 16))) {
+                if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divRound(this.y, 16) - 1)) {
                     this.x -= this.speed;
 
                     this.animateIndex = 2;
-                } else if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divFloor(this.y - this.speed, 16))) {
+                } else if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divRound(this.y, 16) - 1)) {
                     this.x += this.speed;
 
                     this.animateIndex = 1;
@@ -400,11 +404,11 @@ class Sprite {
 
                 this.animateIndex = 0;
             } else {
-                if (map.isWalkable(Int.divFloor(this.x, 16), Int.divCeil(this.y + this.speed, 16))) {
+                if (map.isWalkable(Int.divFloor(this.x, 16), Int.divRound(this.y, 16) + 1)) {
                     this.x -= this.speed;
 
                     this.animateIndex = 2;
-                } else if (map.isWalkable(Int.divFloor(this.x + 15, 16), Int.divCeil(this.y + this.speed, 16))) {
+                } else if (map.isWalkable(Int.divFloor(this.x + 15, 16), Int.divRound(this.y, 16) + 1)) {
                     this.x += this.speed;
 
                     this.animateIndex = 1;

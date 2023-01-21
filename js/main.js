@@ -277,7 +277,10 @@ function drawAll(interpolationPercentage) {
     }
 
     banana.draw(ctx, 16 * 4 + 8, 16 * 3)
-    for (let sprite of sprites) {
+    var spritesToDraw = sprites;
+    spritesToDraw.sort((a, b) => { return a.y - b.y; });
+
+    for (let sprite of spritesToDraw) {
         sprite.draw(ctx)
     }
 

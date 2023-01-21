@@ -4,11 +4,13 @@ let ctx;
 let images;
 
 let bg;
-let sprite;
 let banana;
 let tree;
 let penguin;
 let igloo;
+
+let controllersList = [];
+let sprites = [];
 
 const spriteWidth = 24;
 const spriteHeight = 24;
@@ -30,6 +32,15 @@ const Direction =
     Left: 1,
     Right: 2,
     Down: 3
+};
+
+const PlayerKeys =
+{
+    Up: 0,
+    Left: 1,
+    Right: 2,
+    Down: 3,
+    Bomb: 4
 };
 
 class Terrain {
@@ -196,7 +207,13 @@ function init() {
     ], -1);
 
     sprite = new Sprite(1);
+    sprites.push(sprite);
 
+    let ctrl = new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "Space");
+    ctrl.setSprite(sprite);
+    controllersList.push(ctrl);
+
+    MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);
     MainLoop.setDraw(drawAll);
     MainLoop.setEnd(end);
@@ -209,10 +226,27 @@ function init() {
     addEventListener("keyup", function (e) {
         keys[e.code] = false;
     })
+
+    addEventListener("gamepadconnected", function (e) {
+        let sprite = new Sprite(2);
+        sprites.push(sprite);
+
+        ctrl = new GamepadController(e.gamepad);
+        ctrl.setSprite(sprite);
+        controllersList.push(ctrl);
+    })
+}
+
+function begin(timestamp, delta) {
+    for (let c of controllersList) {
+        c.update();
+    }
 }
 
 function update(deltaTime) {
-    sprite.update(1);
+    for (let sprite of sprites) {
+        sprite.update(1);
+    }
 }
 
 function drawAll(interpolationPercentage) {
@@ -243,7 +277,9 @@ function drawAll(interpolationPercentage) {
     }
 
     banana.draw(ctx, 16 * 4 + 8, 16 * 3)
-    sprite.draw(ctx)
+    for (let sprite of sprites) {
+        sprite.draw(ctx)
+    }
 
     igloo.draw(ctx, 232, 57);
     tree.draw(ctx, 112, 30);
@@ -320,6 +356,61 @@ class AnimatedImage {
     }
 }
 
+class KeyboardController {
+    keyUp;
+    keyDown;
+    keyLeft;
+    keyRight;
+    keyBomb;
+    sprite;
+
+    constructor(keyUp, keyDown, keyLeft, keyRight, keyBomb) {
+        this.keyUp = keyUp;
+        this.keyDown = keyDown;
+        this.keyLeft = keyLeft;
+        this.keyRight = keyRight;
+        this.keyBomb = keyBomb;
+        this.sprite = null;
+    }
+
+    setSprite(sprite) {
+        this.sprite = sprite;
+    }
+
+    update() {
+        if (this.sprite) {
+            this.sprite.playerKeys[PlayerKeys.Up] = keys[this.keyUp];
+            this.sprite.playerKeys[PlayerKeys.Down] = keys[this.keyDown];
+            this.sprite.playerKeys[PlayerKeys.Left] = keys[this.keyLeft];
+            this.sprite.playerKeys[PlayerKeys.Right] = keys[this.keyRight];
+            this.sprite.playerKeys[PlayerKeys.Bomb] = keys[this.keyBomb];
+        }
+    }
+}
+
+class GamepadController {
+    gamepad;
+    sprite;
+
+    constructor(gamepad) {
+        this.gamepad = gamepad;
+        this.sprite = null;
+    }
+
+    setSprite(sprite) {
+        this.sprite = sprite;
+    }
+
+    update() {
+        if (this.sprite) {
+            this.sprite.playerKeys[PlayerKeys.Up] = this.gamepad.buttons[12].pressed;
+            this.sprite.playerKeys[PlayerKeys.Down] = this.gamepad.buttons[13].pressed;
+            this.sprite.playerKeys[PlayerKeys.Left] = this.gamepad.buttons[14].pressed;
+            this.sprite.playerKeys[PlayerKeys.Right] = this.gamepad.buttons[15].pressed;
+        }
+    }
+}
+
 class Sprite {
     animations;
 
@@ -328,7 +419,7 @@ class Sprite {
 
     animateIndex;
 
-    key;
+    playerKeys;
 
     speed;
 
@@ -337,7 +428,7 @@ class Sprite {
 
         this.animateIndex = 0;
 
-        this.key = -1;
+        this.playerKeys = {};
 
         this.speed = 1;
 
@@ -390,13 +481,13 @@ class Sprite {
     update() {
         let direction;
 
-        if (keys["KeyW"]) {
+        if (this.playerKeys[PlayerKeys.Up]) {
             direction = Direction.Up;
-        } else if (keys["KeyA"]) {
+        } else if (this.playerKeys[PlayerKeys.Left]) {
             direction = Direction.Left;
-        } else if (keys["KeyD"]) {
+        } else if (this.playerKeys[PlayerKeys.Right]) {
             direction = Direction.Right;
-        } else if (keys["KeyS"]) {
+        } else if (this.playerKeys[PlayerKeys.Down]) {
             direction = Direction.Down;
         }
 
@@ -453,7 +544,7 @@ class Sprite {
             this.animations[this.animateIndex].delay = -1;
         }
 
-        if (keys["Space"]) {
+        if (this.playerKeys[PlayerKeys.Bomb]) {
             placeBomb(Int.divRound(this.x, 16), Int.divRound(this.y, 16));
         }
     }

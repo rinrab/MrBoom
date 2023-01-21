@@ -160,7 +160,7 @@ function init() {
         { id: "SPRITE2", rect: new Rect(1 * 16, 1 * 16, 16, 16) },
         { id: "SPRITE2", rect: new Rect(2 * 16, 1 * 16, 16, 16) },
         { id: "SPRITE2", rect: new Rect(3 * 16, 1 * 16, 16, 16) },
-    ], 1000 / FPS * 10)
+    ], 10)
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d");
@@ -308,7 +308,8 @@ function placeBomb(x, y) {
     })) {
         bombs.push({
             x: x,
-            y: y
+            y: y,
+            time: 3 * 60
         })
     }
 }
@@ -339,17 +340,14 @@ class AnimatedImage {
         if (this.delay == -1) {
             return this.currentImage = this.images[0];
         } else {
-            this._time += 1 / FPS * (1000 / this.delay);
+            this._time += 1/this.delay;
 
-            return this.currentImage = this.images[Math.floor(this._time) % this.images.length];
+            return this.currentImage = this.images[Math.floor(this._time % this.images.length)];
         }
     }
 
-    draw(ctx, x = 0, y = 0, doTick = true) {
+    draw(ctx, x = 0, y = 0) {
         let img = this.currentImage;
-        //if (doTick) {
-        //    let img = this.tick();
-        //}
         ctx.drawImage(
             img.img,
             img.rect.x, img.rect.y,

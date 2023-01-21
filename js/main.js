@@ -406,11 +406,13 @@ class GamepadController {
 
     update() {
         if (this.sprite) {
-            this.sprite.playerKeys[PlayerKeys.Up] = this.gamepad.buttons[12].pressed;
-            this.sprite.playerKeys[PlayerKeys.Down] = this.gamepad.buttons[13].pressed;
-            this.sprite.playerKeys[PlayerKeys.Left] = this.gamepad.buttons[14].pressed;
-            this.sprite.playerKeys[PlayerKeys.Right] = this.gamepad.buttons[15].pressed;
-            this.sprite.playerKeys[PlayerKeys.Bomb] = this.gamepad.buttons[0].pressed;
+            const currGamePad = navigator.getGamepads()[this.gamepad.index];
+
+            this.sprite.playerKeys[PlayerKeys.Up] = currGamePad.buttons[12].pressed;
+            this.sprite.playerKeys[PlayerKeys.Down] = currGamePad.buttons[13].touched;
+            this.sprite.playerKeys[PlayerKeys.Left] = currGamePad.buttons[14].touched;
+            this.sprite.playerKeys[PlayerKeys.Right] = currGamePad.buttons[15].touched;
+            this.sprite.playerKeys[PlayerKeys.Bomb] = currGamePad.buttons[0].pressed;
         }
     }
 }

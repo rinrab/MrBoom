@@ -410,6 +410,7 @@ class GamepadController {
             this.sprite.playerKeys[PlayerKeys.Down] = this.gamepad.buttons[13].pressed;
             this.sprite.playerKeys[PlayerKeys.Left] = this.gamepad.buttons[14].pressed;
             this.sprite.playerKeys[PlayerKeys.Right] = this.gamepad.buttons[15].pressed;
+            this.sprite.playerKeys[PlayerKeys.Bomb] = this.gamepad.buttons[0].pressed;
         }
     }
 }

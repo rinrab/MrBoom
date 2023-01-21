@@ -12,6 +12,14 @@ let igloo;
 let controllersList = [];
 let sprites = [];
 
+let boomSpriteMid;
+let boomSpriteHor;
+let boomSpriteVert;
+let boomSpriteLeft;
+let boomSpriteRight;
+let boomSpriteTop;
+let boomSpriteBottom;
+
 const spriteWidth = 24;
 const spriteHeight = 24;
 
@@ -184,6 +192,50 @@ function init() {
         { id: "SPRITE2", rect: new Rect(9 * 16, 0 * 16, 16, 16) },
     ], 1000 / FPS * 5);
 
+    boomSpriteMid = new AnimatedImage([
+        { id: "SPRITE2", rect: new Rect(0 * 16, 46 + 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 46 + 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 46 + 0 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 0 * 16, 16, 16) },
+    ], -1);
+    boomSpriteHor = new AnimatedImage([
+        { id: "SPRITE2", rect: new Rect(0 * 16, 46 + 1 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 46 + 1 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 46 + 1 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 1 * 16, 16, 16) },
+    ], -1);
+    boomSpriteLeft = new AnimatedImage([
+        { id: "SPRITE2", rect: new Rect(0 * 16, 46 + 2 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 46 + 2 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 46 + 2 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 2 * 16, 16, 16) },
+    ], -1);
+    boomSpriteRight = new AnimatedImage([
+        { id: "SPRITE2", rect: new Rect(0 * 16, 46 + 3 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 46 + 3 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 46 + 3 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 3 * 16, 16, 16) },
+    ], -1);
+    boomSpriteVert = new AnimatedImage([
+        { id: "SPRITE2", rect: new Rect(0 * 16, 46 + 4 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 46 + 4 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 46 + 4 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 4 * 16, 16, 16) },
+    ], -1);
+    boomSpriteTop = new AnimatedImage([
+        { id: "SPRITE2", rect: new Rect(0 * 16, 46 + 5 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 46 + 5 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 46 + 5 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 5 * 16, 16, 16) },
+    ], -1);
+
+    boomSpriteBottom = new AnimatedImage([
+        { id: "SPRITE2", rect: new Rect(0 * 16, 46 + 6 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(1 * 16, 46 + 6 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(2 * 16, 46 + 6 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 6 * 16, 16, 16) },
+    ], -1);
+
     igloo = new AnimatedImage([
         { id: "MED3", rect: new Rect(0, 77, 6 * 8, 44) },
     ], -1)
@@ -247,6 +299,24 @@ function update(deltaTime) {
     for (let sprite of sprites) {
         sprite.update(1);
     }
+    for (let bomb of bombs) {
+        if (bomb.ditonate >= 0) {
+            bomb.ditonate--;
+        } else if (bomb.time < 0) {
+            bomb.ditonate = 30 * 1;
+            bomb.right = 3;
+            bomb.left = 3;
+            bomb.top = 3;
+            bomb.bottom = 3;
+        } else {
+            bomb.time--;
+        }
+    }
+    for (let i = bombs.length - 1; i >= 0; i--) {
+        if (bombs[i].ditonate == 0) {
+            bombs.splice(i, 1);
+        }
+    }
 }
 
 function drawAll(interpolationPercentage) {
@@ -254,7 +324,7 @@ function drawAll(interpolationPercentage) {
 
     bg.draw(ctx);
 
-    penguin.draw(ctx, 17 * 1 - 8, 0, true);
+    penguin.draw(ctx, 17 * 1 - 8, 0);
     penguin.draw(ctx, 17 * 2 - 8, 0);
     penguin.draw(ctx, 17 * 3 - 8, 0);
     penguin.draw(ctx, 17 * 7 - 8, 0);
@@ -273,7 +343,43 @@ function drawAll(interpolationPercentage) {
 
     bombSprite.tick();
     for (let bomb of bombs) {
-        bombSprite.draw(ctx, bomb.x * 16 + 8, bomb.y * 16, false);
+        if (bomb.ditonate == -1) {
+            bombSprite.draw(ctx, bomb.x * 16 + 8, bomb.y * 16);
+        } else {
+            const frame = Math.floor((30 - bomb.ditonate) / 30 * 4);
+            boomSpriteMid.draw(ctx, bomb.x * 16 + 8, bomb.y * 16, frame);
+
+            for (let i = 1; i <= bomb.right; i++) {
+                if (i == bomb.right) {
+                    boomSpriteRight.draw(ctx, (bomb.x + i) * 16 + 8, bomb.y * 16, frame);
+                } else {
+                    boomSpriteHor.draw(ctx, (bomb.x + i) * 16 + 8, bomb.y * 16, frame);
+                }
+            }
+            for (let i = 1; i <= bomb.left; i++) {
+                if (i == bomb.right) {
+                    boomSpriteLeft.draw(ctx, (bomb.x - i) * 16 + 8, bomb.y * 16, frame);
+                } else {
+                    boomSpriteHor.draw(ctx, (bomb.x - i) * 16 + 8, bomb.y * 16, frame);
+                }
+            }
+            for (let i = 1; i <= bomb.bottom; i++) {
+                if (i == bomb.bottom) {
+                    boomSpriteBottom.draw(ctx, bomb.x * 16 + 8, (bomb.y + i) * 16, frame);
+                } else {
+                    boomSpriteVert.draw(ctx, bomb.x * 16 + 8, (bomb.y + i) * 16, frame);
+                }
+            }
+            for (let i = 1; i <= bomb.top; i++) {
+                if (i == bomb.bottom) {
+                    boomSpriteTop.draw(ctx, bomb.x * 16 + 8, (bomb.y - i) * 16, frame);
+                } else {
+                    boomSpriteVert.draw(ctx, bomb.x * 16 + 8, (bomb.y - i) * 16, frame);
+                }
+            }
+
+            console.log(frame);
+        }
     }
 
     banana.draw(ctx, 16 * 4 + 8, 16 * 3)
@@ -309,7 +415,8 @@ function placeBomb(x, y) {
         bombs.push({
             x: x,
             y: y,
-            time: 3 * 60
+            time: 3 * 60,
+            ditonate: -1
         })
     }
 }
@@ -346,8 +453,13 @@ class AnimatedImage {
         }
     }
 
-    draw(ctx, x = 0, y = 0) {
-        let img = this.currentImage;
+    draw(ctx, x = 0, y = 0, imageIndex = -1) {
+        let img;
+        if (imageIndex == -1) {
+            img = this.currentImage;
+        } else {
+            img = this.images[imageIndex % this.images.length];
+        }
         ctx.drawImage(
             img.img,
             img.rect.x, img.rect.y,
@@ -584,8 +696,8 @@ class Penguin {
         this.animation = new AnimatedImage(newData, 1000 / FPS * 7);
     }
 
-    draw(ctx, x, y, doTick = false) {
-        this.animation.draw(ctx, x, y, doTick);
+    draw(ctx, x, y) {
+        this.animation.draw(ctx, x, y);
     }
 }
 

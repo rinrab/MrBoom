@@ -94,6 +94,16 @@ class Terrain {
         }
     }
 
+    set(x, y, type) {
+        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+            this.data[y * this.width + x] = type;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     isWalkable(x, y) {
         let cellType = this.get(x, y);
 
@@ -303,11 +313,7 @@ function update(deltaTime) {
         if (bomb.ditonate >= 0) {
             bomb.ditonate--;
         } else if (bomb.time < 0) {
-            bomb.ditonate = 30 * 1;
-            bomb.right = 3;
-            bomb.left = 3;
-            bomb.top = 3;
-            bomb.bottom = 3;
+            ditonateBomb(bomb);
         } else {
             bomb.time--;
         }
@@ -316,6 +322,67 @@ function update(deltaTime) {
         if (bombs[i].ditonate == 0) {
             bombs.splice(i, 1);
         }
+    }
+}
+
+
+function ditonateBomb(bomb) {
+    const maxBoom = 3;
+    bomb.ditonate = 30 * 1;
+
+    bomb.right = 0;
+    while (bomb.right < maxBoom) {
+        const tile = map.get(bomb.x + bomb.right, bomb.y);
+        if (tile == TerrainType.PermanentWall) {
+            bomb.right--;
+            break;
+        };
+        if (tile == TerrainType.TemporaryWall) {
+            map.set(bomb.x + bomb.right, bomb.y, TerrainType.Free);
+            break;
+        }
+        bomb.right++;
+    }
+
+    bomb.left = 0;
+    while (bomb.left < maxBoom) {
+        const tile = map.get(bomb.x - bomb.left, bomb.y);
+        if (tile == TerrainType.PermanentWall) {
+            bomb.left--;
+            break;
+        };
+        if (tile == TerrainType.TemporaryWall) {
+            map.set(bomb.x - bomb.left, bomb.y, TerrainType.Free);
+            break;
+        }
+        bomb.left++;
+    }
+    bomb.bottom = 0;
+    while (bomb.bottom < maxBoom) {
+        const tile = map.get(bomb.x, bomb.y + bomb.bottom);
+        if (tile == TerrainType.PermanentWall) {
+            bomb.bottom--;
+            break;
+        };
+        if (tile == TerrainType.TemporaryWall) {
+            map.set(bomb.x, bomb.y + bomb.bottom, TerrainType.Free);
+            break;
+        }
+        bomb.bottom++;
+    }
+
+    bomb.top = 0;
+    while (bomb.top < maxBoom) {
+        const tile = map.get(bomb.x, bomb.y - bomb.top);
+        if (tile == TerrainType.PermanentWall) {
+            bomb.top--;
+            break;
+        };
+        if (tile == TerrainType.TemporaryWall) {
+            map.set(bomb.x, bomb.y - bomb.top, TerrainType.Free);
+            break;
+        }
+        bomb.top++;
     }
 }
 

@@ -566,8 +566,6 @@ class Sprite {
 
         this.speed = 1;
 
-        let y = 1;
-
         for (let img of assets.players[spriteIndex]) {
             this.animations.push(new AnimatedImage(img, -1))
         }

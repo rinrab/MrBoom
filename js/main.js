@@ -313,7 +313,7 @@ function update(deltaTime) {
         if (bomb.ditonate >= 0) {
             bomb.ditonate--;
         } else if (bomb.time < 0) {
-            ditonateBomb(bomb);
+            ditonateBomb(bomb, 3);
         } else {
             bomb.time--;
         }
@@ -327,8 +327,7 @@ function update(deltaTime) {
 }
 
 
-function ditonateBomb(bomb) {
-    const maxBoom = 3;
+function ditonateBomb(bomb, maxBoom) {
     bomb.ditonate = 30 * 1;
 
     bomb.right = 0;

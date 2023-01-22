@@ -317,6 +317,7 @@ function update(deltaTime) {
         } else {
             bomb.time--;
         }
+        bombSprite.tick();
     }
     for (let i = bombs.length - 1; i >= 0; i--) {
         if (bombs[i].ditonate == 0) {
@@ -423,7 +424,6 @@ function drawAll(interpolationPercentage) {
 
 
 function drawBombs() {
-    bombSprite.tick();
     for (let bomb of bombs) {
         if (bomb.ditonate == -1) {
             bombSprite.draw(ctx, bomb.x * 16 + 8, bomb.y * 16);

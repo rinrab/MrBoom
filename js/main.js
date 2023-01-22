@@ -439,7 +439,7 @@ function drawBombs() {
                 }
             }
             for (let i = 1; i <= bomb.left; i++) {
-                if (i == bomb.right) {
+                if (i == bomb.left) {
                     boomSpriteLeft.draw(ctx, (bomb.x - i) * 16 + 8, bomb.y * 16, frame);
                 } else {
                     boomSpriteHor.draw(ctx, (bomb.x - i) * 16 + 8, bomb.y * 16, frame);
@@ -453,7 +453,7 @@ function drawBombs() {
                 }
             }
             for (let i = 1; i <= bomb.top; i++) {
-                if (i == bomb.bottom) {
+                if (i == bomb.top) {
                     boomSpriteTop.draw(ctx, bomb.x * 16 + 8, (bomb.y - i) * 16, frame);
                 } else {
                     boomSpriteVert.draw(ctx, bomb.x * 16 + 8, (bomb.y - i) * 16, frame);

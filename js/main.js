@@ -152,6 +152,8 @@ let keys = {};
 let bombSprite;
 let bombs = [];
 
+let distroingTiles = [];
+
 addEventListener("load", function () {
     init();
 });
@@ -237,6 +239,7 @@ function init() {
         { id: "SPRITE2", rect: new Rect(1 * 16, 46 + 5 * 16, 16, 16) },
         { id: "SPRITE2", rect: new Rect(2 * 16, 46 + 5 * 16, 16, 16) },
         { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 5 * 16, 16, 16) },
+        { id: "SPRITE2", rect: new Rect(3 * 16, 46 + 5 * 16, 16, 16) },
     ], -1);
 
     boomSpriteBottom = new AnimatedImage([
@@ -299,6 +302,22 @@ function init() {
     })
 }
 
+function getDieingSprite(x, y) {
+    const rv = new AnimatedImage([
+        { id: "PAUSE", rect: new Rect(1 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(2 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(3 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(4 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(5 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(6 * 16, 80, 16, 16) },
+        { id: "PAUSE", rect: new Rect(7 * 16, 80, 16, 16) }
+    ], 30 / 6);
+    rv.x = x;
+    rv.y = y;
+    rv.time = 30;
+    return rv;
+}
+
 function begin(timestamp, delta) {
     for (let c of controllersList) {
         c.update();
@@ -330,6 +349,12 @@ function ditonateBomb(bomb) {
     const maxBoom = 3;
     bomb.ditonate = 30 * 1;
 
+    function distroy(x, y) {
+        map.set(x, y, TerrainType.Free);
+        let newSprite = getDieingSprite(x * 16 + 8, y * 16);
+        distroingTiles.push(newSprite);
+    }
+
     bomb.right = 0;
     while (bomb.right < maxBoom) {
         const tile = map.get(bomb.x + bomb.right, bomb.y);
@@ -338,7 +363,7 @@ function ditonateBomb(bomb) {
             break;
         };
         if (tile == TerrainType.TemporaryWall) {
-            map.set(bomb.x + bomb.right, bomb.y, TerrainType.Free);
+            distroy(bomb.x + bomb.right, bomb.y);
             break;
         }
         bomb.right++;
@@ -352,7 +377,7 @@ function ditonateBomb(bomb) {
             break;
         };
         if (tile == TerrainType.TemporaryWall) {
-            map.set(bomb.x - bomb.left, bomb.y, TerrainType.Free);
+            distroy(bomb.x - bomb.left, bomb.y);
             break;
         }
         bomb.left++;
@@ -365,7 +390,7 @@ function ditonateBomb(bomb) {
             break;
         };
         if (tile == TerrainType.TemporaryWall) {
-            map.set(bomb.x, bomb.y + bomb.bottom, TerrainType.Free);
+            distroy(bomb.x, bomb.y + bomb.bottom);
             break;
         }
         bomb.bottom++;
@@ -379,7 +404,7 @@ function ditonateBomb(bomb) {
             break;
         };
         if (tile == TerrainType.TemporaryWall) {
-            map.set(bomb.x, bomb.y - bomb.top, TerrainType.Free);
+            distroy(bomb.x, bomb.y - bomb.top);
             break;
         }
         bomb.top++;
@@ -412,7 +437,16 @@ function drawAll(interpolationPercentage) {
     spritesToDraw.sort((a, b) => { return a.y - b.y; });
 
     drawBombs();
-
+    for (let tile of distroingTiles) {
+        tile.tick();
+        tile.time--;
+        tile.draw(ctx, tile.x, tile.y);
+    }
+    for (let i = distroingTiles.length - 1; i >= 0; i--) {
+        if (distroingTiles[i].time <= 0) {
+            distroingTiles.splice(i, 1);
+        }
+    }
     for (let sprite of spritesToDraw) {
         sprite.draw(ctx)
     }

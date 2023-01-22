@@ -332,7 +332,6 @@ function drawAll(interpolationPercentage) {
     penguin.draw(ctx, 17 * 12 - 8, 0);
     penguin.draw(ctx, 17 * 15 - 8, 0);
 
-
     for (let y = 0; y < map.height; y++) {
         for (let x = 0; x < map.width; x++) {
             if (map.get(x, y) == TerrainType.TemporaryWall) {
@@ -341,6 +340,22 @@ function drawAll(interpolationPercentage) {
         }
     }
 
+    banana.draw(ctx, 16 * 4 + 8, 16 * 3)
+    var spritesToDraw = sprites;
+    spritesToDraw.sort((a, b) => { return a.y - b.y; });
+
+    drawBombs();
+
+    for (let sprite of spritesToDraw) {
+        sprite.draw(ctx)
+    }
+
+    igloo.draw(ctx, 232, 57);
+    tree.draw(ctx, 112, 30);
+}
+
+
+function drawBombs() {
     bombSprite.tick();
     for (let bomb of bombs) {
         if (bomb.ditonate == -1) {
@@ -381,17 +396,6 @@ function drawAll(interpolationPercentage) {
             console.log(frame);
         }
     }
-
-    banana.draw(ctx, 16 * 4 + 8, 16 * 3)
-    var spritesToDraw = sprites;
-    spritesToDraw.sort((a, b) => { return a.y - b.y; });
-
-    for (let sprite of spritesToDraw) {
-        sprite.draw(ctx)
-    }
-
-    igloo.draw(ctx, 232, 57);
-    tree.draw(ctx, 112, 30);
 }
 
 function end(fps, panic) {

@@ -1,12 +1,18 @@
 function loadAssets() {
-    function loadImageStripe(imgElement, imgRects) {
-        let result = [];
+    function loadImage(imgElement, x, y, width, height) {
+        return {
+            img: imgElement,
+            rect: new Rect(x, y, width, height),
+        };
+    }
 
-        for (let rect of imgRects) {
-            result.push({
-                img: imgElement,
-                rect: rect,
-            });
+    function loadImageStripe(imgElement, x, y, width, height, count, gap) {
+        let result = [];
+        count = count || 1;
+        gap = gap || 0;
+
+        for (let i = 0; i < count; i++) {
+            result.push(loadImage(imgElement, x + i * (width + gap), y, width, height));
         }
 
         return result;
@@ -52,116 +58,27 @@ function loadAssets() {
     const imgPause = document.getElementById("PAUSE");
 
     return {
-        bomb: loadImageStripe(
-            imgSprite2,
+        bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
+        niegeBg:
             [
-                new Rect(0 * 16, 1 * 16, 16, 16),
-                new Rect(1 * 16, 1 * 16, 16, 16),
-                new Rect(2 * 16, 1 * 16, 16, 16),
-                new Rect(3 * 16, 1 * 16, 16, 16)
-            ]),
-
-        niegeBg: loadImageStripe(
-            imgNeige1,
+                loadImage(imgNeige1, 0, 0, 320, 200),
+                loadImage(imgNeige2, 0, 0, 320, 200),
+                loadImage(imgNeige2, 0, 0, 320, 200),
+            ],
+        niegeIgloo:
             [
-                new Rect(0, 0, 320, 200),
-                new Rect(0, 0, 320, 200),
-                new Rect(0, 0, 320, 200),
-            ]),
-        niegeIgloo: loadImageStripe(
-            imgMed3,
-            [
-                new Rect(0, 77, 6 * 8, 44),
-            ]),
-        niegeTree: loadImageStripe(
-            imgMed3,
-            [
-                new Rect(0, 17 * 8, 32, 49),
-                new Rect(33, 17 * 8, 32, 49),
-            ]),
-        niegeWall: loadImageStripe(
-            imgPause,
-            [
-                new Rect(0 * 16, 80, 16, 16),
-                new Rect(1 * 16, 80, 16, 16),
-                new Rect(2 * 16, 80, 16, 16),
-                new Rect(3 * 16, 80, 16, 16),
-                new Rect(4 * 16, 80, 16, 16),
-                new Rect(5 * 16, 80, 16, 16),
-                new Rect(6 * 16, 80, 16, 16),
-                new Rect(7 * 16, 80, 16, 16),
-            ]),
-        banana: loadImageStripe(
-            imgSprite2,
-            [
-                new Rect(0 * 16, 0 * 16, 16, 16),
-                new Rect(1 * 16, 0 * 16, 16, 16),
-                new Rect(2 * 16, 0 * 16, 16, 16),
-                new Rect(3 * 16, 0 * 16, 16, 16),
-                new Rect(4 * 16, 0 * 16, 16, 16),
-                new Rect(5 * 16, 0 * 16, 16, 16),
-                new Rect(6 * 16, 0 * 16, 16, 16),
-                new Rect(7 * 16, 0 * 16, 16, 16),
-                new Rect(8 * 16, 0 * 16, 16, 16),
-                new Rect(9 * 16, 0 * 16, 16, 16)
-            ]),
-        boomMid: loadImageStripe(
-            imgSprite2,
-            [
-                new Rect(0 * 16, 46 + 0 * 16, 16, 16),
-                new Rect(1 * 16, 46 + 0 * 16, 16, 16),
-                new Rect(2 * 16, 46 + 0 * 16, 16, 16),
-                new Rect(3 * 16, 46 + 0 * 16, 16, 16),
-            ]),
-        boomHor: loadImageStripe(
-            imgSprite2,
-            [
-                new Rect(0 * 16, 46 + 1 * 16, 16, 16),
-                new Rect(1 * 16, 46 + 1 * 16, 16, 16),
-                new Rect(2 * 16, 46 + 1 * 16, 16, 16),
-                new Rect(3 * 16, 46 + 1 * 16, 16, 16),
-            ]),
-        boomLeftEnd: loadImageStripe(
-            imgSprite2,
-            [
-            new Rect(0 * 16, 46 + 2 * 16, 16, 16),
-            new Rect(1 * 16, 46 + 2 * 16, 16, 16),
-            new Rect(2 * 16, 46 + 2 * 16, 16, 16),
-            new Rect(3 * 16, 46 + 2 * 16, 16, 16),
-            ]),
-        boomRightEnd: loadImageStripe(
-            imgSprite2,
-            [
-            new Rect(0 * 16, 46 + 3 * 16, 16, 16),
-            new Rect(1 * 16, 46 + 3 * 16, 16, 16),
-            new Rect(2 * 16, 46 + 3 * 16, 16, 16),
-            new Rect(3 * 16, 46 + 3 * 16, 16, 16),
-            ]),
-        boomVert: loadImageStripe(
-            imgSprite2,
-            [
-                new Rect(0 * 16, 46 + 4 * 16, 16, 16),
-                new Rect(1 * 16, 46 + 4 * 16, 16, 16),
-                new Rect(2 * 16, 46 + 4 * 16, 16, 16),
-                new Rect(3 * 16, 46 + 4 * 16, 16, 16),
-            ]),
-        boomTopEnd: loadImageStripe(
-            imgSprite2,
-            [
-                new Rect(0 * 16, 46 + 5 * 16, 16, 16),
-                new Rect(1 * 16, 46 + 5 * 16, 16, 16),
-                new Rect(2 * 16, 46 + 5 * 16, 16, 16),
-                new Rect(3 * 16, 46 + 5 * 16, 16, 16),
-                new Rect(3 * 16, 46 + 5 * 16, 16, 16),
-            ]),
-        boomBottomEnd: loadImageStripe(
-            imgSprite2,
-            [
-                new Rect(0 * 16, 46 + 6 * 16, 16, 16),
-                new Rect(1 * 16, 46 + 6 * 16, 16, 16),
-                new Rect(2 * 16, 46 + 6 * 16, 16, 16),
-                new Rect(3 * 16, 46 + 6 * 16, 16, 16),
-            ]),
+                loadImage(imgMed3, 0, 77, 6 * 8, 44),
+            ],
+        niegeTree: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
+        niegeWall: loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
+        banana: loadImageStripe(imgSprite2, 0 * 16, 0 * 16, 16, 16, 8),
+        boomMid: loadImageStripe(imgSprite2, 0 * 16, 46 + 0 * 16, 16, 16, 4),
+        boomHor: loadImageStripe(imgSprite2, 0 * 16, 46 + 1 * 16, 16, 16, 4),
+        boomLeftEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 2 * 16, 16, 16, 4),
+        boomRightEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 3 * 16, 16, 16, 4),
+        boomVert: loadImageStripe(imgSprite2, 0 * 16, 46 + 4 * 16, 16, 16, 4),
+        boomTopEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 5 * 16, 16, 16, 4),
+        boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
         players: loadPlayers(imgSprite)
 
         // igloo penguin

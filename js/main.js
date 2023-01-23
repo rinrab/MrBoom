@@ -11,13 +11,6 @@ let igloo;
 let controllersList = [];
 let sprites = [];
 
-let boomSpriteMid;
-let boomSpriteHor;
-let boomSpriteVert;
-let boomSpriteLeft;
-let boomSpriteRight;
-let boomSpriteTop;
-let boomSpriteBottom;
 let assets;
 
 const spriteWidth = 24;
@@ -55,6 +48,7 @@ class Terrain {
     data;
     width;
     height;
+    time;
 
     get width() {
         return this.width;
@@ -65,6 +59,7 @@ class Terrain {
     }
 
     constructor(initial) {
+        this.time = 0;
         this.width = initial[0].length;
         this.height = initial.length;
 
@@ -81,8 +76,7 @@ class Terrain {
                 } else if (src == '-') {
                     this.data[y * this.width + x] = {
                         type: TerrainType.TemporaryWall,
-                        image: assets.niegeWall,
-                        imageIdx: 0
+                        image: assets.niegeWall
                     };
                 } else {
                     this.data[y * this.width + x] = {
@@ -108,11 +102,16 @@ class Terrain {
         return this.getCell(x, y).type;
     }
 
+    setCell(x, y, cell) {
+        this.data[y * this.width + x] = cell;
+    }
+
     set(x, y, type) {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            this.data[y * this.width + x] = {
+            setCell(x, y, {
                 type: type
-            };
+
+            });
             return true;
         }
         else {
@@ -137,6 +136,25 @@ class Terrain {
                 return true;
         }
     }
+
+    update() {
+        this.time++;
+
+        for (let i = 0; i < this.data.length; i++) {
+            let cell = this.data[i];
+
+            if (Int.mod(this.time, 6) == 0 && cell.imageIdx !== undefined) {
+                cell.imageIdx++;
+                if (cell.imageIdx >= cell.image.length) {
+                    if (cell.next) {
+                        this.data[i] = cell.next;
+                    } else {
+                        cell.imageIdx = 0;
+                    }
+                }
+            }
+        }
+    }
 }
 
 class Int {
@@ -159,16 +177,12 @@ class Int {
 
 let map;
 
-let gridImage;
-
 const FPS = 60;
 
 let keys = {};
 
 let bombSprite;
 let bombs = [];
-
-let distroingTiles = [];
 
 addEventListener("load", function () {
     init();
@@ -199,21 +213,17 @@ function init() {
     ctx = canvas.getContext("2d");
 
     bg = new AnimatedImage(assets.niegeBg, 1000 / FPS * 8);
-
     banana = new AnimatedImage(assets.banana, 1000 / FPS * 5);
 
-    boomSpriteMid = new AnimatedImage(assets.boomMid, -1);
-    boomSpriteHor = new AnimatedImage(assets.boomHor, -1);
-    boomSpriteLeft = new AnimatedImage(assets.boomLeftEnd, -1);
-    boomSpriteRight = new AnimatedImage(assets.boomRightEnd, -1);
-    boomSpriteVert = new AnimatedImage(assets.boomVert, -1);
-    boomSpriteTop = new AnimatedImage(assets.boomTopEnd, -1);
-    boomSpriteBottom = new AnimatedImage(assets.boomBottomEnd, -1);
+    map.setCell(4, 3, {
+        type: TerrainType.TemporaryWall,
+        image: assets.banana,
+        imageIdx: 0
+    });
+
     igloo = new AnimatedImage(assets.niegeIgloo, -1);
 
     tree = new AnimatedImage(assets.niegeTree, 1000 / FPS * 15);
-
-    gridImage = new AnimatedImage(assets.niegeWall, -1);
 
     sprite = new Sprite(1);
     sprites.push(sprite);
@@ -269,6 +279,8 @@ function begin(timestamp, delta) {
 }
 
 function update(deltaTime) {
+    map.update();
+
     for (let sprite of sprites) {
         sprite.update(1);
     }
@@ -293,66 +305,49 @@ function update(deltaTime) {
 function ditonateBomb(bomb, maxBoom) {
     bomb.ditonate = 30 * 1;
 
-    function distroy(x, y) {
-        map.set(x, y, TerrainType.Free);
-        // let newSprite = getDieingSprite(x * 16 + 8, y * 16);
-        // distroingTiles.push(newSprite);
+    function burn(dx, dy, image, imageEnd) {
+        for (let i = 1; i <= maxBoom; i++) {
+            const x = bomb.x + i * dx;
+            const y = bomb.y + i * dy;
+            const tile = map.getCellType(x, y);
+            if (tile == TerrainType.PermanentWall) {
+                break;
+            };
+
+            if (tile == TerrainType.TemporaryWall) {
+                map.setCell(x, y, {
+                    type: TerrainType.PermanentWall,
+                    image: assets.niegeWall,
+                    imageIdx: 0,
+                    next: {
+                        type: TerrainType.Free
+                    }
+                });
+                break;
+            }
+
+            map.setCell(x, y, {
+                image: i == maxBoom ? imageEnd : image,
+                imageIdx: 0,
+                next: {
+                    type: TerrainType.Free
+                }
+            });
+        }
     }
 
-    bomb.right = 0;
-    while (bomb.right < maxBoom) {
-        const tile = map.getCellType(bomb.x + bomb.right, bomb.y);
-        if (tile == TerrainType.PermanentWall) {
-            bomb.right--;
-            break;
-        };
-        if (tile == TerrainType.TemporaryWall) {
-            distroy(bomb.x + bomb.right, bomb.y);
-            break;
+    map.setCell(bomb.x, bomb.y, {
+        image: assets.boomMid,
+        imageIdx: 0,
+        next: {
+            type: TerrainType.Free
         }
-        bomb.right++;
-    }
+    });
 
-    bomb.left = 0;
-    while (bomb.left < maxBoom) {
-        const tile = map.getCellType(bomb.x - bomb.left, bomb.y);
-        if (tile == TerrainType.PermanentWall) {
-            bomb.left--;
-            break;
-        };
-        if (tile == TerrainType.TemporaryWall) {
-            distroy(bomb.x - bomb.left, bomb.y);
-            break;
-        }
-        bomb.left++;
-    }
-    bomb.bottom = 0;
-    while (bomb.bottom < maxBoom) {
-        const tile = map.getCellType(bomb.x, bomb.y + bomb.bottom);
-        if (tile == TerrainType.PermanentWall) {
-            bomb.bottom--;
-            break;
-        };
-        if (tile == TerrainType.TemporaryWall) {
-            distroy(bomb.x, bomb.y + bomb.bottom);
-            break;
-        }
-        bomb.bottom++;
-    }
-
-    bomb.top = 0;
-    while (bomb.top < maxBoom) {
-        const tile = map.getCellType(bomb.x, bomb.y - bomb.top);
-        if (tile == TerrainType.PermanentWall) {
-            bomb.top--;
-            break;
-        };
-        if (tile == TerrainType.TemporaryWall) {
-            distroy(bomb.x, bomb.y - bomb.top);
-            break;
-        }
-        bomb.top++;
-    }
+    burn(1, 0, assets.boomHor, assets.boomRightEnd);
+    burn(-1, 0, assets.boomHor, assets.boomLeftEnd);
+    burn(0, 1, assets.boomVert, assets.boomBottomEnd);
+    burn(0, -1, assets.boomVert, assets.boomTopEnd);
 }
 
 function drawAll(interpolationPercentage) {
@@ -365,26 +360,15 @@ function drawAll(interpolationPercentage) {
             const cell = map.getCell(x, y);
 
             if (cell.image) {
-                cell.image[cell.imageIdx].draw(ctx, x * 16 + 8, y * 16);
+                cell.image[cell.imageIdx || 0].draw(ctx, x * 16 + 8, y * 16);
             }
         }
     }
 
-    banana.draw(ctx, 16 * 4 + 8, 16 * 3)
     var spritesToDraw = sprites;
     spritesToDraw.sort((a, b) => { return a.y - b.y; });
 
     drawBombs();
-    for (let tile of distroingTiles) {
-        tile.tick();
-        tile.time--;
-        tile.draw(ctx, tile.x, tile.y);
-    }
-    for (let i = distroingTiles.length - 1; i >= 0; i--) {
-        if (distroingTiles[i].time <= 0) {
-            distroingTiles.splice(i, 1);
-        }
-    }
     for (let sprite of spritesToDraw) {
         sprite.draw(ctx)
     }
@@ -399,39 +383,6 @@ function drawBombs() {
         if (bomb.ditonate == -1) {
             bombSprite.draw(ctx, bomb.x * 16 + 8, bomb.y * 16);
         } else {
-            const frame = Math.floor((30 - bomb.ditonate) / 30 * 4);
-            boomSpriteMid.draw(ctx, bomb.x * 16 + 8, bomb.y * 16, frame);
-
-            for (let i = 1; i <= bomb.right; i++) {
-                if (i == bomb.right) {
-                    boomSpriteRight.draw(ctx, (bomb.x + i) * 16 + 8, bomb.y * 16, frame);
-                } else {
-                    boomSpriteHor.draw(ctx, (bomb.x + i) * 16 + 8, bomb.y * 16, frame);
-                }
-            }
-            for (let i = 1; i <= bomb.left; i++) {
-                if (i == bomb.left) {
-                    boomSpriteLeft.draw(ctx, (bomb.x - i) * 16 + 8, bomb.y * 16, frame);
-                } else {
-                    boomSpriteHor.draw(ctx, (bomb.x - i) * 16 + 8, bomb.y * 16, frame);
-                }
-            }
-            for (let i = 1; i <= bomb.bottom; i++) {
-                if (i == bomb.bottom) {
-                    boomSpriteBottom.draw(ctx, bomb.x * 16 + 8, (bomb.y + i) * 16, frame);
-                } else {
-                    boomSpriteVert.draw(ctx, bomb.x * 16 + 8, (bomb.y + i) * 16, frame);
-                }
-            }
-            for (let i = 1; i <= bomb.top; i++) {
-                if (i == bomb.top) {
-                    boomSpriteTop.draw(ctx, bomb.x * 16 + 8, (bomb.y - i) * 16, frame);
-                } else {
-                    boomSpriteVert.draw(ctx, bomb.x * 16 + 8, (bomb.y - i) * 16, frame);
-                }
-            }
-
-            console.log(frame);
         }
     }
 }

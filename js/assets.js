@@ -3,6 +3,11 @@ function loadAssets() {
         return {
             img: imgElement,
             rect: new Rect(x, y, width, height),
+            draw: function (ctx, x, y) {
+                ctx.drawImage(
+                    this.img, this.rect.x, this.rect.y, this.rect.width, this.rect.height,
+                    x, y, this.rect.width, this.rect.height);
+            }
         };
     }
 

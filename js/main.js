@@ -76,11 +76,13 @@ class Terrain {
 
                 if (src == '#') {
                     this.data[y * this.width + x] = {
-                        type: TerrainType.PermanentWall
+                        type: TerrainType.PermanentWall,
                     };
                 } else if (src == '-') {
                     this.data[y * this.width + x] = {
-                        type: TerrainType.TemporaryWall
+                        type: TerrainType.TemporaryWall,
+                        image: assets.niegeWall,
+                        imageIdx: 0
                     };
                 } else {
                     this.data[y * this.width + x] = {
@@ -91,13 +93,19 @@ class Terrain {
         }
     }
 
-    getCellType(x, y) {
+    getCell(x, y) {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            return this.data[y * this.width + x].type;
+            return this.data[y * this.width + x];
         }
         else {
-            return TerrainType.PermanentWall;
+            return {
+                type: TerrainType.PermanentWall
+            };
         }
+    }
+
+    getCellType(x, y) {
+        return this.getCell(x, y).type;
     }
 
     set(x, y, type) {
@@ -167,6 +175,8 @@ addEventListener("load", function () {
 });
 
 function init() {
+    assets = loadAssets();
+
     map = new Terrain([
         "###################",
         "#  -------------  #",
@@ -182,8 +192,6 @@ function init() {
         "#  -----------  ###",
         "###################"
     ]);
-
-    assets = loadAssets();
 
     bombSprite = new AnimatedImage(assets.bomb, 10)
 
@@ -354,8 +362,10 @@ function drawAll(interpolationPercentage) {
 
     for (let y = 0; y < map.height; y++) {
         for (let x = 0; x < map.width; x++) {
-            if (map.getCellType(x, y) == TerrainType.TemporaryWall) {
-                gridImage.draw(ctx, x * 16 + 8, y * 16);
+            const cell = map.getCell(x, y);
+
+            if (cell.image) {
+                cell.image[cell.imageIdx].draw(ctx, x * 16 + 8, y * 16);
             }
         }
     }

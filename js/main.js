@@ -68,26 +68,32 @@ class Terrain {
         this.width = initial[0].length;
         this.height = initial.length;
 
-        this.data = new Uint8Array(this.width * this.height);
+        this.data = new Array(this.width * this.height);
 
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 let src = initial[y][x];
 
                 if (src == '#') {
-                    this.data[y * this.width + x] = TerrainType.PermanentWall;
+                    this.data[y * this.width + x] = {
+                        type: TerrainType.PermanentWall
+                    };
                 } else if (src == '-') {
-                    this.data[y * this.width + x] = TerrainType.TemporaryWall;
+                    this.data[y * this.width + x] = {
+                        type: TerrainType.TemporaryWall
+                    };
                 } else {
-                    this.data[y * this.width + x] = TerrainType.Free;
+                    this.data[y * this.width + x] = {
+                        type: TerrainType.Free
+                    };
                 }
             }
         }
     }
 
-    get(x, y) {
+    getCellType(x, y) {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            return this.data[y * this.width + x];
+            return this.data[y * this.width + x].type;
         }
         else {
             return TerrainType.PermanentWall;
@@ -96,7 +102,9 @@ class Terrain {
 
     set(x, y, type) {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            this.data[y * this.width + x] = type;
+            this.data[y * this.width + x] = {
+                type: type
+            };
             return true;
         }
         else {
@@ -105,7 +113,7 @@ class Terrain {
     }
 
     isWalkable(x, y) {
-        let cellType = this.get(x, y);
+        let cellType = this.getCellType(x, y);
 
         switch (cellType) {
             case TerrainType.Free:
@@ -285,7 +293,7 @@ function ditonateBomb(bomb, maxBoom) {
 
     bomb.right = 0;
     while (bomb.right < maxBoom) {
-        const tile = map.get(bomb.x + bomb.right, bomb.y);
+        const tile = map.getCellType(bomb.x + bomb.right, bomb.y);
         if (tile == TerrainType.PermanentWall) {
             bomb.right--;
             break;
@@ -299,7 +307,7 @@ function ditonateBomb(bomb, maxBoom) {
 
     bomb.left = 0;
     while (bomb.left < maxBoom) {
-        const tile = map.get(bomb.x - bomb.left, bomb.y);
+        const tile = map.getCellType(bomb.x - bomb.left, bomb.y);
         if (tile == TerrainType.PermanentWall) {
             bomb.left--;
             break;
@@ -312,7 +320,7 @@ function ditonateBomb(bomb, maxBoom) {
     }
     bomb.bottom = 0;
     while (bomb.bottom < maxBoom) {
-        const tile = map.get(bomb.x, bomb.y + bomb.bottom);
+        const tile = map.getCellType(bomb.x, bomb.y + bomb.bottom);
         if (tile == TerrainType.PermanentWall) {
             bomb.bottom--;
             break;
@@ -326,7 +334,7 @@ function ditonateBomb(bomb, maxBoom) {
 
     bomb.top = 0;
     while (bomb.top < maxBoom) {
-        const tile = map.get(bomb.x, bomb.y - bomb.top);
+        const tile = map.getCellType(bomb.x, bomb.y - bomb.top);
         if (tile == TerrainType.PermanentWall) {
             bomb.top--;
             break;
@@ -346,7 +354,7 @@ function drawAll(interpolationPercentage) {
 
     for (let y = 0; y < map.height; y++) {
         for (let x = 0; x < map.width; x++) {
-            if (map.get(x, y) == TerrainType.TemporaryWall) {
+            if (map.getCellType(x, y) == TerrainType.TemporaryWall) {
                 gridImage.draw(ctx, x * 16 + 8, y * 16);
             }
         }

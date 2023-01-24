@@ -48,6 +48,7 @@ class Terrain {
     width;
     height;
     time;
+    soundCallback;
 
     get width() {
         return this.width;
@@ -162,10 +163,95 @@ class Terrain {
                     cell.bombTime--;
 
                     if (cell.bombTime == 0) {
-                        ditonateBomb(x, y, 3);
+                        this.ditonateBomb(x, y, 3);
                     }
                 }
             }
+        }
+    }
+
+    placeBomb(x, y) {
+        if (this.getCellType(x, y) == TerrainType.Free) {
+            this.setCell(x, y, {
+                type: TerrainType.Bomb,
+                image: assets.bomb,
+                imageIdx: 0,
+                animateDelay: 12,
+                bombTime: 3 * 60
+            });
+            this.playSound("posebomb");
+        }
+    }
+
+    ditonateBomb(bombX, bombY, maxBoom) {
+        let burn = (dx, dy, image, imageEnd) => {
+            for (let i = 1; i <= maxBoom; i++) {
+                const x = bombX + i * dx;
+                const y = bombY + i * dy;
+                const cell = map.getCell(x, y);
+                const tile = cell.type;
+                if (tile == TerrainType.PermanentWall) {
+                    break;
+                };
+
+                if (tile == TerrainType.TemporaryWall) {
+                    map.setCell(x, y, {
+                        type: TerrainType.PermanentWall,
+                        image: assets.niegeWall,
+                        imageIdx: 0,
+                        next: {
+                            type: TerrainType.Free
+                        }
+                    });
+                    break;
+                } else if (tile == TerrainType.BananaObject) {
+                    map.setCell(x, y, {
+                        type: TerrainType.Free,
+                        image: assets.fire,
+                        imageIdx: 0,
+                        next: {
+                            type: TerrainType.Free
+                        }
+                    });
+                    this.playSound("sac");
+                    break;
+                } else if (tile == TerrainType.Bomb) {
+                    this.ditonateBomb(x, y, 3);
+                    break;
+                } else if (tile == TerrainType.Fire) {
+                } else {
+                    map.setCell(x, y, {
+                        type: TerrainType.Fire,
+                        image: i == maxBoom ? imageEnd : image,
+                        imageIdx: 0,
+                        next: {
+                            type: TerrainType.Free
+                        }
+                    });
+                }
+            }
+        }
+
+        this.playSound("bang");
+
+        map.setCell(bombX, bombY, {
+            type: TerrainType.Fire,
+            image: assets.boomMid,
+            imageIdx: 0,
+            next: {
+                type: TerrainType.Free
+            }
+        });
+
+        burn(1, 0, assets.boomHor, assets.boomRightEnd);
+        burn(-1, 0, assets.boomHor, assets.boomLeftEnd);
+        burn(0, 1, assets.boomVert, assets.boomBottomEnd);
+        burn(0, -1, assets.boomVert, assets.boomTopEnd);
+    }
+
+    playSound(sound) {
+        if (this.soundCallback) {
+            this.soundCallback(sound);
         }
     }
 }
@@ -198,8 +284,9 @@ addEventListener("load", function () {
     init();
 });
 
-function init() {
+async function init() {
     assets = loadAssets();
+    soundAssets = await loadSoundAssets();
 
     map = new Terrain([
         "###################",
@@ -216,6 +303,12 @@ function init() {
         "#  -----------  ###",
         "###################"
     ]);
+
+    let soundManager = new SoundManager(soundAssets);
+
+    map.soundCallback = function (sound) {
+        soundManager.playSound(sound);
+    };
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d");
@@ -293,70 +386,6 @@ function update(deltaTime) {
     }
 }
 
-
-function ditonateBomb(bombX, bombY, maxBoom) {
-    function burn(dx, dy, image, imageEnd) {
-        for (let i = 1; i <= maxBoom; i++) {
-            const x = bombX + i * dx;
-            const y = bombY + i * dy;
-            const cell = map.getCell(x, y);
-            const tile = cell.type;
-            if (tile == TerrainType.PermanentWall) {
-                break;
-            };
-
-            if (tile == TerrainType.TemporaryWall) {
-                map.setCell(x, y, {
-                    type: TerrainType.PermanentWall,
-                    image: assets.niegeWall,
-                    imageIdx: 0,
-                    next: {
-                        type: TerrainType.Free
-                    }
-                });
-                break;
-            } else if (tile == TerrainType.BananaObject) {
-                map.setCell(x, y, {
-                    type: TerrainType.Free,
-                    image: assets.fire,
-                    imageIdx: 0,
-                    next: {
-                        type: TerrainType.Free
-                    }
-                });
-                break;
-            } else if (tile == TerrainType.Bomb) {
-                ditonateBomb(x, y, 3);
-                break;
-            } else if (tile == TerrainType.Fire) {
-            } else {
-                map.setCell(x, y, {
-                    type: TerrainType.Fire,
-                    image: i == maxBoom ? imageEnd : image,
-                    imageIdx: 0,
-                    next: {
-                        type: TerrainType.Free
-                    }
-                });
-            }
-        }
-    }
-
-    map.setCell(bombX, bombY, {
-        type: TerrainType.Fire,
-        image: assets.boomMid,
-        imageIdx: 0,
-        next: {
-            type: TerrainType.Free
-        }
-    });
-
-    burn(1, 0, assets.boomHor, assets.boomRightEnd);
-    burn(-1, 0, assets.boomHor, assets.boomLeftEnd);
-    burn(0, 1, assets.boomVert, assets.boomBottomEnd);
-    burn(0, -1, assets.boomVert, assets.boomTopEnd);
-}
-
 function drawAll(interpolationPercentage) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -398,18 +427,6 @@ function end(fps, panic) {
         // explanation.
         var discardedTime = Math.round(MainLoop.resetFrameDelta());
         console.warn('Main loop panicked, probably because the browser tab was put in the background. Discarding ' + discardedTime + 'ms');
-    }
-}
-
-function placeBomb(x, y) {
-    if (map.getCellType(x, y) == TerrainType.Free) {
-        map.setCell(x, y, {
-            type: TerrainType.Bomb,
-            image: assets.bomb,
-            imageIdx: 0,
-            animateDelay: 12,
-            bombTime: 3 * 60
-        });
     }
 }
 
@@ -633,7 +650,7 @@ class Sprite {
         }
 
         if (this.playerKeys[PlayerKeys.Bomb]) {
-            placeBomb(Int.divRound(this.x, 16), Int.divRound(this.y, 16));
+            map.placeBomb(Int.divRound(this.x, 16), Int.divRound(this.y, 16));
         }
     }
 

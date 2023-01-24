@@ -181,7 +181,6 @@ const FPS = 60;
 
 let keys = {};
 
-let bombSprite;
 let bombs = [];
 
 addEventListener("load", function () {
@@ -206,8 +205,6 @@ function init() {
         "#  -----------  ###",
         "###################"
     ]);
-
-    bombSprite = new AnimatedImage(assets.bomb, 10)
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d");
@@ -284,27 +281,22 @@ function update(deltaTime) {
     for (let sprite of sprites) {
         sprite.update(1);
     }
-    for (let bomb of bombs) {
-        if (bomb.ditonate >= 0) {
-            bomb.ditonate--;
-        } else if (bomb.time < 0) {
+
+    for (let i = 0; i < bombs.length;) {
+        const bomb = bombs[i];
+        if (bomb.time < 0) {
             ditonateBomb(bomb, 3);
-        } else {
-            bomb.time--;
-        }
-        bombSprite.tick();
-    }
-    for (let i = bombs.length - 1; i >= 0; i--) {
-        if (bombs[i].ditonate == 0) {
             bombs.splice(i, 1);
+        } else {
+            bomb.bombSprite.tick();
+            bomb.time--;
+            i++;
         }
     }
 }
 
 
 function ditonateBomb(bomb, maxBoom) {
-    bomb.ditonate = 30 * 1;
-
     function burn(dx, dy, image, imageEnd) {
         for (let i = 1; i <= maxBoom; i++) {
             const x = bomb.x + i * dx;
@@ -380,10 +372,7 @@ function drawAll(interpolationPercentage) {
 
 function drawBombs() {
     for (let bomb of bombs) {
-        if (bomb.ditonate == -1) {
-            bombSprite.draw(ctx, bomb.x * 16 + 8, bomb.y * 16);
-        } else {
-        }
+        bomb.bombSprite.draw(ctx, bomb.x * 16 + 8, bomb.y * 16);
     }
 }
 
@@ -406,10 +395,10 @@ function placeBomb(x, y) {
         return val.x == x && val.y == y;
     })) {
         bombs.push({
+            bombSprite: new AnimatedImage(assets.bomb, 10),
             x: x,
             y: y,
-            time: 3 * 60,
-            ditonate: -1
+            time: 3 * 60
         })
     }
 }

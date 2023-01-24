@@ -325,10 +325,17 @@ async function init() {
 
     tree = new AnimatedImage(assets.niegeTree, 1000 / FPS * 15);
 
-    sprite = new Sprite(1);
+    let sprite = new Sprite(0);
     sprites.push(sprite);
+    let ctrl = new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft");
+    ctrl.setSprite(sprite);
+    controllersList.push(ctrl);
 
-    let ctrl = new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "Space");
+    sprite = new Sprite(1);
+    sprite.x = 15*16;
+    sprite.y = 11*16;
+    sprites.push(sprite);
+    ctrl = new KeyboardController("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
 

@@ -4,7 +4,6 @@ let ctx;
 let images;
 
 let bg;
-let banana;
 let tree;
 let igloo;
 
@@ -24,7 +23,8 @@ const TerrainType =
 {
     Free: 0,
     PermanentWall: 1,
-    TemporaryWall: 2
+    TemporaryWall: 2,
+    BananaObject: 3
 };
 
 const Direction =
@@ -210,10 +210,9 @@ function init() {
     ctx = canvas.getContext("2d");
 
     bg = new AnimatedImage(assets.niegeBg, 1000 / FPS * 8);
-    banana = new AnimatedImage(assets.banana, 1000 / FPS * 5);
 
     map.setCell(4, 3, {
-        type: TerrainType.TemporaryWall,
+        type: TerrainType.BananaObject,
         image: assets.banana,
         imageIdx: 0
     });
@@ -316,6 +315,16 @@ function ditonateBomb(bomb, maxBoom) {
                     }
                 });
                 break;
+            } else if (tile == TerrainType.BananaObject) {
+                map.setCell(x, y, {
+                    type: TerrainType.Free,
+                    image: assets.fire,
+                    imageIdx: 0,
+                    next: {
+                        type: TerrainType.Free
+                    }
+                });
+                break;
             }
 
             map.setCell(x, y, {
@@ -352,7 +361,11 @@ function drawAll(interpolationPercentage) {
             const cell = map.getCell(x, y);
 
             if (cell.image) {
-                cell.image[cell.imageIdx || 0].draw(ctx, x * 16 + 8, y * 16);
+                const image = cell.image[cell.imageIdx || 0];
+
+                image.draw(ctx,
+                    x * 16 + 8 + 8 - Int.divFloor(image.rect.width, 2),
+                    y * 16 + 16 - image.rect.height);
             }
         }
     }

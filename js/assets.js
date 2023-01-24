@@ -94,6 +94,7 @@ function loadAssets() {
         boomVert: loadImageStripe(imgSprite2, 0 * 16, 46 + 4 * 16, 16, 16, 4),
         boomTopEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 5 * 16, 16, 16, 4),
         boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
+        fire: loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6),
         players: loadPlayers(imgSprite)
 
         // igloo penguin

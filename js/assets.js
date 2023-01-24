@@ -28,6 +28,8 @@ function loadAssets() {
 
         const framesCount = 20;
         const framesIndex = [0, 1, 0, 2];
+        const spriteWidth = 24;
+        const spriteHeight = 24;
 
         for (let spriteIndex = 0; spriteIndex < 4; spriteIndex++) {
             let player = [];

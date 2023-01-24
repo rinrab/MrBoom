@@ -12,9 +12,6 @@ let sprites = [];
 
 let assets;
 
-const spriteWidth = 24;
-const spriteHeight = 24;
-
 let cheats = {
     noClip: false
 };

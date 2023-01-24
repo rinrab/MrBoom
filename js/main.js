@@ -21,7 +21,9 @@ const TerrainType =
     Free: 0,
     PermanentWall: 1,
     TemporaryWall: 2,
-    BananaObject: 3
+    BananaObject: 3,
+    Bomb: 4,
+    Fire: 5
 };
 
 const Direction =
@@ -121,6 +123,7 @@ class Terrain {
 
         switch (cellType) {
             case TerrainType.Free:
+            case TerrainType.Bomb:
                 return true;
 
             case TerrainType.PermanentWall:
@@ -137,16 +140,29 @@ class Terrain {
     update() {
         this.time++;
 
-        for (let i = 0; i < this.data.length; i++) {
-            let cell = this.data[i];
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                let cell = this.getCell(x, y);
 
-            if (Int.mod(this.time, 6) == 0 && cell.imageIdx !== undefined) {
-                cell.imageIdx++;
-                if (cell.imageIdx >= cell.image.length) {
-                    if (cell.next) {
-                        this.data[i] = cell.next;
-                    } else {
-                        cell.imageIdx = 0;
+                if (cell.imageIdx !== undefined) {
+                    const animateDelay = cell.animateDelay || 6;
+                    if (Int.mod(this.time, animateDelay) == 0) {
+                        cell.imageIdx++;
+                        if (cell.imageIdx >= cell.image.length) {
+                            if (cell.next) {
+                                this.setCell(x, y, cell.next);
+                            } else {
+                                cell.imageIdx = 0;
+                            }
+                        }
+                    }
+                }
+
+                if (cell.bombTime) {
+                    cell.bombTime--;
+
+                    if (cell.bombTime == 0) {
+                        ditonateBomb(x, y, 3);
                     }
                 }
             }
@@ -177,8 +193,6 @@ let map;
 const FPS = 60;
 
 let keys = {};
-
-let bombs = [];
 
 addEventListener("load", function () {
     init();
@@ -277,27 +291,16 @@ function update(deltaTime) {
     for (let sprite of sprites) {
         sprite.update(1);
     }
-
-    for (let i = 0; i < bombs.length;) {
-        const bomb = bombs[i];
-        if (bomb.time < 0) {
-            ditonateBomb(bomb, 3);
-            bombs.splice(i, 1);
-        } else {
-            bomb.bombSprite.tick();
-            bomb.time--;
-            i++;
-        }
-    }
 }
 
 
-function ditonateBomb(bomb, maxBoom) {
+function ditonateBomb(bombX, bombY, maxBoom) {
     function burn(dx, dy, image, imageEnd) {
         for (let i = 1; i <= maxBoom; i++) {
-            const x = bomb.x + i * dx;
-            const y = bomb.y + i * dy;
-            const tile = map.getCellType(x, y);
+            const x = bombX + i * dx;
+            const y = bombY + i * dy;
+            const cell = map.getCell(x, y);
+            const tile = cell.type;
             if (tile == TerrainType.PermanentWall) {
                 break;
             };
@@ -322,19 +325,25 @@ function ditonateBomb(bomb, maxBoom) {
                     }
                 });
                 break;
+            } else if (tile == TerrainType.Bomb) {
+                ditonateBomb(x, y, 3);
+                break;
+            } else if (tile == TerrainType.Fire) {
+            } else {
+                map.setCell(x, y, {
+                    type: TerrainType.Fire,
+                    image: i == maxBoom ? imageEnd : image,
+                    imageIdx: 0,
+                    next: {
+                        type: TerrainType.Free
+                    }
+                });
             }
-
-            map.setCell(x, y, {
-                image: i == maxBoom ? imageEnd : image,
-                imageIdx: 0,
-                next: {
-                    type: TerrainType.Free
-                }
-            });
         }
     }
 
-    map.setCell(bomb.x, bomb.y, {
+    map.setCell(bombX, bombY, {
+        type: TerrainType.Fire,
         image: assets.boomMid,
         imageIdx: 0,
         next: {
@@ -370,20 +379,12 @@ function drawAll(interpolationPercentage) {
     var spritesToDraw = sprites;
     spritesToDraw.sort((a, b) => { return a.y - b.y; });
 
-    drawBombs();
     for (let sprite of spritesToDraw) {
         sprite.draw(ctx)
     }
 
     igloo.draw(ctx, 232, 57);
     tree.draw(ctx, 112, 30);
-}
-
-
-function drawBombs() {
-    for (let bomb of bombs) {
-        bomb.bombSprite.draw(ctx, bomb.x * 16 + 8, bomb.y * 16);
-    }
 }
 
 function end(fps, panic) {
@@ -401,15 +402,14 @@ function end(fps, panic) {
 }
 
 function placeBomb(x, y) {
-    if (!bombs.find(function (val) {
-        return val.x == x && val.y == y;
-    })) {
-        bombs.push({
-            bombSprite: new AnimatedImage(assets.bomb, 10),
-            x: x,
-            y: y,
-            time: 3 * 60
-        })
+    if (map.getCellType(x, y) == TerrainType.Free) {
+        map.setCell(x, y, {
+            type: TerrainType.Bomb,
+            image: assets.bomb,
+            imageIdx: 0,
+            animateDelay: 12,
+            bombTime: 3 * 60
+        });
     }
 }
 
@@ -433,7 +433,7 @@ class AnimatedImage {
         if (this.delay == -1) {
             return this.currentImage = this.images[0];
         } else {
-            this._time += 1/this.delay;
+            this._time += 1 / this.delay;
 
             return this.currentImage = this.images[Math.floor(this._time % this.images.length)];
         }
@@ -559,7 +559,7 @@ class Sprite {
             this.y -= this.speed;
 
             this.animateIndex = 3;
-        } else if (map.isWalkable(Int.divRound(this.x, 16) + deltaX) , Int.divCeil(this.y + 1, 16)) {
+        } else if (map.isWalkable(Int.divRound(this.x, 16) + deltaX), Int.divCeil(this.y + 1, 16)) {
             this.y += this.speed;
 
             this.animateIndex = 0;

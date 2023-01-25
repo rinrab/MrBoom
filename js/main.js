@@ -139,6 +139,8 @@ class Terrain {
     }
 
     update() {
+        this.soundsToPlay = {};
+
         this.time++;
 
         for (let y = 0; y < this.height; y++) {
@@ -165,6 +167,14 @@ class Terrain {
                     if (cell.bombTime == 0) {
                         this.ditonateBomb(x, y, 3);
                     }
+                }
+            }
+        }
+
+        if (this.soundCallback) {
+            for (let sound in this.soundsToPlay) {
+                if (this.soundsToPlay[sound]) {
+                    this.soundCallback(sound);
                 }
             }
         }
@@ -250,9 +260,7 @@ class Terrain {
     }
 
     playSound(sound) {
-        if (this.soundCallback) {
-            this.soundCallback(sound);
-        }
+        this.soundsToPlay[sound] = true;
     }
 }
 

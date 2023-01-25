@@ -195,20 +195,6 @@ class Terrain {
         }
     }
 
-    placeBomb(x, y, maxBoom) {
-        if (this.getCellType(x, y) == TerrainType.Free) {
-            this.setCell(x, y, {
-                type: TerrainType.Bomb,
-                image: assets.bomb,
-                imageIdx: 0,
-                animateDelay: 12,
-                bombTime: 3 * 60,
-                maxBoom: maxBoom
-            });
-            this.playSound("posebomb");
-        }
-    }
-
     ditonateBomb(bombX, bombY, maxBoom) {
         let burn = (dx, dy, image, imageEnd) => {
             for (let i = 1; i <= maxBoom; i++) {
@@ -693,7 +679,17 @@ class Sprite {
         }
 
         if (this.playerKeys[PlayerKeys.Bomb]) {
-            map.placeBomb(Int.divRound(this.x, 16), Int.divRound(this.y, 16), this.maxBoom);
+            if (map.getCellType(Int.divRound(this.x, 16), Int.divRound(this.y, 16)) == TerrainType.Free) {
+                map.setCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16), {
+                    type: TerrainType.Bomb,
+                    image: assets.bomb,
+                    imageIdx: 0,
+                    animateDelay: 12,
+                    bombTime: 3 * 60,
+                    maxBoom: this.maxBoom
+                });
+                map.playSound("posebomb");
+            }
         }
 
         const tileX = Int.divRound(this.x, 16);

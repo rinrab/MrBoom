@@ -23,7 +23,8 @@ const TerrainType =
     TemporaryWall: 2,
     BananaObject: 3,
     Bomb: 4,
-    Fire: 5
+    Fire: 5,
+    FireUp: 6
 };
 
 const Direction =
@@ -138,6 +139,16 @@ class Terrain {
         }
     }
 
+    isPowerUp(x, y) {
+        switch (this.getCellType(x, y)) {
+            case TerrainType.BananaObject:
+            case TerrainType.FireUp:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     update() {
         this.soundsToPlay = {};
 
@@ -165,10 +176,14 @@ class Terrain {
                     cell.bombTime--;
 
                     if (cell.bombTime == 0) {
-                        this.ditonateBomb(x, y, 3);
+                        this.ditonateBomb(x, y, cell.maxBoom);
                     }
                 }
             }
+        }
+
+        for (let sprite of sprites) {
+            sprite.update(1);
         }
 
         if (this.soundCallback) {
@@ -180,14 +195,15 @@ class Terrain {
         }
     }
 
-    placeBomb(x, y) {
+    placeBomb(x, y, maxBoom) {
         if (this.getCellType(x, y) == TerrainType.Free) {
             this.setCell(x, y, {
                 type: TerrainType.Bomb,
                 image: assets.bomb,
                 imageIdx: 0,
                 animateDelay: 12,
-                bombTime: 3 * 60
+                bombTime: 3 * 60,
+                maxBoom: maxBoom
             });
             this.playSound("posebomb");
         }
@@ -205,16 +221,28 @@ class Terrain {
                 };
 
                 if (tile == TerrainType.TemporaryWall) {
-                    map.setCell(x, y, {
-                        type: TerrainType.PermanentWall,
-                        image: assets.niegeWall,
-                        imageIdx: 0,
-                        next: {
-                            type: TerrainType.Free
-                        }
-                    });
+                    if (Math.random() < 0.5) {
+                        map.setCell(x, y, {
+                            type: TerrainType.PermanentWall,
+                            image: assets.niegeWall,
+                            imageIdx: 0,
+                            next: {
+                                type: TerrainType.FireUp,
+                                image: assets.extraFire,
+                            }
+                        });
+                    } else {
+                        map.setCell(x, y, {
+                            type: TerrainType.PermanentWall,
+                            image: assets.niegeWall,
+                            imageIdx: 0,
+                            next: {
+                                type: TerrainType.Free
+                            }
+                        });
+                    }
                     break;
-                } else if (tile == TerrainType.BananaObject) {
+                } else if (this.isPowerUp(x, y)) {
                     map.setCell(x, y, {
                         type: TerrainType.Free,
                         image: assets.fire,
@@ -226,7 +254,7 @@ class Terrain {
                     this.playSound("sac");
                     break;
                 } else if (tile == TerrainType.Bomb) {
-                    this.ditonateBomb(x, y, 3);
+                    this.ditonateBomb(x, y, cell.maxBoom);
                     break;
                 } else if (tile == TerrainType.Fire) {
                 } else {
@@ -395,10 +423,6 @@ function begin(timestamp, delta) {
 
 function update(deltaTime) {
     map.update();
-
-    for (let sprite of sprites) {
-        sprite.update(1);
-    }
 }
 
 function drawAll(interpolationPercentage) {
@@ -557,6 +581,8 @@ class Sprite {
 
     speed;
 
+    maxBoom;
+
     constructor(spriteIndex) {
         this.animations = [];
 
@@ -565,6 +591,8 @@ class Sprite {
         this.playerKeys = {};
 
         this.speed = 1;
+
+        this.maxBoom = 1;
 
         for (let img of assets.players[spriteIndex]) {
             this.animations.push(new AnimatedImage(img, -1))
@@ -665,7 +693,21 @@ class Sprite {
         }
 
         if (this.playerKeys[PlayerKeys.Bomb]) {
-            map.placeBomb(Int.divRound(this.x, 16), Int.divRound(this.y, 16));
+            map.placeBomb(Int.divRound(this.x, 16), Int.divRound(this.y, 16), this.maxBoom);
+        }
+
+        const tileX = Int.divRound(this.x, 16);
+        const tileY = Int.divRound(this.y, 16);
+        const tile = map.getCell(tileX, tileY);
+        if (map.isPowerUp(tileX, tileY)) {
+            if (tile.type == TerrainType.FireUp) {
+                this.maxBoom++;
+            }
+
+            map.setCell(tileX, tileY, {
+                type: TerrainType.Free
+            });
+            map.playSound("pick");
         }
     }
 

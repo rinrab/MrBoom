@@ -22,6 +22,7 @@ async function loadSoundAssets() {
         bang: await loadSound("bang"),
         posebomb: await loadSound("posebomb"),
         sac: await loadSound("sac"),
+        pick: await loadSound("pick")
     };
 
     return result;

@@ -186,6 +186,8 @@ class Terrain {
             return {
                 type: TerrainType.PowerUp,
                 image: assets.powerups[PowerUpType.ExtraFire],
+                imageIdx: 0,
+                animateDelay: 8,
                 powerUpType: PowerUpType.ExtraFire
             };
         } else {

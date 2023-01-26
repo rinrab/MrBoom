@@ -107,19 +107,6 @@ class Terrain {
         this.data[y * this.width + x] = cell;
     }
 
-    set(x, y, type) {
-        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            setCell(x, y, {
-                type: type
-
-            });
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
     isWalkable(x, y) {
         let cellType = this.getCellType(x, y);
 

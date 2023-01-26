@@ -323,7 +323,10 @@ async function init() {
         ],
         [
             PowerUpType.ExtraBomb,
-            PowerUpType.ExtraFire
+            PowerUpType.ExtraFire,
+            PowerUpType.Skull,
+            PowerUpType.Life,
+            PowerUpType.RemoteControl
         ]);
 
     let soundManager = new SoundManager(soundAssets);

@@ -665,8 +665,12 @@ class Sprite {
             this.animations[this.animateIndex].delay = -1;
         }
 
+        const tileX = Int.divRound(this.x, 16);
+        const tileY = Int.divRound(this.y, 16);
+        const tile = map.getCell(tileX, tileY);
+
         if (this.playerKeys[PlayerKeys.Bomb]) {
-            if (map.getCellType(Int.divRound(this.x, 16), Int.divRound(this.y, 16)) == TerrainType.Free) {
+            if (tile.type == TerrainType.Free) {
                 map.setCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16), {
                     type: TerrainType.Bomb,
                     image: assets.bomb,
@@ -679,9 +683,6 @@ class Sprite {
             }
         }
 
-        const tileX = Int.divRound(this.x, 16);
-        const tileY = Int.divRound(this.y, 16);
-        const tile = map.getCell(tileX, tileY);
         if (map.isPowerUp(tileX, tileY)) {
             if (tile.type == TerrainType.FireUp) {
                 this.maxBoom++;

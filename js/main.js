@@ -212,6 +212,7 @@ class Terrain {
                         type: TerrainType.PermanentWall,
                         image: assets.niegeWall,
                         imageIdx: 0,
+                        animateDelay: 4,
                         next: next
                     });
                     break;

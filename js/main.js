@@ -99,18 +99,14 @@ class Terrain {
         }
     }
 
-    getCellType(x, y) {
-        return this.getCell(x, y).type;
-    }
-
     setCell(x, y, cell) {
         this.data[y * this.width + x] = cell;
     }
 
     isWalkable(x, y) {
-        let cellType = this.getCellType(x, y);
+        let cell = this.getCell(x, y);
 
-        switch (cellType) {
+        switch (cell.type) {
             case TerrainType.Free:
             case TerrainType.Bomb:
                 return true;
@@ -127,7 +123,7 @@ class Terrain {
     }
 
     isPowerUp(x, y) {
-        switch (this.getCellType(x, y)) {
+        switch (this.getCell(x, y).type) {
             case TerrainType.BananaObject:
             case TerrainType.FireUp:
                 return true;

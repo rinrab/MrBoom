@@ -184,32 +184,30 @@ class Terrain {
                 const x = bombX + i * dx;
                 const y = bombY + i * dy;
                 const cell = map.getCell(x, y);
-                const tile = cell.type;
-                if (tile == TerrainType.PermanentWall) {
+
+                if (cell.type == TerrainType.PermanentWall) {
                     break;
                 };
 
-                if (tile == TerrainType.TemporaryWall) {
-                    if (Math.random() < 0.5) {
-                        map.setCell(x, y, {
-                            type: TerrainType.PermanentWall,
-                            image: assets.niegeWall,
-                            imageIdx: 0,
-                            next: {
-                                type: TerrainType.FireUp,
-                                image: assets.extraFire,
-                            }
-                        });
+                if (cell.type == TerrainType.TemporaryWall) {
+                    let next;
+                    let rnd = Math.random();
+                    if (rnd < 0.5) {
+                        next = {
+                            type: TerrainType.FireUp,
+                            image: assets.extraFire,
+                        };
                     } else {
-                        map.setCell(x, y, {
-                            type: TerrainType.PermanentWall,
-                            image: assets.niegeWall,
-                            imageIdx: 0,
-                            next: {
-                                type: TerrainType.Free
-                            }
-                        });
+                        next = {
+                            type: TerrainType.Free
+                        };
                     }
+                    map.setCell(x, y, {
+                        type: TerrainType.PermanentWall,
+                        image: assets.niegeWall,
+                        imageIdx: 0,
+                        next: next
+                    });
                     break;
                 } else if (this.isPowerUp(x, y)) {
                     map.setCell(x, y, {
@@ -222,10 +220,10 @@ class Terrain {
                     });
                     this.playSound("sac");
                     break;
-                } else if (tile == TerrainType.Bomb) {
+                } else if (cell.type == TerrainType.Bomb) {
                     this.ditonateBomb(x, y, cell.maxBoom);
                     break;
-                } else if (tile == TerrainType.Fire) {
+                } else if (cell.type == TerrainType.Fire) {
                 } else {
                     map.setCell(x, y, {
                         type: TerrainType.Fire,

@@ -670,7 +670,7 @@ class Sprite {
                     image: assets.bomb,
                     imageIdx: 0,
                     animateDelay: 12,
-                    bombTime: 3 * 60,
+                    bombTime: 210,
                     maxBoom: this.maxBoom
                 });
                 map.playSound("posebomb");

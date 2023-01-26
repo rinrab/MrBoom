@@ -21,10 +21,22 @@ const TerrainType =
     Free: 0,
     PermanentWall: 1,
     TemporaryWall: 2,
-    BananaObject: 3,
-    Bomb: 4,
-    Fire: 5,
-    FireUp: 6
+    Bomb: 3,
+    PowerUp: 4,
+};
+
+const PowerUpType = {
+    Banana: 0,
+    ExtraBomb: 1,
+    ExtraFire: 2,
+    Skull: 3,
+    Shield: 4,
+    Life: 5,
+    RemoteControl: 6,
+    Kick: 7,
+    RollerSkate: 8,
+    Clock: 9,
+    MultiBomb: 10
 };
 
 const Direction =
@@ -122,16 +134,6 @@ class Terrain {
         }
     }
 
-    isPowerUp(x, y) {
-        switch (this.getCell(x, y).type) {
-            case TerrainType.BananaObject:
-            case TerrainType.FireUp:
-                return true;
-            default:
-                return false;
-        }
-    }
-
     update() {
         this.soundsToPlay = {};
 
@@ -182,8 +184,9 @@ class Terrain {
         let rnd = Math.random();
         if (rnd < 0.5) {
             return {
-                type: TerrainType.FireUp,
-                image: assets.extraFire,
+                type: TerrainType.PowerUp,
+                image: assets.powerups[PowerUpType.ExtraFire],
+                powerUpType: PowerUpType.ExtraFire
             };
         } else {
             return {
@@ -212,7 +215,7 @@ class Terrain {
                         next: next
                     });
                     break;
-                } else if (this.isPowerUp(x, y)) {
+                } else if (cell.type == TerrainType.PowerUp) {
                     map.setCell(x, y, {
                         type: TerrainType.Free,
                         image: assets.fire,
@@ -320,12 +323,6 @@ async function init() {
     ctx = canvas.getContext("2d");
 
     bg = new AnimatedImage(assets.niegeBg, 1000 / FPS * 8);
-
-    map.setCell(4, 3, {
-        type: TerrainType.BananaObject,
-        image: assets.banana,
-        imageIdx: 0
-    });
 
     igloo = new AnimatedImage(assets.niegeIgloo, -1);
 
@@ -680,8 +677,9 @@ class Sprite {
             }
         }
 
-        if (map.isPowerUp(tileX, tileY)) {
-            if (tile.type == TerrainType.FireUp) {
+        if (tile.type == TerrainType.PowerUp) {
+            const powerUpType = tile.powerUpType;
+            if (powerUpType == PowerUpType.ExtraFire) {
                 this.maxBoom++;
             }
 

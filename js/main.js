@@ -62,6 +62,7 @@ class Terrain {
     height;
     time;
     soundCallback;
+    powerUpList;
 
     get width() {
         return this.width;
@@ -71,8 +72,9 @@ class Terrain {
         return this.height;
     }
 
-    constructor(initial) {
+    constructor(initial, powerUpList) {
         this.time = 0;
+        this.powerUpList = powerUpList;
         this.width = initial[0].length;
         this.height = initial.length;
 
@@ -183,12 +185,14 @@ class Terrain {
     generateGiven() {
         let rnd = Math.random();
         if (rnd < 0.5) {
+            const powerUpIndex = Math.floor(Math.random() * this.powerUpList.length);
+            const powerUpType = this.powerUpList[powerUpIndex];
             return {
                 type: TerrainType.PowerUp,
-                image: assets.powerups[PowerUpType.ExtraFire],
+                image: assets.powerups[powerUpType],
                 imageIdx: 0,
                 animateDelay: 8,
-                powerUpType: PowerUpType.ExtraFire
+                powerUpType: powerUpType
             };
         } else {
             return {
@@ -301,21 +305,26 @@ async function init() {
     assets = loadAssets();
     soundAssets = await loadSoundAssets();
 
-    map = new Terrain([
-        "###################",
-        "#  -------------  #",
-        "# #-# #-#-#-#-#-# #",
-        "#---  ------  ----#",
-        "#-#-#-###-#-# # #-#",
-        "#-----###-----   -#",
-        "#-#-#-###-#-#-# #-#",
-        "#---------  ------#",
-        "#-#-#-# #-# #-#-#-#",
-        "#-----  ----------#",
-        "# #-#-#-#-#-#-# ###",
-        "#  -----------  ###",
-        "###################"
-    ]);
+    map = new Terrain(
+        [
+            "###################",
+            "#  -------------  #",
+            "# #-# #-#-#-#-#-# #",
+            "#---  ------  ----#",
+            "#-#-#-###-#-# # #-#",
+            "#-----###-----   -#",
+            "#-#-#-###-#-#-# #-#",
+            "#---------  ------#",
+            "#-#-#-# #-# #-#-#-#",
+            "#-----  ----------#",
+            "# #-#-#-#-#-#-# ###",
+            "#  -----------  ###",
+            "###################"
+        ],
+        [
+            PowerUpType.ExtraBomb,
+            PowerUpType.ExtraFire
+        ]);
 
     let soundManager = new SoundManager(soundAssets);
 

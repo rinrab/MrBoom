@@ -178,6 +178,20 @@ class Terrain {
         }
     }
 
+    generateGiven() {
+        let rnd = Math.random();
+        if (rnd < 0.5) {
+            return {
+                type: TerrainType.FireUp,
+                image: assets.extraFire,
+            };
+        } else {
+            return {
+                type: TerrainType.Free
+            };
+        }
+    }
+
     ditonateBomb(bombX, bombY, maxBoom) {
         let burn = (dx, dy, image, imageEnd) => {
             for (let i = 1; i <= maxBoom; i++) {
@@ -190,18 +204,7 @@ class Terrain {
                 };
 
                 if (cell.type == TerrainType.TemporaryWall) {
-                    let next;
-                    let rnd = Math.random();
-                    if (rnd < 0.5) {
-                        next = {
-                            type: TerrainType.FireUp,
-                            image: assets.extraFire,
-                        };
-                    } else {
-                        next = {
-                            type: TerrainType.Free
-                        };
-                    }
+                    let next = this.generateGiven();
                     map.setCell(x, y, {
                         type: TerrainType.PermanentWall,
                         image: assets.niegeWall,

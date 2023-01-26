@@ -223,6 +223,7 @@ class Terrain {
                         type: TerrainType.Free,
                         image: assets.fire,
                         imageIdx: 0,
+                        animateDelay: 6,
                         next: {
                             type: TerrainType.Free
                         }

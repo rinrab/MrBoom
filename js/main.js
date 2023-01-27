@@ -333,7 +333,8 @@ async function init() {
             PowerUpType.ExtraFire,
             PowerUpType.Skull,
             PowerUpType.Life,
-            PowerUpType.RemoteControl
+            PowerUpType.RemoteControl,
+            PowerUpType.RollerSkate
         ]);
 
     let soundManager = new SoundManager(soundAssets);
@@ -607,11 +608,11 @@ class Sprite {
 
     xAlign(deltaY) {
         if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divRound(this.y, 16) + deltaY)) {
-            this.x -= this.speed;
+            this.x -= 1;
 
             this.animateIndex = 2;
         } else if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divRound(this.y, 16) + deltaY)) {
-            this.x += this.speed;
+            this.x += 1;
 
             this.animateIndex = 1;
         }
@@ -619,11 +620,11 @@ class Sprite {
 
     yAlign(deltaX) {
         if (map.isWalkable(Int.divRound(this.x, 16) + deltaX, Int.divFloor(this.y - 1, 16))) {
-            this.y -= this.speed;
+            this.y -= 1;
 
             this.animateIndex = 3;
         } else if (map.isWalkable(Int.divRound(this.x, 16) + deltaX), Int.divCeil(this.y + 1, 16)) {
-            this.y += this.speed;
+            this.y += 1;
 
             this.animateIndex = 0;
         }
@@ -648,57 +649,59 @@ class Sprite {
             this.rcDitonate = false;
         }
 
-        if (direction == Direction.Up) {
-            if (Int.mod(this.x, 16) == 0) {
-                if (map.isWalkable(Int.divFloor(this.x, 16), Int.divFloor(this.y - this.speed, 16))) {
-                    this.y -= this.speed;
+        for (let i = 0; i < this.speed; i++) {
+            if (direction == Direction.Up) {
+                if (Int.mod(this.x, 16) == 0) {
+                    if (map.isWalkable(Int.divFloor(this.x, 16), Int.divFloor(this.y - 1, 16))) {
+                        this.y -= 1;
+                    }
+
+                    this.animateIndex = 3;
+                } else {
+                    this.xAlign(-1);
                 }
 
-                this.animateIndex = 3;
+                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+            } else if (direction == Direction.Down) {
+                if (Int.mod(this.x, 16) == 0) {
+                    if (map.isWalkable(Int.divFloor(this.x, 16), Int.divCeil(this.y + 1, 16))) {
+                        this.y += 1;
+                    }
+
+                    this.animateIndex = 0;
+                } else {
+                    this.xAlign(1);
+                }
+
+                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+            } else if (direction == Direction.Left) {
+                if (Int.mod(this.y, 16) == 0) {
+                    if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divFloor(this.y, 16))) {
+                        this.x -= 1;
+                    }
+
+                    this.animateIndex = 2;
+                }
+                else {
+                    this.yAlign(-1);
+                }
+
+                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+            } else if (direction == Direction.Right) {
+                if (Int.mod(this.y, 16) == 0) {
+                    if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divFloor(this.y, 16))) {
+                        this.x += 1;
+                    }
+
+                    this.animateIndex = 1;
+                } else {
+                    this.yAlign(1);
+                }
+
+                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
             } else {
-                this.xAlign(-1);
+                this.animations[this.animateIndex].delay = -1;
             }
-
-            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-        } else if (direction == Direction.Down) {
-            if (Int.mod(this.x, 16) == 0) {
-                if (map.isWalkable(Int.divFloor(this.x, 16), Int.divCeil(this.y + this.speed, 16))) {
-                    this.y += this.speed;
-                }
-
-                this.animateIndex = 0;
-            } else {
-                this.xAlign(1);
-            }
-
-            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-        } else if (direction == Direction.Left) {
-            if (Int.mod(this.y, 16) == 0) {
-                if (map.isWalkable(Int.divFloor(this.x - this.speed, 16), Int.divFloor(this.y, 16))) {
-                    this.x -= this.speed;
-                }
-
-                this.animateIndex = 2;
-            }
-            else {
-                this.yAlign(-1);
-            }
-
-            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-        } else if (direction == Direction.Right) {
-            if (Int.mod(this.y, 16) == 0) {
-                if (map.isWalkable(Int.divCeil(this.x + this.speed, 16), Int.divFloor(this.y, 16))) {
-                    this.x += this.speed;
-                }
-
-                this.animateIndex = 1;
-            } else {
-                this.yAlign(1);
-            }
-
-            this.animations[this.animateIndex].delay = 1000 / FPS * 7;
-        } else {
-            this.animations[this.animateIndex].delay = -1;
         }
 
         const tileX = Int.divRound(this.x, 16);
@@ -728,6 +731,8 @@ class Sprite {
                 this.maxBombsCount++;
             } else if (powerUpType == PowerUpType.RemoteControl) {
                 this.rcAllowed = true;
+            } else if (powerUpType == PowerUpType.RollerSkate) {
+                this.speed = 2;
             }
 
             map.setCell(tileX, tileY, {

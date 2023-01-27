@@ -557,7 +557,8 @@ class GamepadController {
             this.sprite.playerKeys[PlayerKeys.Down] = currGamePad.buttons[13].touched;
             this.sprite.playerKeys[PlayerKeys.Left] = currGamePad.buttons[14].touched;
             this.sprite.playerKeys[PlayerKeys.Right] = currGamePad.buttons[15].touched;
-            this.sprite.playerKeys[PlayerKeys.Bomb] = currGamePad.buttons[0].pressed;
+            this.sprite.playerKeys[PlayerKeys.Bomb] = currGamePad.buttons[1].pressed;
+            this.sprite.playerKeys[PlayerKeys.rcDitonate] = currGamePad.buttons[0].pressed;
         }
     }
 }

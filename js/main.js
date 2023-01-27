@@ -163,7 +163,7 @@ class Terrain {
                     cell.bombTime--;
 
                     if (cell.bombTime == 0) {
-                        this.ditonateBomb(x, y, cell.maxBoom);
+                        this.ditonateBomb(x, y, cell.owner.maxBoom);
                     }
                 }
             }
@@ -201,7 +201,11 @@ class Terrain {
         }
     }
 
-    ditonateBomb(bombX, bombY, maxBoom) {
+    ditonateBomb(bombX, bombY) {
+        const owner = this.getCell(bombX, bombY).owner;
+        const maxBoom = owner.maxBoom;
+        owner.bombsPlaced--;
+
         let burn = (dx, dy, image, imageEnd) => {
             for (let i = 1; i <= maxBoom; i++) {
                 const x = bombX + i * dx;
@@ -565,6 +569,8 @@ class Sprite {
     speed;
 
     maxBoom;
+    maxBombsCount;
+    bombsPlaced;
 
     constructor(spriteIndex) {
         this.animations = [];
@@ -576,6 +582,8 @@ class Sprite {
         this.speed = 1;
 
         this.maxBoom = 1;
+        this.maxBombsCount = 1;
+        this.bombsPlaced = 0;
 
         for (let img of assets.players[spriteIndex]) {
             this.animations.push(new AnimatedImage(img, -1))
@@ -680,16 +688,17 @@ class Sprite {
         const tile = map.getCell(tileX, tileY);
 
         if (this.playerKeys[PlayerKeys.Bomb]) {
-            if (tile.type == TerrainType.Free) {
+            if (tile.type == TerrainType.Free && this.bombsPlaced < this.maxBombsCount) {
                 map.setCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16), {
                     type: TerrainType.Bomb,
                     image: assets.bomb,
                     imageIdx: 0,
                     animateDelay: 12,
                     bombTime: 210,
-                    maxBoom: this.maxBoom
+                    owner: this
                 });
                 map.playSound("posebomb");
+                this.bombsPlaced++;
             }
         }
 
@@ -697,6 +706,8 @@ class Sprite {
             const powerUpType = tile.powerUpType;
             if (powerUpType == PowerUpType.ExtraFire) {
                 this.maxBoom++;
+            } else if (powerUpType == PowerUpType.ExtraBomb) {
+                this.maxBombsCount++;
             }
 
             map.setCell(tileX, tileY, {

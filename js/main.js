@@ -161,11 +161,11 @@ class Terrain {
                 }
 
                 if (cell.bombTime) {
-                    if (!cell.owner.rcAllowed) {
+                    if (!cell.rcAllowed) {
                         cell.bombTime--;
                     }
 
-                    if (cell.bombTime == 0 || cell.owner.rcDitonate) {
+                    if (cell.bombTime == 0 || (cell.owner.rcDitonate && cell.rcAllowed)) {
                         this.ditonateBomb(x, y, cell.maxBoom);
                     }
                 }
@@ -719,6 +719,7 @@ class Sprite {
                     animateDelay: 12,
                     bombTime: 210,
                     maxBoom: this.maxBoom,
+                    rcAllowed: this.rcAllowed,
                     owner: this
                 });
                 map.playSound("posebomb");

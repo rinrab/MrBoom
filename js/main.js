@@ -23,6 +23,7 @@ const TerrainType =
     TemporaryWall: 2,
     Bomb: 3,
     PowerUp: 4,
+    PowerUpFire: 5
 };
 
 const PowerUpType = {
@@ -124,6 +125,7 @@ class Terrain {
         switch (cell.type) {
             case TerrainType.Free:
             case TerrainType.Bomb:
+            case TerrainType.PowerUpFire:
                 return true;
 
             case TerrainType.PermanentWall:
@@ -231,7 +233,7 @@ class Terrain {
                     break;
                 } else if (cell.type == TerrainType.PowerUp) {
                     map.setCell(x, y, {
-                        type: TerrainType.Free,
+                        type: TerrainType.PowerUpFire,
                         image: assets.fire,
                         imageIdx: 0,
                         animateDelay: 6,
@@ -244,7 +246,7 @@ class Terrain {
                 } else if (cell.type == TerrainType.Bomb) {
                     this.ditonateBomb(x, y);
                     break;
-                } else if (cell.type == TerrainType.Fire) {
+                } else if (cell.type == TerrainType.Fire || cell.type == TerrainType.PowerUpFire) {
                 } else {
                     map.setCell(x, y, {
                         type: TerrainType.Fire,
@@ -776,7 +778,7 @@ class Sprite {
 
             if (doFire) {
                 map.setCell(tileX, tileY, {
-                    type: TerrainType.Free,
+                    type: TerrainType.PowerUpFire,
                     image: assets.fire,
                     imageIdx: 0,
                     animateDelay: 6,

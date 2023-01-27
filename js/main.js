@@ -583,6 +583,8 @@ class Sprite {
     rcAllowed;
     rcDitonate;
 
+    isHaveRollers;
+
     constructor(spriteIndex) {
         this.animations = [];
 
@@ -725,20 +727,44 @@ class Sprite {
 
         if (tile.type == TerrainType.PowerUp) {
             const powerUpType = tile.powerUpType;
+            let doFire = false;
+
             if (powerUpType == PowerUpType.ExtraFire) {
                 this.maxBoom++;
             } else if (powerUpType == PowerUpType.ExtraBomb) {
                 this.maxBombsCount++;
             } else if (powerUpType == PowerUpType.RemoteControl) {
-                this.rcAllowed = true;
+                if (!this.rcAllowed) {
+                    this.rcAllowed = true;
+                } else {
+                    doFire = true;
+                }
             } else if (powerUpType == PowerUpType.RollerSkate) {
-                this.speed = 2;
+                if (!this.isHaveRollers) {
+                    this.speed = 2;
+                    this.isHaveRollers = true;
+                } else {
+                    doFire = true;
+                }
             }
 
-            map.setCell(tileX, tileY, {
-                type: TerrainType.Free
-            });
-            map.playSound("pick");
+            if (doFire) {
+                map.setCell(tileX, tileY, {
+                    type: TerrainType.Free,
+                    image: assets.fire,
+                    imageIdx: 0,
+                    animateDelay: 6,
+                    next: {
+                        type: TerrainType.Free
+                    }
+                });
+                map.playSound("sac");
+            } else {
+                map.setCell(tileX, tileY, {
+                    type: TerrainType.Free
+                });
+                map.playSound("pick");
+            }
         }
     }
 

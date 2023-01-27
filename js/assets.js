@@ -27,16 +27,21 @@ function loadAssets() {
         let result = [];
 
         const framesCount = 20;
-        const framesIndex = [0, 1, 0, 2];
+        const framesIndex = [
+                [0, 1, 0, 2], [0, 1, 0, 2],
+                [0, 1, 0, 2], [0, 1, 0, 2],
+                [0, 1, 2, 3, 4, 5, 6, 7],
+        ];
+
         const spriteWidth = 24;
         const spriteHeight = 24;
 
         for (let spriteIndex = 0; spriteIndex < 4; spriteIndex++) {
             let player = [];
-            for (let x = 0; x < 4; x++) {
+            for (let x = 0; x < 5; x++) {
                 let newImages = [];
 
-                for (let index of framesIndex) {
+                for (let index of framesIndex[x]) {
                     let frameX = index + x * 3 + spriteIndex * framesCount;
 
                     newImages.push({

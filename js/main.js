@@ -487,6 +487,9 @@ class AnimatedImage {
     }
 
     draw(ctx, x = 0, y = 0, imageIndex = -1) {
+        if (imageIndex == null) {
+            return;
+        }
         let img;
         if (imageIndex == -1) {
             img = this.currentImage;
@@ -571,6 +574,7 @@ class Sprite {
     y;
 
     animateIndex;
+    frameIndex;
 
     playerKeys;
 
@@ -585,10 +589,13 @@ class Sprite {
 
     isHaveRollers;
 
+    isDie;
+
     constructor(spriteIndex) {
         this.animations = [];
 
         this.animateIndex = 0;
+        this.frameIndex = 0;
 
         this.playerKeys = {};
 
@@ -633,6 +640,18 @@ class Sprite {
     }
 
     update() {
+        if (this.isDie) {
+            this.animateIndex = 4;
+            if (this.frameIndex < 7 && this.frameIndex != null) {
+                this.frameIndex += 1 / 6;
+            } else {
+                this.frameIndex = null;
+            }
+            return;
+        } else {
+            this.frameIndex == 0;
+        }
+
         let direction;
 
         if (this.playerKeys[PlayerKeys.Up]) {
@@ -710,6 +729,11 @@ class Sprite {
         const tileY = Int.divRound(this.y, 16);
         const tile = map.getCell(tileX, tileY);
 
+        if (tile.type == TerrainType.Fire) {
+            this.isDie = true;
+            map.playSound("player_die");
+        }
+
         if (this.playerKeys[PlayerKeys.Bomb]) {
             if (tile.type == TerrainType.Free && this.bombsPlaced < this.maxBombsCount) {
                 map.setCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16), {
@@ -775,7 +799,8 @@ class Sprite {
     }
 
     draw(ctx) {
-        this.animations[this.animateIndex].draw(ctx, this.x + 5, this.y - 7);
+        let frameIndex = (this.frameIndex == null) ? null : Math.floor(this.frameIndex);
+        this.animations[this.animateIndex].draw(ctx, this.x + 5, this.y - 7, frameIndex);
     }
 }
 

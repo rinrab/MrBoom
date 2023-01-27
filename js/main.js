@@ -53,7 +53,8 @@ const PlayerKeys =
     Left: 1,
     Right: 2,
     Down: 3,
-    Bomb: 4
+    Bomb: 4,
+    rcDitonate: 5
 };
 
 class Terrain {
@@ -160,9 +161,11 @@ class Terrain {
                 }
 
                 if (cell.bombTime) {
-                    cell.bombTime--;
+                    if (!cell.owner.rcAllowed) {
+                        cell.bombTime--;
+                    }
 
-                    if (cell.bombTime == 0) {
+                    if (cell.bombTime == 0 || cell.owner.rcDitonate) {
                         this.ditonateBomb(x, y, cell.owner.maxBoom);
                     }
                 }
@@ -350,7 +353,7 @@ async function init() {
 
     let sprite = new Sprite(0);
     sprites.push(sprite);
-    let ctrl = new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft");
+    let ctrl = new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft", "AltLeft");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
 
@@ -358,7 +361,7 @@ async function init() {
     sprite.x = 15*16;
     sprite.y = 11*16;
     sprites.push(sprite);
-    ctrl = new KeyboardController("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight");
+    ctrl = new KeyboardController("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight", "AltRight");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
 
@@ -504,14 +507,16 @@ class KeyboardController {
     keyLeft;
     keyRight;
     keyBomb;
+    keyRcDitonate;
     sprite;
 
-    constructor(keyUp, keyDown, keyLeft, keyRight, keyBomb) {
+    constructor(keyUp, keyDown, keyLeft, keyRight, keyBomb, keyRcDitonate) {
         this.keyUp = keyUp;
         this.keyDown = keyDown;
         this.keyLeft = keyLeft;
         this.keyRight = keyRight;
         this.keyBomb = keyBomb;
+        this.keyRcDitonate = keyRcDitonate;
         this.sprite = null;
     }
 
@@ -526,6 +531,7 @@ class KeyboardController {
             this.sprite.playerKeys[PlayerKeys.Left] = keys[this.keyLeft];
             this.sprite.playerKeys[PlayerKeys.Right] = keys[this.keyRight];
             this.sprite.playerKeys[PlayerKeys.Bomb] = keys[this.keyBomb];
+            this.sprite.playerKeys[PlayerKeys.rcDitonate] = keys[this.keyRcDitonate];
         }
     }
 }
@@ -572,6 +578,9 @@ class Sprite {
     maxBombsCount;
     bombsPlaced;
 
+    rcAllowed;
+    rcDitonate;
+
     constructor(spriteIndex) {
         this.animations = [];
 
@@ -584,6 +593,8 @@ class Sprite {
         this.maxBoom = 1;
         this.maxBombsCount = 1;
         this.bombsPlaced = 0;
+
+        this.rcAllowed = false;
 
         for (let img of assets.players[spriteIndex]) {
             this.animations.push(new AnimatedImage(img, -1))
@@ -628,6 +639,12 @@ class Sprite {
             direction = Direction.Right;
         } else if (this.playerKeys[PlayerKeys.Down]) {
             direction = Direction.Down;
+        }
+
+        if (this.rcAllowed && this.playerKeys[PlayerKeys.rcDitonate]) {
+            this.rcDitonate = true;
+        } else {
+            this.rcDitonate = false;
         }
 
         if (direction == Direction.Up) {
@@ -708,6 +725,8 @@ class Sprite {
                 this.maxBoom++;
             } else if (powerUpType == PowerUpType.ExtraBomb) {
                 this.maxBombsCount++;
+            } else if (powerUpType == PowerUpType.RemoteControl) {
+                this.rcAllowed = true;
             }
 
             map.setCell(tileX, tileY, {

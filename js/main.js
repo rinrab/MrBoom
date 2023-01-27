@@ -682,7 +682,7 @@ class Sprite {
                     this.xAlign(-1);
                 }
 
-                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+                this.frameIndex += 1 / 18;
             } else if (direction == Direction.Down) {
                 if (Int.mod(this.x, 16) == 0) {
                     if (map.isWalkable(Int.divFloor(this.x, 16), Int.divCeil(this.y + 1, 16))) {
@@ -694,7 +694,7 @@ class Sprite {
                     this.xAlign(1);
                 }
 
-                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+                this.frameIndex += 1 / 18;
             } else if (direction == Direction.Left) {
                 if (Int.mod(this.y, 16) == 0) {
                     if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divFloor(this.y, 16))) {
@@ -707,7 +707,7 @@ class Sprite {
                     this.yAlign(-1);
                 }
 
-                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+                this.frameIndex += 1 / 18;
             } else if (direction == Direction.Right) {
                 if (Int.mod(this.y, 16) == 0) {
                     if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divFloor(this.y, 16))) {
@@ -719,9 +719,9 @@ class Sprite {
                     this.yAlign(1);
                 }
 
-                this.animations[this.animateIndex].delay = 1000 / FPS * 7;
+                this.frameIndex += 1 / 18;
             } else {
-                this.animations[this.animateIndex].delay = -1;
+                this.frameIndex = 0;
             }
         }
 

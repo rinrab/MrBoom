@@ -672,56 +672,43 @@ class Sprite {
             this.rcDitonate = false;
         }
 
+        const moveY = (delta) => {
+            if (Int.mod(this.x, 16) == 0) {
+                const y = (delta < 0) ? Int.divFloor(this.y + delta, 16) : Int.divCeil(this.y + delta, 16);
+                if (map.isWalkable(Int.divFloor(this.x, 16), y)) {
+                    this.y += delta;
+                }
+            } else {
+                this.xAlign(delta);
+            }
+
+            this.frameIndex += 1 / 18;
+        }
+        const moveX = (delta) => {
+            if (Int.mod(this.y, 16) == 0) {
+                const x = (delta < 0) ? Int.divFloor(this.x + delta, 16) : Int.divCeil(this.x + delta, 16);
+                if (map.isWalkable(x, Int.divFloor(this.y, 16))) {
+                    this.x += delta;
+                }
+            } else {
+                this.yAlign(delta);
+            }
+
+            this.frameIndex += 1 / 18;
+        }
         for (let i = 0; i < this.speed; i++) {
             if (direction == Direction.Up) {
-                if (Int.mod(this.x, 16) == 0) {
-                    if (map.isWalkable(Int.divFloor(this.x, 16), Int.divFloor(this.y - 1, 16))) {
-                        this.y -= 1;
-                    }
-
-                    this.animateIndex = 3;
-                } else {
-                    this.xAlign(-1);
-                }
-
-                this.frameIndex += 1 / 18;
+                this.animateIndex = 3;
+                moveY(-1);
             } else if (direction == Direction.Down) {
-                if (Int.mod(this.x, 16) == 0) {
-                    if (map.isWalkable(Int.divFloor(this.x, 16), Int.divCeil(this.y + 1, 16))) {
-                        this.y += 1;
-                    }
-
-                    this.animateIndex = 0;
-                } else {
-                    this.xAlign(1);
-                }
-
-                this.frameIndex += 1 / 18;
+                this.animateIndex = 0;
+                moveY(1);
             } else if (direction == Direction.Left) {
-                if (Int.mod(this.y, 16) == 0) {
-                    if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divFloor(this.y, 16))) {
-                        this.x -= 1;
-                    }
-
-                    this.animateIndex = 2;
-                }
-                else {
-                    this.yAlign(-1);
-                }
-
-                this.frameIndex += 1 / 18;
+                moveX(-1);
+                this.animateIndex = 2;
             } else if (direction == Direction.Right) {
-                if (Int.mod(this.y, 16) == 0) {
-                    if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divFloor(this.y, 16))) {
-                        this.x += 1;
-                    }
-
-                    this.animateIndex = 1;
-                } else {
-                    this.yAlign(1);
-                }
-
-                this.frameIndex += 1 / 18;
+                moveX(1);
+                this.animateIndex = 1;
             } else {
                 this.frameIndex = 0;
             }

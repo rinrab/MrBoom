@@ -166,7 +166,7 @@ class Terrain {
                     }
 
                     if (cell.bombTime == 0 || cell.owner.rcDitonate) {
-                        this.ditonateBomb(x, y, cell.owner.maxBoom);
+                        this.ditonateBomb(x, y, cell.maxBoom);
                     }
                 }
             }
@@ -205,9 +205,9 @@ class Terrain {
     }
 
     ditonateBomb(bombX, bombY) {
-        const owner = this.getCell(bombX, bombY).owner;
-        const maxBoom = owner.maxBoom;
-        owner.bombsPlaced--;
+        const bombCell = this.getCell(bombX, bombY);;
+        const maxBoom = bombCell.maxBoom;
+        bombCell.owner.bombsPlaced--;
 
         let burn = (dx, dy, image, imageEnd) => {
             for (let i = 1; i <= maxBoom; i++) {
@@ -242,7 +242,7 @@ class Terrain {
                     this.playSound("sac");
                     break;
                 } else if (cell.type == TerrainType.Bomb) {
-                    this.ditonateBomb(x, y, cell.maxBoom);
+                    this.ditonateBomb(x, y);
                     break;
                 } else if (cell.type == TerrainType.Fire) {
                 } else {
@@ -718,6 +718,7 @@ class Sprite {
                     imageIdx: 0,
                     animateDelay: 12,
                     bombTime: 210,
+                    maxBoom: this.maxBoom,
                     owner: this
                 });
                 map.playSound("posebomb");

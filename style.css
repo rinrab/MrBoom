@@ -1,0 +1,79 @@
+#grafic {
+    margin: auto;
+    position: absolute;
+    width: calc(min(100vw / 320, 100vh / 200) * 320);
+    image-rendering: pixelated;
+}
+
+body {
+    background: var(--bs-black);
+    margin: 0;
+    min-height: 100vh;
+}
+
+.container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#fps-display {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+}
+
+.btn-start {
+    font-size: 30px;
+    --foreground-color: blue;
+    --background-color: white;
+    box-shadow: rgba(128, 128, 128, .7) 10px 10px 5px;
+    width: 15rem;
+}
+
+    .btn-start:hover {
+        box-shadow: rgba(64, 64, 64, .7) 15px 15px 10px;
+        transform: scale(1.1);
+    }
+
+.btn {
+    color: var(--foreground-color);
+    border-width: 1px;
+    border-color: var(--foreground-color);
+    border-radius: 4px;
+    background: var(--background-color);
+    --transition-delay: .1s;
+    display: inline-block;
+    transition: color linear var(--transition-delay), border linear var(--transition-delay), background linear var(--transition-delay), box-shadow linear var(--transition-delay), margin linear var(--transition-delay), opacity linear var(--transition-delay), transform linear var(--transition-delay);
+    padding: 0.25rem 1rem 0.25rem 1rem;
+}
+
+    .btn:hover {
+        color: var(--background-color);
+        border-color: var(--foreground-color);
+        background: var(--foreground-color);
+        cursor: pointer;
+    }
+
+#start-menu {
+    z-index: 2000;
+}
+
+.blur, .blur * {
+    filter: blur(4px);
+}
+
+body[state="home"] #grafic {
+    /*filter: blur(1px);*/
+}
+
+body[state="game"] .btn-start {
+    opacity: 0;
+    cursor: default;
+}

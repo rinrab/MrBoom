@@ -390,6 +390,10 @@ async function init() {
         ctrl.setSprite(sprite);
         controllersList.push(ctrl);
     })
+
+    document.getElementById("play-btn").addEventListener("click", () => {
+        document.body.setAttribute("state", "game");
+    });
 }
 
 function getDieingSprite(x, y) {

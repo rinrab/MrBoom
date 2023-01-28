@@ -12,41 +12,10 @@
   <script src='js/sound.js'></script>
   <script src='js/main.js'></script>
 
-  <style>
-    #grafic {
-      margin: auto;
-      position: absolute;
-      width: calc(min(100vw / 320, 100vh / 200) * 320);
-      image-rendering: pixelated;
-    }
-
-    body {
-      background: var(--bs-black);
-      margin: 0;
-      min-height: 100vh;
-    }
-
-    .container {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #fps-display {
-      position: absolute;
-      top: 0;
-      left: 0;
-      font-size: 20px;
-    }
-  </style>
+  <link href="style.css" rel="stylesheet" />
 </head>
 
-<body>
+<body state="home">
   <div hidden>
     <img src="Gfx/NEIGE1.GIF" id="NEIGE1">
     <img src="Gfx/NEIGE2.GIF" id="NEIGE2">
@@ -63,6 +32,9 @@
     <audio src="sound/oioi.wav" id="sound-oioi" preload="auto"></audio>
   </div>
   <div class="container">
+    <div id="start-menu">
+      <button class="btn btn-start" id="play-btn">Play</button>
+    </div>
     <canvas id="grafic" width="320" height="200"></canvas>
     <label id="fps-display" ></label>
   </div>

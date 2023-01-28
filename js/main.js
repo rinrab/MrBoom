@@ -341,21 +341,21 @@ async function init() {
     sprite.x = 17*16;
     sprite.y = 1*16;
     sprites.push(sprite);
-    ctrl = new DemoController("lbrdwwbulllwwbrrddwwbuulll");
+    ctrl = new DemoController("lbrdwbulllwbrrddwbuulllw");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
     sprite = new Sprite(0);
     sprite.x = 11*16;
     sprite.y = 7*16;
     sprites.push(sprite);
-    ctrl = new DemoController("lbrdwwbulllwwbrrddwwbuulll");
+    ctrl = new DemoController("lbrdwwbulllwwbrrddwwbuulllww");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
     sprite = new Sprite(1);
     sprite.x = 1*16;
     sprite.y = 1*16;
     sprites.push(sprite);
-    ctrl = new DemoController("rbldwwburrrwwbllddwwbuurrr");
+    ctrl = new DemoController("rbldwwburrrwwbllddwwbuurrrww");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
 
@@ -620,14 +620,27 @@ class DemoController {
             this.sprite.playerKeys[PlayerKeys.Bomb] = true;
             this.currentMove++;
         } else if (this.moves[this.currentMove] == "w") {
-            if (this.step < 100) {
-                this.step++;
-                if (this.step == 50) {
-                    this.sprite.playerKeys[PlayerKeys.rcDitonate] = true;
-                }
-            } else {
+            this.sprite.playerKeys[PlayerKeys.rcDitonate] = true;
+
+            if (this.step > 16) {
                 this.currentMove++;
                 this.step = 0;
+            }
+
+            if (this.step > 0) {
+                this.step++;
+            } else {
+                let myBombs = 0;
+                for (let y = 0; y < map.height; y++) {
+                    for (let x = 0; x < map.width; x++) {
+                        if (map.getCell(x, y).owner == this.sprite) {
+                            myBombs++;
+                        }
+                    }
+                }
+                if (myBombs == 0) {
+                    this.step = 1;
+                }
             }
         } else {
             this.currentMove++;

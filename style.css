@@ -9,6 +9,7 @@ body {
     background: var(--bs-black);
     margin: 0;
     min-height: 100vh;
+    font-family: "Lucida Console";
 }
 
 .container {
@@ -34,19 +35,20 @@ body {
     --foreground-color: blue;
     --background-color: white;
     box-shadow: rgba(128, 128, 128, .7) 10px 10px 5px;
-    width: 15rem;
+    width: 100%;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
 }
 
     .btn-start:hover {
         box-shadow: rgba(64, 64, 64, .7) 15px 15px 10px;
-        transform: scale(1.1);
     }
 
 .btn {
     color: var(--foreground-color);
     border-width: 1px;
     border-color: var(--foreground-color);
-    border-radius: 4px;
+    border-radius: 10px;
     background: var(--background-color);
     --transition-delay: .1s;
     display: inline-block;
@@ -63,14 +65,23 @@ body {
 
 #start-menu {
     z-index: 2000;
+    background: white;
+    box-shadow: rgb(151, 151, 151, 0.70) 20px -15px 10px;
+    opacity: .6;
+    transition: background linear .2s, box-shadow linear .2s, opacity linear .5s;
+    border-radius: 10px;
 }
+
+    #start-menu:hover {
+        opacity: 1;
+        box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
+    }
 
 .blur, .blur * {
     filter: blur(4px);
 }
 
 body[state="home"] #grafic {
-    /*filter: blur(1px);*/
 }
 
 body[state="game"] .btn-start {
@@ -79,30 +90,27 @@ body[state="game"] .btn-start {
 }
 
 .help {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    padding: .5rem .5rem .5rem 2rem;
-    font-family: "Lucida Console";
-    max-width: 25%;
-    line-height: 7px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, .6);
-    box-shadow: rgb(151, 151, 151, 0.70) 20px -15px 10px;
-    border-radius: 5px;
-    transition: background linear .2s, box-shadow linear .2s, opacity linear .5s;
+    padding: 1rem;
+    font-weight: bold;
     cursor: text;
+    display: flex;
 }
 
-    .help:hover {
-        background: rgba(255, 255, 255, 1);
-        box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
-    }
     body[state="game"] .help {
         opacity: 0;
         cursor: default;
     }
 
-    .help p {
-        padding: 0 1rem 0 1rem;
+    .help>div p {
+        padding: 0 2rem 0 2rem;
     }
+
+.help strong {
+    padding: 0 1rem 0 1rem;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+.help > div:not(:first-child) {
+    border-left: 1px solid black;
+}

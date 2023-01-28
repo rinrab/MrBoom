@@ -163,7 +163,7 @@ class Terrain {
                 }
 
                 if (cell.bombTime) {
-                    if (!cell.rcAllowed || !cell.owner.rcAllowed) {
+                    if (!cell.rcAllowed || !cell.owner.rcAllowed || cell.owner.isDie) {
                         cell.bombTime--;
                     }
 

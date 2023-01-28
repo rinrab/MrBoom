@@ -76,21 +76,14 @@ body {
         opacity: 1;
         box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
     }
-    body[state="game"] #start-menu {
-        opacity:0;
-        cursor: default;
-    }
+
+body[state="game"] #start-menu, body[state="game"] #start-menu * {
+    opacity: 0;
+    cursor: default;
+}
 
 .blur, .blur * {
     filter: blur(4px);
-}
-
-body[state="home"] #grafic {
-}
-
-body[state="game"] .btn-start {
-    opacity: 0;
-    cursor: default;
 }
 
 .help {
@@ -100,21 +93,17 @@ body[state="game"] .btn-start {
     display: flex;
 }
 
-    body[state="game"] .help {
-        opacity: 0;
-        cursor: default;
-    }
-
-    .help>div p {
+    .help > div p {
         padding: 0 2rem 0 2rem;
     }
 
-.help strong {
-    padding: 0 1rem 0 1rem;
-    display: block;
-    width: 100%;
-    text-align: left;
-}
-.help > div:not(:first-child) {
-    border-left: 1px solid black;
-}
+    .help strong {
+        padding: 0 1rem 0 1rem;
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+
+    .help > div:not(:first-child) {
+        border-left: 1px solid black;
+    }

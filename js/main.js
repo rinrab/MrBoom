@@ -410,22 +410,6 @@ async function init() {
     });
 }
 
-function getDieingSprite(x, y) {
-    const rv = new AnimatedImage([
-        { id: "PAUSE", rect: new Rect(1 * 16, 80, 16, 16) },
-        { id: "PAUSE", rect: new Rect(2 * 16, 80, 16, 16) },
-        { id: "PAUSE", rect: new Rect(3 * 16, 80, 16, 16) },
-        { id: "PAUSE", rect: new Rect(4 * 16, 80, 16, 16) },
-        { id: "PAUSE", rect: new Rect(5 * 16, 80, 16, 16) },
-        { id: "PAUSE", rect: new Rect(6 * 16, 80, 16, 16) },
-        { id: "PAUSE", rect: new Rect(7 * 16, 80, 16, 16) }
-    ], 30 / 6);
-    rv.x = x;
-    rv.y = y;
-    rv.time = 30;
-    return rv;
-}
-
 function begin(timestamp, delta) {
     for (let c of controllersList) {
         c.update();

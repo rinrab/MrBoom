@@ -863,6 +863,10 @@ class Sprite {
                 }
             } else if (powerUpType == PowerUpType.Life) {
                 this.lifeCount++;
+            } else if (powerUpType == PowerUpType.Shield) {
+                this.unplugin = 600;
+                this.blinkingSpeed = 30;
+                this.blinking = 0;
             }
 
             if (doFire) {

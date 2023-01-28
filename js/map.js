@@ -67,6 +67,7 @@ const mapNeigeInitial = {
         PowerUpType.Skull,
         PowerUpType.Life,
         PowerUpType.RemoteControl,
-        PowerUpType.RollerSkate
+        PowerUpType.RollerSkate,
+        PowerUpType.Shield
     ]
 }

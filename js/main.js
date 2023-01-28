@@ -720,6 +720,7 @@ class Sprite {
 
         if (tile.type == TerrainType.Fire) {
             this.isDie = true;
+            this.frameIndex = 0;
             map.playSound("player_die");
         }
 

@@ -70,12 +70,28 @@ body {
     opacity: .6;
     transition: background linear .2s, box-shadow linear .2s, opacity linear .5s;
     border-radius: 10px;
+    animation: start_menu-begin 5s;
 }
 
     #start-menu:hover {
         opacity: 1;
         box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
     }
+
+@keyframes start_menu-begin {
+    0% {
+        opacity: 0;
+    }
+
+    20%,80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: .6;
+    }
+}
+
 
 body[state="game"] #start-menu, body[state="game"] #start-menu * {
     opacity: 0;

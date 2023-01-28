@@ -11,6 +11,7 @@ let controllersList = [];
 let sprites = [];
 
 let assets;
+let soundAssets;
 
 let cheats = {
     noClip: false
@@ -57,6 +58,32 @@ const PlayerKeys =
     Bomb: 4,
     rcDitonate: 5
 };
+
+const mapNeigeInitial = {
+    map: [
+        "###################",
+        "#  -------------  #",
+        "# #-# #-#-#-#-#-# #",
+        "#---  ------  ----#",
+        "#-#-#-###-#-# # #-#",
+        "#-----###-----   -#",
+        "#-#-#-###-#-#-# #-#",
+        "#---------  ------#",
+        "#-#-#-# #-# #-#-#-#",
+        "#-----  ----------#",
+        "# #-#-#-#-#-#-# ###",
+        "#  -----------  ###",
+        "###################"
+    ],
+    powerUps: [
+        PowerUpType.ExtraBomb,
+        PowerUpType.ExtraFire,
+        PowerUpType.Skull,
+        PowerUpType.Life,
+        PowerUpType.RemoteControl,
+        PowerUpType.RollerSkate
+    ]
+}
 
 class Terrain {
     data;
@@ -310,40 +337,22 @@ addEventListener("load", function () {
     init();
 });
 
-async function init() {
-    assets = loadAssets();
-    soundAssets = await loadSoundAssets();
-
-    map = new Terrain(
-        [
-            "###################",
-            "#  -------------  #",
-            "# #-# #-#-#-#-#-# #",
-            "#---  ------  ----#",
-            "#-#-#-###-#-# # #-#",
-            "#-----###-----   -#",
-            "#-#-#-###-#-#-# #-#",
-            "#---------  ------#",
-            "#-#-#-# #-# #-#-#-#",
-            "#-----  ----------#",
-            "# #-#-#-#-#-#-# ###",
-            "#  -----------  ###",
-            "###################"
-        ],
-        [
-            PowerUpType.ExtraBomb,
-            PowerUpType.ExtraFire,
-            PowerUpType.Skull,
-            PowerUpType.Life,
-            PowerUpType.RemoteControl,
-            PowerUpType.RollerSkate
-        ]);
+function newMap(initial) {
+    const rv = new Terrain(initial.map, initial.powerUps);
 
     let soundManager = new SoundManager(soundAssets);
 
-    map.soundCallback = function (sound) {
+    rv.soundCallback = function (sound) {
         soundManager.playSound(sound);
     };
+    return rv;
+}
+
+async function init() {
+    soundAssets = await loadSoundAssets();
+    assets = loadAssets();
+
+    map = newMap(mapNeigeInitial);
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d");
@@ -354,17 +363,25 @@ async function init() {
 
     tree = new AnimatedImage(assets.niegeTree, 1000 / FPS * 15);
 
-    let sprite = new Sprite(0);
+    sprite = new Sprite(2);
+    sprite.x = 17*16;
+    sprite.y = 1*16;
     sprites.push(sprite);
-    let ctrl = new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft", "AltLeft");
+    ctrl = new DemoController("lbrdwwbulllwwbrrddwwbuulll");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
-
-    sprite = new Sprite(1);
-    sprite.x = 15*16;
-    sprite.y = 11*16;
+    sprite = new Sprite(0);
+    sprite.x = 11*16;
+    sprite.y = 7*16;
     sprites.push(sprite);
-    ctrl = new KeyboardController("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight", "AltRight");
+    ctrl = new DemoController("lbrdwwbulllwwbrrddwwbuulll");
+    ctrl.setSprite(sprite);
+    controllersList.push(ctrl);
+    sprite = new Sprite(1);
+    sprite.x = 1*16;
+    sprite.y = 1*16;
+    sprites.push(sprite);
+    ctrl = new DemoController("rbldwwburrrwwbllddwwbuurrr");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
 
@@ -382,17 +399,33 @@ async function init() {
         keys[e.code] = false;
     })
 
-    addEventListener("gamepadconnected", function (e) {
-        let sprite = new Sprite(2);
-        sprites.push(sprite);
-
-        ctrl = new GamepadController(e.gamepad);
-        ctrl.setSprite(sprite);
-        controllersList.push(ctrl);
-    })
-
     document.getElementById("play-btn").addEventListener("click", () => {
         document.body.setAttribute("state", "game");
+        sprites = [];
+        map = newMap(mapNeigeInitial);
+
+        let sprite = new Sprite(0);
+        sprites.push(sprite);
+        let ctrl = new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft", "AltLeft");
+        ctrl.setSprite(sprite);
+        controllersList.push(ctrl);
+
+        sprite = new Sprite(1);
+        sprite.x = 15 * 16;
+        sprite.y = 11 * 16;
+        sprites.push(sprite);
+        ctrl = new KeyboardController("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight", "AltRight");
+        ctrl.setSprite(sprite);
+        controllersList.push(ctrl);
+
+        addEventListener("gamepadconnected", function (e) {
+            let sprite = new Sprite(2);
+            sprites.push(sprite);
+
+            ctrl = new GamepadController(e.gamepad);
+            ctrl.setSprite(sprite);
+            controllersList.push(ctrl);
+        })
     });
 }
 
@@ -569,6 +602,64 @@ class GamepadController {
             this.sprite.playerKeys[PlayerKeys.Right] = currGamePad.buttons[15].touched;
             this.sprite.playerKeys[PlayerKeys.Bomb] = currGamePad.buttons[1].pressed;
             this.sprite.playerKeys[PlayerKeys.rcDitonate] = currGamePad.buttons[0].pressed;
+        }
+    }
+}
+
+class DemoController {
+    moves;
+    currentMove;
+    step;
+
+    constructor(moves) {
+        this.currentMove = 0;
+        this.step = 0;
+        this.moves = moves;
+    }
+
+    setSprite(sprite) {
+        this.sprite = sprite;
+    }
+
+    update() {
+        this.sprite.playerKeys = {};
+
+        const move = (direction) => {
+            if (this.step < ((this.sprite.isHaveRollers) ? 8 : 16)) {
+                this.sprite.playerKeys[direction] = true;
+                this.step++;
+            } else {
+                this.currentMove++;
+                this.step = 0;
+            }
+        }
+
+        if (this.moves[this.currentMove] == "l") {
+            move(PlayerKeys.Left);
+        } else if (this.moves[this.currentMove] == "r") {
+            move(PlayerKeys.Right);
+        } else if (this.moves[this.currentMove] == "u") {
+            move(PlayerKeys.Up);
+        } else if (this.moves[this.currentMove] == "d") {
+            move(PlayerKeys.Down);
+        } else if (this.moves[this.currentMove] == "b") {
+            this.sprite.playerKeys[PlayerKeys.Bomb] = true;
+            this.currentMove++;
+        } else if (this.moves[this.currentMove] == "w") {
+            if (this.step < 100) {
+                this.step++;
+                if (this.step == 50) {
+                    this.sprite.playerKeys[PlayerKeys.rcDitonate] = true;
+                }
+            } else {
+                this.currentMove++;
+                this.step = 0;
+            }
+        } else {
+            this.currentMove++;
+        }
+        if (this.currentMove >= this.moves.length) {
+            this.currentMove = 0;
         }
     }
 }

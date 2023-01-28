@@ -400,6 +400,13 @@ async function init() {
             ctrl.setSprite(sprite);
             controllersList.push(ctrl);
         })
+        if (document.body.requestFullscreen) {
+            document.body.requestFullscreen();
+        } else if (document.body.webkitRequestFullscreen) {
+            document.body.webkitRequestFullscreen();
+        } else if (document.body.msRequestFullscreen) {
+            document.body.msRequestFullscreen();
+        }
     });
 }
 

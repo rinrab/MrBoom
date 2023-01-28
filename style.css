@@ -50,7 +50,7 @@ body {
     background: var(--background-color);
     --transition-delay: .1s;
     display: inline-block;
-    transition: color linear var(--transition-delay), border linear var(--transition-delay), background linear var(--transition-delay), box-shadow linear var(--transition-delay), margin linear var(--transition-delay), opacity linear var(--transition-delay), transform linear var(--transition-delay);
+    transition: color linear var(--transition-delay), border linear var(--transition-delay), background linear var(--transition-delay), box-shadow linear var(--transition-delay), margin linear var(--transition-delay), opacity linear .5s, transform linear var(--transition-delay);
     padding: 0.25rem 1rem 0.25rem 1rem;
 }
 
@@ -77,3 +77,32 @@ body[state="game"] .btn-start {
     opacity: 0;
     cursor: default;
 }
+
+.help {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: .5rem .5rem .5rem 2rem;
+    font-family: "Lucida Console";
+    max-width: 25%;
+    line-height: 7px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, .6);
+    box-shadow: rgb(151, 151, 151, 0.70) 20px -15px 10px;
+    border-radius: 5px;
+    transition: background linear .2s, box-shadow linear .2s, opacity linear .5s;
+    cursor: text;
+}
+
+    .help:hover {
+        background: rgba(255, 255, 255, 1);
+        box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
+    }
+    body[state="game"] .help {
+        opacity: 0;
+        cursor: default;
+    }
+
+    .help p {
+        padding: 0 1rem 0 1rem;
+    }

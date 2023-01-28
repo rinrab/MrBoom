@@ -163,7 +163,7 @@ class Terrain {
                 }
 
                 if (cell.bombTime) {
-                    if (!cell.rcAllowed) {
+                    if (!cell.rcAllowed || !cell.owner.rcAllowed) {
                         cell.bombTime--;
                     }
 
@@ -593,6 +593,12 @@ class Sprite {
 
     isDie;
 
+    blinking;
+    blinkingSpeed;
+    unplugin;
+
+    lifeCount = 0;
+
     constructor(spriteIndex) {
         this.animations = [];
 
@@ -608,6 +614,9 @@ class Sprite {
         this.bombsPlaced = 0;
 
         this.rcAllowed = false;
+
+        this.blinking = undefined;
+        this.blinkingSpeed = 15;
 
         for (let img of assets.players[spriteIndex]) {
             this.animations.push(new AnimatedImage(img, -1))
@@ -642,6 +651,13 @@ class Sprite {
     }
 
     update() {
+        if (this.unplugin >= 0) {
+            this.blinking++;
+            this.unplugin--;
+        } else {
+            this.blinking = undefined;
+            this.unplugin = undefined;
+        }
         if (this.isDie) {
             this.animateIndex = 4;
             if (this.frameIndex < 7 && this.frameIndex != null) {
@@ -719,9 +735,23 @@ class Sprite {
         const tile = map.getCell(tileX, tileY);
 
         if (tile.type == TerrainType.Fire) {
-            this.isDie = true;
-            this.frameIndex = 0;
-            map.playSound("player_die");
+            if (!this.unplugin) {
+                if (this.lifeCount > 0) {
+                    this.blinkingSpeed = 30;
+                    this.blinking = 0;
+                    this.unplugin = 165;
+                    this.lifeCount--;
+                    this.rcAllowed = false;
+                    this.isHaveRollers = false;
+                    this.speed = 1;
+                    this.maxBombsCount = Math.min(this.maxBombsCount, 3);
+                    map.playSound("oioi");
+                } else {
+                    this.isDie = true;
+                    this.frameIndex = 0;
+                    map.playSound("player_die");
+                }
+            }
         }
 
         if (this.playerKeys[PlayerKeys.Bomb]) {
@@ -762,6 +792,8 @@ class Sprite {
                 } else {
                     doFire = true;
                 }
+            } else if (powerUpType == PowerUpType.Life) {
+                this.lifeCount++;
             }
 
             if (doFire) {
@@ -789,8 +821,12 @@ class Sprite {
     }
 
     draw(ctx) {
+        if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed) {
+            ctx.filter = "brightness(0) invert(1)";
+        }
         let frameIndex = (this.frameIndex == null) ? null : Math.floor(this.frameIndex);
         this.animations[this.animateIndex].draw(ctx, this.x + 5, this.y - 7, frameIndex);
+        ctx.filter = "none";
     }
 }
 

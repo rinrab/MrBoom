@@ -76,6 +76,10 @@ body {
         opacity: 1;
         box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
     }
+    body[state="game"] #start-menu {
+        opacity:0;
+        cursor: default;
+    }
 
 .blur, .blur * {
     filter: blur(4px);

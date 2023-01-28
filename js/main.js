@@ -59,32 +59,6 @@ const PlayerKeys =
     rcDitonate: 5
 };
 
-const mapNeigeInitial = {
-    map: [
-        "###################",
-        "#  -------------  #",
-        "# #-# #-#-#-#-#-# #",
-        "#---  ------  ----#",
-        "#-#-#-###-#-# # #-#",
-        "#-----###-----   -#",
-        "#-#-#-###-#-#-# #-#",
-        "#---------  ------#",
-        "#-#-#-# #-# #-#-#-#",
-        "#-----  ----------#",
-        "# #-#-#-#-#-#-# ###",
-        "#  -----------  ###",
-        "###################"
-    ],
-    powerUps: [
-        PowerUpType.ExtraBomb,
-        PowerUpType.ExtraFire,
-        PowerUpType.Skull,
-        PowerUpType.Life,
-        PowerUpType.RemoteControl,
-        PowerUpType.RollerSkate
-    ]
-}
-
 class Terrain {
     data;
     width;

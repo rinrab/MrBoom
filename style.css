@@ -94,7 +94,7 @@ body {
 
 
 body[state="game"] #start-menu, body[state="game"] #start-menu * {
-    opacity: 0;
+    opacity: 0 !important;
     cursor: default;
 }
 

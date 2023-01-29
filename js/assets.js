@@ -61,6 +61,39 @@ function loadAssets() {
         return result;
     }
 
+    const loadNeigeMonster = (imgSprite) => {
+        const scan = [];
+        for (let i = 0; i < 20; i++) {
+            const x = i % 11;
+            const y = Int.divFloor(i, 11) + 8;
+            scan.push({
+                img: imgSprite,
+                rect: new Rect(x * 24, y * 18 + (y - 8), 23, 18),
+                draw: function (ctx, x, y) {
+                    ctx.drawImage(
+                        this.img, this.rect.x, this.rect.y, this.rect.width, this.rect.height,
+                        x, y, this.rect.width, this.rect.height);
+                }
+            })
+        }
+        var indexList = [
+            [0, 1, 0, 2],
+            [3, 4, 3, 5],
+            [6, 7, 6, 8],
+            [9, 10, 9, 11],
+            [12, 13, 14, 15, 16, 17, 18, 19]
+        ]
+        const rv = [];
+        for (let frames of indexList) {
+            const newAnimation = [];
+            rv.push(newAnimation);
+            for (let frame of frames) {
+                newAnimation.push(scan[frame]);
+            }
+        }
+        return rv;
+    }
+
     const imgNeige1 = document.getElementById("NEIGE1");
     const imgNeige2 = document.getElementById("NIEGE2");
     const imgNeige3 = document.getElementById("NIEGE3");
@@ -105,7 +138,8 @@ function loadAssets() {
         boomTopEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 5 * 16, 16, 16, 4),
         boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
         fire: loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6),
-        players: loadPlayers(imgSprite)
+        players: loadPlayers(imgSprite),
+        neigeMonster: loadNeigeMonster(imgSprite)
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

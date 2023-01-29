@@ -66,6 +66,7 @@ class Terrain {
     time;
     soundCallback;
     powerUpList;
+    monsters;
 
     get width() {
         return this.width;
@@ -75,11 +76,23 @@ class Terrain {
         return this.height;
     }
 
-    constructor(initial, powerUpList) {
+    constructor(initial, powerUpList, monsters) {
         this.time = 0;
         this.powerUpList = powerUpList;
         this.width = initial[0].length;
         this.height = initial.length;
+        this.monsters = [];
+        for (let monster of monsters) {
+            this.monsters.push({
+                homeX: monster.startX * 16,
+                x: monster.startX * 16,
+                homeY: monster.startY * 16,
+                y: monster.startY * 16,
+                step: 0,
+                waitAfterTurn: monster.waitAfterTurn,
+                frameIndex: 0
+            });
+        }
 
         this.data = new Array(this.width * this.height);
 
@@ -172,6 +185,54 @@ class Terrain {
                         this.ditonateBomb(x, y, cell.maxBoom);
                     }
                 }
+            }
+        }
+
+        for (let monster of this.monsters) {
+            const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }];
+            const isWalkable = (monster, delta) => {
+                return (this.isWalkable(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
+                                        Int.divRound(monster.y + delta.y * 8 + delta.y, 16)));
+            }
+            if (monster.wait > 0) {
+                monster.wait--;
+            } else if (monster.isDie) {
+                if (monster.frameIndex < 8) monster.frameIndex += 1 / 5;
+            } else {
+                if ((isWalkable(monster, delta[monster.step]))) {
+                    monster.x += delta[monster.step].x;
+                    monster.y += delta[monster.step].y;
+                    monster.frameIndex += 1 / 10;
+                } else {
+                    monster.step = undefined;
+                    let rnd = [];
+                    for (let i = 0; i < 4; i++) {
+                        rnd.push({ i: i, rnd: Math.random() });
+                    }
+                    rnd.sort((a, b) => a.rnd - b.rnd);
+
+                    for (let i = 0; i < rnd.length && monster.step == undefined; i++) {
+                        if (isWalkable(monster, delta[rnd[i].i])) {
+                            monster.step = rnd[i].i;
+                        }
+                    }
+                    monster.frameIndex = 0;
+                    monster.wait = monster.waitAfterTurn;
+                }
+                monster.frameIndex %= 4;
+            }
+            if (this.getCell(Int.divRound(monster.x, 16),
+                             Int.divRound(monster.y, 16)).type == TerrainType.Fire && !monster.isDie) {
+                monster.isDie = true;
+                monster.step = 4;
+                console.log("a");
+                this.playSound("ai");
+            }
+        }
+        for (let i = this.monsters.length - 1; i >= 0; i--) {
+            if (this.monsters[i].frameIndex >= 8) {
+                this.setCell(Int.divRound(this.monsters[i].x, 16), Int.divRound(this.monsters[i].y, 16), this.generateGiven());
+                this.monsters.splice(i, 1);
             }
         }
 
@@ -312,7 +373,7 @@ addEventListener("load", function () {
 });
 
 function newMap(initial) {
-    const rv = new Terrain(initial.map, initial.powerUps);
+    const rv = new Terrain(initial.map, initial.powerUps, initial.monsters);
 
     let soundManager = new SoundManager(soundAssets);
 
@@ -338,22 +399,22 @@ async function init() {
     tree = new AnimatedImage(assets.niegeTree, 1000 / FPS * 15);
 
     sprite = new Sprite(2);
-    sprite.x = 17*16;
-    sprite.y = 1*16;
+    sprite.x = 17 * 16;
+    sprite.y = 1 * 16;
     sprites.push(sprite);
     ctrl = new DemoController("lbrdwbulllwbrrddwbuulllw");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
     sprite = new Sprite(0);
-    sprite.x = 11*16;
-    sprite.y = 7*16;
+    sprite.x = 11 * 16;
+    sprite.y = 7 * 16;
     sprites.push(sprite);
     ctrl = new DemoController("lbrdwwbulllwwbrrddwwbuulllww");
     ctrl.setSprite(sprite);
     controllersList.push(ctrl);
     sprite = new Sprite(1);
-    sprite.x = 1*16;
-    sprite.y = 1*16;
+    sprite.x = 1 * 16;
+    sprite.y = 1 * 16;
     sprites.push(sprite);
     ctrl = new DemoController("rbldwwburrrwwbllddwwbuurrrww");
     ctrl.setSprite(sprite);
@@ -444,6 +505,10 @@ function drawAll(interpolationPercentage) {
 
     for (let sprite of spritesToDraw) {
         sprite.draw(ctx)
+    }
+
+    for (let monster of map.monsters) {
+        assets.neigeMonster[monster.step][Math.floor(monster.frameIndex)].draw(ctx, monster.x + 8, monster.y - 2);
     }
 
     igloo.draw(ctx, 232, 57);
@@ -807,7 +872,13 @@ class Sprite {
         const tileY = Int.divRound(this.y, 16);
         const tile = map.getCell(tileX, tileY);
 
-        if (tile.type == TerrainType.Fire) {
+        let isTouchMonster;
+        for (let monster of map.monsters) {
+            if (Int.divRound(monster.x, 16) == tileX && Int.divRound(monster.y, 16) == tileY) {
+                isTouchMonster = true;
+            }
+        }
+        if (tile.type == TerrainType.Fire || isTouchMonster) {
             if (!this.unplugin) {
                 if (this.lifeCount > 0) {
                     this.blinkingSpeed = 30;

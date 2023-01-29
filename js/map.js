@@ -69,5 +69,11 @@ const mapNeigeInitial = {
         PowerUpType.RemoteControl,
         PowerUpType.RollerSkate,
         PowerUpType.Shield
+    ],
+    monsters: [
+        { startX: 7, startY: 9, waitAfterTurn: 30 },
+        { startX: 1, startY: 11, waitAfterTurn: 30 },
+        { startX: 5, startY: 3, waitAfterTurn: 30 },
+        { startX: 13, startY: 3, waitAfterTurn: 30 },
     ]
 }

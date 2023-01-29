@@ -231,7 +231,13 @@ class Terrain {
         }
         for (let i = this.monsters.length - 1; i >= 0; i--) {
             if (this.monsters[i].frameIndex >= 8) {
-                this.setCell(Int.divRound(this.monsters[i].x, 16), Int.divRound(this.monsters[i].y, 16), this.generateGiven());
+                this.setCell(Int.divRound(this.monsters[i].x, 16), Int.divRound(this.monsters[i].y, 16), {
+                    type: TerrainType.PowerUp,
+                    image: assets.powerups[PowerUpType.Life],
+                    imageIdx: 0,
+                    animateDelay: 8,
+                    powerUpType: PowerUpType.Life
+                });
                 this.monsters.splice(i, 1);
             }
         }

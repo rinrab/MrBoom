@@ -139,7 +139,9 @@ function loadAssets() {
         boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
         fire: loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6),
         players: loadPlayers(imgSprite),
-        neigeMonster: loadNeigeMonster(imgSprite)
+        neigeMonster: loadNeigeMonster(imgSprite),
+        start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
+        alpha: loadImageStripe(imgSprite2, 0, 165, 8, 6, 40)
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

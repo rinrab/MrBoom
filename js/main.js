@@ -59,6 +59,15 @@ const PlayerKeys =
     rcDitonate: 5
 };
 
+const States = {
+    start: 0,
+    game: 1,
+    results: 2,
+    draw: 3
+}
+let state = States.game;
+let playerList = [];
+
 class Terrain {
     data;
     width;
@@ -192,13 +201,13 @@ class Terrain {
             const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }, {}, { x: 0, y: 0 }];
             const isWalkable = (monster, delta) => {
                 switch (this.getCell(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
-                                     Int.divRound(monster.y + delta.y * 8 + delta.y, 16)).type) {
+                    Int.divRound(monster.y + delta.y * 8 + delta.y, 16)).type) {
                     case TerrainType.Free: case TerrainType.PowerUpFire:
                         return true;
 
                     case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
                     case TerrainType.Bomb: case TerrainType.PowerUp: case TerrainType.PowerUpFire:
-                    case TerrainType.Fire: 
+                    case TerrainType.Fire:
                         return false;
 
                     default: return true;
@@ -235,7 +244,7 @@ class Terrain {
                 monster.frameIndex %= 4;
             }
             if (this.getCell(Int.divRound(monster.x, 16),
-                             Int.divRound(monster.y, 16)).type == TerrainType.Fire && !monster.isDie) {
+                Int.divRound(monster.y, 16)).type == TerrainType.Fire && !monster.isDie) {
                 monster.isDie = true;
                 monster.step = 4;
                 this.playSound("ai");
@@ -417,27 +426,23 @@ async function init() {
     tree = new AnimatedImage(assets.niegeTree, 1000 / FPS * 15);
 
     sprite = new Sprite(2);
+    sprite.controller = new DemoController("lbrdwbulllwbrrddwbuulllw", sprite);
     sprite.x = 17 * 16;
     sprite.y = 1 * 16;
     sprites.push(sprite);
-    ctrl = new DemoController("lbrdwbulllwbrrddwbuulllw");
-    ctrl.setSprite(sprite);
-    controllersList.push(ctrl);
+
     sprite = new Sprite(0);
     sprite.x = 11 * 16;
     sprite.y = 7 * 16;
     sprites.push(sprite);
-    ctrl = new DemoController("lbrdwwbulllwwbrrddwwbuulllww");
-    ctrl.setSprite(sprite);
-    controllersList.push(ctrl);
+    sprite.controller = new DemoController("lbrdwwbulllwwbrrddwwbuulllww", sprite);
+
     sprite = new Sprite(1);
     sprite.x = 1 * 16;
     sprite.y = 1 * 16;
     sprites.push(sprite);
-    ctrl = new DemoController("rbldwwburrrwwbllddwwbuurrrww");
-    ctrl.setSprite(sprite);
-    controllersList.push(ctrl);
-
+    sprite.controller = new DemoController("rbldwwburrrwwbllddwwbuurrrww", sprite);
+    
     MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);
     MainLoop.setDraw(drawAll);
@@ -452,33 +457,18 @@ async function init() {
         keys[e.code] = false;
     })
 
+    controllersList.push(new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft", "AltLeft"));
+    controllersList.push(new KeyboardController("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight", "AltRight"));
+    addEventListener("gamepadconnected", function (e) {
+        ctrl = new GamepadController(e.gamepad);
+        controllersList.push(ctrl);
+    });
+
     document.getElementById("play-btn").addEventListener("click", () => {
         document.body.setAttribute("state", "game");
         sprites = [];
         map = newMap(mapNeigeInitial);
 
-        let sprite = new Sprite(0);
-        sprites.push(sprite);
-        let ctrl = new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft", "AltLeft");
-        ctrl.setSprite(sprite);
-        controllersList.push(ctrl);
-
-        sprite = new Sprite(1);
-        sprite.x = 15 * 16;
-        sprite.y = 11 * 16;
-        sprites.push(sprite);
-        ctrl = new KeyboardController("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight", "AltRight");
-        ctrl.setSprite(sprite);
-        controllersList.push(ctrl);
-
-        addEventListener("gamepadconnected", function (e) {
-            let sprite = new Sprite(2);
-            sprites.push(sprite);
-
-            ctrl = new GamepadController(e.gamepad);
-            ctrl.setSprite(sprite);
-            controllersList.push(ctrl);
-        })
         if (document.body.requestFullscreen) {
             document.body.requestFullscreen();
         } else if (document.body.webkitRequestFullscreen) {
@@ -486,6 +476,7 @@ async function init() {
         } else if (document.body.msRequestFullscreen) {
             document.body.msRequestFullscreen();
         }
+        state = States.start;
     });
 }
 
@@ -496,45 +487,120 @@ function begin(timestamp, delta) {
 }
 
 function update(deltaTime) {
-    map.update();
+    if (state == States.game) {
+        map.update();
+    }
+}
+
+let menustep = 0;
+
+const alpha = "abcdefghijklmnopqrstuvwxyz0123456789!.-:";
+function drawString(x, y, str, color) {
+    let save = ctx.save();
+    const colors = {
+        magenta: "brightness(.5) hue-rotate(-80deg)",
+        red: "brightness(.4) hue-rotate(-60deg)",
+        blue: "brightness(.5) hue-rotate(150deg)",
+        green: "brightness(.5) hue-rotate(40deg)",
+    }
+    ctx.filter = colors[color];
+    
+    for (let i = 0; i < str.length; i++) {
+        const index = alpha.indexOf(str[i]);
+        assets.alpha[index].draw(ctx, x + i * 8, y);
+    }
+
+    ctx.restore(save);
 }
 
 function drawAll(interpolationPercentage) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    bg.draw(ctx);
+    if (state == States.game) {
+        bg.draw(ctx);
 
-    for (let y = 0; y < map.height; y++) {
-        for (let x = 0; x < map.width; x++) {
-            const cell = map.getCell(x, y);
+        for (let y = 0; y < map.height; y++) {
+            for (let x = 0; x < map.width; x++) {
+                const cell = map.getCell(x, y);
 
-            if (cell.image) {
-                const image = cell.image[cell.imageIdx || 0];
+                if (cell.image) {
+                    const image = cell.image[cell.imageIdx || 0];
 
-                image.draw(ctx,
-                    x * 16 + 8 + 8 - Int.divFloor(image.rect.width, 2),
-                    y * 16 + 16 - image.rect.height);
+                    image.draw(ctx,
+                        x * 16 + 8 + 8 - Int.divFloor(image.rect.width, 2),
+                        y * 16 + 16 - image.rect.height);
+                }
+            }
+        }
+
+        var spritesToDraw = sprites;
+        spritesToDraw.sort((a, b) => { return a.y - b.y; });
+
+        for (let sprite of spritesToDraw) {
+            sprite.draw(ctx)
+        }
+
+        for (let monster of map.monsters) {
+            if (monster.step == 5) {
+                assets.neigeMonster[0][0].draw(ctx, monster.x + 8, monster.y - 2);
+            } else {
+                assets.neigeMonster[monster.step][Math.floor(monster.frameIndex)].draw(ctx, monster.x + 8, monster.y - 2);
+            }
+        }
+
+        igloo.draw(ctx, 232, 57);
+        tree.draw(ctx, 112, 30);
+    } else if (state == States.start) {
+        assets.start.draw(ctx, 0, 0);
+        ctx.filter = `brightness(0)`;
+        colors = ["magenta", "red", "blue", "green"];
+        for (let x = 0; x < 4; x++) {
+            for (let y = 0; y < 2; y++) {
+                const player = playerList[y * 4 + x];
+                const color = colors[Int.divFloor(y * 4 + x, 2)];
+                if (player) {
+                    drawString(20 + x * 80, 78 + y * 70, "name", color);
+                    drawString(24 + x * 80, 88 + y * 70, "aaa", color);
+                } else if (Int.mod(menustep, 4) == 0) {
+                    drawString(20 + x * 80, 78 + y * 70, "join", color);
+                    drawString(28 + x * 80, 88 + y * 70, "us", color);
+                    drawString(28 + x * 80, 98 + y * 70, "!!", color);
+                } else if (Int.mod(menustep, 4) == 2) {
+                    drawString(20 + x * 80, 78 + y * 70, "push", color);
+                    drawString(20 + x * 80, 88 + y * 70, "fire", color);
+                    drawString(28 + x * 80, 98 + y * 70, "!!", color);
+                }
+            }
+
+            menustep += 1 / 100;
+        }
+
+        for (let controller of controllersList) {
+            controller.update();
+            if (controller.playerKeys[PlayerKeys.Bomb] && !controller.id && !controller.isDemo) {
+                const id = Math.floor(Math.random() * 1000000);
+                playerList.push({ id: id, name: "aaa", controller: controller });
+                controller.id = id;
+                const audio = new Audio(soundAssets.addplayer.src);
+                audio.loop = false;
+                audio.play();
+            }
+        }
+
+        if (keys["Enter"]) {
+            state = States.game;
+            map = newMap(mapNeigeInitial);
+            const spawn = [{ x: 1, y: 1 }, { x: 15, y: 11 }, { x: 17, y: 1 }, { x: 17, y: 1 }]
+            for (let i = 0; i < playerList.length; i++) {
+                sprite = new Sprite(i);
+                sprite.x = spawn[i].x * 16;
+                sprite.y = spawn[i].y * 16;
+                sprite.controller = playerList[i].controller;
+                sprites.push(sprite);
             }
         }
     }
-
-    var spritesToDraw = sprites;
-    spritesToDraw.sort((a, b) => { return a.y - b.y; });
-
-    for (let sprite of spritesToDraw) {
-        sprite.draw(ctx)
-    }
-
-    for (let monster of map.monsters) {
-        if (monster.step == 5) {
-            assets.neigeMonster[0][0].draw(ctx, monster.x + 8, monster.y - 2);
-        } else {
-            assets.neigeMonster[monster.step][Math.floor(monster.frameIndex)].draw(ctx, monster.x + 8, monster.y - 2);
-        }
-    }
-
-    igloo.draw(ctx, 232, 57);
-    tree.draw(ctx, 112, 30);
+    ctx.filter = "none";
 }
 
 function end(fps, panic) {
@@ -597,13 +663,13 @@ class AnimatedImage {
 }
 
 class KeyboardController {
+    playerKeys;
     keyUp;
     keyDown;
     keyLeft;
     keyRight;
     keyBomb;
     keyRcDitonate;
-    sprite;
 
     constructor(keyUp, keyDown, keyLeft, keyRight, keyBomb, keyRcDitonate) {
         this.keyUp = keyUp;
@@ -612,73 +678,63 @@ class KeyboardController {
         this.keyRight = keyRight;
         this.keyBomb = keyBomb;
         this.keyRcDitonate = keyRcDitonate;
-        this.sprite = null;
-    }
-
-    setSprite(sprite) {
-        this.sprite = sprite;
+        this.playerKeys = [];
     }
 
     update() {
-        if (this.sprite) {
-            this.sprite.playerKeys[PlayerKeys.Up] = keys[this.keyUp];
-            this.sprite.playerKeys[PlayerKeys.Down] = keys[this.keyDown];
-            this.sprite.playerKeys[PlayerKeys.Left] = keys[this.keyLeft];
-            this.sprite.playerKeys[PlayerKeys.Right] = keys[this.keyRight];
-            this.sprite.playerKeys[PlayerKeys.Bomb] = keys[this.keyBomb];
-            this.sprite.playerKeys[PlayerKeys.rcDitonate] = keys[this.keyRcDitonate];
-        }
+        this.playerKeys[PlayerKeys.Up] = keys[this.keyUp];
+        this.playerKeys[PlayerKeys.Down] = keys[this.keyDown];
+        this.playerKeys[PlayerKeys.Left] = keys[this.keyLeft];
+        this.playerKeys[PlayerKeys.Right] = keys[this.keyRight];
+        this.playerKeys[PlayerKeys.Bomb] = keys[this.keyBomb];
+        this.playerKeys[PlayerKeys.rcDitonate] = keys[this.keyRcDitonate];
     }
 }
 
 class GamepadController {
+    playerKeys;
     gamepad;
-    sprite;
 
     constructor(gamepad) {
         this.gamepad = gamepad;
+        this.playerKeys = [];
         this.sprite = null;
     }
 
-    setSprite(sprite) {
-        this.sprite = sprite;
-    }
-
     update() {
-        if (this.sprite) {
-            const currGamePad = navigator.getGamepads()[this.gamepad.index];
+        const currGamePad = navigator.getGamepads()[this.gamepad.index];
 
-            this.sprite.playerKeys[PlayerKeys.Up] = currGamePad.buttons[12].pressed;
-            this.sprite.playerKeys[PlayerKeys.Down] = currGamePad.buttons[13].touched;
-            this.sprite.playerKeys[PlayerKeys.Left] = currGamePad.buttons[14].touched;
-            this.sprite.playerKeys[PlayerKeys.Right] = currGamePad.buttons[15].touched;
-            this.sprite.playerKeys[PlayerKeys.Bomb] = currGamePad.buttons[1].pressed;
-            this.sprite.playerKeys[PlayerKeys.rcDitonate] = currGamePad.buttons[0].pressed;
-        }
+        this.playerKeys[PlayerKeys.Up] = currGamePad.buttons[12].pressed;
+        this.playerKeys[PlayerKeys.Down] = currGamePad.buttons[13].touched;
+        this.playerKeys[PlayerKeys.Left] = currGamePad.buttons[14].touched;
+        this.playerKeys[PlayerKeys.Right] = currGamePad.buttons[15].touched;
+        this.playerKeys[PlayerKeys.Bomb] = currGamePad.buttons[1].pressed;
+        this.playerKeys[PlayerKeys.rcDitonate] = currGamePad.buttons[0].pressed;
     }
 }
 
 class DemoController {
+    playerKeys;
     moves;
     currentMove;
     step;
+    isDemo = true;
+    sprite;
 
-    constructor(moves) {
+    constructor(moves, sprite) {
+        this.playerKeys = [];
         this.currentMove = 0;
         this.step = 0;
         this.moves = moves;
-    }
-
-    setSprite(sprite) {
         this.sprite = sprite;
     }
 
     update() {
-        this.sprite.playerKeys = {};
+        this.playerKeys = {};
 
         const move = (direction) => {
             if (this.step < ((this.sprite.isHaveRollers) ? 8 : 16)) {
-                this.sprite.playerKeys[direction] = true;
+                this.playerKeys[direction] = true;
                 this.step++;
             } else {
                 this.currentMove++;
@@ -695,10 +751,10 @@ class DemoController {
         } else if (this.moves[this.currentMove] == "d") {
             move(PlayerKeys.Down);
         } else if (this.moves[this.currentMove] == "b") {
-            this.sprite.playerKeys[PlayerKeys.Bomb] = true;
+            this.playerKeys[PlayerKeys.Bomb] = true;
             this.currentMove++;
         } else if (this.moves[this.currentMove] == "w") {
-            this.sprite.playerKeys[PlayerKeys.rcDitonate] = true;
+            this.playerKeys[PlayerKeys.rcDitonate] = true;
 
             if (this.step > 16) {
                 this.currentMove++;
@@ -758,6 +814,8 @@ class Sprite {
     unplugin;
 
     lifeCount = 0;
+
+    controller;
 
     constructor(spriteIndex) {
         this.animations = [];
@@ -832,17 +890,21 @@ class Sprite {
 
         let direction;
 
-        if (this.playerKeys[PlayerKeys.Up]) {
+        if (this.controller) {
+            this.controller.update();
+        }
+
+        if (this.controller.playerKeys[PlayerKeys.Up]) {
             direction = Direction.Up;
-        } else if (this.playerKeys[PlayerKeys.Left]) {
+        } else if (this.controller.playerKeys[PlayerKeys.Left]) {
             direction = Direction.Left;
-        } else if (this.playerKeys[PlayerKeys.Right]) {
+        } else if (this.controller.playerKeys[PlayerKeys.Right]) {
             direction = Direction.Right;
-        } else if (this.playerKeys[PlayerKeys.Down]) {
+        } else if (this.controller.playerKeys[PlayerKeys.Down]) {
             direction = Direction.Down;
         }
 
-        if (this.rcAllowed && this.playerKeys[PlayerKeys.rcDitonate]) {
+        if (this.rcAllowed && this.controller.playerKeys[PlayerKeys.rcDitonate]) {
             this.rcDitonate = true;
         } else {
             this.rcDitonate = false;
@@ -921,7 +983,7 @@ class Sprite {
             }
         }
 
-        if (this.playerKeys[PlayerKeys.Bomb]) {
+        if (this.controller.playerKeys[PlayerKeys.Bomb]) {
             if (tile.type == TerrainType.Free && this.bombsPlaced < this.maxBombsCount) {
                 map.setCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16), {
                     type: TerrainType.Bomb,

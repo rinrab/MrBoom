@@ -26,6 +26,7 @@ async function loadSoundAssets() {
         player_die: await loadSound("player_die"),
         oioi: await loadSound("oioi"),
         ai: await loadSound("ai"),
+        addplayer: await loadSound("addplayer"),
     };
 
     return result;

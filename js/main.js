@@ -76,6 +76,7 @@ class Terrain {
     soundCallback;
     powerUpList;
     monsters;
+    spawns;
 
     get width() {
         return this.width;
@@ -85,24 +86,14 @@ class Terrain {
         return this.height;
     }
 
-    constructor(initial, powerUpList, monsters) {
+    constructor(initial, powerUpList, ) {
         this.time = 0;
         this.powerUpList = powerUpList;
         this.width = initial[0].length;
         this.height = initial.length;
         this.monsters = [];
-        for (let monster of monsters) {
-            this.monsters.push({
-                homeX: monster.startX * 16,
-                x: monster.startX * 16,
-                homeY: monster.startY * 16,
-                y: monster.startY * 16,
-                step: 0,
-                waitAfterTurn: monster.waitAfterTurn,
-                frameIndex: 0
-            });
-        }
-
+        this.spawns = [];
+        
         this.data = new Array(this.width * this.height);
 
         for (let y = 0; y < this.height; y++) {
@@ -118,6 +109,11 @@ class Terrain {
                         type: TerrainType.TemporaryWall,
                         image: assets.niegeWall
                     };
+                } else if (src == '*') {
+                    this.spawns.push({ x: x, y: y });
+                    this.data[y * this.width + x] = {
+                        type: TerrainType.Free
+                    };
                 } else {
                     this.data[y * this.width + x] = {
                         type: TerrainType.Free
@@ -125,6 +121,42 @@ class Terrain {
                 }
             }
         }
+    }
+
+    spawnMonsters(monsters) {
+        for (let i = 0; i < 8 - sprites.length; i++) {
+            const monster = monsters[Math.floor(Math.random() * monsters.length)];
+            const spawn = this.spawns[this.generateSpawn()];
+            this.monsters.push({
+                homeX: monster.startX * 16,
+                x: spawn.x * 16,
+                homeY: monster.startY * 16,
+                y: spawn.y * 16,
+                step: 0,
+                waitAfterTurn: monster.waitAfterTurn,
+                frameIndex: 0
+            });
+        }
+    }
+
+    generateSpawn(spawnIndex = -1) {
+        if (spawnIndex == -1) {
+            let indexList = []
+            for (let i = 0; i < this.spawns.length; i++) {
+                if (!this.spawns[i].busy) {
+                    indexList.push(i);
+                }
+            }
+            spawnIndex = indexList[Math.floor(Math.random() * indexList.length)];
+        }
+        this.spawns[spawnIndex].busy = true;
+        return spawnIndex;
+    }
+
+    locateSprite(sprite, index = -1) {
+        const spawn = this.spawns[this.generateSpawn(index)];
+        sprite.x = spawn.x * 16;
+        sprite.y = spawn.y * 16;
     }
 
     getCell(x, y) {
@@ -427,22 +459,21 @@ async function init() {
 
     sprite = new Sprite(2);
     sprite.controller = new DemoController("lbrdwbulllwbrrddwbuulllw", sprite);
-    sprite.x = 17 * 16;
-    sprite.y = 1 * 16;
+    map.locateSprite(sprite, 1);
     sprites.push(sprite);
 
     sprite = new Sprite(0);
-    sprite.x = 11 * 16;
-    sprite.y = 7 * 16;
+    map.locateSprite(sprite, 4);
     sprites.push(sprite);
     sprite.controller = new DemoController("lbrdwwbulllwwbrrddwwbuulllww", sprite);
 
     sprite = new Sprite(1);
-    sprite.x = 1 * 16;
-    sprite.y = 1 * 16;
+    map.locateSprite(sprite, 0);
     sprites.push(sprite);
     sprite.controller = new DemoController("rbldwwburrrwwbllddwwbuurrrww", sprite);
-    
+
+    map.spawnMonsters(mapNeigeInitial.monsters);
+
     MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);
     MainLoop.setDraw(drawAll);
@@ -593,11 +624,11 @@ function drawAll(interpolationPercentage) {
             const spawn = [{ x: 1, y: 1 }, { x: 15, y: 11 }, { x: 17, y: 1 }, { x: 17, y: 1 }]
             for (let i = 0; i < playerList.length; i++) {
                 sprite = new Sprite(i);
-                sprite.x = spawn[i].x * 16;
-                sprite.y = spawn[i].y * 16;
+                map.locateSprite(sprite);
                 sprite.controller = playerList[i].controller;
                 sprites.push(sprite);
             }
+            map.spawnMonsters(mapNeigeInitial.monsters);
         }
     }
     ctx.filter = "none";

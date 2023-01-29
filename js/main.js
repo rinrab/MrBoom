@@ -189,7 +189,7 @@ class Terrain {
         }
 
         for (let monster of this.monsters) {
-            const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }];
+            const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }, {}, { x: 0, y: 0 }];
             const isWalkable = (monster, delta) => {
                 switch (this.getCell(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
                                      Int.divRound(monster.y + delta.y * 8 + delta.y, 16)).type) {
@@ -197,7 +197,8 @@ class Terrain {
                         return true;
 
                     case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
-                    case TerrainType.Bomb: case TerrainType.PowerUp: case TerrainType.PowerUpFire: 
+                    case TerrainType.Bomb: case TerrainType.PowerUp: case TerrainType.PowerUpFire:
+                    case TerrainType.Fire: 
                         return false;
 
                     default: return true;
@@ -225,6 +226,9 @@ class Terrain {
                             monster.step = rnd[i].i;
                         }
                     }
+                    if (monster.step == undefined) {
+                        monster.step = 5;
+                    }
                     monster.frameIndex = 0;
                     monster.wait = monster.waitAfterTurn;
                 }
@@ -234,7 +238,6 @@ class Terrain {
                              Int.divRound(monster.y, 16)).type == TerrainType.Fire && !monster.isDie) {
                 monster.isDie = true;
                 monster.step = 4;
-                console.log("a");
                 this.playSound("ai");
             }
         }
@@ -523,7 +526,11 @@ function drawAll(interpolationPercentage) {
     }
 
     for (let monster of map.monsters) {
-        assets.neigeMonster[monster.step][Math.floor(monster.frameIndex)].draw(ctx, monster.x + 8, monster.y - 2);
+        if (monster.step == 5) {
+            assets.neigeMonster[0][0].draw(ctx, monster.x + 8, monster.y - 2);
+        } else {
+            assets.neigeMonster[monster.step][Math.floor(monster.frameIndex)].draw(ctx, monster.x + 8, monster.y - 2);
+        }
     }
 
     igloo.draw(ctx, 232, 57);
@@ -889,7 +896,8 @@ class Sprite {
 
         let isTouchMonster;
         for (let monster of map.monsters) {
-            if (Int.divRound(monster.x, 16) == tileX && Int.divRound(monster.y, 16) == tileY) {
+            if (Int.divRound(monster.x, 16) == tileX &&
+                Int.divRound(monster.y, 16) == tileY && !monster.isDie) {
                 isTouchMonster = true;
             }
         }

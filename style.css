@@ -67,7 +67,7 @@ body {
     z-index: 2000;
     background: white;
     box-shadow: rgb(151, 151, 151, 0.70) 20px -15px 10px;
-    opacity: .6;
+    opacity: 0.6;
     transition: background linear .2s, box-shadow linear .2s, opacity linear .5s;
     border-radius: 10px;
     animation: start_menu-begin 5s;
@@ -79,11 +79,7 @@ body {
     }
 
 @keyframes start_menu-begin {
-    0% {
-        opacity: 0;
-    }
-
-    20%,80% {
+    0%,80% {
         opacity: 1;
     }
 

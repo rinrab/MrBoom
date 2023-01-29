@@ -74,7 +74,7 @@ body {
 }
 
     #start-menu:hover {
-        opacity: 1;
+        opacity: 1!important;
         box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
     }
 

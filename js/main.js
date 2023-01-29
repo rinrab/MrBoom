@@ -191,8 +191,17 @@ class Terrain {
         for (let monster of this.monsters) {
             const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }];
             const isWalkable = (monster, delta) => {
-                return (this.isWalkable(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
-                                        Int.divRound(monster.y + delta.y * 8 + delta.y, 16)));
+                switch (this.getCell(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
+                                     Int.divRound(monster.y + delta.y * 8 + delta.y, 16)).type) {
+                    case TerrainType.Free: case TerrainType.PowerUpFire:
+                        return true;
+
+                    case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
+                    case TerrainType.Bomb: case TerrainType.PowerUp: case TerrainType.PowerUpFire: 
+                        return false;
+
+                    default: return true;
+                }
             }
             if (monster.wait > 0) {
                 monster.wait--;

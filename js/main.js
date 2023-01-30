@@ -599,25 +599,13 @@ function update(deltaTime) {
 let menustep = 0;
 
 const alpha = "abcdefghijklmnopqrstuvwxyz0123456789!.-:";
-function drawString(ctx, x, y, str, color) {
-    let save = ctx.save();
-    const colors = {
-        magenta: "brightness(.5) hue-rotate(-80deg)",
-        red: "brightness(.4) hue-rotate(-60deg)",
-        blue: "brightness(.5) hue-rotate(150deg)",
-        green: "brightness(.5) hue-rotate(40deg)",
-    }
-
-    ctx.filter = colors[color];
-
+function drawString(ctx, x, y, str) {
     for (let i = 0; i < str.length; i++) {
         const index = alpha.indexOf(str[i]);
         if (index != -1) {
             assets.alpha[index].draw(ctx, x + i * 8, y);
         }
     }
-
-    ctx.restore(save);
 }
 
 let subtitlesMove = 320;

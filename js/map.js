@@ -37,7 +37,6 @@ const mapPink = {
     powerUps: [
         PowerUpType.ExtraBomb,
         PowerUpType.ExtraFire,
-        PowerUpType.Skull,
         PowerUpType.Life,
         PowerUpType.RemoteControl,
         PowerUpType.RollerSkate
@@ -64,7 +63,6 @@ const mapNeigeInitial = {
     powerUps: [
         PowerUpType.ExtraBomb,
         PowerUpType.ExtraFire,
-        PowerUpType.Skull,
         PowerUpType.Life,
         PowerUpType.RemoteControl,
         PowerUpType.RollerSkate,

@@ -463,6 +463,41 @@ function newMap(initial) {
     return rv;
 }
 
+function createTextImage(text) {
+    let width = 0;
+    let height = 1;
+
+    for (let ch of text) {
+        if (ch == "\n") {
+            width = 0;
+            height++;
+        } else {
+            width++;
+        }
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width * 8;
+    canvas.height = height * 10;
+
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+
+    let x = 0;
+    let y = 0;
+    for (let ch of text) {
+        if (ch == "\n") {
+            x = 0;
+            y++;
+        } else {
+            drawString(ctx, x * 8, y * 10, ch);
+            x++;
+        }
+    }
+
+    return canvas;
+}
+
 async function init() {
     elemFpsDisplay = document.getElementById("fps-display");
 
@@ -514,24 +549,9 @@ async function init() {
         controllersList.push(ctrl);
     });
 
-    assets.subtitles = document.createElement("canvas");
-    assets.subtitles.width = 320 * 8;
-    assets.subtitles.height = 8;
-    drawString(assets.subtitles.getContext("2d"), 0, 0, helpText);
-
-    assets.joinUs = document.createElement("canvas");
-    assets.joinUs.width = 48;
-    assets.joinUs.height = 36;
-    drawString(assets.joinUs.getContext("2d"), 4, 4, "join");
-    drawString(assets.joinUs.getContext("2d"), 12, 14, "us");
-    drawString(assets.joinUs.getContext("2d"), 12, 24, "!!");
-
-    assets.pushFire = document.createElement("canvas");
-    assets.pushFire.width = 48;
-    assets.pushFire.height = 36;
-    drawString(assets.pushFire.getContext("2d"), 4, 4, "push");
-    drawString(assets.pushFire.getContext("2d"), 4, 14, "fire");
-    drawString(assets.pushFire.getContext("2d"), 12, 24, "!!");
+    assets.subtitles = createTextImage(helpText);
+    assets.joinUs = createTextImage("join\n us \n !! ");
+    assets.pushFire = createTextImage("push\nfire\n !! ");
 
     document.getElementById("play-btn").addEventListener("click", () => {
         document.body.setAttribute("state", "game");
@@ -673,9 +693,9 @@ function drawAll(interpolationPercentage) {
                     drawString(ctx, 20 + x * 80, 78 + y * 70, "name");
                     drawString(ctx, 24 + x * 80, 88 + y * 70, "aaa");
                 } else if (Int.mod(menustep, 4) == 0) {
-                    ctx.drawImage(assets.joinUs, x * 80 + 16, y * 70 + 74);
+                    ctx.drawImage(assets.joinUs, x * 80 + 20, y * 70 + 78);
                 } else if (Int.mod(menustep, 4) == 2) {
-                    ctx.drawImage(assets.pushFire, x * 80 + 16, y * 70 + 74);
+                    ctx.drawImage(assets.pushFire, x * 80 + 20, y * 70 + 78);
                 }
             }
 

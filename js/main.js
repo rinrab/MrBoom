@@ -67,6 +67,7 @@ const States = {
 }
 let state = States.game;
 let playerList = [];
+let isDemo = true;
 
 class Terrain {
     data;
@@ -77,6 +78,7 @@ class Terrain {
     powerUpList;
     monsters;
     spawns;
+    timeLeft;
 
     get width() {
         return this.width;
@@ -86,13 +88,14 @@ class Terrain {
         return this.height;
     }
 
-    constructor(initial, powerUpList, ) {
+    constructor(initial, powerUpList) {
         this.time = 0;
         this.powerUpList = powerUpList;
         this.width = initial[0].length;
         this.height = initial.length;
         this.monsters = [];
         this.spawns = [];
+        this.timeLeft = 121;
         
         this.data = new Array(this.width * this.height);
 
@@ -196,6 +199,7 @@ class Terrain {
 
     update() {
         this.soundsToPlay = {};
+        this.timeLeft -= 1 / 60;
 
         this.time++;
 
@@ -305,6 +309,16 @@ class Terrain {
                     this.soundCallback(sound);
                 }
             }
+        }
+
+        let playersCount = 0;
+        for (let sprite of sprites) {
+            if (!sprite.isDie) {
+                playersCount++;
+            }
+        }
+        if (this.timeLeft < 0 || playersCount == 0) {
+            state = States.draw;
         }
     }
 
@@ -459,22 +473,7 @@ async function init() {
 
     tree = { images: assets.niegeTree, time: 0 };
 
-    sprite = new Sprite(2);
-    sprite.controller = new DemoController("lbrdwbulllwbrrddwbuulllw", sprite);
-    map.locateSprite(sprite, 1);
-    sprites.push(sprite);
-
-    sprite = new Sprite(0);
-    map.locateSprite(sprite, 4);
-    sprites.push(sprite);
-    sprite.controller = new DemoController("lbrdwwbulllwwbrrddwwbuulllww", sprite);
-
-    sprite = new Sprite(1);
-    map.locateSprite(sprite, 0);
-    sprites.push(sprite);
-    sprite.controller = new DemoController("rbldwwburrrwwbllddwwbuurrrww", sprite);
-
-    map.spawnMonsters(mapNeigeInitial.monsters);
+    startGame();
 
     MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);
@@ -618,6 +617,26 @@ function drawAll(interpolationPercentage) {
         igloo.draw(ctx, 232, 57);
         tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
         tree.time += 1 / 30;
+
+        if (map.timeLeft > 0) {
+            let min = Math.floor(map.timeLeft / 60);
+            let sec = Math.floor(map.timeLeft % 60);
+            if (sec < 10) {
+                sec = "0" + sec;
+            }
+            let time = min + ":" + sec;
+            let x = 270;
+            for (let char of time) {
+                const alpha = "0123456789:";
+                const index = alpha.indexOf(char);
+                assets.bigDigits[index].draw(ctx, x, 182);
+                if (index == 10) {
+                    x += 9;
+                } else {
+                    x += 14;
+                }
+            }
+        }
     } else if (state == States.start) {
         assets.start.draw(ctx, 0, 0);
         const colors = [
@@ -660,19 +679,65 @@ function drawAll(interpolationPercentage) {
         }
 
         if (keys["Enter"]) {
-            state = States.game;
-            map = newMap(mapNeigeInitial);
-            const spawn = [{ x: 1, y: 1 }, { x: 15, y: 11 }, { x: 17, y: 1 }, { x: 17, y: 1 }]
-            for (let i = 0; i < playerList.length; i++) {
-                sprite = new Sprite(i);
-                map.locateSprite(sprite);
-                sprite.controller = playerList[i].controller;
-                sprites.push(sprite);
+            if (playerList.length >= 1) {
+                isDemo = false;
+                startGame();
             }
-            map.spawnMonsters(mapNeigeInitial.monsters);
+        }
+    } else if (state == States.draw) {
+        assets.draw.draw(ctx);
+        let keyCount = 0;
+        for (let ctr of controllersList) {
+            ctr.update();
+            for (let key of ctr.playerKeys) {
+                if (key) {
+                    keyCount++;
+                }
+            }
+        }
+        if (keyCount > 0) {
+            startGame();
+        } else if (isDemo == true) {
+            isDemo = 2;
+        } else if (isDemo > 120) {
+            startGame();
+        } else if (isDemo != false) {
+            isDemo++;
         }
     }
     ctx.filter = "none";
+}
+
+function startGame() {
+    state = States.game;
+    map = newMap(mapNeigeInitial);
+    sprites = [];
+
+    if (isDemo) {
+        sprite = new Sprite(2);
+        sprite.controller = new DemoController("lbrdwbulllwbrrddwbuulllw", sprite);
+        map.locateSprite(sprite, 1);
+        sprites.push(sprite);
+
+        sprite = new Sprite(0);
+        map.locateSprite(sprite, 4);
+        sprites.push(sprite);
+        sprite.controller = new DemoController("lbrdwwbulllwwbrrddwwbuulllww", sprite);
+
+        sprite = new Sprite(1);
+        map.locateSprite(sprite, 0);
+        sprites.push(sprite);
+        sprite.controller = new DemoController("rbldwwburrrwwbllddwwbuurrrww", sprite);
+    } else {
+        for (let i = 0; i < playerList.length; i++) {
+            sprite = new Sprite(i);
+            map.locateSprite(sprite);
+            sprite.controller = playerList[i].controller;
+            sprites.push(sprite);
+        }
+    }
+
+    map.spawnMonsters(mapNeigeInitial.monsters);
 }
 
 function end(fps, panic) {

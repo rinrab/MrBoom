@@ -101,6 +101,7 @@ function loadAssets() {
     const imgSprite2 = document.getElementById("SPRITE2");
     const imgMed3 = document.getElementById("MED3");
     const imgPause = document.getElementById("PAUSE");
+    const imgFeuille = document.getElementById("FEUILLE");
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
@@ -116,6 +117,7 @@ function loadAssets() {
             ],
         niegeTree: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
         niegeWall: loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
+        neigePermanentWall: loadImage(imgPause, 272, 16, 16, 16),
         powerups:
             [
                 loadImageStripe(imgSprite2, 0 * 16, 0 * 16, 16, 16, 10),
@@ -141,7 +143,16 @@ function loadAssets() {
         players: loadPlayers(imgSprite),
         neigeMonster: loadNeigeMonster(imgSprite),
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
-        alpha: loadImageStripe(imgSprite2, 0, 165, 8, 6, 40)
+        alpha: loadImageStripe(imgSprite2, 0, 165, 8, 6, 40),
+        bigDigits: loadImageStripe(imgFeuille, 80, 83, 15, 16, 11, 1),
+        draw: {
+            images: [document.getElementById("DRAW1"), document.getElementById("DRAW2")],
+            index: 0,
+            draw: function (ctx) {
+                ctx.drawImage(this.images[Math.floor(this.index) % this.images.length], 0, 0);
+                this.index += 1 / 40;
+            }
+        }
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

@@ -439,6 +439,9 @@ function newMap(initial) {
     rv.soundCallback = function (sound) {
         soundManager.playSound(sound);
     };
+
+    bg = { images: assets.niegeBg, time: 0 };
+
     return rv;
 }
 
@@ -451,11 +454,10 @@ async function init() {
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d");
 
-    bg = new AnimatedImage(assets.niegeBg, 1000 / FPS * 8);
 
     igloo = new AnimatedImage(assets.niegeIgloo, -1);
 
-    tree = new AnimatedImage(assets.niegeTree, 1000 / FPS * 15);
+    tree = { images: assets.niegeTree, time: 0 };
 
     sprite = new Sprite(2);
     sprite.controller = new DemoController("lbrdwbulllwbrrddwbuulllw", sprite);
@@ -548,7 +550,8 @@ function drawAll(interpolationPercentage) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (state == States.game) {
-        bg.draw(ctx);
+        bg.images[Math.floor(bg.time) % bg.images.length].draw(ctx, 0, 0);
+        bg.time += 1 / 30;
 
         for (let y = 0; y < map.height; y++) {
             for (let x = 0; x < map.width; x++) {
@@ -580,7 +583,8 @@ function drawAll(interpolationPercentage) {
         }
 
         igloo.draw(ctx, 232, 57);
-        tree.draw(ctx, 112, 30);
+        tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
+        tree.time += 1 / 30;
     } else if (state == States.start) {
         assets.start.draw(ctx, 0, 0);
         ctx.filter = `brightness(0)`;

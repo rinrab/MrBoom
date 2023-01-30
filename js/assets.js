@@ -95,8 +95,8 @@ function loadAssets() {
     }
 
     const imgNeige1 = document.getElementById("NEIGE1");
-    const imgNeige2 = document.getElementById("NIEGE2");
-    const imgNeige3 = document.getElementById("NIEGE3");
+    const imgNeige2 = document.getElementById("NEIGE2");
+    const imgNeige3 = document.getElementById("NEIGE3");
     const imgSprite = document.getElementById("SPRITE");
     const imgSprite2 = document.getElementById("SPRITE2");
     const imgMed3 = document.getElementById("MED3");
@@ -108,7 +108,7 @@ function loadAssets() {
             [
                 loadImage(imgNeige1, 0, 0, 320, 200),
                 loadImage(imgNeige2, 0, 0, 320, 200),
-                loadImage(imgNeige2, 0, 0, 320, 200),
+                loadImage(imgNeige3, 0, 0, 320, 200),
             ],
         niegeIgloo:
             [

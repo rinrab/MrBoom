@@ -497,6 +497,25 @@ async function init() {
         controllersList.push(ctrl);
     });
 
+    assets.subtitles = document.createElement("canvas");
+    assets.subtitles.width = 320 * 8;
+    assets.subtitles.height = 8;
+    drawString(assets.subtitles.getContext("2d"), 0, 0, helpText);
+
+    assets.joinUs = document.createElement("canvas");
+    assets.joinUs.width = 48;
+    assets.joinUs.height = 36;
+    drawString(assets.joinUs.getContext("2d"), 4, 4, "join");
+    drawString(assets.joinUs.getContext("2d"), 12, 14, "us");
+    drawString(assets.joinUs.getContext("2d"), 12, 24, "!!");
+
+    assets.pushFire = document.createElement("canvas");
+    assets.pushFire.width = 48;
+    assets.pushFire.height = 36;
+    drawString(assets.pushFire.getContext("2d"), 4, 4, "push");
+    drawString(assets.pushFire.getContext("2d"), 4, 14, "fire");
+    drawString(assets.pushFire.getContext("2d"), 12, 24, "!!");
+
     document.getElementById("play-btn").addEventListener("click", () => {
         document.body.setAttribute("state", "game");
         sprites = [];
@@ -513,6 +532,10 @@ async function init() {
     });
 }
 
+const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " +
+    "use arrows to move   use ctr to drop bomb   use alt to triger it by radio control   " +
+    "gamepad controller:   use d-pad arrows to move   use   use b button to drop bomb   use a button to triger it by radio control";
+
 function begin(timestamp, delta) {
     for (let c of controllersList) {
         c.update();
@@ -522,13 +545,18 @@ function begin(timestamp, delta) {
 function update(deltaTime) {
     if (state == States.game) {
         map.update();
+    } else if (state == States.start) {
+        subtitlesMove--;
+        if (subtitlesMove < helpText.length * -8) {
+            subtitlesMove = 320;
+        }
     }
 }
 
 let menustep = 0;
 
 const alpha = "abcdefghijklmnopqrstuvwxyz0123456789!.-:";
-function drawString(x, y, str, color) {
+function drawString(ctx, x, y, str, color) {
     let save = ctx.save();
     const colors = {
         magenta: "brightness(.5) hue-rotate(-80deg)",
@@ -536,15 +564,20 @@ function drawString(x, y, str, color) {
         blue: "brightness(.5) hue-rotate(150deg)",
         green: "brightness(.5) hue-rotate(40deg)",
     }
+
     ctx.filter = colors[color];
-    
+
     for (let i = 0; i < str.length; i++) {
         const index = alpha.indexOf(str[i]);
-        assets.alpha[index].draw(ctx, x + i * 8, y);
+        if (index != -1) {
+            assets.alpha[index].draw(ctx, x + i * 8, y);
+        }
     }
 
     ctx.restore(save);
 }
+
+let subtitlesMove = 320;
 
 function drawAll(interpolationPercentage) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -587,28 +620,32 @@ function drawAll(interpolationPercentage) {
         tree.time += 1 / 30;
     } else if (state == States.start) {
         assets.start.draw(ctx, 0, 0);
-        ctx.filter = `brightness(0)`;
-        colors = ["magenta", "red", "blue", "green"];
+        const colors = [
+            "brightness(.5) hue-rotate(-80deg)",
+            "brightness(.4) hue-rotate(-60deg)",
+            "brightness(.5) hue-rotate(150deg)",
+            "brightness(.5) hue-rotate(40deg)",
+        ];
         for (let x = 0; x < 4; x++) {
             for (let y = 0; y < 2; y++) {
                 const player = playerList[y * 4 + x];
-                const color = colors[Int.divFloor(y * 4 + x, 2)];
+                ctx.filter = colors[Int.divFloor(y * 4 + x, 2)];
                 if (player) {
-                    drawString(20 + x * 80, 78 + y * 70, "name", color);
-                    drawString(24 + x * 80, 88 + y * 70, "aaa", color);
+                    drawString(ctx, 20 + x * 80, 78 + y * 70, "name");
+                    drawString(ctx, 24 + x * 80, 88 + y * 70, "aaa");
                 } else if (Int.mod(menustep, 4) == 0) {
-                    drawString(20 + x * 80, 78 + y * 70, "join", color);
-                    drawString(28 + x * 80, 88 + y * 70, "us", color);
-                    drawString(28 + x * 80, 98 + y * 70, "!!", color);
+                    ctx.drawImage(assets.joinUs, x * 80 + 16, y * 70 + 74);
                 } else if (Int.mod(menustep, 4) == 2) {
-                    drawString(20 + x * 80, 78 + y * 70, "push", color);
-                    drawString(20 + x * 80, 88 + y * 70, "fire", color);
-                    drawString(28 + x * 80, 98 + y * 70, "!!", color);
+                    ctx.drawImage(assets.pushFire, x * 80 + 16, y * 70 + 74);
                 }
             }
 
             menustep += 1 / 100;
         }
+
+        ctx.filter = "brightness(0) invert(1)";
+        ctx.drawImage(assets.subtitles, subtitlesMove, 192);
+        ctx.filter = "none";
 
         for (let controller of controllersList) {
             controller.update();

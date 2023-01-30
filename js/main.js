@@ -19,6 +19,8 @@ let cheats = {
     noClip: false
 };
 
+let elemFpsDisplay;
+
 const TerrainType =
 {
     Free: 0,
@@ -462,6 +464,8 @@ function newMap(initial) {
 }
 
 async function init() {
+    elemFpsDisplay = document.getElementById("fps-display");
+
     soundAssets = await loadSoundAssets();
     assets = loadAssets();
 
@@ -757,7 +761,7 @@ function startGame() {
 }
 
 function end(fps, panic) {
-    document.getElementById("fps-display").innerText = Math.round(fps) + ' FPS';
+    elemFpsDisplay.innerText = Math.round(fps) + ' FPS';
 
     if (panic) {
         // This pattern introduces non-deterministic behavior, but in this case

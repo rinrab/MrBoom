@@ -13,6 +13,7 @@ let sprites = [];
 let assets;
 let soundAssets;
 
+let soundManager;
 let music;
 
 let cheats = {
@@ -452,8 +453,6 @@ addEventListener("load", function () {
 function newMap(initial) {
     const rv = new Terrain(initial.map, initial.powerUps, initial.monsters);
 
-    let soundManager = new SoundManager(soundAssets);
-
     rv.soundCallback = function (sound) {
         soundManager.playSound(sound);
     };
@@ -506,6 +505,8 @@ async function init() {
 
     soundAssets = await loadSoundAssets();
     assets = loadAssets();
+
+    soundManager = new SoundManager(soundAssets);
 
     map = newMap(mapNeigeInitial);
 
@@ -714,9 +715,7 @@ function drawAll(interpolationPercentage) {
                 const id = Math.floor(Math.random() * 1000000);
                 playerList.push({ id: id, name: "aaa", controller: controller });
                 controller.id = id;
-                const audio = new Audio(soundAssets.addplayer.src);
-                audio.loop = false;
-                audio.play();
+                soundManager.playSound("addplayer");
             }
         }
 

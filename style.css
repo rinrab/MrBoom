@@ -31,7 +31,7 @@ body {
 }
 
 .btn-start {
-    font-size: 30px;
+    font-size: calc(var(--fs) * 2);
     --foreground-color: blue;
     --background-color: white;
     box-shadow: rgba(128, 128, 128, .7) 10px 10px 5px;
@@ -71,6 +71,8 @@ body {
     transition: background linear .2s, box-shadow linear .2s, opacity linear .5s;
     border-radius: 10px;
     animation: start_menu-begin 5s;
+    --fs: calc(max(100vh / 70, 8px));
+    font-size: var(--fs);
 }
 
     #start-menu:hover {
@@ -90,8 +92,7 @@ body {
 
 
 body[state="game"] #start-menu, body[state="game"] #start-menu * {
-    opacity: 0 !important;
-    cursor: default;
+    display: none;
 }
 
 .blur, .blur * {

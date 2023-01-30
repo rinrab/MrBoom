@@ -133,7 +133,7 @@ class Terrain {
 
     spawnMonsters(monsters) {
         for (let i = 0; i < 8 - sprites.length; i++) {
-            const monster = monsters[Math.floor(Math.random() * monsters.length)];
+            const monster = monsters[Int.random(monsters.length)];
             const spawn = this.spawns[this.generateSpawn()];
             this.monsters.push({
                 homeX: monster.startX * 16,
@@ -155,7 +155,7 @@ class Terrain {
                     indexList.push(i);
                 }
             }
-            spawnIndex = indexList[Math.floor(Math.random() * indexList.length)];
+            spawnIndex = indexList[Int.random(indexList.length)];
         }
         this.spawns[spawnIndex].busy = true;
         return spawnIndex;
@@ -438,6 +438,10 @@ class Int {
     static divRound(val, divider) {
         return Math.round(val / divider);
     }
+
+    static random(max) {
+        return Math.floor(Math.random() * max);
+    }
 }
 
 let map;
@@ -700,7 +704,7 @@ function drawAll(interpolationPercentage) {
         for (let controller of controllersList) {
             controller.update();
             if (controller.playerKeys[PlayerKeys.Bomb] && !controller.id && !controller.isDemo) {
-                const id = Math.floor(Math.random() * 1000000);
+                const id = Int.random(1000000);
                 playerList.push({ id: id, name: "aaa", controller: controller });
                 controller.id = id;
                 soundManager.playSound("addplayer");

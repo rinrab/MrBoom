@@ -472,7 +472,7 @@ async function init() {
     map = newMap(mapNeigeInitial);
 
     canvas = document.getElementById("grafic");
-    ctx = canvas.getContext("2d");
+    ctx = canvas.getContext("2d", { alpha: false });
 
 
     igloo = new AnimatedImage(assets.niegeIgloo, -1);

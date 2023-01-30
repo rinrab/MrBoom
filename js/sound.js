@@ -45,3 +45,29 @@ class SoundManager {
         }
     }
 }
+
+class MusicManager {
+    playlist;
+    audio;
+    constructor(playlist) {
+        this.playlist = playlist;
+    }
+
+    start() {
+        this.nextRandom();
+    }
+
+    stop() {
+        if (this.audio) {
+            this.audio.stop();
+            this.audio = null;
+        }
+    }
+
+    nextRandom() {
+        this.audio = new Audio(this.playlist[Math.floor(Math.random() * this.playlist.length)]);
+        this.audio.volume = 0.7;
+        this.audio.loop = true;
+        this.audio.play();
+    }
+}

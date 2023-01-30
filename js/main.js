@@ -13,6 +13,8 @@ let sprites = [];
 let assets;
 let soundAssets;
 
+let music;
+
 let cheats = {
     noClip: false
 };
@@ -475,6 +477,8 @@ async function init() {
 
     startGame();
 
+    music = new MusicManager(["music/anar11.mp3", "music/chipmunk.mp3"]);
+
     MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);
     MainLoop.setDraw(drawAll);
@@ -528,6 +532,8 @@ async function init() {
             document.body.msRequestFullscreen();
         }
         state = States.start;
+
+        music.start()
     });
 }
 

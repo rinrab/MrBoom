@@ -24,10 +24,12 @@ body {
 }
 
 #fps-display {
+    font-size: 20px;
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 20px;
+    width: 5em;
+    text-align: right;
 }
 
 .btn-start {

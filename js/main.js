@@ -463,7 +463,7 @@ function newMap(initial) {
     return rv;
 }
 
-function createTextImage(text) {
+function createTextImage(text, filter) {
     let width = 0;
     let height = 1;
 
@@ -482,6 +482,9 @@ function createTextImage(text) {
 
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
+    if (filter) {
+        ctx.filter = filter;
+    }
 
     let x = 0;
     let y = 0;
@@ -549,7 +552,7 @@ async function init() {
         controllersList.push(ctrl);
     });
 
-    assets.subtitles = createTextImage(helpText);
+    assets.subtitles = createTextImage(helpText, "brightness(0) invert(1)");
     assets.joinUs = createTextImage("join\n us \n !! ");
     assets.pushFire = createTextImage("push\nfire\n !! ");
 
@@ -701,10 +704,9 @@ function drawAll(interpolationPercentage) {
 
             menustep += 1 / 100;
         }
-
-        ctx.filter = "brightness(0) invert(1)";
-        ctx.drawImage(assets.subtitles, subtitlesMove, 192);
         ctx.filter = "none";
+
+        ctx.drawImage(assets.subtitles, subtitlesMove, 192);
 
         for (let controller of controllersList) {
             controller.update();

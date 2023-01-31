@@ -143,7 +143,8 @@ function loadAssets() {
         players: loadPlayers(imgSprite),
         neigeMonster: loadNeigeMonster(imgSprite),
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
-        alpha: loadImageStripe(imgSprite2, 0, 165, 8, 6, 40),
+        alpha: loadImageStripe(imgSprite2, 0, 165, 8, 6, 40).concat(
+            loadImageStripe(imgSprite2, 232, 172, 8, 6, 4)),
         bigDigits: loadImageStripe(imgFeuille, 80, 83, 15, 16, 11, 1),
         draw: {
             images: [document.getElementById("DRAW1"), document.getElementById("DRAW2")],

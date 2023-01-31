@@ -716,7 +716,7 @@ function drawAll(interpolationPercentage) {
                 ctx.filter = colors[Int.divFloor(y * 4 + x, 2)];
                 if (player) {
                     drawString(ctx, 20 + x * 80, 78 + y * 70, "name");
-                    drawString(ctx, 24 + x * 80, 88 + y * 70, "aaa");
+                    drawString(ctx, 24 + x * 80, 88 + y * 70, player.name);
                 } else if (Int.mod(menustep, 4) == 0) {
                     ctx.drawImage(assets.joinUs, x * 80 + 20, y * 70 + 78);
                 } else if (Int.mod(menustep, 4) == 2) {

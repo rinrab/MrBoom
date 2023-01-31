@@ -771,6 +771,8 @@ function startGame() {
     }
 
     map.spawnMonsters(mapNeigeInitial.monsters);
+
+    music.next();
 }
 
 function end(fps, panic) {

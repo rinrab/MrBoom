@@ -528,12 +528,12 @@ async function init() {
         [
             "music/anar11.mp3",
             "music/chipmunk.mp3",
+            "music/chiptune.mp3",
             "music/deadfeel.mp3",
             "music/drop.mp3",
             "music/external.mp3",
             "music/matkamie.mp3",
             "music/unreeeal.mp3",
-            "music/chiptune.mp3",
         ]);
 
     MainLoop.setBegin(begin);
@@ -575,7 +575,7 @@ async function init() {
         }
         state = States.start;
 
-        music.start()
+        music.start(3);
     });
 }
 
@@ -714,6 +714,7 @@ function drawAll(interpolationPercentage) {
         if (keys["Enter"]) {
             if (playerList.length >= 1) {
                 isDemo = false;
+                music.next();
                 startGame();
             }
         }

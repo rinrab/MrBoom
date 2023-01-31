@@ -53,19 +53,26 @@ class MusicManager {
         this.playlist = playlist;
     }
 
-    start() {
-        this.nextRandom();
+    start(song) {
+        this.stop();
+        this.next(song);
     }
 
     stop() {
         if (this.audio) {
-            this.audio.stop();
+            this.audio.pause();
             this.audio = null;
         }
     }
 
-    nextRandom() {
-        this.audio = new Audio(this.playlist[Math.floor(Math.random() * this.playlist.length)]);
+    next(song) {
+        this.stop();
+
+        if (!song) {
+            song = Math.floor(Math.random() * this.playlist.length);
+        }
+
+        this.audio = new Audio(this.playlist[song]);
         this.audio.volume = 0.7;
         this.audio.loop = true;
         this.audio.play();

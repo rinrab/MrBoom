@@ -20,6 +20,8 @@ let cheats = {
     noClip: false
 };
 
+let startMenu;
+
 let elemFpsDisplay;
 
 const TerrainType =
@@ -523,6 +525,7 @@ async function init() {
         "music/unreeeal.mp3",
     ]);
 
+    startMenu = new StartMenu()
     map = newMap(mapNeigeInitial);
 
     canvas = document.getElementById("grafic");
@@ -592,10 +595,7 @@ function update(deltaTime) {
     if (state == States.game) {
         map.update();
     } else if (state == States.start) {
-        subtitlesMove--;
-        if (subtitlesMove < helpText.length * -8) {
-            subtitlesMove = 320;
-        }
+        startMenu.update();
     }
 }
 
@@ -611,7 +611,19 @@ function drawString(ctx, x, y, str) {
     }
 }
 
-let subtitlesMove = 320;
+class StartMenu {
+    constructor() {
+    }
+
+    update() {
+        this.subtitlesMove++;
+        if (this.subtitlesMove > assets.subtitles.width + 320) {
+            this.subtitlesMove = 0;
+        }
+    }
+
+    subtitlesMove = 0;
+}
 
 function drawAll(interpolationPercentage) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -698,7 +710,7 @@ function drawAll(interpolationPercentage) {
         }
         ctx.filter = "none";
 
-        ctx.drawImage(assets.subtitles, subtitlesMove, 192);
+        ctx.drawImage(assets.subtitles, 320 - startMenu.subtitlesMove, 192);
 
         for (let controller of controllersList) {
             controller.update();

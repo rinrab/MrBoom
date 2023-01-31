@@ -512,6 +512,17 @@ async function init() {
 
     soundManager = new SoundManager(soundAssets);
 
+    music = new MusicManager([
+        "music/anar11.mp3",
+        "music/chipmunk.mp3",
+        "music/chiptune.mp3",
+        "music/deadfeel.mp3",
+        "music/drop.mp3",
+        "music/external.mp3",
+        "music/matkamie.mp3",
+        "music/unreeeal.mp3",
+    ]);
+
     map = newMap(mapNeigeInitial);
 
     canvas = document.getElementById("grafic");
@@ -523,18 +534,6 @@ async function init() {
     tree = { images: assets.niegeTree, time: 0 };
 
     startGame();
-
-    music = new MusicManager(
-        [
-            "music/anar11.mp3",
-            "music/chipmunk.mp3",
-            "music/chiptune.mp3",
-            "music/deadfeel.mp3",
-            "music/drop.mp3",
-            "music/external.mp3",
-            "music/matkamie.mp3",
-            "music/unreeeal.mp3",
-        ]);
 
     MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);

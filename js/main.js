@@ -621,6 +621,16 @@ class StartMenu {
             this.subtitlesMove = 0;
         }
 
+        for (let controller of controllersList) {
+            controller.update();
+            if (controller.playerKeys[PlayerKeys.Bomb] && !controller.id && !controller.isDemo) {
+                const id = Int.random(1000000);
+                playerList.push({ id: id, name: "aaa", controller: controller });
+                controller.id = id;
+                soundManager.playSound("addplayer");
+            }
+        }
+
         if (keys["Enter"]) {
             if (playerList.length >= 1) {
                 isDemo = false;
@@ -719,16 +729,6 @@ function drawAll(interpolationPercentage) {
         ctx.filter = "none";
 
         ctx.drawImage(assets.subtitles, 320 - startMenu.subtitlesMove, 192);
-
-        for (let controller of controllersList) {
-            controller.update();
-            if (controller.playerKeys[PlayerKeys.Bomb] && !controller.id && !controller.isDemo) {
-                const id = Int.random(1000000);
-                playerList.push({ id: id, name: "aaa", controller: controller });
-                controller.id = id;
-                soundManager.playSound("addplayer");
-            }
-        }
     } else if (state == States.draw) {
         assets.draw.draw(ctx);
         let keyCount = 0;

@@ -73,7 +73,6 @@ const States = {
     draw: 3
 }
 let state = States.game;
-let playerList = [];
 let isDemo = true;
 
 class Terrain {
@@ -536,7 +535,7 @@ async function init() {
 
     tree = { images: assets.niegeTree, time: 0 };
 
-    startGame();
+    startGame([]);
 
     MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);
@@ -625,21 +624,22 @@ class StartMenu {
             controller.update();
             if (controller.playerKeys[PlayerKeys.Bomb] && !controller.id && !controller.isDemo) {
                 const id = Int.random(1000000);
-                playerList.push({ id: id, name: "aaa", controller: controller });
+                this.playerList.push({ id: id, name: "aaa", controller: controller });
                 controller.id = id;
                 soundManager.playSound("addplayer");
             }
         }
 
         if (keys["Enter"]) {
-            if (playerList.length >= 1) {
+            if (this.playerList.length >= 1) {
                 isDemo = false;
                 music.next();
-                startGame();
+                startGame(this.playerList);
             }
         }
     }
 
+    playerList = [];
     subtitlesMove = 0;
 }
 
@@ -712,7 +712,7 @@ function drawAll(interpolationPercentage) {
         ];
         for (let x = 0; x < 4; x++) {
             for (let y = 0; y < 2; y++) {
-                const player = playerList[y * 4 + x];
+                const player = startMenu.playerList[y * 4 + x];
                 ctx.filter = colors[Int.divFloor(y * 4 + x, 2)];
                 if (player) {
                     drawString(ctx, 20 + x * 80, 78 + y * 70, "name");
@@ -741,11 +741,11 @@ function drawAll(interpolationPercentage) {
             }
         }
         if (keyCount > 0) {
-            startGame();
+            startGame(startMenu.playerList);
         } else if (isDemo == true) {
             isDemo = 2;
         } else if (isDemo > 120) {
-            startGame();
+            startGame([]);
         } else if (isDemo != false) {
             isDemo++;
         }
@@ -753,7 +753,7 @@ function drawAll(interpolationPercentage) {
     ctx.filter = "none";
 }
 
-function startGame() {
+function startGame(playerList) {
     state = States.game;
     map = newMap(mapNeigeInitial);
     sprites = [];

@@ -620,6 +620,14 @@ class StartMenu {
         if (this.subtitlesMove > assets.subtitles.width + 320) {
             this.subtitlesMove = 0;
         }
+
+        if (keys["Enter"]) {
+            if (playerList.length >= 1) {
+                isDemo = false;
+                music.next();
+                startGame();
+            }
+        }
     }
 
     subtitlesMove = 0;
@@ -719,14 +727,6 @@ function drawAll(interpolationPercentage) {
                 playerList.push({ id: id, name: "aaa", controller: controller });
                 controller.id = id;
                 soundManager.playSound("addplayer");
-            }
-        }
-
-        if (keys["Enter"]) {
-            if (playerList.length >= 1) {
-                isDemo = false;
-                music.next();
-                startGame();
             }
         }
     } else if (state == States.draw) {

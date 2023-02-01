@@ -104,7 +104,7 @@ class Terrain {
         this.monsters = [];
         this.spawns = [];
         this.timeLeft = 121;
-        
+
         this.data = new Array(this.width * this.height);
 
         for (let y = 0; y < this.height; y++) {
@@ -483,44 +483,6 @@ function newMap(initial) {
     return rv;
 }
 
-function createTextImage(text, filter) {
-    let width = 0;
-    let height = 1;
-
-    for (let ch of text) {
-        if (ch == "\n") {
-            width = 0;
-            height++;
-        } else {
-            width++;
-        }
-    }
-
-    const canvas = document.createElement("canvas");
-    canvas.width = width * 8;
-    canvas.height = height * 10;
-
-    const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingEnabled = false;
-    if (filter) {
-        ctx.filter = filter;
-    }
-
-    let x = 0;
-    let y = 0;
-    for (let ch of text) {
-        if (ch == "\n") {
-            x = 0;
-            y++;
-        } else {
-            drawString(ctx, x * 8, y * 10, ch);
-            x++;
-        }
-    }
-
-    return canvas;
-}
-
 async function init() {
     elemFpsDisplay = document.getElementById("fps-display");
 
@@ -545,7 +507,6 @@ async function init() {
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d", { alpha: false });
-
 
     igloo = new AnimatedImage(assets.niegeIgloo, -1);
 
@@ -573,10 +534,6 @@ async function init() {
         ctrl = new GamepadController(e.gamepad);
         controllersList.push(ctrl);
     });
-
-    assets.subtitles = createTextImage(helpText, "brightness(0) invert(1)");
-    assets.joinUs = createTextImage("join\n us \n !! ");
-    assets.pushFire = createTextImage("push\nfire\n !! ");
 
     document.getElementById("play-btn").addEventListener("click", () => {
         document.body.setAttribute("state", "game");
@@ -619,11 +576,11 @@ function update(deltaTime) {
 let menustep = 0;
 
 const alpha = "abcdefghijklmnopqrstuvwxyz0123456789!.-:/()?";
-function drawString(ctx, x, y, str) {
+function drawString(ctx, x, y, str, alphaImageName = "original") {
     for (let i = 0; i < str.length; i++) {
         const index = alpha.indexOf(str[i]);
         if (index != -1) {
-            assets.alpha[index].draw(ctx, x + i * 8, y);
+            assets.alpha[alphaImageName][index].draw(ctx, x + i * 8, y);
         }
     }
 }
@@ -634,7 +591,7 @@ class StartMenu {
 
     update() {
         this.subtitlesMove++;
-        if (this.subtitlesMove > assets.subtitles.width + 320) {
+        if (this.subtitlesMove > helpText.length * 8 + 320) {
             this.subtitlesMove = 0;
         }
 
@@ -717,6 +674,7 @@ class Results {
 
 function drawAll(interpolationPercentage) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const colors = ["magenta", "red", "blue", "green"];
 
     if (state == States.game) {
         bg.images[Math.floor(bg.time) % bg.images.length].draw(ctx, 0, 0);
@@ -776,23 +734,22 @@ function drawAll(interpolationPercentage) {
         }
     } else if (state == States.start) {
         assets.start.draw(ctx, 0, 0);
-        const colors = [
-            "brightness(.5) hue-rotate(-80deg)",
-            "brightness(.4) hue-rotate(-60deg)",
-            "brightness(.5) hue-rotate(150deg)",
-            "brightness(.5) hue-rotate(40deg)",
-        ];
         for (let x = 0; x < 4; x++) {
             for (let y = 0; y < 2; y++) {
-                const player = startMenu.playerList[y * 4 + x];
-                ctx.filter = colors[Int.divFloor(y * 4 + x, 2)];
+                const index = y * 4 + x;
+                const color = colors[Int.divFloor(index, 2)];
+                const player = startMenu.playerList[index];
                 if (player) {
-                    drawString(ctx, 13 + x * 80, 78 + y * 70, "name ?");
-                    drawString(ctx, 21 + x * 80, 88 + y * 70, player.name);
+                    drawString(ctx, 13 + x * 80, 78 + y * 70, "name ?", color);
+                    drawString(ctx, 21 + x * 80, 88 + y * 70, player.name, color);
                 } else if (Int.mod(menustep, 4) == 0) {
-                    ctx.drawImage(assets.joinUs, x * 80 + 20, y * 70 + 78);
+                    drawString(ctx, x * 80 + 20, y * 70 + 78, "join", color);
+                    drawString(ctx, x * 80 + 28, y * 70 + 88, "us", color);
+                    drawString(ctx, x * 80 + 28, y * 70 + 98, "!!", color);
                 } else if (Int.mod(menustep, 4) == 2) {
-                    ctx.drawImage(assets.pushFire, x * 80 + 20, y * 70 + 78);
+                    drawString(ctx, x * 80 + 20, y * 70 + 78, "push", color);
+                    drawString(ctx, x * 80 + 20, y * 70 + 88, "fire", color);
+                    drawString(ctx, x * 80 + 28, y * 70 + 98, "!!", color);
                 }
             }
 
@@ -800,7 +757,7 @@ function drawAll(interpolationPercentage) {
         }
         ctx.filter = "none";
 
-        ctx.drawImage(assets.subtitles, 320 - startMenu.subtitlesMove, 192);
+        drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
         assets.draw.draw(ctx);
         if (getKeysDownCount() > 0) {
@@ -814,27 +771,22 @@ function drawAll(interpolationPercentage) {
         }
     } else if (state == States.results) {
         ctx.drawImage(assets.med, 0, 0);
-        ctx.filter = "invert(1) brightness(.7) contrast(2)"
 
+        ctx.filter = "invert(1) brightness(.7) contrast(2)"
         for (let coin of results.coins) {
             if (coin.animate != 1 || results.frame % 60 < 30) {
                 assets.coin[Math.abs(Math.floor(coin.frame) % assets.coin.length)].draw(ctx, coin.x, coin.y);
             }
         }
-        const colors = [
-            "brightness(.5) hue-rotate(-80deg)",
-            "brightness(.4) hue-rotate(-60deg)",
-            "brightness(.5) hue-rotate(150deg)",
-            "brightness(.5) hue-rotate(40deg)",
-        ];
+        ctx.filter = "none";
         const positions = [
             { x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 0 }, { x: 1, y: 1 },
             { x: 0, y: 3 }, { x: 0, y: 4 }, { x: 1, y: 3 }, { x: 1, y: 4 },
         ]
         for (let i = 0; i < positions.length; i++) {
             if (results.results[i]) {
-                ctx.filter = colors[i / 2];
-                drawString(ctx, positions[i].x * 161 + 10, positions[i].y * 42 + 44, results.results[i].name);
+                drawString(ctx, positions[i].x * 161 + 10, positions[i].y * 42 + 44,
+                    results.results[i].name, colors[Int.divFloor(i, 2)]);
             }
         }
     }

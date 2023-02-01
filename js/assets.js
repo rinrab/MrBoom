@@ -124,6 +124,7 @@ function loadAssets() {
     const imgMed3 = document.getElementById("MED3");
     const imgPause = document.getElementById("PAUSE");
     const imgFeuille = document.getElementById("FEUILLE");
+    const imgAlpha = document.getElementById("ALPHA");
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
@@ -165,8 +166,14 @@ function loadAssets() {
         players: loadPlayers(imgSprite, imgSprite3),
         neigeMonster: loadNeigeMonster(imgSprite),
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
-        alpha: loadImageStripe(imgSprite2, 0, 165, 8, 6, 40).concat(
-            loadImageStripe(imgSprite2, 232, 172, 8, 6, 4)),
+        alpha: {
+            original: loadImageStripe(imgAlpha, 0, 0, 8, 6, 44),
+            white: loadImageStripe(imgAlpha, 0, 8, 8, 6, 44),
+            magenta: loadImageStripe(imgAlpha, 0, 16, 8, 6, 44),
+            red: loadImageStripe(imgAlpha, 0, 24, 8, 6, 44),
+            blue: loadImageStripe(imgAlpha, 0, 32, 8, 6, 44),
+            green: loadImageStripe(imgAlpha, 0, 40, 8, 6, 44),
+        },
         bigDigits: loadImageStripe(imgFeuille, 80, 83, 15, 16, 11, 1),
         draw: {
             images: [document.getElementById("DRAW1"), document.getElementById("DRAW2")],

@@ -320,20 +320,26 @@ class Terrain {
         }
 
         let playersCount = 0;
-        let index;
 
         for (let i = 0; i < sprites.length; i++) {
             if (!sprites[i].isDie) {
                 playersCount++;
-                index = i;
             }
         }
         if (this.timeLeft < 0 || playersCount == 0) {
             state = States.draw;
         }
 
-        if (playersCount == 1 && sprites.length > 1) {
-            results.win(index);
+        if (playersCount == 1 && sprites.length > 1 && !this.toGameEnd) {
+            this.toGameEnd = 60 * 3;
+        }
+
+        if (this.toGameEnd) {
+            this.toGameEnd--;
+        }
+
+        if (this.toGameEnd == 0) {
+            results.win(sprites.find((v) => !v.isDie).controller.id);
             state = States.results;
         }
     }
@@ -535,9 +541,6 @@ async function init() {
     ]);
 
     startMenu = new StartMenu();
-    results = new Results([
-        { name: "bot" }, { name: "bot" }, { name: "bot" },
-    ]);
     map = newMap(mapNeigeInitial);
 
     canvas = document.getElementById("grafic");
@@ -669,12 +672,15 @@ class Results {
         for (let player of playerList) {
             this.results.push({
                 name: player.name,
+                id: player.controller.id,
                 wins: 0
             })
         }
     }
 
-    win(index) {
+    win(id) {
+        const index = this.results.findIndex((v) => v.id == id);
+
         this.results[index].wins++;
         console.log(index)
         this.coins = [];
@@ -870,6 +876,17 @@ function startGame(playerList) {
         map.locateSprite(sprite, 0);
         sprites.push(sprite);
         sprite.controller = new DemoController("rbldwwburrrwwbllddwwbuurrrww", sprite);
+
+        if (!results) {
+            let players = [];
+            for (let p of sprites) {
+                players.push({
+                    name: "bot",
+                    controller: p.controller
+                })
+            }
+            results = new Results(players);
+        }
     } else {
         for (let i = 0; i < playerList.length; i++) {
             sprite = new Sprite(i);

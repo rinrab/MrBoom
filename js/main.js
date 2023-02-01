@@ -587,6 +587,10 @@ function drawString(ctx, x, y, str, alphaImageName = "original") {
 
 class StartMenu {
     constructor() {
+        this.names = [
+            "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
+            "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus"
+        ];
     }
 
     update() {
@@ -599,7 +603,8 @@ class StartMenu {
             controller.update();
             if (controller.playerKeys[PlayerKeys.Bomb] && !controller.id && !controller.isDemo) {
                 const id = Int.random(1000000);
-                this.playerList.push({ id: id, name: "aaa", controller: controller });
+                const name = this.names.splice(Int.random(this.names.length), 1)[0];
+                this.playerList.push({ id: id, name: name, controller: controller });
                 controller.id = id;
                 soundManager.playSound("addplayer");
             }

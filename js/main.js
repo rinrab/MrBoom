@@ -24,6 +24,8 @@ let startMenu;
 
 let elemFpsDisplay;
 
+let results;
+
 const TerrainType =
 {
     Free: 0,
@@ -318,13 +320,21 @@ class Terrain {
         }
 
         let playersCount = 0;
-        for (let sprite of sprites) {
-            if (!sprite.isDie) {
+        let index;
+
+        for (let i = 0; i < sprites.length; i++) {
+            if (!sprites[i].isDie) {
                 playersCount++;
+                index = i;
             }
         }
         if (this.timeLeft < 0 || playersCount == 0) {
             state = States.draw;
+        }
+
+        if (playersCount == 1 && sprites.length > 1) {
+            results.win(index);
+            state = States.results;
         }
     }
 
@@ -525,6 +535,9 @@ async function init() {
     ]);
 
     startMenu = new StartMenu();
+    results = new Results([
+        { name: "bot" }, { name: "bot" }, { name: "bot" },
+    ]);
     map = newMap(mapNeigeInitial);
 
     canvas = document.getElementById("grafic");
@@ -595,6 +608,8 @@ function update(deltaTime) {
         map.update();
     } else if (state == States.start) {
         startMenu.update();
+    } else if (state == States.results) {
+        results.update();
     }
 }
 
@@ -635,12 +650,68 @@ class StartMenu {
                 isDemo = false;
                 music.next();
                 startGame(this.playerList);
+                results = new Results(this.playerList);
             }
         }
     }
 
     playerList = [];
     subtitlesMove = 0;
+}
+
+class Results {
+    frame = 0;
+    results = [];
+    coins = [];
+
+    constructor(playerList) {
+        this.results = [];
+        for (let player of playerList) {
+            this.results.push({
+                name: player.name,
+                wins: 0
+            })
+        }
+    }
+
+    win(index) {
+        this.results[index].wins++;
+        console.log(index)
+        this.coins = [];
+        // animate 0: none, 1: blink, 2: round
+        const positions = [
+            { x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 0 }, { x: 1, y: 1 },
+            { x: 0, y: 3 }, { x: 0, y: 4 }, { x: 1, y: 3 }, { x: 1, y: 4 },
+        ]
+        for (let i = 0; i < this.results.length; i++) {
+            for (let j = 0; j < this.results[i].wins; j++) {
+                this.coins.push({
+                    y: positions[i].y * 42 + 27, x: positions[i].x * 161 + 44 + j * 23,
+                    frame: 0, animate: (j == this.results[i].wins - 1 && index == i) ? 1 : 2
+                });
+            }
+        }
+        this.frame = 0;
+        soundManager.playSound("victory");
+    }
+
+    update() {
+        for (let coin of this.coins) {
+            if (coin.animate == 2) {
+                coin.frame -= 1 / 6;
+            }
+        }
+        let keycount = 0;
+        for (let key of Object.values(keys)) {
+            if (key) {
+                keycount++;
+            }
+        }
+        if ((keycount > 0 || isDemo) && this.frame > 120) {
+            startGame(startMenu.playerList);
+        }
+        this.frame++;
+    }
 }
 
 function drawAll(interpolationPercentage) {
@@ -749,7 +820,33 @@ function drawAll(interpolationPercentage) {
         } else if (isDemo != false) {
             isDemo++;
         }
+    } else if (state == States.results) {
+        ctx.drawImage(assets.med, 0, 0);
+        ctx.filter = "invert(1) brightness(.7) contrast(2)"
+
+        for (let coin of results.coins) {
+            if (coin.animate != 1 || results.frame % 60 < 30) {
+                assets.coin[Math.abs(Math.floor(coin.frame) % assets.coin.length)].draw(ctx, coin.x, coin.y);
+            }
+        }
+        const colors = [
+            "brightness(.5) hue-rotate(-80deg)",
+            "brightness(.4) hue-rotate(-60deg)",
+            "brightness(.5) hue-rotate(150deg)",
+            "brightness(.5) hue-rotate(40deg)",
+        ];
+        const positions = [
+            { x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 0 }, { x: 1, y: 1 },
+            { x: 0, y: 3 }, { x: 0, y: 4 }, { x: 1, y: 3 }, { x: 1, y: 4 },
+        ]
+        for (let i = 0; i < positions.length; i++) {
+            if (results.results[i]) {
+                ctx.filter = colors[i / 2];
+                drawString(ctx, positions[i].x * 161 + 10, positions[i].y * 42 + 44, results.results[i].name);
+            }
+        }
     }
+
     ctx.filter = "none";
 }
 
@@ -780,6 +877,7 @@ function startGame(playerList) {
             sprite.controller = playerList[i].controller;
             sprites.push(sprite);
         }
+
     }
 
     map.spawnMonsters(mapNeigeInitial.monsters);

@@ -153,7 +153,10 @@ function loadAssets() {
                 ctx.drawImage(this.images[Math.floor(this.index) % this.images.length], 0, 0);
                 this.index += 1 / 40;
             }
-        }
+        },
+        med: document.getElementById("MED"),
+        coin: loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1)
+            .concat(loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1))
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

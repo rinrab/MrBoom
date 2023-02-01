@@ -524,7 +524,7 @@ async function init() {
         "music/unreeeal.mp3",
     ]);
 
-    startMenu = new StartMenu()
+    startMenu = new StartMenu();
     map = newMap(mapNeigeInitial);
 
     canvas = document.getElementById("grafic");

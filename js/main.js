@@ -1357,7 +1357,11 @@ class Sprite {
             ctx.filter = "brightness(0) invert(1)";
         }
         let frameIndex = (this.frameIndex == null) ? null : Math.floor(this.frameIndex);
-        this.animations[this.animateIndex].draw(ctx, this.x + 5, this.y - 7, frameIndex);
+        let y = this.y - 7;
+        if (this.animations[this.animateIndex].images[0].rect.height != 23) {
+            y = this.y - 10;
+        }
+        this.animations[this.animateIndex].draw(ctx, this.x + 5, y, frameIndex);
         ctx.filter = "none";
     }
 }

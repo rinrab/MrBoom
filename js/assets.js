@@ -23,7 +23,7 @@ function loadAssets() {
         return result;
     }
 
-    function loadPlayers(imgSprite) {
+    function loadPlayers(imgSpriteBoys, imgSpriteGirl) {
         let result = [];
 
         const framesCount = 20;
@@ -36,7 +36,9 @@ function loadAssets() {
         const spriteWidth = 24;
         const spriteHeight = 24;
 
-        for (let spriteIndex = 0; spriteIndex < 4; spriteIndex++) {
+        const spriteIndexes = [0, 2, 3, 1];
+
+        for (let spriteIndex of spriteIndexes) {
             let player = [];
             for (let x = 0; x < 5; x++) {
                 let newImages = [];
@@ -45,10 +47,29 @@ function loadAssets() {
                     let frameX = index + x * 3 + spriteIndex * framesCount;
 
                     newImages.push({
-                        img: imgSprite,
+                        img: imgSpriteBoys,
                         rect: new Rect(
                             (frameX % 13) * spriteWidth, Math.floor(frameX / 13) * spriteHeight,
                             23, 23)
+                    });
+                }
+
+                player.push(newImages);
+            }
+
+            result.push(player);
+            player = [];
+            for (let x = 0; x < 5; x++) {
+                let newImages = [];
+
+                for (let index of framesIndex[x]) {
+                    let frameX = index + x * 3 + spriteIndex * framesCount;
+
+                    newImages.push({
+                        img: imgSpriteGirl,
+                        rect: new Rect(
+                            (frameX % 13) * spriteWidth, Math.floor(frameX / 13) * (spriteHeight + 2),
+                            23, 25)
                     });
                 }
 
@@ -99,6 +120,7 @@ function loadAssets() {
     const imgNeige3 = document.getElementById("NEIGE3");
     const imgSprite = document.getElementById("SPRITE");
     const imgSprite2 = document.getElementById("SPRITE2");
+    const imgSprite3 = document.getElementById("SPRITE3");
     const imgMed3 = document.getElementById("MED3");
     const imgPause = document.getElementById("PAUSE");
     const imgFeuille = document.getElementById("FEUILLE");
@@ -140,7 +162,7 @@ function loadAssets() {
         boomTopEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 5 * 16, 16, 16, 4),
         boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
         fire: loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6),
-        players: loadPlayers(imgSprite),
+        players: loadPlayers(imgSprite, imgSprite3),
         neigeMonster: loadNeigeMonster(imgSprite),
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
         alpha: loadImageStripe(imgSprite2, 0, 165, 8, 6, 40).concat(

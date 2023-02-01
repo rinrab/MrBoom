@@ -1093,7 +1093,7 @@ class Sprite {
         this.blinkingSpeed = 15;
 
         for (let img of assets.players[spriteIndex]) {
-            this.animations.push(new AnimatedImage(img, -1))
+            this.animations.push(img);
         }
 
         this.x = 1 * 16;
@@ -1310,16 +1310,16 @@ class Sprite {
     }
 
     draw(ctx) {
-        if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed) {
-            ctx.filter = "brightness(0) invert(1)";
-        }
         let frameIndex = (this.frameIndex == null) ? null : Math.floor(this.frameIndex);
-        let y = this.y - 7;
-        if (this.animations[this.animateIndex].images[0].rect.height != 23) {
-            y = this.y - 10;
+
+        let img = this.animations[this.animateIndex][frameIndex];
+        if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed) {
+            img = assets.boyGhost[this.animateIndex * 3 + frameIndex]
         }
-        this.animations[this.animateIndex].draw(ctx, this.x + 5, y, frameIndex);
-        ctx.filter = "none";
+
+        if (img) {
+            img.draw(ctx, this.x + 5, this.y - ((img.rect.height == 23) ? 7 : 10));
+        }
     }
 }
 

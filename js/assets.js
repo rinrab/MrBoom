@@ -46,12 +46,8 @@ function loadAssets() {
                 for (let index of framesIndex[x]) {
                     let frameX = index + x * 3 + spriteIndex * framesCount;
 
-                    newImages.push({
-                        img: imgSpriteBoys,
-                        rect: new Rect(
-                            (frameX % 13) * spriteWidth, Math.floor(frameX / 13) * spriteHeight,
-                            23, 23)
-                    });
+                    newImages.push(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth,
+                        Math.floor(frameX / 13) * spriteHeight, 23, 23));
                 }
 
                 player.push(newImages);
@@ -65,12 +61,8 @@ function loadAssets() {
                 for (let index of framesIndex[x]) {
                     let frameX = index + x * 3 + spriteIndex * framesCount;
 
-                    newImages.push({
-                        img: imgSpriteGirl,
-                        rect: new Rect(
-                            (frameX % 13) * spriteWidth, Math.floor(frameX / 13) * (spriteHeight + 2),
-                            23, 25)
-                    });
+                    newImages.push(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth,
+                        Math.floor(frameX / 13) * (spriteHeight + 2), 23, 25));
                 }
 
                 player.push(newImages);
@@ -125,6 +117,7 @@ function loadAssets() {
     const imgPause = document.getElementById("PAUSE");
     const imgFeuille = document.getElementById("FEUILLE");
     const imgAlpha = document.getElementById("ALPHA");
+    const imgGhosts = document.getElementById("GHOST");
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
@@ -185,7 +178,8 @@ function loadAssets() {
         },
         med: document.getElementById("MED"),
         coin: loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1)
-            .concat(loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1))
+            .concat(loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)),
+        boyGhost: loadImageStripe(imgGhosts, 0, 0, 23, 23, 12, 1),
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

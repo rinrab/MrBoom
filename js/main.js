@@ -678,7 +678,6 @@ class Results {
 }
 
 function drawAll(interpolationPercentage) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     const colors = ["magenta", "red", "blue", "green"];
 
     if (state == States.game) {
@@ -760,7 +759,6 @@ function drawAll(interpolationPercentage) {
 
             menustep += 1 / 100;
         }
-        ctx.filter = "none";
 
         drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
@@ -795,8 +793,6 @@ function drawAll(interpolationPercentage) {
             }
         }
     }
-
-    ctx.filter = "none";
 }
 
 function startGame(playerList) {

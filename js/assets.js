@@ -180,6 +180,7 @@ function loadAssets() {
         coin: loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1)
             .concat(loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)),
         boyGhost: loadImageStripe(imgGhosts, 0, 0, 23, 23, 12, 1),
+        girlGhost: loadImageStripe(imgGhosts, 0, 24, 23, 25, 12, 1),
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

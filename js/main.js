@@ -1312,10 +1312,10 @@ class Sprite {
 
     draw(ctx) {
         let frameIndex = (this.frameIndex == null) ? null : Math.floor(this.frameIndex);
-
-        let img = this.animations[this.animateIndex][frameIndex];
+        const frames = [0, 1, 0, 2];
+        let img = this.animations[this.animateIndex][frameIndex % 4];
         if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed) {
-            img = assets.boyGhost[this.animateIndex * 3 + frameIndex]
+            img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];
         }
 
         if (img) {

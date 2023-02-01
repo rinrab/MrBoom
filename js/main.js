@@ -707,13 +707,8 @@ class Results {
                 coin.frame -= 1 / 6;
             }
         }
-        let keycount = 0;
-        for (let key of Object.values(keys)) {
-            if (key) {
-                keycount++;
-            }
-        }
-        if ((keycount > 0 || isDemo) && this.frame > 120) {
+
+        if ((getKeysDownCount() > 0 || isDemo) && this.frame > 120) {
             startGame(startMenu.playerList);
         }
         this.frame++;
@@ -808,16 +803,7 @@ function drawAll(interpolationPercentage) {
         ctx.drawImage(assets.subtitles, 320 - startMenu.subtitlesMove, 192);
     } else if (state == States.draw) {
         assets.draw.draw(ctx);
-        let keyCount = 0;
-        for (let ctr of controllersList) {
-            ctr.update();
-            for (let key of ctr.playerKeys) {
-                if (key) {
-                    keyCount++;
-                }
-            }
-        }
-        if (keyCount > 0) {
+        if (getKeysDownCount() > 0) {
             startGame(startMenu.playerList);
         } else if (isDemo == true) {
             isDemo = 2;
@@ -914,6 +900,25 @@ function end(fps, panic) {
         var discardedTime = Math.round(MainLoop.resetFrameDelta());
         console.warn('Main loop panicked, probably because the browser tab was put in the background. Discarding ' + discardedTime + 'ms');
     }
+}
+
+function getKeysDownCount() {
+    let keyCount = 0;
+    for (let key of Object.values(keys)) {
+        if (key) {
+            keyCount++;
+        }
+    }
+    for (let ctr of controllersList) {
+        ctr.update();
+        for (let key of ctr.playerKeys) {
+            if (key) {
+                keyCount++;
+            }
+        }
+    }
+
+    return keyCount;
 }
 
 class AnimatedImage {

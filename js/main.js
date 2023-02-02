@@ -98,7 +98,12 @@ class Terrain {
 
     constructor(initial, powerUpList) {
         this.time = 0;
-        this.powerUpList = powerUpList;
+        this.powerUpList = [];
+        for (let bonus of powerUpList) {
+            for (let i = 0; i < bonus.count; i++) {
+                this.powerUpList.push(bonus.type);
+            }
+        }
         this.width = initial[0].length;
         this.height = initial.length;
         this.monsters = [];

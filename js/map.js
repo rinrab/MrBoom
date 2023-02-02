@@ -35,11 +35,11 @@ const mapPink = {
         "###################"
     ],
     powerUps: [
-        PowerUpType.ExtraBomb,
-        PowerUpType.ExtraFire,
-        PowerUpType.Life,
-        PowerUpType.RemoteControl,
-        PowerUpType.RollerSkate
+        { type: PowerUpType.ExtraBomb, count: 10 },
+        { type: PowerUpType.ExtraFire, count: 10 },
+        { type: PowerUpType.Life, count: 1 },
+        { type: PowerUpType.RemoteControl, count: 1 },
+        { type: PowerUpType.RollerSkate, count: 1 },
     ]
 }
 
@@ -61,12 +61,12 @@ const mapNeigeInitial = {
         "###################"
     ],
     powerUps: [
-        PowerUpType.ExtraBomb,
-        PowerUpType.ExtraFire,
-        PowerUpType.Life,
-        PowerUpType.RemoteControl,
-        PowerUpType.RollerSkate,
-        PowerUpType.Shield
+        { type: PowerUpType.ExtraBomb, count: 10 },
+        { type: PowerUpType.ExtraFire, count: 10 },
+        { type: PowerUpType.Life, count: 1 },
+        { type: PowerUpType.RemoteControl, count: 1 },
+        { type: PowerUpType.RollerSkate, count: 1 },
+        { type: PowerUpType.Shield, count: 1 }
     ],
     monsters: [
         { startX: 7, startY: 9, waitAfterTurn: 30 },

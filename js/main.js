@@ -780,13 +780,12 @@ function drawAll(interpolationPercentage) {
     } else if (state == States.results) {
         ctx.drawImage(assets.med, 0, 0);
 
-        ctx.filter = "invert(1) brightness(.7) contrast(2)"
         for (let coin of results.coins) {
             if (coin.animate != 1 || results.frame % 60 < 30) {
                 assets.coin[Math.abs(Math.floor(coin.frame) % assets.coin.length)].draw(ctx, coin.x, coin.y);
             }
         }
-        ctx.filter = "none";
+
         const positions = [
             { x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 0 }, { x: 1, y: 1 },
             { x: 0, y: 3 }, { x: 0, y: 4 }, { x: 1, y: 3 }, { x: 1, y: 4 },

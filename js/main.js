@@ -77,6 +77,7 @@ const States = {
 }
 let state = States.game;
 let isDemo = true;
+let mapIndex;
 
 class Terrain {
     data;
@@ -152,7 +153,8 @@ class Terrain {
                     y: spawn.y * 16,
                     step: 0,
                     waitAfterTurn: monster.waitAfterTurn,
-                    frameIndex: 0
+                    frameIndex: 0,
+                    type: monster.type,
                 });
             }
         }
@@ -480,7 +482,12 @@ addEventListener("load", function () {
     init();
 });
 
-function newMap(initial) {
+function newMap(index = -1) {
+    if (index == -1) {
+        index = Int.random(maps.length);
+    }
+    mapIndex = index;
+    const initial = maps[index];
     const rv = new Terrain(initial.map, initial.powerUps, initial.monsters);
 
     rv.soundCallback = function (sound) {
@@ -528,7 +535,7 @@ async function init() {
     ]);
 
     startMenu = new StartMenu();
-    map = newMap(mapNeigeInitial);
+    map = newMap(0);
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d", { alpha: false });
@@ -566,7 +573,7 @@ async function init() {
     document.getElementById("play-btn").addEventListener("click", () => {
         document.body.setAttribute("state", "game");
         sprites = [];
-        map = newMap(mapNeigeInitial);
+        map = newMap();
 
         if (document.body.requestFullscreen) {
             document.body.requestFullscreen();
@@ -774,9 +781,9 @@ function drawAll(interpolationPercentage) {
 
         for (let monster of map.monsters) {
             if (monster.step == 5) {
-                assets.neigeMonster[0][0].draw(ctx, monster.x + 8, monster.y - 2);
+                assets.monsters[monster.type][0][0].draw(ctx, monster.x + 8, monster.y - 2);
             } else {
-                assets.neigeMonster[monster.step][Math.floor(monster.frameIndex)].draw(ctx, monster.x + 8, monster.y - 2);
+                assets.monsters[monster.type][monster.step][Math.floor(monster.frameIndex)].draw(ctx, monster.x + 8, monster.y - 2);
             }
         }
 
@@ -868,7 +875,7 @@ function drawAll(interpolationPercentage) {
 
 function startGame(playerList) {
     state = States.game;
-    map = newMap(mapNeigeInitial);
+    map = newMap();
     sprites = [];
 
     if (isDemo) {
@@ -907,7 +914,7 @@ function startGame(playerList) {
 
     }
 
-    map.spawnMonsters(mapNeigeInitial.monsters);
+    map.spawnMonsters(maps[mapIndex].monsters);
 
     music.next();
 }

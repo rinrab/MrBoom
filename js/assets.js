@@ -157,7 +157,7 @@ function loadAssets() {
         boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
         fire: loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6),
         players: loadPlayers(imgSprite, imgSprite3),
-        neigeMonster: loadNeigeMonster(imgSprite),
+        monsters: [loadNeigeMonster(imgSprite)],
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
         alpha: {
             original: loadImageStripe(imgAlpha, 0, 0, 8, 6, 44),

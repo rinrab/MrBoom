@@ -140,6 +140,8 @@ function loadAssets() {
                 ],
                 [
                     loadImage(document.getElementById("GAME1"), 0, 0, 320, 200),
+                    loadImage(document.getElementById("GAME2"), 0, 0, 320, 200),
+                    loadImage(document.getElementById("GAME3"), 0, 0, 320, 200),
                 ]
             ],
         niegeIgloo:

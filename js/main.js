@@ -553,6 +553,10 @@ async function init() {
         } else if (document.body.msRequestFullscreen) {
             document.body.msRequestFullscreen();
         }
+
+        addEventListener("beforeunload", (e) => {
+            e.preventDefault();
+        })
         state = States.start;
 
         music.start(3);

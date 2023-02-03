@@ -107,6 +107,16 @@ function loadAssets() {
         return rv;
     }
 
+    const loadMonster = (up, left, right, down, die) => {
+        return [
+            [up[0], up[1], up[0], up[2]],
+            [left[0], left[1], left[0], left[2]],
+            [right[0], right[1], right[0], right[2]],
+            [down[0], down[1], down[0], down[2]],
+            die
+        ];
+    }
+
     const imgNeige1 = document.getElementById("NEIGE1");
     const imgNeige2 = document.getElementById("NEIGE2");
     const imgNeige3 = document.getElementById("NEIGE3");
@@ -121,18 +131,26 @@ function loadAssets() {
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
-        niegeBg:
+        backGrounds:
             [
-                loadImage(imgNeige1, 0, 0, 320, 200),
-                loadImage(imgNeige2, 0, 0, 320, 200),
-                loadImage(imgNeige3, 0, 0, 320, 200),
+                [
+                    loadImage(imgNeige1, 0, 0, 320, 200),
+                    loadImage(imgNeige2, 0, 0, 320, 200),
+                    loadImage(imgNeige3, 0, 0, 320, 200),
+                ],
+                [
+                    loadImage(document.getElementById("GAME1"), 0, 0, 320, 200),
+                ]
             ],
         niegeIgloo:
             [
                 loadImage(imgMed3, 0, 77, 6 * 8, 44),
             ],
         niegeTree: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
-        niegeWall: loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
+        walls: [
+            loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
+            loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
+        ],
         neigePermanentWall: loadImage(imgPause, 272, 16, 16, 16),
         powerups:
             [
@@ -157,7 +175,17 @@ function loadAssets() {
         boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
         fire: loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6),
         players: loadPlayers(imgSprite, imgSprite3),
-        monsters: [loadNeigeMonster(imgSprite)],
+        monsters: [
+            loadNeigeMonster(imgSprite),
+            loadMonster(
+                loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
+                loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
+                loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
+                loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
+                loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1).
+                    concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)))
+            
+        ],
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
         alpha: {
             original: loadImageStripe(imgAlpha, 0, 0, 8, 6, 44),

@@ -78,6 +78,7 @@ const States = {
 let state = States.game;
 let isDemo = true;
 let mapIndex;
+const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }];
 
 class Terrain {
     data;
@@ -125,7 +126,7 @@ class Terrain {
                 } else if (src == '-') {
                     this.data[y * this.width + x] = {
                         type: TerrainType.TemporaryWall,
-                        image: assets.niegeWall
+                        image: assets.walls[mapIndex]
                     };
                 } else if (src == '*') {
                     this.spawns.push({ x: x, y: y });
@@ -305,7 +306,7 @@ class Terrain {
             }
         }
         for (let i = this.monsters.length - 1; i >= 0; i--) {
-            if (this.monsters[i].frameIndex >= 8) {
+            if (this.monsters[i].frameIndex >= assets.monsters[this.monsters[i].type][4].length - 1) {
                 this.setCell(Int.divRound(this.monsters[i].x, 16), Int.divRound(this.monsters[i].y, 16), {
                     type: TerrainType.PowerUp,
                     image: assets.powerups[PowerUpType.Life],
@@ -393,7 +394,7 @@ class Terrain {
                     let next = this.generateGiven();
                     map.setCell(x, y, {
                         type: TerrainType.PermanentWall,
-                        image: assets.niegeWall,
+                        image: assets.walls[mapIndex],
                         imageIdx: 0,
                         animateDelay: 4,
                         next: next
@@ -494,7 +495,7 @@ function newMap(index = -1) {
         soundManager.playSound(sound);
     };
 
-    bg = { images: assets.niegeBg, time: 0 };
+    bg = { images: assets.backGrounds[mapIndex], time: 0 };
 
     return rv;
 }
@@ -781,15 +782,19 @@ function drawAll(interpolationPercentage) {
 
         for (let monster of map.monsters) {
             if (monster.step == 5) {
-                assets.monsters[monster.type][0][0].draw(ctx, monster.x + 8, monster.y - 2);
+                assets.monsters[monster.type][0][0].draw(ctx, monster.x +
+                    monsterOffset[monster.type].x, monster.y + monsterOffset[monster.type].y);
             } else {
-                assets.monsters[monster.type][monster.step][Math.floor(monster.frameIndex)].draw(ctx, monster.x + 8, monster.y - 2);
+                assets.monsters[monster.type][monster.step][Math.floor(monster.frameIndex)].draw(ctx,
+                    monster.x + monsterOffset[monster.type].x, monster.y + monsterOffset[monster.type].y);
             }
         }
 
-        igloo.draw(ctx, 232, 57);
-        tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
-        tree.time += 1 / 30;
+        if (mapIndex == 0) {
+            igloo.draw(ctx, 232, 57);
+            tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
+            tree.time += 1 / 30;
+        }
 
         if (map.timeLeft > 0) {
             let min = Math.floor(map.timeLeft / 60);
@@ -885,7 +890,7 @@ function startGame(playerList) {
         sprites.push(sprite);
 
         sprite = new Sprite(0);
-        map.locateSprite(sprite, 4);
+        map.locateSprite(sprite, (mapIndex == 0) ? 4 : 2);
         sprites.push(sprite);
         sprite.controller = new DemoController("lbrdwwbulllwwbrrddwwbuulllww", sprite);
 

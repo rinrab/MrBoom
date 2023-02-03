@@ -74,39 +74,6 @@ function loadAssets() {
         return result;
     }
 
-    const loadNeigeMonster = (imgSprite) => {
-        const scan = [];
-        for (let i = 0; i < 20; i++) {
-            const x = i % 11;
-            const y = Int.divFloor(i, 11) + 8;
-            scan.push({
-                img: imgSprite,
-                rect: new Rect(x * 24, y * 18 + (y - 8), 23, 18),
-                draw: function (ctx, x, y) {
-                    ctx.drawImage(
-                        this.img, this.rect.x, this.rect.y, this.rect.width, this.rect.height,
-                        x, y, this.rect.width, this.rect.height);
-                }
-            })
-        }
-        var indexList = [
-            [0, 1, 0, 2],
-            [3, 4, 3, 5],
-            [6, 7, 6, 8],
-            [9, 10, 9, 11],
-            [12, 13, 14, 15, 16, 17, 18, 19]
-        ]
-        const rv = [];
-        for (let frames of indexList) {
-            const newAnimation = [];
-            rv.push(newAnimation);
-            for (let frame of frames) {
-                newAnimation.push(scan[frame]);
-            }
-        }
-        return rv;
-    }
-
     const loadMonster = (up, left, right, down, die) => {
         return [
             [up[0], up[1], up[0], up[2]],
@@ -178,7 +145,13 @@ function loadAssets() {
         fire: loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6),
         players: loadPlayers(imgSprite, imgSprite3),
         monsters: [
-            loadNeigeMonster(imgSprite),
+            loadMonster(
+                loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
+                loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
+                loadImageStripe(imgSprite, 144, 144, 17, 18, 3, 7),
+                loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7).
+                    concat(loadImageStripe(imgSprite, 0, 163, 17, 18, 1, 7)),
+                loadImageStripe(imgSprite, 24, 163, 17, 18, 8, 7)),
             loadMonster(
                 loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
                 loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),

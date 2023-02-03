@@ -72,7 +72,8 @@ const States = {
     start: 0,
     game: 1,
     results: 2,
-    draw: 3
+    draw: 3,
+    victory: 4,
 }
 let state = States.game;
 let isDemo = true;
@@ -580,6 +581,8 @@ function update(deltaTime) {
         startMenu.update();
     } else if (state == States.results) {
         results.update();
+    } else if (state == States.victory) {
+        victory.update();
     }
 }
 
@@ -633,11 +636,12 @@ class StartMenu {
     playerList = [];
     subtitlesMove = 0;
 }
-
+let victory;
 class Results {
     frame = 0;
     results = [];
     coins = [];
+    next;
 
     constructor(playerList) {
         this.results = [];
@@ -669,6 +673,13 @@ class Results {
                 });
             }
         }
+        this.next = "game";
+        for (let p of this.results) {
+            if (p.wins >= 5) {
+                this.next = "victory";
+                victory = new Victory(index);
+            }
+        }
         this.frame = 0;
         soundManager.playSound("victory");
     }
@@ -681,9 +692,34 @@ class Results {
         }
 
         if ((getKeysDownCount() > 0 || isDemo) && this.frame > 120) {
-            startGame(startMenu.playerList);
+            if (this.next == "game") {
+                startGame(startMenu.playerList);
+            } else {
+                state = States.victory;
+            }
         }
         this.frame++;
+    }
+}
+
+class Victory {
+    sprite;
+    frame = 0;
+
+    constructor(index) {
+        this.sprite = { idx: 0, img: sprites[index].animations[0] };
+    }
+
+    update() {
+        this.sprite.idx += 0.05;
+        this.frame += 0.2;
+        if (getKeysDownCount() > 0 && this.frame > 24) {
+            startMenu = new StartMenu();
+            state = States.start;
+            for (let ctr of controllersList) {
+                ctr.id = undefined;
+            }
+        }
     }
 }
 
@@ -801,6 +837,11 @@ function drawAll(interpolationPercentage) {
                     results.results[i].name, colors[Int.divFloor(i, 2)]);
             }
         }
+    } else if (state == States.victory) {
+        ctx.drawImage(assets.vic[Math.floor(victory.frame) % 4], 0, 0);
+        victory.sprite.img[Math.floor(victory.sprite.idx) % 4].draw(ctx,
+            Math.round(320 / 2 - victory.sprite.img[0].rect.width / 2),
+            80 - victory.sprite.img[0].rect.height);
     }
 }
 

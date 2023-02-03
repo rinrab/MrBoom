@@ -333,6 +333,7 @@ class Terrain {
         }
         if (this.timeLeft < 0 || playersCount == 0) {
             state = States.draw;
+            soundManager.playSound("draw");
         }
 
         if (playersCount == 1 && sprites.length > 1 && !this.toGameEnd) {

@@ -141,18 +141,20 @@ class Terrain {
     }
 
     spawnMonsters(monsters) {
-        for (let i = 0; i < 8 - sprites.length; i++) {
-            const monster = monsters[Int.random(monsters.length)];
-            const spawn = this.spawns[this.generateSpawn()];
-            this.monsters.push({
-                homeX: monster.startX * 16,
-                x: spawn.x * 16,
-                homeY: monster.startY * 16,
-                y: spawn.y * 16,
-                step: 0,
-                waitAfterTurn: monster.waitAfterTurn,
-                frameIndex: 0
-            });
+        if (!args.includes("-m")) {
+            for (let i = 0; i < 8 - sprites.length; i++) {
+                const monster = monsters[Int.random(monsters.length)];
+                const spawn = this.spawns[this.generateSpawn()];
+                this.monsters.push({
+                    homeX: monster.startX * 16,
+                    x: spawn.x * 16,
+                    homeY: monster.startY * 16,
+                    y: spawn.y * 16,
+                    step: 0,
+                    waitAfterTurn: monster.waitAfterTurn,
+                    frameIndex: 0
+                });
+            }
         }
     }
 
@@ -490,6 +492,22 @@ function newMap(initial) {
     return rv;
 }
 
+let args = [];
+
+function updateArgs() {
+    let hash = decodeURI(location.hash);
+    hash = hash.replace("#", "");
+    console.log(hash);
+    args = hash.split(" ");
+    if (args.includes("--noclip")) {
+        cheats.noClip = true;
+    } if (args.includes("--god")) {
+        cheats.god = true;
+    } if (args.includes("-z")) {
+        music.stop();
+    }
+}
+
 async function init() {
     elemFpsDisplay = document.getElementById("fps-display");
 
@@ -518,6 +536,9 @@ async function init() {
     igloo = new AnimatedImage(assets.niegeIgloo, -1);
 
     tree = { images: assets.niegeTree, time: 0 };
+
+    updateArgs();
+    addEventListener("hashchange", updateArgs());
 
     startGame([]);
 
@@ -1145,6 +1166,12 @@ class Sprite {
 
         for (let img of assets.players[spriteIndex]) {
             this.animations.push(img);
+        }
+
+        if (cheats.god) {
+            this.unplugin = 999999;
+            this.blinking = 0;
+            this.blinkingSpeed = 30;
         }
 
         this.x = 1 * 16;

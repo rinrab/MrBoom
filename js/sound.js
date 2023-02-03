@@ -68,15 +68,17 @@ class MusicManager {
     }
 
     next(song) {
-        this.stop();
+        if (!args.includes("-z")) {
+            this.stop();
 
-        if (!song) {
-            song = Math.floor(Math.random() * this.playlist.length);
+            if (!song) {
+                song = Math.floor(Math.random() * this.playlist.length);
+            }
+
+            this.audio = new Audio(this.playlist[song]);
+            this.audio.volume = 0.7;
+            this.audio.loop = true;
+            this.audio.play();
         }
-
-        this.audio = new Audio(this.playlist[song]);
-        this.audio.volume = 0.7;
-        this.audio.loop = true;
-        this.audio.play();
     }
 }

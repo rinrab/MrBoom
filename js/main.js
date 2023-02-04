@@ -157,9 +157,7 @@ class Terrain {
                 const monster = monsters[Int.random(monsters.length)];
                 const spawn = this.spawns[this.generateSpawn()];
                 this.monsters.push({
-                    homeX: monster.startX * 16,
                     x: spawn.x * 16,
-                    homeY: monster.startY * 16,
                     y: spawn.y * 16,
                     step: 0,
                     waitAfterTurn: monster.waitAfterTurn,

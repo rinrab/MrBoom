@@ -510,7 +510,6 @@ addEventListener("load", function () {
 });
 
 function newMap(index = -1) {
-    index = 2;
     if (index == -1) {
         index = Int.random(maps.length);
     }

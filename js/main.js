@@ -566,8 +566,6 @@ async function init() {
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d", { alpha: false });
 
-    igloo = new AnimatedImage(assets.niegeIgloo, -1);
-
     tree = { images: assets.niegeTree, time: 0 };
 
     updateArgs();
@@ -817,7 +815,7 @@ function drawAll(interpolationPercentage) {
         }
 
         if (mapIndex == 0) {
-            igloo.draw(ctx, 232, 57);
+            assets.niegeIgloo[0].draw(ctx, 232, 57);
             tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
             tree.time += 1 / 30;
         }

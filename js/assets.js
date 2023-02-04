@@ -1,12 +1,13 @@
 function loadAssets() {
     function loadImage(imgElement, x, y, width, height) {
+        const scale = 2;
         return {
             img: imgElement,
             rect: new Rect(x, y, width, height),
             draw: function (ctx, x, y) {
                 ctx.drawImage(
-                    this.img, this.rect.x, this.rect.y, this.rect.width, this.rect.height,
-                    x, y, this.rect.width, this.rect.height);
+                    this.img, this.rect.x * scale, this.rect.y * scale, this.rect.width * scale, this.rect.height * scale,
+                    x * scale, y * scale, this.rect.width * scale, this.rect.height * scale);
             }
         };
     }

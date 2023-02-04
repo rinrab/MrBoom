@@ -117,6 +117,7 @@ class Terrain {
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 let src = initial[y][x];
+                const bonusStr = "0123456789AB";
 
                 if (src == '#') {
                     this.data[y * this.width + x] = {
@@ -132,13 +133,14 @@ class Terrain {
                     this.data[y * this.width + x] = {
                         type: TerrainType.Free
                     };
-                } else if (src == '4') {
+                } else if (bonusStr.includes(src)) {
+                    const index = bonusStr.charAt(src);
                     this.data[y * this.width + x] = {
                         type: TerrainType.PowerUp,
-                        image: assets.powerups[4],
+                        image: assets.powerups[index],
                         imageIdx: 0,
                         animateDelay: 8,
-                        powerUpType: 4
+                        powerUpType: index
                     }
                 } else {
                     this.data[y * this.width + x] = {
@@ -508,6 +510,7 @@ addEventListener("load", function () {
 });
 
 function newMap(index = -1) {
+    index = 2;
     if (index == -1) {
         index = Int.random(maps.length);
     }

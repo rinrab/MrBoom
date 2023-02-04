@@ -949,7 +949,6 @@ function startGame(playerList) {
             sprite.controller = playerList[i].controller;
             sprites.push(sprite);
         }
-
     }
 
     map.spawnMonsters(maps[mapIndex].monsters);

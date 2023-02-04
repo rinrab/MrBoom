@@ -95,6 +95,7 @@ function loadAssets() {
     const imgFeuille = document.getElementById("FEUILLE");
     const imgAlpha = document.getElementById("ALPHA");
     const imgGhosts = document.getElementById("GHOST");
+    const imgCrayon2 = document.getElementById("CRAYON2");
     const monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
 
     return {
@@ -179,6 +180,7 @@ function loadAssets() {
                 null),
             null,
         ],
+        insertCoin: loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
         alpha: {
             original: loadImageStripe(imgAlpha, 0, 0, 8, 6, 44),

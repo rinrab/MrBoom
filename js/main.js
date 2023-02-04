@@ -596,7 +596,7 @@ async function init() {
         controllersList.push(ctrl);
     });
 
-    document.getElementById("play-btn").addEventListener("click", () => {
+    document.getElementById("insert-coin").addEventListener("click", () => {
         document.body.setAttribute("state", "game");
         sprites = [];
         map = newMap();
@@ -840,6 +840,12 @@ function drawAll(interpolationPercentage) {
                     x += 14;
                 }
             }
+        }
+
+        if (isDemo) {
+            const insertCoinCtx = document.getElementById("insert-coin").getContext("2d");
+            const indexes = [1, 0, 1, 2];
+            assets.insertCoin[indexes[Math.floor(map.time / 30) % 4]].draw(insertCoinCtx, 0, 0);
         }
     } else if (state == States.start) {
         assets.start.draw(ctx, 0, 0);

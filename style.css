@@ -122,3 +122,21 @@ body[state="game"] #start-menu, body[state="game"] #start-menu * {
     .help > div:not(:first-child) {
         border-left: 1px solid black;
     }
+
+#insert-coin {
+    height: 30%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+    #insert-coin:hover {
+        height: 35%;
+    }
+
+body[state="game"] #insert-coin {
+    display: none;
+}
+

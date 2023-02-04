@@ -43,6 +43,7 @@
     <img src="Gfx/VIC2.GIF" id="VIC2">
     <img src="Gfx/VIC3.GIF" id="VIC3">
     <img src="Gfx/VIC4.GIF" id="VIC4">
+    <img src="Gfx/CRAYON2.GIF" id="CRAYON2">
     <audio src="sound/bang.wav" id="sound-bang" preload="auto"></audio>
     <audio src="sound/posebomb.wav" id="sound-posebomb" preload="auto"></audio>
     <audio src="sound/sac.wav" id="sound-sac" preload="auto"></audio>
@@ -55,7 +56,11 @@
     <audio src="sound/draw.wav" id="sound-draw" preload="auto"></audio>
   </div>
   <div class="container">
-    <div id="start-menu">
+    <div style="z-index: 99999999; height: 100%;">
+      <canvas id="insert-coin" width="58" height="62" style=""></canvas>
+      <!--<img src="Gfx/CRAYON2.GIF" />-->
+    </div>
+    <!--<div id="start-menu">
       <div class="help">
         <div>
           <strong>Left Keyboard:</strong>
@@ -77,7 +82,7 @@
         </div>
       </div>
       <button class="btn btn-start" id="play-btn">Play</button>
-    </div>
+    </div>-->
     <canvas id="grafic" width="320" height="200"></canvas>
     <label id="fps-display" ></label>
   </div>

@@ -161,6 +161,15 @@ function loadAssets() {
                     concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)))
             
         ],
+        monsterGhosts: [
+            null,
+            loadMonster(
+                loadImageStripe(imgGhosts, 0, 47, 32, 32, 3, 1),
+                loadImageStripe(imgGhosts, 99, 47, 32, 32, 3, 1),
+                loadImageStripe(imgGhosts, 99, 47 + 33, 32, 32, 3, 1),
+                loadImageStripe(imgGhosts, 0, 47 + 33, 32, 32, 3, 1),
+                null),
+        ],
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
         alpha: {
             original: loadImageStripe(imgAlpha, 0, 0, 8, 6, 44),

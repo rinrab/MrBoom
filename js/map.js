@@ -75,7 +75,7 @@ const maps = [
             { type: PowerUpType.Shield, count: 1 }
         ],
         monsters: [
-            { startX: 7, startY: 9, waitAfterTurn: 20, type: 1 },
+            { startX: 7, startY: 9, waitAfterTurn: 20, type: 1, livesCount: 3 },
         ]
     },
 ];

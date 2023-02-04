@@ -156,6 +156,8 @@ class Terrain {
                     waitAfterTurn: monster.waitAfterTurn,
                     frameIndex: 0,
                     type: monster.type,
+                    livesCount: monster.livesCount,
+                    blinking: 0, blinkingSpeed: 0,
                 });
             }
         }
@@ -273,7 +275,7 @@ class Terrain {
             } else if (monster.isDie) {
                 if (monster.frameIndex < 8) monster.frameIndex += 1 / 5;
             } else {
-                if ((isWalkable(monster, delta[monster.step]))) {
+                if ((isWalkable(monster, delta[monster.step])) && monster.step != 5) {
                     monster.x += delta[monster.step].x;
                     monster.y += delta[monster.step].y;
                     monster.frameIndex += 1 / 10;
@@ -298,11 +300,26 @@ class Terrain {
                 }
                 monster.frameIndex %= 4;
             }
-            if (this.getCell(Int.divRound(monster.x, 16),
+            if (!monster.unplugin && this.getCell(Int.divRound(monster.x, 16),
                 Int.divRound(monster.y, 16)).type == TerrainType.Fire && !monster.isDie) {
-                monster.isDie = true;
-                monster.step = 4;
-                this.playSound("ai");
+                if (monster.livesCount > 0) {
+                    monster.livesCount--;
+                    monster.blinking = 120;
+                    monster.unplugin = 120;
+                    monster.blinkingSpeed = 30;
+                } else {
+                    monster.isDie = true;
+                    monster.step = 4;
+                    this.playSound("ai");
+                }
+            }
+            monster.blinking -= monster.blinkingSpeed / 30;
+            if (monster.blinking < 0) {
+                monster.blinkingSpeed = 0;
+                monster.blinking = 0;
+            }
+            if (monster.unplugin) {
+                monster.unplugin--;
             }
         }
         for (let i = this.monsters.length - 1; i >= 0; i--) {
@@ -785,7 +802,8 @@ function drawAll(interpolationPercentage) {
                 assets.monsters[monster.type][0][0].draw(ctx, monster.x +
                     monsterOffset[monster.type].x, monster.y + monsterOffset[monster.type].y);
             } else {
-                assets.monsters[monster.type][monster.step][Math.floor(monster.frameIndex)].draw(ctx,
+                const img = (monster.blinking % 20 < 10) ? assets.monsters : assets.monsterGhosts;
+                img[monster.type][monster.step][Math.floor(monster.frameIndex)].draw(ctx,
                     monster.x + monsterOffset[monster.type].x, monster.y + monsterOffset[monster.type].y);
             }
         }

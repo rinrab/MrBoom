@@ -992,51 +992,6 @@ function getKeysDownCount() {
     return keyCount;
 }
 
-class AnimatedImage {
-    images;
-    currentImage;
-    delay;
-
-    _time;
-
-    constructor(images, delay) {
-        this.images = images;
-
-        this.delay = delay;
-        this._time = 0;
-
-        this.tick();
-    }
-
-    tick() {
-        if (this.delay == -1) {
-            return this.currentImage = this.images[0];
-        } else {
-            this._time += 1 / this.delay;
-
-            return this.currentImage = this.images[Math.floor(this._time % this.images.length)];
-        }
-    }
-
-    draw(ctx, x = 0, y = 0, imageIndex = -1) {
-        if (imageIndex == null) {
-            return;
-        }
-        let img;
-        if (imageIndex == -1) {
-            img = this.currentImage;
-        } else {
-            img = this.images[imageIndex % this.images.length];
-        }
-        ctx.drawImage(
-            img.img,
-            img.rect.x, img.rect.y,
-            img.rect.width, img.rect.height,
-            Math.round(x), Math.round(y),
-            img.rect.width, img.rect.height);
-    }
-}
-
 class KeyboardController {
     playerKeys;
     keyUp;

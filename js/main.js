@@ -5,7 +5,6 @@ let images;
 
 let bg;
 let tree;
-let igloo;
 
 let controllersList = [];
 let sprites = [];

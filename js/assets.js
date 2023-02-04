@@ -1,7 +1,6 @@
-function loadAssets() {
+function loadAssets(scale = 1) {
 
     function loadImage(imgElement, x, y, width, height) {
-        const scale = 1;
         return {
             img: imgElement,
             rect: new Rect(x, y, width, height),

@@ -123,17 +123,30 @@ body[state="game"] #start-menu, body[state="game"] #start-menu * {
         border-left: 1px solid black;
     }
 
+@keyframes insert-coin-animate {
+    0%, 100% {
+        height: 30%;
+    }
+
+    50% {
+        height: 35%;
+    }
+}
+
 #insert-coin {
-    height: 30%;
+    --add: 0%;
+    animation: .75s infinite insert-coin-animate;
     position: absolute;
     right: 0;
     top: 0;
     cursor: pointer;
     transition: all .2s;
+    box-shadow: rgba(255, 255, 255, 1) 0 0 0;
 }
 
     #insert-coin:hover {
-        height: 35%;
+        box-shadow: rgb(128, 128, 128) -20px 20px 20px;
+        animation-play-state: paused;
     }
 
 body[state="game"] #insert-coin {

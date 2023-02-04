@@ -361,8 +361,17 @@ class Terrain {
                 playersCount++;
             }
         }
-        if (this.timeLeft < 0 || playersCount == 0) {
+        if (this.timeLeft < 0 || playersCount == 0 && !this.toDraw) {
+            this.toDraw = 120;
+        }
+
+        if (this.toDraw) {
+            this.toDraw--;
+        }
+
+        if (this.toDraw == 0) {
             state = States.draw;
+            drawMenu = new DrawMenu();
             soundManager.playSound("draw");
         }
 
@@ -375,8 +384,14 @@ class Terrain {
         }
 
         if (this.toGameEnd == 0) {
-            results.win(sprites.find((v) => !v.isDie).controller.id);
-            state = States.results;
+            if (playersCount == 1) {
+                results.win(sprites.find((v) => !v.isDie).controller.id);
+                state = States.results;
+            } else {
+                state = States.draw;
+                drawMenu = new DrawMenu();
+                soundManager.playSound("draw");
+            }
         }
     }
 
@@ -634,6 +649,8 @@ function update(deltaTime) {
         results.update();
     } else if (state == States.victory) {
         victory.update();
+    } else if (state == States.draw) {
+        drawMenu.update();
     }
 }
 
@@ -682,14 +699,21 @@ class StartMenu {
                 results = new Results(this.playerList);
             }
         }
+
+        this.frame++;
     }
 
     playerList = [];
     subtitlesMove = 0;
+    frame = 0;
 }
+
 let victory;
+let drawMenu;
+
 class Results {
     frame = 0;
+    fadeOut;
     results = [];
     coins = [];
     next;
@@ -732,6 +756,7 @@ class Results {
             }
         }
         this.frame = 0;
+        this.fadeOut = undefined;
         soundManager.playSound("victory");
     }
 
@@ -742,7 +767,15 @@ class Results {
             }
         }
 
-        if ((getKeysDownCount() > 0 || isDemo) && this.frame > 120) {
+        if ((getKeysDownCount() > 0) && this.frame > 120 && !this.fadeOut) {
+            this.fadeOut = 15;
+        }
+
+        if (this.fadeOut) {
+            this.fadeOut--;
+        }
+
+        if (this.fadeOut <= 0) {
             if (this.next == "game") {
                 startGame(startMenu.playerList);
             } else {
@@ -774,10 +807,41 @@ class Victory {
     }
 }
 
+class DrawMenu {
+    constructor() {
+    }
+
+    update() {
+        this.frame++;
+        if ((getKeysDownCount() > 0 || isDemo) && this.frame > 120) {
+            this.fadeOut = 15;
+        }
+
+        if (this.fadeOut <= 1) {
+            startGame(startMenu.playerList);
+        }
+        if (this.fadeOut) {
+            this.fadeOut--;
+        }
+    }
+
+    frame = 0;
+    fadeOut;
+}
+
 function drawAll(interpolationPercentage) {
     const colors = ["magenta", "red", "blue", "green"];
 
     if (state == States.game) {
+        if (map.time < 15) {
+            canvas.style.opacity = map.time / 15;
+        } else if (map.toDraw < 15) {
+            canvas.style.opacity = map.toDraw / 15;
+        } else if (map.toGameEnd < 15) {
+            canvas.style.opacity = map.toGameEnd / 15;
+        } else {
+            canvas.style.opacity = 1;
+        }
         bg.images[Math.floor(bg.time) % bg.images.length].draw(ctx, 0, 0);
         bg.time += 1 / 30;
 
@@ -845,6 +909,13 @@ function drawAll(interpolationPercentage) {
             assets.insertCoin[indexes[Math.floor(map.time / 30) % 4]].draw(insertCoinCtx, 0, 0);
         }
     } else if (state == States.start) {
+        if (startMenu.frame < 15) {
+            canvas.style.opacity = (1 - (startMenu.frame / 15));
+        } else if (startMenu.frame < 30) {
+            canvas.style.opacity = (startMenu.frame - 15) / 15;
+        } else {
+            canvas.style.opacity = 1;
+        }
         assets.start.draw(ctx, 0, 0);
         for (let x = 0; x < 4; x++) {
             for (let y = 0; y < 2; y++) {
@@ -870,17 +941,23 @@ function drawAll(interpolationPercentage) {
 
         drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
-        assets.draw[0].draw(ctx, 0, 0);
-        if (getKeysDownCount() > 0) {
-            startGame(startMenu.playerList);
-        } else if (isDemo == true) {
-            isDemo = 2;
-        } else if (isDemo > 120) {
-            startGame([]);
-        } else if (isDemo != false) {
-            isDemo++;
+        if (drawMenu.frame < 15) {
+            canvas.style.opacity = drawMenu.frame / 15;
+        } else if (drawMenu.fadeOut) {
+            canvas.style.opacity = (drawMenu.fadeOut) / 15;
+        } else {
+            canvas.style.opacity = 1;
         }
+
+        assets.draw[Math.floor(drawMenu.frame / 20) % 2].draw(ctx, 0, 0);
     } else if (state == States.results) {
+        if (results.frame < 15) {
+            canvas.style.opacity = results.frame / 15;
+        } else if (results.fadeOut) {
+            canvas.style.opacity = (results.fadeOut) / 15;
+        } else {
+            canvas.style.opacity = 1;
+        }
         assets.med.draw(ctx, 0, 0);
 
         for (let coin of results.coins) {

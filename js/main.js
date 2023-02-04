@@ -5,7 +5,6 @@ let images;
 
 let bg;
 let tree;
-let igloo;
 
 let controllersList = [];
 let sprites = [];
@@ -569,8 +568,6 @@ async function init() {
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d", { alpha: false });
 
-    igloo = new AnimatedImage(assets.niegeIgloo, -1);
-
     tree = { images: assets.niegeTree, time: 0 };
 
     updateArgs();
@@ -820,7 +817,7 @@ function drawAll(interpolationPercentage) {
         }
 
         if (mapIndex == 0) {
-            igloo.draw(ctx, 232, 57);
+            assets.niegeIgloo[0].draw(ctx, 232, 57);
             tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
             tree.time += 1 / 30;
         }
@@ -876,7 +873,7 @@ function drawAll(interpolationPercentage) {
 
         drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
-        assets.draw.draw(ctx);
+        assets.draw[0].draw(ctx, 0, 0);
         if (getKeysDownCount() > 0) {
             startGame(startMenu.playerList);
         } else if (isDemo == true) {
@@ -887,7 +884,7 @@ function drawAll(interpolationPercentage) {
             isDemo++;
         }
     } else if (state == States.results) {
-        ctx.drawImage(assets.med, 0, 0);
+        assets.med.draw(ctx, 0, 0);
 
         for (let coin of results.coins) {
             if (coin.animate != 1 || results.frame % 60 < 30) {
@@ -906,7 +903,7 @@ function drawAll(interpolationPercentage) {
             }
         }
     } else if (state == States.victory) {
-        ctx.drawImage(assets.vic[Math.floor(victory.frame) % 4], 0, 0);
+        assets.vic[Math.floor(victory.frame) % 4].draw(ctx, 0, 0);
         victory.sprite.img[Math.floor(victory.sprite.idx) % 4].draw(ctx,
             Math.round(320 / 2 - victory.sprite.img[0].rect.width / 2),
             80 - victory.sprite.img[0].rect.height);

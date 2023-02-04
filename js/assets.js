@@ -1,12 +1,13 @@
-function loadAssets() {
+function loadAssets(scale = 2) {
+
     function loadImage(imgElement, x, y, width, height) {
         return {
             img: imgElement,
             rect: new Rect(x, y, width, height),
             draw: function (ctx, x, y) {
                 ctx.drawImage(
-                    this.img, this.rect.x, this.rect.y, this.rect.width, this.rect.height,
-                    x, y, this.rect.width, this.rect.height);
+                    this.img, this.rect.x * scale, this.rect.y * scale, this.rect.width * scale, this.rect.height * scale,
+                    x * scale, y * scale, this.rect.width * scale, this.rect.height * scale);
             }
         };
     }
@@ -191,24 +192,20 @@ function loadAssets() {
             green: loadImageStripe(imgAlpha, 0, 40, 8, 6, 44),
         },
         bigDigits: loadImageStripe(imgFeuille, 80, 83, 15, 16, 11, 1),
-        draw: {
-            images: [document.getElementById("DRAW1"), document.getElementById("DRAW2")],
-            index: 0,
-            draw: function (ctx) {
-                ctx.drawImage(this.images[Math.floor(this.index) % this.images.length], 0, 0);
-                this.index += 1 / 40;
-            }
-        },
-        med: document.getElementById("MED"),
+        draw: [
+            loadImage(document.getElementById("DRAW1"), 0, 0, 320, 200),
+            loadImage(document.getElementById("DRAW2"), 0, 0, 320, 200)
+        ],
+        med: loadImage(document.getElementById("MED"), 0, 0, 320, 200),
         coin: loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1)
             .concat(loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)),
         boyGhost: loadImageStripe(imgGhosts, 0, 0, 23, 23, 12, 1),
         girlGhost: loadImageStripe(imgGhosts, 0, 24, 23, 25, 12, 1),
         vic: [
-            document.getElementById("VIC1"),
-            document.getElementById("VIC2"),
-            document.getElementById("VIC3"),
-            document.getElementById("VIC4"),
+            loadImage(document.getElementById("VIC1"), 0, 0, 320, 200),
+            loadImage(document.getElementById("VIC2"), 0, 0, 320, 200),
+            loadImage(document.getElementById("VIC3"), 0, 0, 320, 200),
+            loadImage(document.getElementById("VIC4"), 0, 0, 320, 200),
         ]
 
         // igloo penguin

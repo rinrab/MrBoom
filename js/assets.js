@@ -95,6 +95,7 @@ function loadAssets() {
     const imgFeuille = document.getElementById("FEUILLE");
     const imgAlpha = document.getElementById("ALPHA");
     const imgGhosts = document.getElementById("GHOST");
+    const monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
@@ -109,6 +110,11 @@ function loadAssets() {
                     loadImage(document.getElementById("GAME1"), 0, 0, 320, 200),
                     loadImage(document.getElementById("GAME2"), 0, 0, 320, 200),
                     loadImage(document.getElementById("GAME3"), 0, 0, 320, 200),
+                ],
+                [
+                    loadImage(document.getElementById("HELL1"), 0, 0, 320, 200),
+                    loadImage(document.getElementById("HELL2"), 0, 0, 320, 200),
+                    loadImage(document.getElementById("HELL3"), 0, 0, 320, 200),
                 ]
             ],
         niegeIgloo:
@@ -119,6 +125,7 @@ function loadAssets() {
         walls: [
             loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
+            loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
         ],
         neigePermanentWall: loadImage(imgPause, 272, 16, 16, 16),
         powerups:
@@ -158,8 +165,9 @@ function loadAssets() {
                 loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
                 loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
                 loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1).
-                    concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)))
-            
+                    concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1))),
+            loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
+                loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0))
         ],
         monsterGhosts: [
             null,
@@ -169,6 +177,7 @@ function loadAssets() {
                 loadImageStripe(imgGhosts, 99, 47 + 33, 32, 32, 3, 1),
                 loadImageStripe(imgGhosts, 0, 47 + 33, 32, 32, 3, 1),
                 null),
+            null,
         ],
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),
         alpha: {

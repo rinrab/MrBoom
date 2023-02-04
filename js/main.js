@@ -78,7 +78,7 @@ const States = {
 let state = States.game;
 let isDemo = true;
 let mapIndex;
-const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }];
+const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }];
 
 class Terrain {
     data;
@@ -133,6 +133,14 @@ class Terrain {
                     this.data[y * this.width + x] = {
                         type: TerrainType.Free
                     };
+                } else if (src == '4') {
+                    this.data[y * this.width + x] = {
+                        type: TerrainType.PowerUp,
+                        image: assets.powerups[4],
+                        imageIdx: 0,
+                        animateDelay: 8,
+                        powerUpType: 4
+                    }
                 } else {
                     this.data[y * this.width + x] = {
                         type: TerrainType.Free
@@ -260,11 +268,11 @@ class Terrain {
                 switch (this.getCell(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
                     Int.divRound(monster.y + delta.y * 8 + delta.y, 16)).type) {
                     case TerrainType.Free: case TerrainType.PowerUpFire:
+                    case TerrainType.PowerUp: case TerrainType.PowerUpFire:
                         return true;
 
                     case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
-                    case TerrainType.Bomb: case TerrainType.PowerUp: case TerrainType.PowerUpFire:
-                    case TerrainType.Fire:
+                    case TerrainType.Bomb: case TerrainType.Fire:
                         return false;
 
                     default: return true;
@@ -908,7 +916,11 @@ function startGame(playerList) {
         sprites.push(sprite);
 
         sprite = new Sprite(0);
-        map.locateSprite(sprite, (mapIndex == 0) ? 4 : 2);
+        let spawn = 2;
+        if (mapIndex == 0) spawn = 4;
+        else if (mapIndex == 1) spawn = 2;
+        else if (mapIndex == 2) spawn = 3;
+        map.locateSprite(sprite, spawn);
         sprites.push(sprite);
         sprite.controller = new DemoController("lbrdwwbulllwwbrrddwwbuulllww", sprite);
 

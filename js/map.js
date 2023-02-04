@@ -78,4 +78,32 @@ const maps = [
             { startX: 7, startY: 9, waitAfterTurn: 20, type: 1, livesCount: 3 },
         ]
     },
+    {
+        map: [
+            "###################",
+            "#* ------------- *#",
+            "# #-#-#-#-#-#-#-# #",
+            "#------*   *------#",
+            "#-#-#-#4#-#4#-#-#-#",
+            "#------ --- ------#",
+            "#-#-#-# #-# #-#-#-#",
+            "#------ --- ------#",
+            "#-#-#-#4#-#4#-#-#-#",
+            "#------*   *------#",
+            "# #-#-#-#-#-#-#-# #",
+            "#* ------------- *#",
+            "###################",
+        ],
+        powerUps: [
+            { type: PowerUpType.ExtraBomb, count: 10 },
+            { type: PowerUpType.ExtraFire, count: 10 },
+            { type: PowerUpType.Life, count: 1 },
+            { type: PowerUpType.RemoteControl, count: 1 },
+            { type: PowerUpType.RollerSkate, count: 1 },
+            { type: PowerUpType.Shield, count: 1 }
+        ],
+        monsters: [
+            { startX: 7, startY: 9, waitAfterTurn: 60, type: 2, speed: 0.5 },
+        ]
+    },
 ];

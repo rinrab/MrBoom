@@ -145,7 +145,7 @@ body[state="game"] #start-menu, body[state="game"] #start-menu * {
 }
 
     #insert-coin:hover {
-        box-shadow: rgb(128, 128, 128) -20px 20px 20px;
+        box-shadow: #ffffffbb -20px 20px 20px;
         animation-play-state: paused;
     }
 

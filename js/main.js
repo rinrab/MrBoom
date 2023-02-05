@@ -644,7 +644,8 @@ async function init() {
     soundManager = new SoundManager(soundAssets);
 }
 
-const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " +
+const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " + 
+    "players can join using their drop bomb button   use enter or lt and rt on gamepad controller to start game   " +
     "use arrows to move   use ctr to drop bomb   use alt to triger it by radio control   " +
     "gamepad controller:   use d-pad arrows to move   use   use b button to drop bomb   use a button to triger it by radio control";
 

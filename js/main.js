@@ -100,25 +100,25 @@ class Terrain {
         return this.height;
     }
 
-    constructor(initial, powerUpList) {
+    constructor(initial) {
         this.time = 0;
         this.powerUpList = [];
-        for (let bonus of powerUpList) {
+        for (let bonus of initial.powerUps) {
             for (let i = 0; i < bonus.count; i++) {
                 this.powerUpList.push(bonus.type);
             }
         }
-        this.width = initial[0].length;
-        this.height = initial.length;
+        this.width = initial.map[0].length;
+        this.height = initial.map.length;
         this.monsters = [];
         this.spawns = [];
-        this.timeLeft = 121;
+        this.timeLeft = initial.time + 1;
 
         this.data = new Array(this.width * this.height);
 
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                let src = initial[y][x];
+                let src = initial.map[y][x];
                 const bonusStr = "0123456789AB";
 
                 if (src == '#') {
@@ -544,7 +544,7 @@ function newMap(index = -1) {
     }
     mapIndex = index;
     const initial = maps[index];
-    const rv = new Terrain(initial.map, initial.powerUps, initial.monsters);
+    const rv = new Terrain(initial);
 
     rv.soundCallback = function (sound) {
         soundManager.playSound(sound);

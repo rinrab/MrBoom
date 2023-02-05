@@ -74,10 +74,12 @@ const States = {
     draw: 3,
     victory: 4,
 }
+
 let state = States.game;
 let isDemo = true;
 let mapIndex;
 const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }];
+let mapRandom;
 
 class Terrain {
     data;
@@ -535,7 +537,7 @@ addEventListener("load", function () {
 
 function newMap(index = -1) {
     if (index == -1) {
-        index = Int.random(maps.length);
+        index = mapRandom.next(maps.length)
     }
     mapIndex = index;
     const initial = maps[index];
@@ -567,6 +569,7 @@ function updateArgs() {
 }
 
 async function init() {
+    mapRandom = new UnrepeatableRandom();
     elemFpsDisplay = document.getElementById("fps-display");
 
     soundAssets = {};
@@ -1498,6 +1501,29 @@ class Sprite {
 
         if (img && frameIndex != null) {
             img.draw(ctx, this.x + 5, this.y - ((img.rect.height == 23) ? 7 : 10));
+        }
+    }
+}
+
+
+class UnrepeatableRandom {
+    previosNumber = -1;
+    constructor() {
+
+    }
+
+    next(max) {
+        if (this.previosNumber == -1 || max <= 1) {
+            this.previosNumber = Int.random(max);
+            return this.previosNumber;
+        } else {
+            while (true) {
+                const number = Int.random(max);
+                if (number != this.previosNumber) {
+                    this.previosNumber = number;
+                    return number;
+                }
+            }
         }
     }
 }

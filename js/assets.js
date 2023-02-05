@@ -97,7 +97,9 @@ function loadAssets(scale = 2) {
     const imgAlpha = document.getElementById("ALPHA");
     const imgGhosts = document.getElementById("GHOST");
     const imgCrayon2 = document.getElementById("CRAYON2");
+    const imgSoucoupe = document.getElementById("SOUCOUPE");
     const monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
+    const monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
@@ -117,17 +119,22 @@ function loadAssets(scale = 2) {
                     loadImage(document.getElementById("HELL1"), 0, 0, 320, 200),
                     loadImage(document.getElementById("HELL2"), 0, 0, 320, 200),
                     loadImage(document.getElementById("HELL3"), 0, 0, 320, 200),
+                ],
+                [
+                    loadImage(document.getElementById("FOOT"), 0, 0, 320, 200),
                 ]
             ],
         niegeIgloo:
             [
                 loadImage(imgMed3, 0, 77, 6 * 8, 44),
             ],
+        UFO: loadImageStripe(imgSoucoupe, 0, 133, 88, 37, 2, 144),
         niegeTree: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
         walls: [
             loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
+            loadImageStripe(imgPause, 160, 128, 16, 16, 8),
         ],
         neigePermanentWall: loadImage(imgPause, 272, 16, 16, 16),
         powerups:
@@ -169,7 +176,9 @@ function loadAssets(scale = 2) {
                 loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1).
                     concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1))),
             loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
-                loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0))
+                loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
+            loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
+                loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
         ],
         monsterGhosts: [
             null,
@@ -179,6 +188,7 @@ function loadAssets(scale = 2) {
                 loadImageStripe(imgGhosts, 99, 47 + 33, 32, 32, 3, 1),
                 loadImageStripe(imgGhosts, 0, 47 + 33, 32, 32, 3, 1),
                 null),
+            null,
             null,
         ],
         insertCoin: loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),

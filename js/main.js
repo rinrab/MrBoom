@@ -78,7 +78,7 @@ const States = {
 let state = States.game;
 let isDemo = true;
 let mapIndex;
-const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }];
+const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }, { x: 8, y: -2 }];
 let mapRandom;
 
 class Terrain {
@@ -536,6 +536,7 @@ addEventListener("load", function () {
 });
 
 function newMap(index = -1) {
+    index = 3;
     if (index == -1) {
         index = mapRandom.next(maps.length)
     }
@@ -908,6 +909,8 @@ function drawAll(interpolationPercentage) {
             assets.niegeIgloo[0].draw(ctx, 232, 57);
             tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
             tree.time += 1 / 30;
+        } else if (mapIndex == 3) {
+            assets.UFO[0].draw(ctx, 320 - 88, 0);
         }
 
         if (map.timeLeft > 0) {
@@ -1472,6 +1475,14 @@ class Sprite {
                 this.unplugin = 600;
                 this.blinkingSpeed = 30;
                 this.blinking = 0;
+            } else if (powerUpType == PowerUpType.Banana) {
+                for (let y = 0; y < map.height; y++) {
+                    for (let x = 0; x < map.width; x++) {
+                        if (map.getCell(x, y).type == TerrainType.Bomb) {
+                            map.ditonateBomb(x, y);
+                        }
+                    }
+                }
             }
 
             if (doFire) {

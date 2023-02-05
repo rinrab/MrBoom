@@ -1133,9 +1133,9 @@ class GamepadController {
         const currGamePad = navigator.getGamepads()[this.gamepad.index];
 
         this.playerKeys[PlayerKeys.Up] = currGamePad.buttons[12].pressed;
-        this.playerKeys[PlayerKeys.Down] = currGamePad.buttons[13].touched;
-        this.playerKeys[PlayerKeys.Left] = currGamePad.buttons[14].touched;
-        this.playerKeys[PlayerKeys.Right] = currGamePad.buttons[15].touched;
+        this.playerKeys[PlayerKeys.Down] = currGamePad.buttons[13].pressed;
+        this.playerKeys[PlayerKeys.Left] = currGamePad.buttons[14].pressed;
+        this.playerKeys[PlayerKeys.Right] = currGamePad.buttons[15].pressed;
         this.playerKeys[PlayerKeys.Bomb] = currGamePad.buttons[1].pressed;
         this.playerKeys[PlayerKeys.rcDitonate] = currGamePad.buttons[0].pressed;
     }

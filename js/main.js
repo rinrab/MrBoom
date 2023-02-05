@@ -1505,7 +1505,6 @@ class Sprite {
     }
 }
 
-
 class UnrepeatableRandom {
     previosNumber = -1;
     constructor() {

@@ -536,7 +536,6 @@ addEventListener("load", function () {
 });
 
 function newMap(index = -1) {
-    index = 3;
     if (index == -1) {
         index = mapRandom.next(maps.length)
     }

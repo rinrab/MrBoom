@@ -641,6 +641,7 @@ async function init() {
     });
 
     soundAssets = await loadSoundAssets();
+    soundManager = new SoundManager(soundAssets);
 }
 
 const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " +

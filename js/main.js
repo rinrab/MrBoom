@@ -770,7 +770,8 @@ class Results {
             for (let j = 0; j < this.results[i].wins; j++) {
                 this.coins.push({
                     y: positions[i].y * 42 + 27, x: positions[i].x * 161 + 44 + j * 23,
-                    frame: 0, animate: (j == this.results[i].wins - 1 && index == i) ? 1 : 2
+                    frame: 0, animate: (j == this.results[i].wins - 1 && index == i) ? 1 : 2,
+                    animateDelay: 1 / (4 + j / 2)
                 });
             }
         }
@@ -789,7 +790,7 @@ class Results {
     update() {
         for (let coin of this.coins) {
             if (coin.animate == 2) {
-                coin.frame -= 1 / 6;
+                coin.frame -= coin.animateDelay;
             }
         }
 

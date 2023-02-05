@@ -1062,6 +1062,7 @@ function getKeysDownCount() {
             }
         }
     }
+    if (isDemo) keyCount++;
 
     return keyCount;
 }

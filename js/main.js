@@ -536,6 +536,9 @@ addEventListener("load", function () {
 });
 
 function newMap(index = -1) {
+    if (args.includes("-l")) {
+        index = parseInt(args[args.findIndex((v) => v == "-l") + 1]);
+    }
     if (index == -1) {
         index = mapRandom.next(maps.length)
     }

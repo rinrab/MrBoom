@@ -694,6 +694,8 @@ class StartMenu {
             this.subtitlesMove = 0;
         }
 
+        let isGamepadStart = false;
+
         for (let controller of controllersList) {
             controller.update();
             if (controller.playerKeys[PlayerKeys.Bomb] && !controller.id && !controller.isDemo) {
@@ -703,9 +705,15 @@ class StartMenu {
                 controller.id = id;
                 soundManager.playSound("addplayer");
             }
+            if (controller.gamepad) {
+                const buttons = controller.gamepad.buttons;
+                if (buttons[6].pressed && buttons[7].pressed) {
+                    isGamepadStart = true;
+                }
+            }
         }
 
-        if (keys["Enter"]) {
+        if (keys["Enter"] || isGamepadStart) {
             if (this.playerList.length >= 1) {
                 isDemo = false;
                 music.next();

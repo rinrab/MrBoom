@@ -1134,12 +1134,19 @@ class GamepadController {
     }
 
     update() {
+        const deadZone = 0.5;
         const currGamePad = navigator.getGamepads()[this.gamepad.index];
+        this.playerKeys = [];
 
-        this.playerKeys[PlayerKeys.Up] = currGamePad.buttons[12].pressed;
-        this.playerKeys[PlayerKeys.Down] = currGamePad.buttons[13].pressed;
-        this.playerKeys[PlayerKeys.Left] = currGamePad.buttons[14].pressed;
-        this.playerKeys[PlayerKeys.Right] = currGamePad.buttons[15].pressed;
+        if (currGamePad.axes[1] < -deadZone) this.playerKeys[PlayerKeys.Up] = true;
+        if (currGamePad.axes[1] > deadZone) this.playerKeys[PlayerKeys.Down] = true;
+        if (currGamePad.axes[0] < -deadZone) this.playerKeys[PlayerKeys.Left] = true;
+        if (currGamePad.axes[0] > deadZone) this.playerKeys[PlayerKeys.Right] = true;
+
+        if (currGamePad.buttons[12].pressed) this.playerKeys[PlayerKeys.Up] = true;
+        if (currGamePad.buttons[13].pressed) this.playerKeys[PlayerKeys.Down] = true;
+        if (currGamePad.buttons[14].pressed) this.playerKeys[PlayerKeys.Left] = true;
+        if (currGamePad.buttons[15].pressed) this.playerKeys[PlayerKeys.Right] = true;
         this.playerKeys[PlayerKeys.Bomb] = currGamePad.buttons[1].pressed;
         this.playerKeys[PlayerKeys.rcDitonate] = currGamePad.buttons[0].pressed;
     }

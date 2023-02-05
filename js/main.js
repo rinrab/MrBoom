@@ -361,7 +361,7 @@ class Terrain {
                 playersCount++;
             }
         }
-        if (this.timeLeft < 0 || playersCount == 0 && !this.toDraw) {
+        if (playersCount == 0 && !this.toDraw) {
             this.toDraw = 120;
         }
 
@@ -369,7 +369,7 @@ class Terrain {
             this.toDraw--;
         }
 
-        if (this.toDraw == 0) {
+        if (this.toDraw == 0 || this.timeLeft < 0) {
             state = States.draw;
             drawMenu = new DrawMenu();
             soundManager.playSound("draw");
@@ -392,6 +392,17 @@ class Terrain {
                 drawMenu = new DrawMenu();
                 soundManager.playSound("draw");
             }
+        }
+
+        if (this.timeLeft < 10 && this.endSound == undefined) {
+            this.endSound = 10;
+        } else if (this.timeLeft < this.endSound && this.timeLeft > 0) {
+            soundManager.playSound("clock");
+            this.endSound--;
+        }
+        if (this.endSound == 2 && !this.time_end_played) {
+            soundManager.playSound("time_end");
+            this.time_end_played = true;
         }
     }
 

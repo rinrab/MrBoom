@@ -29,6 +29,8 @@ async function loadSoundAssets() {
         addplayer: await loadSound("addplayer"),
         victory: await loadSound("victory"),
         draw: await loadSound("draw"),
+        clock: await loadSound("clock"),
+        time_end: await loadSound("time_end"),
     };
 
     return result;

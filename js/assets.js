@@ -221,7 +221,8 @@ function loadAssets(scale = 2) {
             loadImage(document.getElementById("VIC2"), 0, 0, 320, 200),
             loadImage(document.getElementById("VIC3"), 0, 0, 320, 200),
             loadImage(document.getElementById("VIC4"), 0, 0, 320, 200),
-        ]
+        ],
+        sky: loadImage(imgSprite2, 64, 16, 48, 44)
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

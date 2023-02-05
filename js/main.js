@@ -872,6 +872,15 @@ function drawAll(interpolationPercentage) {
         } else {
             canvas.style.opacity = 1;
         }
+
+        if (mapIndex == 4) {
+            for (let y = 0; y < 5; y++) {
+                for (let x = 0; x < 8; x++) {
+                    assets.sky.draw(ctx,
+                        48 * 8 - Math.floor(map.time / 2 + x * 48 + y * 24) % (48 * 8) - 48, y * 44);
+                }
+            }
+        }
         bg.images[Math.floor(bg.time) % bg.images.length].draw(ctx, 0, 0);
         bg.time += 1 / 30;
 

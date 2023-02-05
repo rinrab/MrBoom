@@ -569,7 +569,7 @@ function updateArgs() {
 async function init() {
     elemFpsDisplay = document.getElementById("fps-display");
 
-    soundAssets = await loadSoundAssets();
+    soundAssets = {};
     assets = loadAssets();
 
     soundManager = new SoundManager(soundAssets);
@@ -639,6 +639,8 @@ async function init() {
 
         music.start(3);
     });
+
+    soundAssets = await loadSoundAssets();
 }
 
 const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " +

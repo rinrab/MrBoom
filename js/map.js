@@ -163,6 +163,8 @@ const maps = [
         ],
         monsters: [
             { waitAfterTurn: 30, type: 0 },
+            { waitAfterTurn: 30, type: 0 },
+            { waitAfterTurn: 30, type: 1, livesCount: 3 },
             { waitAfterTurn: 30, type: 1, livesCount: 3 },
             { waitAfterTurn: 30, type: 2 },
         ],

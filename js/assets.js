@@ -122,6 +122,10 @@ function loadAssets(scale = 2) {
                 ],
                 [
                     loadImage(document.getElementById("FOOT"), 0, 0, 320, 200),
+                ],
+                [
+                    loadImage(document.getElementById("NUAGE1"), 0, 0, 320, 200),
+                    loadImage(document.getElementById("NUAGE2"), 0, 0, 320, 200),
                 ]
             ],
         niegeIgloo:
@@ -135,6 +139,7 @@ function loadAssets(scale = 2) {
             loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
             loadImageStripe(imgPause, 160, 128, 16, 16, 8),
+            loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
         ],
         neigePermanentWall: loadImage(imgPause, 272, 16, 16, 16),
         powerups:

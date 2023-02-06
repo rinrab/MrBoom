@@ -212,7 +212,6 @@ class Terrain {
 
         switch (cell.type) {
             case TerrainType.Free:
-            case TerrainType.Bomb:
             case TerrainType.PowerUpFire:
                 return true;
 
@@ -220,6 +219,7 @@ class Terrain {
                 return false;
 
             case TerrainType.TemporaryWall:
+            case TerrainType.Bomb:
                 return cheats.noClip;
 
             default:
@@ -1374,7 +1374,8 @@ class Sprite {
         const moveY = (delta) => {
             if (Int.mod(this.x, 16) == 0) {
                 const y = (delta < 0) ? Int.divFloor(this.y + delta, 16) : Int.divCeil(this.y + delta, 16);
-                if (map.isWalkable(Int.divFloor(this.x, 16), y)) {
+                if (map.isWalkable(Int.divFloor(this.x, 16), y) || (y == Int.divRound(this.y, 16) &&
+                    map.getCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16)).type == TerrainType.Bomb)) {
                     this.y += delta;
                 }
             } else {
@@ -1386,7 +1387,8 @@ class Sprite {
         const moveX = (delta) => {
             if (Int.mod(this.y, 16) == 0) {
                 const x = (delta < 0) ? Int.divFloor(this.x + delta, 16) : Int.divCeil(this.x + delta, 16);
-                if (map.isWalkable(x, Int.divFloor(this.y, 16))) {
+                if (map.isWalkable(x, Int.divFloor(this.y, 16)) || (x == Int.divRound(this.x, 16) &&
+                    map.getCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16)).type == TerrainType.Bomb)) {
                     this.x += delta;
                 }
             } else {

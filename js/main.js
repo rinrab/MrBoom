@@ -78,7 +78,7 @@ const States = {
 let state = States.game;
 let isDemo = true;
 let mapIndex;
-const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }];
+const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }, { x: 8, y: -2 }];
 let mapRandom;
 
 class Terrain {
@@ -100,25 +100,25 @@ class Terrain {
         return this.height;
     }
 
-    constructor(initial, powerUpList) {
+    constructor(initial) {
         this.time = 0;
         this.powerUpList = [];
-        for (let bonus of powerUpList) {
+        for (let bonus of initial.powerUps) {
             for (let i = 0; i < bonus.count; i++) {
                 this.powerUpList.push(bonus.type);
             }
         }
-        this.width = initial[0].length;
-        this.height = initial.length;
+        this.width = initial.map[0].length;
+        this.height = initial.map.length;
         this.monsters = [];
         this.spawns = [];
-        this.timeLeft = 121;
+        this.timeLeft = initial.time + 1;
 
         this.data = new Array(this.width * this.height);
 
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                let src = initial[y][x];
+                let src = initial.map[y][x];
                 const bonusStr = "0123456789AB";
 
                 if (src == '#') {
@@ -212,7 +212,6 @@ class Terrain {
 
         switch (cell.type) {
             case TerrainType.Free:
-            case TerrainType.Bomb:
             case TerrainType.PowerUpFire:
                 return true;
 
@@ -220,6 +219,7 @@ class Terrain {
                 return false;
 
             case TerrainType.TemporaryWall:
+            case TerrainType.Bomb:
                 return cheats.noClip;
 
             default:
@@ -536,12 +536,15 @@ addEventListener("load", function () {
 });
 
 function newMap(index = -1) {
+    if (args.includes("-l")) {
+        index = parseInt(args[args.findIndex((v) => v == "-l") + 1]);
+    }
     if (index == -1) {
         index = mapRandom.next(maps.length)
     }
     mapIndex = index;
     const initial = maps[index];
-    const rv = new Terrain(initial.map, initial.powerUps, initial.monsters);
+    const rv = new Terrain(initial);
 
     rv.soundCallback = function (sound) {
         soundManager.playSound(sound);
@@ -840,13 +843,14 @@ class DrawMenu {
 
     update() {
         this.frame++;
-        if ((getKeysDownCount() > 0 || isDemo) && this.frame > 120) {
+        if (getKeysDownCount() > 0 && this.frame > 120) {
             this.fadeOut = 15;
         }
 
         if (this.fadeOut <= 1) {
             startGame(startMenu.playerList);
         }
+
         if (this.fadeOut) {
             this.fadeOut--;
         }
@@ -858,16 +862,24 @@ class DrawMenu {
 
 function drawAll(interpolationPercentage) {
     const colors = ["magenta", "red", "blue", "green"];
+    let blackOpacity = 0;
 
     if (state == States.game) {
         if (map.time < 15) {
-            canvas.style.opacity = map.time / 15;
+            blackOpacity = 1 - map.time / 15;
         } else if (map.toDraw < 15) {
-            canvas.style.opacity = map.toDraw / 15;
+            blackOpacity = map.toDraw / 15;
         } else if (map.toGameEnd < 15) {
-            canvas.style.opacity = map.toGameEnd / 15;
-        } else {
-            canvas.style.opacity = 1;
+            blackOpacity = map.toGameEnd / 15;
+        }
+
+        if (mapIndex == 4) {
+            for (let y = 0; y < 5; y++) {
+                for (let x = 0; x < 8; x++) {
+                    assets.sky.draw(ctx,
+                        48 * 8 - Math.floor(map.time / 2 + x * 48 + y * 24) % (48 * 8) - 48, y * 44);
+                }
+            }
         }
         bg.images[Math.floor(bg.time) % bg.images.length].draw(ctx, 0, 0);
         bg.time += 1 / 30;
@@ -887,7 +899,7 @@ function drawAll(interpolationPercentage) {
         }
 
         var spritesToDraw = sprites;
-        spritesToDraw.sort((a, b) => { return a.y - b.y; });
+        spritesToDraw.sort((a, b) => a.y - b.y);
 
         for (let sprite of spritesToDraw) {
             sprite.draw(ctx)
@@ -908,6 +920,8 @@ function drawAll(interpolationPercentage) {
             assets.niegeIgloo[0].draw(ctx, 232, 57);
             tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
             tree.time += 1 / 30;
+        } else if (mapIndex == 3) {
+            assets.UFO[0].draw(ctx, 320 - 88, 0);
         }
 
         if (map.timeLeft > 0) {
@@ -937,12 +951,11 @@ function drawAll(interpolationPercentage) {
         }
     } else if (state == States.start) {
         if (startMenu.frame < 15) {
-            canvas.style.opacity = (1 - (startMenu.frame / 15));
+            blackOpacity = startMenu.frame / 15;
         } else if (startMenu.frame < 30) {
-            canvas.style.opacity = (startMenu.frame - 15) / 15;
-        } else {
-            canvas.style.opacity = 1;
+            blackOpacity = (startMenu.frame - 15) / 15;
         }
+
         assets.start.draw(ctx, 0, 0);
         for (let x = 0; x < 4; x++) {
             for (let y = 0; y < 2; y++) {
@@ -969,22 +982,19 @@ function drawAll(interpolationPercentage) {
         drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
         if (drawMenu.frame < 15) {
-            canvas.style.opacity = drawMenu.frame / 15;
+            blackOpacity = 1 - drawMenu.frame / 15;
         } else if (drawMenu.fadeOut) {
-            canvas.style.opacity = (drawMenu.fadeOut) / 15;
-        } else {
-            canvas.style.opacity = 1;
+            blackOpacity = 1 - drawMenu.fadeOut / 15;
         }
 
         assets.draw[Math.floor(drawMenu.frame / 20) % 2].draw(ctx, 0, 0);
     } else if (state == States.results) {
         if (results.frame < 15) {
-            canvas.style.opacity = results.frame / 15;
+            blackOpacity = results.frame / 15;
         } else if (results.fadeOut) {
-            canvas.style.opacity = (results.fadeOut) / 15;
-        } else {
-            canvas.style.opacity = 1;
+            blackOpacity = 1 -(results.fadeOut) / 15;
         }
+
         assets.med.draw(ctx, 0, 0);
 
         for (let coin of results.coins) {
@@ -1008,6 +1018,12 @@ function drawAll(interpolationPercentage) {
         victory.sprite.img[Math.floor(victory.sprite.idx) % 4].draw(ctx,
             Math.round(320 / 2 - victory.sprite.img[0].rect.width / 2),
             80 - victory.sprite.img[0].rect.height);
+    }
+
+    if (blackOpacity != 0) {
+        ctx.fillStyle = "rgba(0,0,0," + blackOpacity + ")";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1;
     }
 }
 
@@ -1358,7 +1374,8 @@ class Sprite {
         const moveY = (delta) => {
             if (Int.mod(this.x, 16) == 0) {
                 const y = (delta < 0) ? Int.divFloor(this.y + delta, 16) : Int.divCeil(this.y + delta, 16);
-                if (map.isWalkable(Int.divFloor(this.x, 16), y)) {
+                if (map.isWalkable(Int.divFloor(this.x, 16), y) || (y == Int.divRound(this.y, 16) &&
+                    map.getCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16)).type == TerrainType.Bomb)) {
                     this.y += delta;
                 }
             } else {
@@ -1370,7 +1387,8 @@ class Sprite {
         const moveX = (delta) => {
             if (Int.mod(this.y, 16) == 0) {
                 const x = (delta < 0) ? Int.divFloor(this.x + delta, 16) : Int.divCeil(this.x + delta, 16);
-                if (map.isWalkable(x, Int.divFloor(this.y, 16))) {
+                if (map.isWalkable(x, Int.divFloor(this.y, 16)) || (x == Int.divRound(this.x, 16) &&
+                    map.getCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16)).type == TerrainType.Bomb)) {
                     this.x += delta;
                 }
             } else {
@@ -1472,6 +1490,17 @@ class Sprite {
                 this.unplugin = 600;
                 this.blinkingSpeed = 30;
                 this.blinking = 0;
+            } else if (powerUpType == PowerUpType.Banana) {
+                for (let y = 0; y < map.height; y++) {
+                    for (let x = 0; x < map.width; x++) {
+                        if (map.getCell(x, y).type == TerrainType.Bomb) {
+                            map.ditonateBomb(x, y);
+                        }
+                    }
+                }
+            } else if (powerUpType == PowerUpType.Clock) {
+                map.timeLeft += 60;
+                soundManager.playSound("clock");
             }
 
             if (doFire) {

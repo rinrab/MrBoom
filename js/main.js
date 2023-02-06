@@ -861,16 +861,15 @@ class DrawMenu {
 
 function drawAll(interpolationPercentage) {
     const colors = ["magenta", "red", "blue", "green"];
+    let blackOpacity = 0;
 
     if (state == States.game) {
         if (map.time < 15) {
-            canvas.style.opacity = map.time / 15;
+            blackOpacity = 1 - map.time / 15;
         } else if (map.toDraw < 15) {
-            canvas.style.opacity = map.toDraw / 15;
+            blackOpacity = map.toDraw / 15;
         } else if (map.toGameEnd < 15) {
-            canvas.style.opacity = map.toGameEnd / 15;
-        } else {
-            canvas.style.opacity = 1;
+            blackOpacity = map.toGameEnd / 15;
         }
 
         if (mapIndex == 4) {
@@ -951,12 +950,11 @@ function drawAll(interpolationPercentage) {
         }
     } else if (state == States.start) {
         if (startMenu.frame < 15) {
-            canvas.style.opacity = (1 - (startMenu.frame / 15));
+            blackOpacity = startMenu.frame / 15;
         } else if (startMenu.frame < 30) {
-            canvas.style.opacity = (startMenu.frame - 15) / 15;
-        } else {
-            canvas.style.opacity = 1;
+            blackOpacity = (startMenu.frame - 15) / 15;
         }
+
         assets.start.draw(ctx, 0, 0);
         for (let x = 0; x < 4; x++) {
             for (let y = 0; y < 2; y++) {
@@ -983,22 +981,19 @@ function drawAll(interpolationPercentage) {
         drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
         if (drawMenu.frame < 15) {
-            canvas.style.opacity = drawMenu.frame / 15;
+            blackOpacity = 1 - drawMenu.frame / 15;
         } else if (drawMenu.fadeOut) {
-            canvas.style.opacity = (drawMenu.fadeOut) / 15;
-        } else {
-            canvas.style.opacity = 1;
+            blackOpacity = 1 - drawMenu.fadeOut / 15;
         }
 
         assets.draw[Math.floor(drawMenu.frame / 20) % 2].draw(ctx, 0, 0);
     } else if (state == States.results) {
         if (results.frame < 15) {
-            canvas.style.opacity = results.frame / 15;
+            blackOpacity = results.frame / 15;
         } else if (results.fadeOut) {
-            canvas.style.opacity = (results.fadeOut) / 15;
-        } else {
-            canvas.style.opacity = 1;
+            blackOpacity = 1 -(results.fadeOut) / 15;
         }
+
         assets.med.draw(ctx, 0, 0);
 
         for (let coin of results.coins) {
@@ -1018,12 +1013,16 @@ function drawAll(interpolationPercentage) {
             }
         }
     } else if (state == States.victory) {
-        canvas.style.opacity = 1;
-
         assets.vic[Math.floor(victory.frame) % 4].draw(ctx, 0, 0);
         victory.sprite.img[Math.floor(victory.sprite.idx) % 4].draw(ctx,
             Math.round(320 / 2 - victory.sprite.img[0].rect.width / 2),
             80 - victory.sprite.img[0].rect.height);
+    }
+
+    if (blackOpacity != 0) {
+        ctx.fillStyle = "rgba(0,0,0," + blackOpacity + ")";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1;
     }
 }
 

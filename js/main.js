@@ -1496,6 +1496,9 @@ class Sprite {
                         }
                     }
                 }
+            } else if (powerUpType == PowerUpType.Clock) {
+                map.timeLeft += 60;
+                soundManager.playSound("clock");
             }
 
             if (doFire) {

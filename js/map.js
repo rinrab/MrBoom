@@ -160,6 +160,7 @@ const maps = [
             { type: PowerUpType.Life, count: 1 },
             { type: PowerUpType.RemoteControl, count: 1 },
             { type: PowerUpType.Shield, count: 1 },
+            { type: PowerUpType.Clock, count: 100 },
         ],
         monsters: [
             { waitAfterTurn: 30, type: 0 },

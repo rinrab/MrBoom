@@ -1018,6 +1018,8 @@ function drawAll(interpolationPercentage) {
             }
         }
     } else if (state == States.victory) {
+        canvas.style.opacity = 1;
+
         assets.vic[Math.floor(victory.frame) % 4].draw(ctx, 0, 0);
         victory.sprite.img[Math.floor(victory.sprite.idx) % 4].draw(ctx,
             Math.round(320 / 2 - victory.sprite.img[0].rect.width / 2),

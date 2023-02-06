@@ -899,7 +899,7 @@ function drawAll(interpolationPercentage) {
         }
 
         var spritesToDraw = sprites;
-        spritesToDraw.sort((a, b) => { return a.y - b.y; });
+        spritesToDraw.sort((a, b) => a.y - b.y);
 
         for (let sprite of spritesToDraw) {
             sprite.draw(ctx)

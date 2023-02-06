@@ -843,13 +843,14 @@ class DrawMenu {
 
     update() {
         this.frame++;
-        if ((getKeysDownCount() > 0 || isDemo) && this.frame > 120) {
+        if (getKeysDownCount() > 0 && this.frame > 120) {
             this.fadeOut = 15;
         }
 
         if (this.fadeOut <= 1) {
             startGame(startMenu.playerList);
         }
+
         if (this.fadeOut) {
             this.fadeOut--;
         }

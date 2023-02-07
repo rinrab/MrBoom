@@ -182,7 +182,7 @@ function loadAssets(scale = 2) {
             loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
                 loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
             loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
-                loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
+                loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
         ],
         monsterGhosts: [
             null,

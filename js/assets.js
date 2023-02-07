@@ -1,5 +1,4 @@
 function loadAssets(scale = 2) {
-
     function loadImage(imgElement, x, y, width, height) {
         return {
             img: imgElement,

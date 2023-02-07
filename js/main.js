@@ -25,6 +25,21 @@ let elemFpsDisplay;
 
 let results;
 
+const controlKeys = {
+    "KeyW": true,
+    "KeyS": true,
+    "KeyA": true,
+    "KeyD": true,
+    "ControlLeft": true,
+    "AltLeft": true,
+    "ArrowUp": true,
+    "ArrowDown": true,
+    "ArrowLeft": true,
+    "ArrowRight": true,
+    "ControlRight": true,
+    "AltRight": true
+};
+
 const TerrainType =
 {
     Free: 0,
@@ -616,10 +631,19 @@ async function init() {
 
     addEventListener("keydown", function (e) {
         keys[e.code] = true;
+        if (controlKeys[e.code]) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
     })
 
     addEventListener("keyup", function (e) {
         keys[e.code] = false;
+
+        if (controlKeys[e.code]) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
     })
 
     controllersList.push(new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft", "AltLeft"));

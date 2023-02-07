@@ -943,12 +943,6 @@ function drawAll(interpolationPercentage) {
                 }
             }
         }
-
-        if (isDemo) {
-            const insertCoinCtx = document.getElementById("insert-coin").getContext("2d");
-            const indexes = [1, 0, 1, 2];
-            assets.insertCoin[indexes[Math.floor(map.time / 30) % 4]].draw(insertCoinCtx, 0, 0);
-        }
     } else if (state == States.start) {
         if (startMenu.frame < 15) {
             blackOpacity = startMenu.frame / 15;
@@ -1024,6 +1018,12 @@ function drawAll(interpolationPercentage) {
         ctx.fillStyle = "rgba(0,0,0," + blackOpacity + ")";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.globalAlpha = 1;
+    }
+
+    if (isDemo) {
+        const insertCoinCtx = document.getElementById("insert-coin").getContext("2d");
+        const indexes = [1, 0, 1, 2];
+        assets.insertCoin[indexes[Math.floor(map.time / 30) % 4]].draw(insertCoinCtx, 0, 0);
     }
 }
 

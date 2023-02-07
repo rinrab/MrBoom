@@ -372,9 +372,11 @@ class Terrain {
         }
 
         if (this.toDraw == 0 || this.timeLeft < 0) {
-            state = States.draw;
-            drawMenu = new DrawMenu();
-            soundManager.playSound("draw");
+            fade.fadeOut(() => {
+                state = States.draw;
+                drawMenu = new DrawMenu();
+                soundManager.playSound("draw");
+            });
         }
 
         if (playersCount == 1 && sprites.length > 1 && !this.toGameEnd) {
@@ -386,14 +388,16 @@ class Terrain {
         }
 
         if (this.toGameEnd == 0) {
-            if (playersCount == 1) {
-                results.win(sprites.find((v) => !v.isDie).controller.id);
-                state = States.results;
-            } else {
-                state = States.draw;
-                drawMenu = new DrawMenu();
-                soundManager.playSound("draw");
-            }
+            fade.fadeOut(() => {
+                if (playersCount == 1) {
+                    results.win(sprites.find((v) => !v.isDie).controller.id);
+                    state = States.results;
+                } else {
+                    state = States.draw;
+                    drawMenu = new DrawMenu();
+                    soundManager.playSound("draw");
+                }
+            });
         }
 
         if (this.timeLeft < 10 && this.endSound == undefined) {
@@ -742,7 +746,6 @@ let drawMenu;
 
 class Results {
     frame = 0;
-    fadeOut;
     results = [];
     coins = [];
     next;
@@ -760,6 +763,7 @@ class Results {
 
     win(id) {
         const index = this.results.findIndex((v) => v.id == id);
+        fade.fadeIn();
 
         this.results[index].wins++;
         console.log(index)
@@ -786,7 +790,6 @@ class Results {
             }
         }
         this.frame = 0;
-        this.fadeOut = undefined;
         soundManager.playSound("victory");
     }
 
@@ -797,21 +800,16 @@ class Results {
             }
         }
 
-        if ((getKeysDownCount() > 0) && this.frame > 120 && !this.fadeOut) {
-            this.fadeOut = 15;
+        if ((getKeysDownCount() > 0) && this.frame > 120) {
+            fade.fadeOut(() => {
+                if (this.next == "game") {
+                    startGame(startMenu.playerList);
+                } else {
+                    state = States.victory;
+                }
+            });
         }
 
-        if (this.fadeOut) {
-            this.fadeOut--;
-        }
-
-        if (this.fadeOut <= 0) {
-            if (this.next == "game") {
-                startGame(startMenu.playerList);
-            } else {
-                state = States.victory;
-            }
-        }
         this.frame++;
     }
 }
@@ -839,25 +837,64 @@ class Victory {
 
 class DrawMenu {
     constructor() {
+        fade.fadeIn();
     }
 
     update() {
         this.frame++;
         if (getKeysDownCount() > 0 && this.frame > 120) {
-            this.fadeOut = 15;
-        }
-
-        if (this.fadeOut <= 1) {
-            startGame(startMenu.playerList);
-        }
-
-        if (this.fadeOut) {
-            this.fadeOut--;
+            fade.fadeOut(() => {
+                startGame(startMenu.playerList);
+            });
         }
     }
 
     frame = 0;
-    fadeOut;
+}
+
+let fade = {
+    fade: 0,
+    direction: 0,
+    sleepTime: 0,
+
+    sleep(time) {
+        this.sleepTime = time;
+    },
+    isSleep: function () {
+        return !this.sleepTime == 0;
+    },
+    fadeIn: function () {
+        if (this.direction >= 0) {
+            this.fade = 15;
+            this.direction = -1;
+        }
+    },
+    fadeOut: function (action) {
+        if (this.direction <= 0) {
+            this.fade = 0;
+            this.direction = 1;
+        }
+        this.action = action;
+    },
+    update: function () {
+        if (this.sleepTime > 0) {
+            this.sleepTime--;
+        } else {
+            this.fade += this.direction;
+
+            if (this.direction > 0 && this.fade >= 15) {
+                this.direction = 0;
+                if (this.action) {
+                    this.action();
+                }
+            } else if (this.direction < 0 && this.fade <= 0) {
+                this.direction = 0;
+            }
+        }
+    },
+    getOpacity: function () {
+        return (this.fade == 0) ? 0 : Math.abs(this.fade / 15);
+    }
 }
 
 function drawAll(interpolationPercentage) {
@@ -975,20 +1012,8 @@ function drawAll(interpolationPercentage) {
 
         drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
-        if (drawMenu.frame < 15) {
-            blackOpacity = 1 - drawMenu.frame / 15;
-        } else if (drawMenu.fadeOut) {
-            blackOpacity = 1 - drawMenu.fadeOut / 15;
-        }
-
         assets.draw[Math.floor(drawMenu.frame / 20) % 2].draw(ctx, 0, 0);
     } else if (state == States.results) {
-        if (results.frame < 15) {
-            blackOpacity = results.frame / 15;
-        } else if (results.fadeOut) {
-            blackOpacity = 1 -(results.fadeOut) / 15;
-        }
-
         assets.med.draw(ctx, 0, 0);
 
         for (let coin of results.coins) {
@@ -1014,10 +1039,10 @@ function drawAll(interpolationPercentage) {
             80 - victory.sprite.img[0].rect.height);
     }
 
-    if (blackOpacity != 0) {
-        ctx.fillStyle = "rgba(0,0,0," + blackOpacity.toFixed(3) + ")";
+    fade.update();
+    if (fade.getOpacity() != 0) {
+        ctx.fillStyle = "rgba(0,0,0," + fade.getOpacity() + ")";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.globalAlpha = 1;
     }
 
     if (isDemo) {
@@ -1031,6 +1056,7 @@ function startGame(playerList) {
     state = States.game;
     map = newMap();
     sprites = [];
+    fade.fadeIn();
 
     if (isDemo) {
         sprite = new Sprite(2);

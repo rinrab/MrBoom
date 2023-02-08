@@ -903,6 +903,7 @@ class Victory {
         if (getKeysDownCount() > 0 && this.frame > 24) {
             fade.fadeOut(() => {
                 startMenu = new StartMenu();
+                music.start(3);
                 state = States.start;
                 for (let ctr of controllersList) {
                     ctr.id = undefined;

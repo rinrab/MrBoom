@@ -696,15 +696,14 @@ async function init() {
 
     document.getElementById("insert-coin").addEventListener("click", start);
 
-    soundAssets = await loadSoundAssets();
-    soundManager = new SoundManager(soundAssets);
-
     if (args.includes("-s")) {
         start();
     }
 }
 
 function start() {
+    soundManager.init();
+
     fade.fadeOut(() => {
         startMenu = new StartMenu();
 

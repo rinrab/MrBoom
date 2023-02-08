@@ -885,6 +885,7 @@ class Victory {
     frame = 0;
 
     constructor(index) {
+        fade.fadeIn();
         this.sprite = { idx: 0, img: sprites[index].animations[0] };
     }
 
@@ -892,11 +893,13 @@ class Victory {
         this.sprite.idx += 0.05;
         this.frame += 0.2;
         if (getKeysDownCount() > 0 && this.frame > 24) {
-            startMenu = new StartMenu();
-            state = States.start;
-            for (let ctr of controllersList) {
-                ctr.id = undefined;
-            }
+            fade.fadeOut(() => {
+                startMenu = new StartMenu();
+                state = States.start;
+                for (let ctr of controllersList) {
+                    ctr.id = undefined;
+                }
+            });
         }
     }
 }

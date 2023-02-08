@@ -1,21 +1,30 @@
 async function loadSoundAssets() {
     async function loadSound(name) {
-        let audio = document.getElementById("sound-" + name);
+        let audio = new Audio("sound/" + name + ".wav");
         audio.loop = false;
 
+        let result;
+        console.debug("audio: " + name, audio.readyState);
+
         if (audio.readyState != 4) {
-            return new Promise((resolve, reject) => {
+            result = new Promise((resolve, reject) => {
                 audio.addEventListener("canplaythrough", () => {
+                    console.debug("audio: " + name, audio.readyState);
                     resolve(audio);
                 });
 
                 audio.addEventListener("error", () => {
+                    console.debug("audio: " + name, audio.readyState);
                     reject();
                 })
             });
         } else {
-            return audio;
+            result = audio;
         }
+
+        audio.load();
+
+        return result;
     }
 
     let result = {

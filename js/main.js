@@ -652,7 +652,6 @@ async function init() {
         "music/unreeeal.mp3",
     ]);
 
-    startMenu = new StartMenu();
     map = newMap(0);
 
     canvas = document.getElementById("grafic");
@@ -696,24 +695,28 @@ async function init() {
     });
 
     document.getElementById("insert-coin").addEventListener("click", () => {
-        document.body.setAttribute("state", "game");
-        sprites = [];
-        map = newMap();
+        fade.fadeOut(() => {
+            startMenu = new StartMenu();
 
-        if (document.body.requestFullscreen) {
-            document.body.requestFullscreen();
-        } else if (document.body.webkitRequestFullscreen) {
-            document.body.webkitRequestFullscreen();
-        } else if (document.body.msRequestFullscreen) {
-            document.body.msRequestFullscreen();
-        }
+            document.body.setAttribute("state", "game");
+            sprites = [];
+            map = newMap();
 
-        addEventListener("beforeunload", (e) => {
-            e.preventDefault();
-        })
-        state = States.start;
+            if (document.body.requestFullscreen) {
+                document.body.requestFullscreen();
+            } else if (document.body.webkitRequestFullscreen) {
+                document.body.webkitRequestFullscreen();
+            } else if (document.body.msRequestFullscreen) {
+                document.body.msRequestFullscreen();
+            }
 
-        music.start(3);
+            addEventListener("beforeunload", (e) => {
+                e.preventDefault();
+            });
+            state = States.start;
+
+            music.start(3);
+        });
     });
 
     soundAssets = await loadSoundAssets();
@@ -763,6 +766,7 @@ class StartMenu {
             "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
             "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus"
         ];
+        fade.fadeIn();
     }
 
     update() {
@@ -792,10 +796,12 @@ class StartMenu {
 
         if (keys["Enter"] || isGamepadStart) {
             if (this.playerList.length >= 1) {
-                isDemo = false;
-                music.next();
-                startGame(this.playerList);
-                results = new Results(this.playerList);
+                fade.fadeOut(() => {
+                    isDemo = false;
+                    music.next();
+                    startGame(this.playerList);
+                    results = new Results(this.playerList);
+                });
             }
         }
 
@@ -852,7 +858,8 @@ class Results {
         for (let p of this.results) {
             if (p.wins >= 5) {
                 this.next = "victory";
-                victory = new Victory(index);
+            } else {
+                this.next = index;
             }
         }
         this.frame = 0;
@@ -871,6 +878,7 @@ class Results {
                 if (this.next == "game") {
                     startGame(startMenu.playerList);
                 } else {
+                    victory = new Victory(this.next);
                     state = States.victory;
                 }
             });

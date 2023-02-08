@@ -99,6 +99,10 @@ function loadAssets(scale = 2) {
     const imgSoucoupe = document.getElementById("SOUCOUPE");
     const monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
     const monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
+    const snail = loadImageStripe(imgFeuille, 41, 17, 38, 32, 6, 1).concat(
+        loadImageStripe(imgFeuille, 41, 50, 38, 32, 7, 1));
+    const snailGhost = loadImageStripe(imgGhosts, 0, 114, 38, 32, 6, 1).concat(
+        loadImageStripe(imgGhosts, 0, 147, 38, 32, 7, 1));
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
@@ -125,8 +129,12 @@ function loadAssets(scale = 2) {
                 [
                     loadImage(document.getElementById("NUAGE1"), 0, 0, 320, 200),
                     loadImage(document.getElementById("NUAGE2"), 0, 0, 320, 200),
+                ],
+                [
+                    loadImage(document.getElementById("FORET"), 0, 0, 320, 200),
                 ]
             ],
+        feuilleOverlay: loadImage(document.getElementById("FEUILLE_OVERLAY"), 0, 0, 320, 200),
         niegeIgloo:
             [
                 loadImage(imgMed3, 0, 77, 6 * 8, 44),
@@ -139,6 +147,7 @@ function loadAssets(scale = 2) {
             loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
             loadImageStripe(imgPause, 160, 128, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
+            loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
         ],
         neigePermanentWall: loadImage(imgPause, 272, 16, 16, 16),
         powerups:
@@ -183,6 +192,13 @@ function loadAssets(scale = 2) {
                 loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
             loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
                 loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
+            [
+                [snail[0], snail[1], snail[0], snail[1]],
+                [snail[4], snail[5], snail[4], snail[5]],
+                [snail[2], snail[3], snail[2], snail[3]],
+                [snail[6], snail[7], snail[6], snail[7]],
+                [snail[8], snail[9], snail[10], snail[11], snail[12]]
+            ]
         ],
         monsterGhosts: [
             null,
@@ -194,6 +210,13 @@ function loadAssets(scale = 2) {
                 null),
             null,
             null,
+            [
+                [snailGhost[0], snailGhost[1], snailGhost[0], snailGhost[1]],
+                [snailGhost[4], snailGhost[5], snailGhost[4], snailGhost[5]],
+                [snailGhost[2], snailGhost[3], snailGhost[2], snailGhost[3]],
+                [snailGhost[6], snailGhost[7], snailGhost[6], snailGhost[7]],
+                null
+            ]
         ],
         insertCoin: loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),

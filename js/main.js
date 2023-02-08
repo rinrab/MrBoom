@@ -93,7 +93,8 @@ const States = {
 let state = States.game;
 let isDemo = true;
 let mapIndex;
-const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }, { x: 8, y: -2 }];
+const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }, { x: 8, y: -2 },
+                       { x: -4, y: -16 }];
 let mapRandom;
 
 class Terrain {
@@ -182,6 +183,7 @@ class Terrain {
                     type: monster.type,
                     livesCount: monster.livesCount,
                     blinking: 0, blinkingSpeed: 0,
+                    speed: monster.speed
                 });
             }
         }
@@ -311,6 +313,14 @@ class Terrain {
         }
 
         for (let monster of this.monsters) {
+            if (monster.speed == 0.5) {
+                if (monster.skiped) {
+                    monster.skiped = false;
+                } else {
+                    monster.skiped = true;
+                    continue;
+                }
+            }
             const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }, {}, { x: 0, y: 0 }];
             const isWalkable = (monster, delta) => {
                 switch (this.getCell(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
@@ -1017,6 +1027,8 @@ function drawAll(interpolationPercentage) {
             tree.time += 1 / 30;
         } else if (mapIndex == 3) {
             assets.UFO[0].draw(ctx, 320 - 88, 0);
+        } else if (mapIndex == 5) {
+            assets.feuilleOverlay.draw(ctx, 0, 0);
         }
 
         if (map.timeLeft > 0) {

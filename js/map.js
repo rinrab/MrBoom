@@ -172,7 +172,37 @@ const maps = [
             { waitAfterTurn: 30, type: 0 },
             { waitAfterTurn: 30, type: 1, livesCount: 3 },
             { waitAfterTurn: 30, type: 1, livesCount: 3 },
-            { waitAfterTurn: 30, type: 2 },
+            { waitAfterTurn: 30, type: 2, speed: 0.5 },
+        ],
+        time: 60
+    },
+    {
+        map: [
+            "###################",
+            "#* ------------- *#",
+            "# #-###-#-###-### #",
+            "# ---*  #--*  --- #",
+            "#-### #-### ###-#-#",
+            "#-#-------#-------#",
+            "#-#-#-#-#-#-#-#-#-#",
+            "#---#- *------#---#",
+            "#-#-### #-###-###-#",
+            "# ----# ---*  --# #",
+            "# ###-#-### ###-# #",
+            "#* ------------- *#",
+            "###################",
+        ],
+        powerUps: [
+            { type: PowerUpType.ExtraBomb, count: 10 },
+            { type: PowerUpType.ExtraFire, count: 10 },
+            { type: PowerUpType.Life, count: 4 },
+            { type: PowerUpType.RemoteControl, count: 1 },
+            { type: PowerUpType.Shield, count: 1 },
+            { type: PowerUpType.Clock, count: 3 },
+            { type: PowerUpType.Kick, count: 1 }
+        ],
+        monsters: [
+            { waitAfterTurn: 48, type: 4, livesCount: 3, speed: 0.5 },
         ],
         time: 60
     },

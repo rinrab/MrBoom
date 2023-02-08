@@ -1,4 +1,6 @@
 async function loadSoundAssets() {
+    const poolSize = 4;
+
     async function loadSound(name) {
         let audio = new Audio("sound/" + name + ".wav");
         audio.loop = false;
@@ -27,19 +29,42 @@ async function loadSoundAssets() {
         return result;
     }
 
+    async function makeSoundPool(name) {
+        let promises = [];
+        for (let i = 0; i < poolSize; i++) {
+            promises.push(loadSound(name));
+        }
+
+        return {
+            pool: await Promise.all(promises),
+            play: function() {
+                let audio = this.pool.pop();
+
+                audio.loop = false;
+                audio.onended = (event) => {
+                    console.debug("audio ended");
+                    this.pool.push(audio);
+                    audio.onended = undefined;
+                };
+
+                audio.play();
+            }
+        };
+    }
+
     let result = {
-        bang: await loadSound("bang"),
-        posebomb: await loadSound("posebomb"),
-        sac: await loadSound("sac"),
-        pick: await loadSound("pick"),
-        player_die: await loadSound("player_die"),
-        oioi: await loadSound("oioi"),
-        ai: await loadSound("ai"),
-        addplayer: await loadSound("addplayer"),
-        victory: await loadSound("victory"),
-        draw: await loadSound("draw"),
-        clock: await loadSound("clock"),
-        time_end: await loadSound("time_end"),
+        bang: await makeSoundPool("bang"),
+        posebomb: await makeSoundPool("posebomb"),
+        sac: await makeSoundPool("sac"),
+        pick: await makeSoundPool("pick"),
+        player_die: await makeSoundPool("player_die"),
+        oioi: await makeSoundPool("oioi"),
+        ai: await makeSoundPool("ai"),
+        addplayer: await makeSoundPool("addplayer"),
+        victory: await makeSoundPool("victory"),
+        draw: await makeSoundPool("draw"),
+        clock: await makeSoundPool("clock"),
+        time_end: await makeSoundPool("time_end"),
     };
 
     return result;
@@ -55,9 +80,7 @@ class SoundManager {
 
     playSound(name) {
         if (this.soundAssets && this.soundAssets[name]) {
-            const audio = new Audio(this.soundAssets[name].src);
-            audio.loop = false;
-            audio.play();
+            this.soundAssets[name].play();
         }
     }
 }

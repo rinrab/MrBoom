@@ -694,31 +694,38 @@ async function init() {
 
     startMenu = new StartMenu();
 
-    document.getElementById("insert-coin").addEventListener("click", () => {
-        soundManager.init();
+    document.getElementById("insert-coin").addEventListener("click", start);
 
-        fade.fadeOut(() => {
-            startMenu = new StartMenu();
+    soundAssets = await loadSoundAssets();
+    soundManager = new SoundManager(soundAssets);
 
-            document.body.setAttribute("state", "game");
-            sprites = [];
-            map = newMap();
+    if (args.includes("-s")) {
+        start();
+    }
+}
 
-            if (document.body.requestFullscreen) {
-                document.body.requestFullscreen();
-            } else if (document.body.webkitRequestFullscreen) {
-                document.body.webkitRequestFullscreen();
-            } else if (document.body.msRequestFullscreen) {
-                document.body.msRequestFullscreen();
-            }
+function start() {
+    fade.fadeOut(() => {
+        startMenu = new StartMenu();
 
-            addEventListener("beforeunload", (e) => {
-                e.preventDefault();
-            });
-            state = States.start;
+        document.body.setAttribute("state", "game");
+        sprites = [];
+        map = newMap();
 
-            music.start(3);
+        if (document.body.requestFullscreen) {
+            document.body.requestFullscreen();
+        } else if (document.body.webkitRequestFullscreen) {
+            document.body.webkitRequestFullscreen();
+        } else if (document.body.msRequestFullscreen) {
+            document.body.msRequestFullscreen();
+        }
+
+        addEventListener("beforeunload", (e) => {
+            e.preventDefault();
         });
+        state = States.start;
+
+        music.start(3);
     });
 }
 
@@ -900,6 +907,7 @@ class Victory {
         if (getKeysDownCount() > 0 && this.frame > 24) {
             fade.fadeOut(() => {
                 startMenu = new StartMenu();
+                music.start(3);
                 state = States.start;
                 for (let ctr of controllersList) {
                     ctr.id = undefined;

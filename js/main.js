@@ -1424,8 +1424,11 @@ class Sprite {
         const moveY = (delta) => {
             if (Int.mod(this.x, 16) == 0) {
                 const y = (delta < 0) ? Int.divFloor(this.y + delta, 16) : Int.divCeil(this.y + delta, 16);
-                if (map.isWalkable(Int.divFloor(this.x, 16), y) || (y == Int.divRound(this.y, 16) &&
-                    map.getCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16)).type == TerrainType.Bomb)) {
+                if (map.isWalkable(Int.divFloor(this.x, 16), y)) {
+                    this.y += delta;
+                }
+                if (y == Int.divRound(this.y, 16) &&
+                    map.getCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16)).type == TerrainType.Bomb) {
                     this.y += delta;
                 }
             } else {
@@ -1437,7 +1440,10 @@ class Sprite {
         const moveX = (delta) => {
             if (Int.mod(this.y, 16) == 0) {
                 const x = (delta < 0) ? Int.divFloor(this.x + delta, 16) : Int.divCeil(this.x + delta, 16);
-                if (map.isWalkable(x, Int.divFloor(this.y, 16)) || (x == Int.divRound(this.x, 16) &&
+                if (map.isWalkable(x, Int.divFloor(this.y, 16))) {
+                    this.x += delta;
+                }
+                if ((x == Int.divRound(this.x, 16) &&
                     map.getCell(Int.divRound(this.x, 16), Int.divRound(this.y, 16)).type == TerrainType.Bomb)) {
                     this.x += delta;
                 }

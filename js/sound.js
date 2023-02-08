@@ -51,6 +51,8 @@ async function loadSoundAssets() {
                     };
 
                     audio.play();
+                } else {
+                    console.warn("Out of audio object for '" + name + "'");
                 }
             }
         };

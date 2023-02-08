@@ -694,6 +694,8 @@ async function init() {
         controllersList.push(ctrl);
     });
 
+    startMenu = new StartMenu();
+
     document.getElementById("insert-coin").addEventListener("click", () => {
         fade.fadeOut(() => {
             startMenu = new StartMenu();
@@ -871,7 +873,7 @@ class Results {
             }
         }
 
-        if ((getKeysDownCount() > 0) && this.frame > 120) {
+        if (getKeysDownCount() > 0 && this.frame > 120) {
             fade.fadeOut(() => {
                 if (this.next == "game") {
                     startGame(startMenu.playerList);
@@ -945,7 +947,7 @@ let fade = {
         }
     },
     fadeOut: function (action) {
-        if (this.direction <= 0) {
+        if (this.direction <= 0 && this.fade == 15 || this.fade == 0) {
             this.fade = 0;
             this.direction = 1;
         }

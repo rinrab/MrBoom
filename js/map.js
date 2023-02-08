@@ -41,7 +41,8 @@ const maps = [
             { type: PowerUpType.Life, count: 1 },
             { type: PowerUpType.RemoteControl, count: 1 },
             { type: PowerUpType.RollerSkate, count: 1 },
-            { type: PowerUpType.Shield, count: 1 }
+            { type: PowerUpType.Shield, count: 1 },
+            { type: PowerUpType.Kick, count: 2 }
         ],
         monsters: [
             { startX: 7, startY: 9, waitAfterTurn: 30, type: 0 },
@@ -73,7 +74,8 @@ const maps = [
             { type: PowerUpType.Life, count: 1 },
             { type: PowerUpType.RemoteControl, count: 1 },
             { type: PowerUpType.RollerSkate, count: 1 },
-            { type: PowerUpType.Shield, count: 1 }
+            { type: PowerUpType.Shield, count: 1 },
+            { type: PowerUpType.Kick, count: 2 }
         ],
         monsters: [
             { startX: 7, startY: 9, waitAfterTurn: 20, type: 1, livesCount: 3 },
@@ -102,7 +104,8 @@ const maps = [
             { type: PowerUpType.Life, count: 1 },
             { type: PowerUpType.RemoteControl, count: 1 },
             { type: PowerUpType.RollerSkate, count: 1 },
-            { type: PowerUpType.Shield, count: 1 }
+            { type: PowerUpType.Shield, count: 1 },
+            { type: PowerUpType.Kick, count: 2 }
         ],
         monsters: [
             { startX: 7, startY: 9, waitAfterTurn: 60, type: 2, speed: 0.5 },
@@ -131,7 +134,8 @@ const maps = [
             { type: PowerUpType.Life, count: 1 },
             { type: PowerUpType.RemoteControl, count: 1 },
             { type: PowerUpType.Shield, count: 1 },
-            { type: PowerUpType.Banana, count: 10 }
+            { type: PowerUpType.Banana, count: 10 },
+            { type: PowerUpType.Kick, count: 2 }
         ],
         monsters: [
             { waitAfterTurn: 60, type: 3 },
@@ -161,6 +165,7 @@ const maps = [
             { type: PowerUpType.RemoteControl, count: 1 },
             { type: PowerUpType.Shield, count: 1 },
             { type: PowerUpType.Clock, count: 1 },
+            { type: PowerUpType.Kick, count: 2 }
         ],
         monsters: [
             { waitAfterTurn: 30, type: 0 },

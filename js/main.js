@@ -275,6 +275,38 @@ class Terrain {
                         this.ditonateBomb(x, y, cell.maxBoom);
                     }
                 }
+
+                if (cell.type == TerrainType.Bomb) {
+                    if (cell.x == 0) {
+                        if (this.getCell(x + getSign(cell.dx), y).type != TerrainType.Free) {
+                            cell.dx = 0;
+                        }
+                    }
+                    if (cell.y == 0) {
+                        if (this.getCell(x, y + getSign(cell.dy)).type != TerrainType.Free) {
+                            cell.dy = 0;
+                        }
+                    }
+
+                    cell.x += cell.dx;
+                    cell.y += cell.dy;
+
+                    if (-8 > cell.x || cell.x > 8) {
+                        this.setCell(x + getSign(cell.dx), y, cell);
+                        cell.x -= getSign(cell.dx) * 16;
+                        this.setCell(x, y, {
+                            type: TerrainType.Free
+                        })
+                    }
+
+                    if (-8 > cell.y || cell.y > 8) {
+                        this.setCell(x, y + getSign(cell.dy), cell);
+                        cell.y -= getSign(cell.dy) * 16;
+                        this.setCell(x, y, {
+                            type: TerrainType.Free
+                        })
+                    }
+                }
             }
         }
 
@@ -951,10 +983,12 @@ function drawAll(interpolationPercentage) {
 
                 if (cell.image) {
                     const image = cell.image[cell.imageIdx || 0];
+                    const offsetX = (cell.type == TerrainType.Bomb) ? cell.x : 0;
+                    const offsetY = (cell.type == TerrainType.Bomb) ? cell.y : 0;
 
                     image.draw(ctx,
-                        x * 16 + 8 + 8 - Int.divFloor(image.rect.width, 2),
-                        y * 16 + 16 - image.rect.height);
+                        x * 16 + 8 + 8 - Int.divFloor(image.rect.width, 2) + offsetX,
+                        y * 16 + 16 - image.rect.height + offsetY);
                 }
             }
         }
@@ -1434,6 +1468,15 @@ class Sprite {
 
                 if (newY == cellY && cell.type == TerrainType.Bomb) {
                     this.y += delta;
+                } else {
+                    const newCell = map.getCell(cellX, newY);
+                    if (newCell.type == TerrainType.Bomb) {
+                        if (this.isHaveKick) {
+                            newCell.dy = delta * 2;
+                        } else {
+                            newCell.dy = 0;
+                        }
+                    }
                 }
             } else {
                 this.xAlign(delta);
@@ -1454,6 +1497,15 @@ class Sprite {
 
                 if (newX == cellX && cell.type == TerrainType.Bomb) {
                     this.x += delta;
+                } else {
+                    const newCell = map.getCell(newX, cellY);
+                    if (newCell.type == TerrainType.Bomb) {
+                        if (this.isHaveKick) {
+                            newCell.dx = delta * 2;
+                        } else {
+                            newCell.dx = 0;
+                        }
+                    }
                 }
             } else {
                 this.yAlign(delta);
@@ -1499,6 +1551,7 @@ class Sprite {
                     this.lifeCount--;
                     this.rcAllowed = false;
                     this.isHaveRollers = false;
+                    this.isHaveKick = false;
                     this.speed = 1;
                     this.maxBombsCount = Math.min(this.maxBombsCount, 3);
                     map.playSound("oioi");
@@ -1520,7 +1573,8 @@ class Sprite {
                     bombTime: 210,
                     maxBoom: this.maxBoom,
                     rcAllowed: this.rcAllowed,
-                    owner: this
+                    owner: this,
+                    x: 0, y: 0, dx: 0, dy: 0
                 });
                 map.playSound("posebomb");
                 this.bombsPlaced++;
@@ -1547,6 +1601,12 @@ class Sprite {
                     this.isHaveRollers = true;
                 } else {
                     doFire = true;
+                }
+            } else if (powerUpType == PowerUpType.Kick) {
+                if (this.isHaveKick) {
+                    doFire = true;
+                } else {
+                    this.isHaveKick = true;
                 }
             } else if (powerUpType == PowerUpType.Life) {
                 this.lifeCount++;

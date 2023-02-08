@@ -46,12 +46,15 @@ async function loadSoundAssets() {
 }
 
 class SoundManager {
-    constructor(soundAssets) {
-        this.soundAssets = soundAssets;
+    constructor() {
+    }
+
+    async init() {
+        this.soundAssets = await loadSoundAssets();
     }
 
     playSound(name) {
-        if (this.soundAssets[name]) {
+        if (this.soundAssets && this.soundAssets[name]) {
             const audio = new Audio(this.soundAssets[name].src);
             audio.loop = false;
             audio.play();

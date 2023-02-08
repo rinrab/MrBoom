@@ -10,7 +10,6 @@ let controllersList = [];
 let sprites = [];
 
 let assets;
-let soundAssets;
 
 let soundManager;
 let music;
@@ -636,10 +635,9 @@ async function init() {
     mapRandom = new UnrepeatableRandom();
     elemFpsDisplay = document.getElementById("fps-display");
 
-    soundAssets = {};
     assets = loadAssets();
 
-    soundManager = new SoundManager(soundAssets);
+    soundManager = new SoundManager();
 
     music = new MusicManager([
         "music/anar11.mp3",
@@ -697,6 +695,8 @@ async function init() {
     startMenu = new StartMenu();
 
     document.getElementById("insert-coin").addEventListener("click", () => {
+        soundManager.init();
+
         fade.fadeOut(() => {
             startMenu = new StartMenu();
 
@@ -720,9 +720,6 @@ async function init() {
             music.start(3);
         });
     });
-
-    soundAssets = await loadSoundAssets();
-    soundManager = new SoundManager(soundAssets);
 }
 
 const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " + 

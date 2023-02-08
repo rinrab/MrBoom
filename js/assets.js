@@ -134,13 +134,34 @@ function loadAssets(scale = 2) {
                     loadImage(document.getElementById("FORET"), 0, 0, 320, 200),
                 ]
             ],
-        feuilleOverlay: loadImage(document.getElementById("FEUILLE_OVERLAY"), 0, 0, 320, 200),
-        niegeIgloo:
+
+        mapOverlays: [
             [
-                loadImage(imgMed3, 0, 77, 6 * 8, 44),
+                {
+                    x: 232, y: 57, idx: 0, animateDelay: 0, images: [
+                        loadImage(imgMed3, 0, 77, 6 * 8, 44),
+                    ]
+                },
+                {
+                    x: 112, y: 30, idx: 0, animateDelay: 1 / 20,
+                    images: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
+                },
+            ], [], [],
+            [
+                {
+                    x: 232, y: 0, idx: 0, animateDelay: 1 / 15,
+                    images: loadImageStripe(imgSoucoupe, 0, 133, 88, 37, 2, 144)
+                }
             ],
-        UFO: loadImageStripe(imgSoucoupe, 0, 133, 88, 37, 2, 144),
-        niegeTree: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
+            [],
+            [
+                {
+                    x: 0, y: 0, idx: 0, animateDelay: 0, images: [
+                        loadImage(document.getElementById("FEUILLE_OVERLAY"), 0, 0, 320, 200)
+                    ]
+                }
+            ],
+        ],
         walls: [
             loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),

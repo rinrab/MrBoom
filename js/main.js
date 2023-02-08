@@ -1021,16 +1021,11 @@ function drawAll(interpolationPercentage) {
             }
         }
 
-        if (mapIndex == 0) {
-            assets.niegeIgloo[0].draw(ctx, 232, 57);
-            tree.images[Math.floor(tree.time) % 2].draw(ctx, 112, 30);
-            tree.time += 1 / 30;
-        } else if (mapIndex == 3) {
-            assets.UFO[0].draw(ctx, 320 - 88, 0);
-        } else if (mapIndex == 5) {
-            assets.feuilleOverlay.draw(ctx, 0, 0);
+        for (let overlay of assets.mapOverlays[mapIndex]) {
+            overlay.images[Math.floor(overlay.idx) % overlay.images.length].draw(ctx, overlay.x, overlay.y);
+            overlay.idx += overlay.animateDelay;
         }
-
+        
         if (map.timeLeft > 0) {
             let min = Math.floor(map.timeLeft / 60);
             let sec = Math.floor(map.timeLeft % 60);

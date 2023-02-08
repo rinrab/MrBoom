@@ -42,14 +42,16 @@ async function loadSoundAssets() {
             play: function() {
                 let audio = this.pool.pop();
 
-                audio.loop = false;
-                audio.onended = (event) => {
-                    console.debug("audio ended");
-                    this.pool.push(audio);
-                    audio.onended = undefined;
-                };
+                if (audio) {
+                    audio.loop = false;
+                    audio.onended = (event) => {
+                        console.debug("audio ended");
+                        this.pool.push(audio);
+                        audio.onended = undefined;
+                    };
 
-                audio.play();
+                    audio.play();
+                }
             }
         };
     }

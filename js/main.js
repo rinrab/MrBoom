@@ -1626,6 +1626,10 @@ class UnrepeatableRandom {
     }
 }
 
+function getSign(val) {
+    return (val) ? val / Math.abs(val) : 0;
+}
+
 class Rect {
     x;
     y;

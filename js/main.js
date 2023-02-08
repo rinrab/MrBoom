@@ -698,12 +698,12 @@ async function init() {
 
     document.getElementById("insert-coin").addEventListener("click", start);
 
+    soundAssets = await loadSoundAssets();
+    soundManager = new SoundManager(soundAssets);
+
     if (args.includes("-s")) {
         start();
     }
-
-    soundAssets = await loadSoundAssets();
-    soundManager = new SoundManager(soundAssets);
 }
 
 function start() {

@@ -696,33 +696,39 @@ async function init() {
 
     startMenu = new StartMenu();
 
-    document.getElementById("insert-coin").addEventListener("click", () => {
-        fade.fadeOut(() => {
-            startMenu = new StartMenu();
+    document.getElementById("insert-coin").addEventListener("click", start);
 
-            document.body.setAttribute("state", "game");
-            sprites = [];
-            map = newMap();
-
-            if (document.body.requestFullscreen) {
-                document.body.requestFullscreen();
-            } else if (document.body.webkitRequestFullscreen) {
-                document.body.webkitRequestFullscreen();
-            } else if (document.body.msRequestFullscreen) {
-                document.body.msRequestFullscreen();
-            }
-
-            addEventListener("beforeunload", (e) => {
-                e.preventDefault();
-            });
-            state = States.start;
-
-            music.start(3);
-        });
-    });
+    if (args.includes("-s")) {
+        start();
+    }
 
     soundAssets = await loadSoundAssets();
     soundManager = new SoundManager(soundAssets);
+}
+
+function start() {
+    fade.fadeOut(() => {
+        startMenu = new StartMenu();
+
+        document.body.setAttribute("state", "game");
+        sprites = [];
+        map = newMap();
+
+        if (document.body.requestFullscreen) {
+            document.body.requestFullscreen();
+        } else if (document.body.webkitRequestFullscreen) {
+            document.body.webkitRequestFullscreen();
+        } else if (document.body.msRequestFullscreen) {
+            document.body.msRequestFullscreen();
+        }
+
+        addEventListener("beforeunload", (e) => {
+            e.preventDefault();
+        });
+        state = States.start;
+
+        music.start(3);
+    });
 }
 
 const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " + 

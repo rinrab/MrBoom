@@ -857,8 +857,6 @@ class Results {
         this.next = "game";
         for (let p of this.results) {
             if (p.wins >= 5) {
-                this.next = "victory";
-            } else {
                 this.next = index;
             }
         }

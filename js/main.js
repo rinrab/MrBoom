@@ -1474,7 +1474,9 @@ class Sprite {
                         if (this.isHaveKick) {
                             newCell.dy = delta * 2;
                         } else {
-                            newCell.dy = 0;
+                            if (newCell.x == 0) {
+                                newCell.dy = 0;
+                            }
                         }
                     }
                 }
@@ -1503,7 +1505,9 @@ class Sprite {
                         if (this.isHaveKick) {
                             newCell.dx = delta * 2;
                         } else {
-                            newCell.dx = 0;
+                            if (newCell.x == 0) {
+                                newCell.dx = 0;
+                            }
                         }
                     }
                 }

@@ -10,15 +10,17 @@ async function loadSoundAssets() {
 
         if (audio.readyState != 4) {
             result = new Promise((resolve, reject) => {
-                audio.addEventListener("canplaythrough", () => {
+                audio.oncanplaythrough = () => {
                     console.debug("audio: " + name, audio.readyState);
                     resolve(audio);
-                });
+                    audio.oncanplaythrough = null;
+                };
 
-                audio.addEventListener("error", () => {
+                audio.onerror = () => {
                     console.debug("audio: " + name, audio.readyState);
                     reject();
-                })
+                    audio.onerror = null;
+                };
             });
         } else {
             result = audio;

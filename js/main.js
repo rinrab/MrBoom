@@ -1594,9 +1594,7 @@ class Sprite {
 
 class UnrepeatableRandom {
     previosNumber = -1;
-    constructor() {
-
-    }
+    constructor() { }
 
     next(max) {
         if (this.previosNumber == -1 || max <= 1) {

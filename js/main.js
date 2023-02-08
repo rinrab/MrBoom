@@ -1025,7 +1025,7 @@ function drawAll(interpolationPercentage) {
             overlay.images[Math.floor(overlay.idx) % overlay.images.length].draw(ctx, overlay.x, overlay.y);
             overlay.idx += overlay.animateDelay;
         }
-        
+
         if (map.timeLeft > 0) {
             let min = Math.floor(map.timeLeft / 60);
             let sec = Math.floor(map.timeLeft % 60);

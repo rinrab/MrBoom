@@ -427,24 +427,16 @@ class Terrain {
                 playersCount++;
             }
         }
-        if (playersCount == 0 && !this.toDraw) {
-            this.toDraw = 120;
-        }
 
-        if (this.toDraw) {
-            this.toDraw--;
-        }
 
-        if (this.toDraw == 0 || this.timeLeft < 0) {
-            fade.fadeOut(() => {
-                state = States.draw;
-                drawMenu = new DrawMenu();
-                soundManager.playSound("draw");
-            });
+        if (!this.toGameEnd && this.timeLeft < 0) {
+            this.toGameEnd = 0;
         }
-
         if (playersCount == 1 && sprites.length > 1 && !this.toGameEnd) {
             this.toGameEnd = 60 * 3;
+        }
+        if (playersCount == 0 && !this.toGameEnd) {
+            this.toGameEnd = 120;
         }
 
         if (this.toGameEnd) {

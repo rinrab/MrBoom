@@ -282,6 +282,7 @@ class Terrain {
 
                     if (cell.bombTime == 0 || (cell.owner.rcDitonate && cell.rcAllowed)) {
                         this.ditonateBomb(x, y, cell.maxBoom);
+                        continue;
                     }
                 }
 
@@ -297,24 +298,22 @@ class Terrain {
                         }
                     }
 
+                    const newX = Int.divRound(x * 16 + cell.x + cell.dx, 16);
+                    const newY = Int.divRound(y * 16 + cell.y + cell.dy, 16);
+
+                    console.log(newX, x, newY, y);
+
                     cell.x += cell.dx;
                     cell.y += cell.dy;
 
-                    if (-8 > cell.x || cell.x > 8) {
-                        this.setCell(x + getSign(cell.dx), y, cell);
-                        cell.x -= getSign(cell.dx) * 16;
-                        this.setCell(x, y, {
-                            type: TerrainType.Free
-                        })
-                    }
+                    this.setCell(x, y, {
+                        type: TerrainType.Free
+                    });
 
-                    if (-8 > cell.y || cell.y > 8) {
-                        this.setCell(x, y + getSign(cell.dy), cell);
-                        cell.y -= getSign(cell.dy) * 16;
-                        this.setCell(x, y, {
-                            type: TerrainType.Free
-                        })
-                    }
+                    this.setCell(newX, newY, cell);
+
+                    cell.x += (x - newX) * 16;
+                    cell.y += (y - newY) * 16;
                 }
             }
         }

@@ -1604,9 +1604,29 @@ class Monster {
         this.blinkingSpeed = 0;
         this.speed = monster.speed;
         this.skip = 0;
+        if (monster.startDelay) {
+            this.blinkingSpeed = 40;
+            this.blinking = monster.startDelay;
+            this.wait = monster.startDelay - 30;
+            this.unplugin = monster.startDelay;
+        }
     }
 
     update() {
+        if (!this.unplugin && map.getCell(Int.divRound(this.x, 16),
+            Int.divRound(this.y, 16)).type == TerrainType.Fire && !this.isDie) {
+            if (this.livesCount > 0) {
+                this.livesCount--;
+                this.blinking = 120;
+                this.unplugin = 120;
+                this.blinkingSpeed = 30;
+            } else {
+                this.isDie = true;
+                this.step = 4;
+                map.playSound("ai");
+            }
+        }
+
         this.skip += this.speed;
         if (this.skip < 1) {
             return;
@@ -1664,19 +1684,7 @@ class Monster {
             
             this.frameIndex %= 4;
         }
-        if (!this.unplugin && map.getCell(Int.divRound(this.x, 16),
-            Int.divRound(this.y, 16)).type == TerrainType.Fire && !this.isDie) {
-            if (this.livesCount > 0) {
-                this.livesCount--;
-                this.blinking = 120;
-                this.unplugin = 120;
-                this.blinkingSpeed = 30;
-            } else {
-                this.isDie = true;
-                this.step = 4;
-                this.playSound("ai");
-            }
-        }
+        
         this.blinking -= this.blinkingSpeed / 30;
         if (this.blinking < 0) {
             this.blinkingSpeed = 0;

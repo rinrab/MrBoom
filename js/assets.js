@@ -137,6 +137,7 @@ function loadAssets(scale = 2) {
     const imgCrayon2 = document.getElementById("CRAYON2");
     const imgSoucoupe = document.getElementById("SOUCOUPE");
     const monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
+    const monster2ghost = loadImageStripe(imgGhosts, 195, 93, 16, 19, 3, 0);
     const monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
     const snail = loadImageStripe(imgFeuille, 41, 17, 38, 32, 6, 1).concat(
         loadImageStripe(imgFeuille, 41, 50, 38, 32, 7, 1));
@@ -268,7 +269,8 @@ function loadAssets(scale = 2) {
                 loadImageStripe(imgGhosts, 99, 47 + 33, 32, 32, 3, 1),
                 loadImageStripe(imgGhosts, 0, 47 + 33, 32, 32, 3, 1),
                 null),
-            null,
+            loadMonster(monster2ghost, monster2ghost,
+                monster2ghost, monster2ghost, null),
             null,
             [
                 [snailGhost[0], snailGhost[1], snailGhost[0], snailGhost[1]],

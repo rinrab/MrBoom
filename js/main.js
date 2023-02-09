@@ -1687,7 +1687,7 @@ class Sprite {
         }
 
         if (img && frameIndex != null) {
-            img.draw(ctx, this.x + 5, this.y - ((img.rect.height == 23) ? 7 : 10));
+            img.draw(ctx, this.x + 8 + 8 - Int.divFloor(img.rect.width, 2), this.y + 16 - img.rect.height);
         }
     }
 }

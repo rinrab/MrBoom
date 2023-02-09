@@ -1633,14 +1633,11 @@ class Monster {
         }
         if (this.wait > 0) {
             this.wait--;
+            this.frameIndex = 0;
         } else if (this.isDie) {
             if (this.frameIndex < 8) this.frameIndex += 1 / 5;
         } else {
-            if ((isWalkable(this, delta[this.step])) && this.step != 5) {
-                this.x += delta[this.step].x;
-                this.y += delta[this.step].y;
-                this.frameIndex += 1 / 10;
-            } else {
+            if (this.wait != undefined) {
                 this.step = undefined;
                 let rnd = [];
                 for (let i = 0; i < 4; i++) {
@@ -1656,9 +1653,16 @@ class Monster {
                 if (this.step == undefined) {
                     this.step = 5;
                 }
+                this.wait = undefined;
                 this.frameIndex = 0;
+            } else if ((isWalkable(this, delta[this.step])) && this.step != 5) {
+                this.x += delta[this.step].x;
+                this.y += delta[this.step].y;
+                this.frameIndex += 1 / 10;
+            } else {
                 this.wait = this.waitAfterTurn;
             }
+            
             this.frameIndex %= 4;
         }
         if (!this.unplugin && map.getCell(Int.divRound(this.x, 16),

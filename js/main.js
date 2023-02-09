@@ -427,7 +427,6 @@ class Terrain {
             }
         }
 
-
         if (!this.toGameEnd && this.timeLeft < 0) {
             this.toGameEnd = 0;
         }
@@ -435,7 +434,7 @@ class Terrain {
             this.toGameEnd = 60 * 3;
         }
         if (playersCount == 0 && !this.toGameEnd) {
-            this.toGameEnd = 120;
+            this.toGameEnd = 60 * 3;
         }
 
         if (this.toGameEnd) {

@@ -202,7 +202,7 @@ const maps = [
             { type: PowerUpType.Kick, count: 1 }
         ],
         monsters: [
-            { waitAfterTurn: 48, type: 4, livesCount: 3, speed: 0.5 },
+            { waitAfterTurn: 48, type: 4, livesCount: 3, speed: 0.3 },
         ],
         time: 60
     },

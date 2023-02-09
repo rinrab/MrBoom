@@ -1605,17 +1605,16 @@ class Monster {
         this.blinking = 0;
         this.blinkingSpeed = 0;
         this.speed = monster.speed;
+        this.skip = 0;
     }
 
     update() {
-        if (this.speed == 0.5) {
-            if (this.skiped) {
-                this.skiped = false;
-            } else {
-                this.skiped = true;
-                return;
-            }
+        this.skip += this.speed;
+        if (this.skip < 1) {
+            return;
         }
+        this.skip %= 1;
+
         const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }, {}, { x: 0, y: 0 }];
         const isWalkable = (monster, delta) => {
             switch (map.getCell(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),

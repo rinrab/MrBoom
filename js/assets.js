@@ -84,6 +84,45 @@ function loadAssets(scale = 2) {
         ];
     }
 
+    function loadBonus(img) {
+        const canvas = document.createElement("canvas");
+        const frameColors = [
+            "#FC00FC",
+            "#FC6CFC",
+            "#FC90FC",
+            "#FCB4FC",
+            "#FCD8FC",
+            "#FCFCFC",
+            "#FCD8FC",
+            "#FCB4FC",
+            "#FC90FC",
+            "#FC6CFC"
+        ];
+        const width = img.rect.width;
+        const height = img.rect.height;
+
+        canvas.width = (width) * frameColors.length  * scale;
+        canvas.height = (height) * scale;
+
+        const ctx = canvas.getContext("2d");
+
+        for (let i = 0; i < frameColors.length; i++) {
+            const x = (width) * i;
+            const y = 0;
+
+            ctx.fillStyle = frameColors[i];
+            ctx.fillRect(x * scale, y * scale, (width) * scale, (height) * scale);
+
+            ctx.fillStyle = "#6C90FC";
+            ctx.fillRect((x + 1) * scale, 1 * scale, (width - 2) * scale, (height - 2) * scale);
+
+            // image.draw() handles scaling internally..
+            img.draw(ctx, x, y);
+        }
+
+        return loadImageStripe(canvas, 0, 0, width, height, frameColors.length);
+    }
+
     const imgNeige1 = document.getElementById("NEIGE1");
     const imgNeige2 = document.getElementById("NEIGE2");
     const imgNeige3 = document.getElementById("NEIGE3");
@@ -179,7 +218,8 @@ function loadAssets(scale = 2) {
                 loadImageStripe(imgSprite2, 10 * 16, 2 * 16, 16, 16, 10),
                 loadImageStripe(imgSprite2, 10 * 16, 3 * 16, 16, 16, 10),
                 loadImageStripe(imgSprite2, 10 * 16, 4 * 16, 16, 16, 10),
-                loadImageStripe(imgSprite2, 10 * 16, 5 * 16, 16, 16, 10),
+                // rc
+                loadBonus(loadImage(imgSprite2, 9 * 16, 5 * 16, 16, 16)),
                 loadImageStripe(imgSprite2, 10 * 16, 6 * 16, 16, 16, 10),
                 loadImageStripe(imgSprite2, 10 * 16, 7 * 16, 16, 16, 10),
                 loadImageStripe(imgSprite2, 10 * 16, 8 * 16, 16, 16, 10),

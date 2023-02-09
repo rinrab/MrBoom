@@ -92,8 +92,6 @@ const States = {
 let state = States.game;
 let isDemo = true;
 let mapIndex;
-const monsterOffset = [{ x: 8, y: -2 }, { x: 0, y: -16 }, { x: 8, y: -3 }, { x: 8, y: -2 },
-                       { x: -4, y: -16 }];
 let mapRandom;
 
 class Terrain {
@@ -1026,14 +1024,14 @@ function drawAll(interpolationPercentage) {
         }
 
         for (let monster of map.monsters) {
+            let img;
             if (monster.step == 5) {
-                assets.monsters[monster.type][0][0].draw(ctx, monster.x +
-                    monsterOffset[monster.type].x, monster.y + monsterOffset[monster.type].y);
+                img = assets.monsters[monster.type][0][0];
             } else {
-                const img = (monster.blinking % 20 < 10) ? assets.monsters : assets.monsterGhosts;
-                img[monster.type][monster.step][Math.floor(monster.frameIndex)].draw(ctx,
-                    monster.x + monsterOffset[monster.type].x, monster.y + monsterOffset[monster.type].y);
+                const imgSet = (monster.blinking % 20 < 10) ? assets.monsters : assets.monsterGhosts;
+                img = imgSet[monster.type][monster.step][Math.floor(monster.frameIndex)];
             }
+            img.draw(ctx, monster.x + 8 + 8 - Int.divFloor(img.rect.width, 2), monster.y + 16 - img.rect.height);
         }
 
         for (let overlay of assets.mapOverlays[mapIndex]) {

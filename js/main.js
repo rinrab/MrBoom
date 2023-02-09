@@ -180,7 +180,17 @@ class Terrain {
                     type: monster.type,
                     livesCount: monster.livesCount,
                     blinking: 0, blinkingSpeed: 0,
-                    speed: monster.speed
+                    speed: monster.speed,
+                    draw: function (ctx) {
+                        let img;
+                        if (this.step == 5) {
+                            img = assets.monsters[this.type][0][0];
+                        } else {
+                            const imgSet = (this.blinking % 20 < 10) ? assets.monsters : assets.monsterGhosts;
+                            img = imgSet[this.type][this.step][Math.floor(this.frameIndex)];
+                        }
+                        img.draw(ctx, this.x + 8 + 8 - Int.divFloor(img.rect.width, 2), this.y + 16 - img.rect.height);
+                    }
                 });
             }
         }
@@ -1024,14 +1034,7 @@ function drawAll(interpolationPercentage) {
         }
 
         for (let monster of map.monsters) {
-            let img;
-            if (monster.step == 5) {
-                img = assets.monsters[monster.type][0][0];
-            } else {
-                const imgSet = (monster.blinking % 20 < 10) ? assets.monsters : assets.monsterGhosts;
-                img = imgSet[monster.type][monster.step][Math.floor(monster.frameIndex)];
-            }
-            img.draw(ctx, monster.x + 8 + 8 - Int.divFloor(img.rect.width, 2), monster.y + 16 - img.rect.height);
+            monster.draw(ctx);
         }
 
         for (let overlay of assets.mapOverlays[mapIndex]) {

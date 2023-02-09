@@ -1636,7 +1636,9 @@ class Monster {
         } else if (this.isDie) {
             if (this.frameIndex < 8) this.frameIndex += 1 / 5;
         } else {
-            if (this.wait != undefined) {
+            if (this.x % 16 == 0 && this.y % 16 == 0 && Math.random() < 0.1) {
+                this.wait = this.waitAfterTurn;
+            } else if (this.wait != undefined) {
                 this.step = undefined;
                 let rnd = [];
                 for (let i = 0; i < 4; i++) {

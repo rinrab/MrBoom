@@ -281,8 +281,6 @@ class Terrain {
                     const newX = Int.divRound(x * 16 + cell.x + cell.dx, 16);
                     const newY = Int.divRound(y * 16 + cell.y + cell.dy, 16);
 
-                    console.log(newX, x, newY, y);
-
                     cell.x += cell.dx;
                     cell.y += cell.dy;
 

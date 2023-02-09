@@ -171,27 +171,7 @@ class Terrain {
             for (let i = 0; i < 8 - sprites.length; i++) {
                 const monster = monsters[Int.random(monsters.length)];
                 const spawn = this.spawns[this.generateSpawn()];
-                this.monsters.push({
-                    x: spawn.x * 16,
-                    y: spawn.y * 16,
-                    step: 0,
-                    waitAfterTurn: monster.waitAfterTurn,
-                    frameIndex: 0,
-                    type: monster.type,
-                    livesCount: monster.livesCount,
-                    blinking: 0, blinkingSpeed: 0,
-                    speed: monster.speed,
-                    draw: function (ctx) {
-                        let img;
-                        if (this.step == 5) {
-                            img = assets.monsters[this.type][0][0];
-                        } else {
-                            const imgSet = (this.blinking % 20 < 10) ? assets.monsters : assets.monsterGhosts;
-                            img = imgSet[this.type][this.step][Math.floor(this.frameIndex)];
-                        }
-                        img.draw(ctx, this.x + 8 + 8 - Int.divFloor(img.rect.width, 2), this.y + 16 - img.rect.height);
-                    }
-                });
+                this.monsters.push(new Monster(monster, spawn));
             }
         }
     }
@@ -319,80 +299,7 @@ class Terrain {
         }
 
         for (let monster of this.monsters) {
-            if (monster.speed == 0.5) {
-                if (monster.skiped) {
-                    monster.skiped = false;
-                } else {
-                    monster.skiped = true;
-                    continue;
-                }
-            }
-            const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }, {}, { x: 0, y: 0 }];
-            const isWalkable = (monster, delta) => {
-                switch (this.getCell(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
-                    Int.divRound(monster.y + delta.y * 8 + delta.y, 16)).type) {
-                    case TerrainType.Free: case TerrainType.PowerUpFire:
-                    case TerrainType.PowerUp: case TerrainType.PowerUpFire:
-                        return true;
-
-                    case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
-                    case TerrainType.Bomb: case TerrainType.Fire:
-                        return false;
-
-                    default: return true;
-                }
-            }
-            if (monster.wait > 0) {
-                monster.wait--;
-            } else if (monster.isDie) {
-                if (monster.frameIndex < 8) monster.frameIndex += 1 / 5;
-            } else {
-                if ((isWalkable(monster, delta[monster.step])) && monster.step != 5) {
-                    monster.x += delta[monster.step].x;
-                    monster.y += delta[monster.step].y;
-                    monster.frameIndex += 1 / 10;
-                } else {
-                    monster.step = undefined;
-                    let rnd = [];
-                    for (let i = 0; i < 4; i++) {
-                        rnd.push({ i: i, rnd: Math.random() });
-                    }
-                    rnd.sort((a, b) => a.rnd - b.rnd);
-
-                    for (let i = 0; i < rnd.length && monster.step == undefined; i++) {
-                        if (isWalkable(monster, delta[rnd[i].i])) {
-                            monster.step = rnd[i].i;
-                        }
-                    }
-                    if (monster.step == undefined) {
-                        monster.step = 5;
-                    }
-                    monster.frameIndex = 0;
-                    monster.wait = monster.waitAfterTurn;
-                }
-                monster.frameIndex %= 4;
-            }
-            if (!monster.unplugin && this.getCell(Int.divRound(monster.x, 16),
-                Int.divRound(monster.y, 16)).type == TerrainType.Fire && !monster.isDie) {
-                if (monster.livesCount > 0) {
-                    monster.livesCount--;
-                    monster.blinking = 120;
-                    monster.unplugin = 120;
-                    monster.blinkingSpeed = 30;
-                } else {
-                    monster.isDie = true;
-                    monster.step = 4;
-                    this.playSound("ai");
-                }
-            }
-            monster.blinking -= monster.blinkingSpeed / 30;
-            if (monster.blinking < 0) {
-                monster.blinkingSpeed = 0;
-                monster.blinking = 0;
-            }
-            if (monster.unplugin) {
-                monster.unplugin--;
-            }
+            monster.update();
         }
         for (let i = this.monsters.length - 1; i >= 0; i--) {
             if (this.monsters[i].frameIndex >= assets.monsters[this.monsters[i].type][4].length - 1) {
@@ -1683,6 +1590,109 @@ class Sprite {
         if (img && frameIndex != null) {
             img.draw(ctx, this.x + 8 + 8 - Int.divFloor(img.rect.width, 2), this.y + 16 - img.rect.height);
         }
+    }
+}
+
+class Monster {
+    constructor(monster, spawn) {
+        this.x = spawn.x * 16;
+        this.y = spawn.y * 16;
+        this.step = 0;
+        this.waitAfterTurn = monster.waitAfterTurn;
+        this.frameIndex = 0;
+        this.type = monster.type;
+        this.livesCount = monster.livesCount;
+        this.blinking = 0;
+        this.blinkingSpeed = 0;
+        this.speed = monster.speed;
+    }
+
+    update() {
+        if (this.speed == 0.5) {
+            if (this.skiped) {
+                this.skiped = false;
+            } else {
+                this.skiped = true;
+                return;
+            }
+        }
+        const delta = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: -1 }, {}, { x: 0, y: 0 }];
+        const isWalkable = (monster, delta) => {
+            switch (map.getCell(Int.divRound(monster.x + delta.x * 8 + delta.x, 16),
+                Int.divRound(monster.y + delta.y * 8 + delta.y, 16)).type) {
+                case TerrainType.Free: case TerrainType.PowerUpFire:
+                case TerrainType.PowerUp: case TerrainType.PowerUpFire:
+                    return true;
+
+                case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
+                case TerrainType.Bomb: case TerrainType.Fire:
+                    return false;
+
+                default: return true;
+            }
+        }
+        if (this.wait > 0) {
+            this.wait--;
+        } else if (this.isDie) {
+            if (this.frameIndex < 8) this.frameIndex += 1 / 5;
+        } else {
+            if ((isWalkable(this, delta[this.step])) && this.step != 5) {
+                this.x += delta[this.step].x;
+                this.y += delta[this.step].y;
+                this.frameIndex += 1 / 10;
+            } else {
+                this.step = undefined;
+                let rnd = [];
+                for (let i = 0; i < 4; i++) {
+                    rnd.push({ i: i, rnd: Math.random() });
+                }
+                rnd.sort((a, b) => a.rnd - b.rnd);
+
+                for (let i = 0; i < rnd.length && this.step == undefined; i++) {
+                    if (isWalkable(this, delta[rnd[i].i])) {
+                        this.step = rnd[i].i;
+                    }
+                }
+                if (this.step == undefined) {
+                    this.step = 5;
+                }
+                this.frameIndex = 0;
+                this.wait = this.waitAfterTurn;
+            }
+            this.frameIndex %= 4;
+        }
+        if (!this.unplugin && map.getCell(Int.divRound(this.x, 16),
+            Int.divRound(this.y, 16)).type == TerrainType.Fire && !this.isDie) {
+            if (this.livesCount > 0) {
+                this.livesCount--;
+                this.blinking = 120;
+                this.unplugin = 120;
+                this.blinkingSpeed = 30;
+            } else {
+                this.isDie = true;
+                this.step = 4;
+                this.playSound("ai");
+            }
+        }
+        this.blinking -= this.blinkingSpeed / 30;
+        if (this.blinking < 0) {
+            this.blinkingSpeed = 0;
+            this.blinking = 0;
+        }
+        if (this.unplugin) {
+            this.unplugin--;
+        }
+    }
+
+    draw(ctx) {
+        let img;
+        if (this.step == 5) {
+            img = assets.monsters[this.type][0][0];
+        } else {
+            const imgSet = (this.blinking % 20 < 10) ? assets.monsters : assets.monsterGhosts;
+            img = imgSet[this.type][this.step][Math.floor(this.frameIndex)];
+        }
+        img.draw(ctx, this.x + 8 + 8 - Int.divFloor(img.rect.width, 2), this.y + 16 - img.rect.height);
     }
 }
 

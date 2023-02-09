@@ -1026,15 +1026,17 @@ function drawAll(interpolationPercentage) {
             }
         }
 
-        var spritesToDraw = sprites;
-        spritesToDraw.sort((a, b) => a.y - b.y);
+        var spritesToDraw = sprites.concat(map.monsters);
+        spritesToDraw.sort((a, b) => {
+            let result = a.y - b.y;
+            if (result === 0) {
+                return (a.isPlayer || false) - (b.isPlayer || false);
+            }
+            return result;
+        });
 
         for (let sprite of spritesToDraw) {
             sprite.draw(ctx)
-        }
-
-        for (let monster of map.monsters) {
-            monster.draw(ctx);
         }
 
         for (let overlay of assets.mapOverlays[mapIndex]) {
@@ -1380,6 +1382,7 @@ class Sprite {
     controller;
 
     constructor(spriteIndex) {
+        this.isPlayer = true;
         this.animations = [];
 
         this.animateIndex = 0;

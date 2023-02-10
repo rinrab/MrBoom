@@ -334,6 +334,26 @@ class Terrain {
 
         if (!this.toGameEnd && this.timeLeft < 0) {
             this.toGameEnd = 0;
+
+            for (let y = 0; y < this.height; y++) {
+                for (let x = 0; x < this.width; x++) {
+                    let cell = this.getCell(x, y);
+
+                    if (cell.type != TerrainType.PermanentWall) {
+                        // TODO: track bombs.
+                        // TODO: use apocalypse map.
+                        this.setCell(x, y, {
+                            type: TerrainType.PermanentWall,
+                            image: assets.permanentWalls[mapIndex],
+                            imageIdx: 0,
+                            next: {
+                                type: TerrainType.PermanentWall,
+                                image: assets.permanentWalls[mapIndex]
+                            }
+                        });
+                    }
+                }
+            }
         }
         if (playersCount == 1 && sprites.length > 1 && !this.toGameEnd) {
             this.toGameEnd = 60 * 3;

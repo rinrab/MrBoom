@@ -123,6 +123,30 @@ function loadAssets(scale = 2) {
         return loadImageStripe(canvas, 0, 0, width, height, frameColors.length);
     }
 
+    function loadPermanentWall(fire, wall) {
+        const width = Math.max(fire[0].rect.width, wall.rect.width);
+        const height = Math.max(fire[0].rect.height, wall.rect.height);
+
+        const canvas = document.createElement("canvas");
+
+        canvas.width = width * (fire.length + 1) * scale;
+        canvas.height = height * scale;
+
+        const ctx = canvas.getContext("2d");
+
+        for (let i = 0; i < fire.length + 1; i++) {
+            const x = width * i;
+            const y = 0;
+
+            wall.draw(ctx, x + Int.divRound(width - wall.rect.width, 2), height - wall.rect.height);
+            if (i > 0) {
+                fire[i - 1].draw(ctx, x, y);
+            }
+        }
+
+        return loadImageStripe(canvas, 0, 0, width, height, fire.length + 1);
+    }
+
     const imgNeige1 = document.getElementById("NEIGE1");
     const imgNeige2 = document.getElementById("NEIGE2");
     const imgNeige3 = document.getElementById("NEIGE3");
@@ -143,6 +167,8 @@ function loadAssets(scale = 2) {
         loadImageStripe(imgFeuille, 41, 50, 38, 32, 7, 1));
     const snailGhost = loadImageStripe(imgGhosts, 0, 114, 38, 32, 6, 1).concat(
         loadImageStripe(imgGhosts, 0, 147, 38, 32, 7, 1));
+
+    const fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
@@ -210,7 +236,14 @@ function loadAssets(scale = 2) {
             loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
         ],
-        neigePermanentWall: loadImage(imgPause, 272, 16, 16, 16),
+        permanentWalls: [
+            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
+            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
+            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 0, 16, 16)),
+            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
+            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
+            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
+        ],
         powerups:
             [
                 loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16)),
@@ -232,7 +265,7 @@ function loadAssets(scale = 2) {
         boomVert: loadImageStripe(imgSprite2, 0 * 16, 46 + 4 * 16, 16, 16, 4),
         boomTopEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 5 * 16, 16, 16, 4),
         boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
-        fire: loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6),
+        fire: fire,
         players: loadPlayers(imgSprite, imgSprite3),
         monsters: [
             loadMonster(

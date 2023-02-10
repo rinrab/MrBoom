@@ -266,22 +266,22 @@ class Terrain {
                 }
 
                 if (cell.type == TerrainType.Bomb) {
-                    if (cell.x == 0) {
+                    if (cell.offsetX == 0) {
                         if (this.getCell(x + getSign(cell.dx), y).type != TerrainType.Free) {
                             cell.dx = 0;
                         }
                     }
-                    if (cell.y == 0) {
+                    if (cell.offsetY == 0) {
                         if (this.getCell(x, y + getSign(cell.dy)).type != TerrainType.Free) {
                             cell.dy = 0;
                         }
                     }
 
-                    const newX = Int.divRound(x * 16 + cell.x + cell.dx, 16);
-                    const newY = Int.divRound(y * 16 + cell.y + cell.dy, 16);
+                    const newX = Int.divRound(x * 16 + cell.offsetX + cell.dx, 16);
+                    const newY = Int.divRound(y * 16 + cell.offsetY + cell.dy, 16);
 
-                    cell.x += cell.dx;
-                    cell.y += cell.dy;
+                    cell.offsetX += cell.dx;
+                    cell.offsetY += cell.dy;
 
                     this.setCell(x, y, {
                         type: TerrainType.Free
@@ -289,8 +289,8 @@ class Terrain {
 
                     this.setCell(newX, newY, cell);
 
-                    cell.x += (x - newX) * 16;
-                    cell.y += (y - newY) * 16;
+                    cell.offsetX += (x - newX) * 16;
+                    cell.offsetY += (y - newY) * 16;
                 }
             }
         }
@@ -908,8 +908,8 @@ function drawAll(interpolationPercentage) {
 
                 if (cell.image) {
                     const image = cell.image[cell.imageIdx || 0];
-                    const offsetX = (cell.type == TerrainType.Bomb) ? cell.x : 0;
-                    const offsetY = (cell.type == TerrainType.Bomb) ? cell.y : 0;
+                    const offsetX = (cell.type == TerrainType.Bomb) ? cell.offsetX : 0;
+                    const offsetY = (cell.type == TerrainType.Bomb) ? cell.offsetY : 0;
 
                     image.draw(ctx,
                         x * 16 + 8 + 8 - Int.divFloor(image.rect.width, 2) + offsetX,
@@ -1386,7 +1386,7 @@ class Sprite {
                         if (this.isHaveKick) {
                             newCell.dy = delta * 2;
                         } else {
-                            if (newCell.x == 0) {
+                            if (newCell.offsetX == 0) {
                                 newCell.dy = 0;
                             }
                         }
@@ -1417,7 +1417,7 @@ class Sprite {
                         if (this.isHaveKick) {
                             newCell.dx = delta * 2;
                         } else {
-                            if (newCell.x == 0) {
+                            if (newCell.offsetX == 0) {
                                 newCell.dx = 0;
                             }
                         }
@@ -1490,7 +1490,7 @@ class Sprite {
                     maxBoom: this.maxBoom,
                     rcAllowed: this.rcAllowed,
                     owner: this,
-                    x: 0, y: 0, dx: 0, dy: 0
+                    offsetX: 0, offsetY: 0, dx: 0, dy: 0
                 });
                 map.playSound("posebomb");
                 this.bombsPlaced++;

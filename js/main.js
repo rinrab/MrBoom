@@ -903,17 +903,8 @@ let fade = {
 
 function drawAll(interpolationPercentage) {
     const colors = ["magenta", "red", "blue", "green"];
-    let blackOpacity = 0;
 
     if (state == States.game) {
-        if (map.time < 15) {
-            blackOpacity = 1 - map.time / 15;
-        } else if (map.toDraw < 15) {
-            blackOpacity = map.toDraw / 15;
-        } else if (map.toGameEnd < 15) {
-            blackOpacity = map.toGameEnd / 15;
-        }
-
         if (mapIndex == 4) {
             for (let y = 0; y < 5; y++) {
                 for (let x = 0; x < 8; x++) {
@@ -979,12 +970,6 @@ function drawAll(interpolationPercentage) {
             }
         }
     } else if (state == States.start) {
-        if (startMenu.frame < 15) {
-            blackOpacity = startMenu.frame / 15;
-        } else if (startMenu.frame < 30) {
-            blackOpacity = (startMenu.frame - 15) / 15;
-        }
-
         assets.start.draw(ctx, 0, 0);
         for (let x = 0; x < 4; x++) {
             for (let y = 0; y < 2; y++) {

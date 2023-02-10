@@ -216,7 +216,7 @@ function loadAssets(scale = 2) {
             [
                 {
                     x: 232, y: 0, idx: 0, animateDelay: 1 / 15,
-                    images: loadImageStripe(imgSoucoupe, 0, 133, 88, 37, 2, 144)
+                    images: loadImageStripe(imgSoucoupe, 0, 133, 88, 49, 2, 144)
                 }
             ],
             [],

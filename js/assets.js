@@ -165,8 +165,8 @@ function loadAssets(scale = 2) {
     const monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
     const snail = loadImageStripe(imgFeuille, 41, 17, 38, 32, 6, 1).concat(
         loadImageStripe(imgFeuille, 41, 50, 38, 32, 7, 1));
-    const snailGhost = loadImageStripe(imgGhosts, 0, 114, 38, 32, 6, 1).concat(
-        loadImageStripe(imgGhosts, 0, 147, 38, 32, 7, 1));
+    const snailGhost = loadImageStripe(imgGhosts, 1, 114, 38, 32, 6, 1).concat(
+        loadImageStripe(imgGhosts, 1, 147, 38, 32, 7, 1));
 
     const fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
 

@@ -908,8 +908,8 @@ function drawAll(interpolationPercentage) {
 
                 if (cell.image) {
                     const image = cell.image[cell.imageIdx || 0];
-                    const offsetX = (cell.type == TerrainType.Bomb) ? cell.offsetX : 0;
-                    const offsetY = (cell.type == TerrainType.Bomb) ? cell.offsetY : 0;
+                    const offsetX = cell.offsetX || 0;
+                    const offsetY = cell.offsetY || 0;
 
                     image.draw(ctx,
                         x * 16 + 8 + 8 - Int.divFloor(image.rect.width, 2) + offsetX,

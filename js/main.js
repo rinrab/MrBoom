@@ -344,8 +344,8 @@ class Terrain {
         }
 
         if (this.apocalypse) {
-            if (this.apocalypse % 3 == 0) {
-                const apocalypse = this.apocalypse / 3;
+            if (this.apocalypse % 2 == 0) {
+                const apocalypse = this.apocalypse / 2;
                 for (let i = 0; i < this.fin.length; i++) {
                     if (this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) {
                         const x = i % this.width;

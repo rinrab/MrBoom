@@ -347,7 +347,7 @@ class Terrain {
             if (this.apocalypse % 2 == 0) {
                 const apocalypse = this.apocalypse / 2;
                 for (let i = 0; i < this.fin.length; i++) {
-                    if ((this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) && this.fin[i] != 255) {
+                    if ((this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) && apocalypse != 255) {
                         const x = i % this.width;
                         const y = Int.divFloor(i, this.width);
 

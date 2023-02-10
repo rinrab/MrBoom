@@ -420,7 +420,7 @@ class Terrain {
 
         if (this.toGameEnd == 0) {
             fade.fadeOut(() => {
-                if (playersCount == 1) {
+                if (playersCount == 1 && this.timeLeft > 0) {
                     results.win(sprites.find((v) => !v.isDie).controller.id);
                     state = States.results;
                 } else {

@@ -1023,7 +1023,7 @@ function drawAll(interpolationPercentage) {
     }
 
     fade.update();
-    if (fade.getOpacity() != 0) {
+    if (fade.getOpacity() > 0) {
         ctx.fillStyle = "rgba(0,0,0," + fade.getOpacity() + ")";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }

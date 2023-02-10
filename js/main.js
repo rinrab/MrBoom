@@ -4,7 +4,6 @@ let ctx;
 let images;
 
 let bg;
-let tree;
 
 let controllersList = [];
 let sprites = [];
@@ -577,8 +576,6 @@ async function init() {
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d", { alpha: false });
-
-    tree = { images: assets.niegeTree, time: 0 };
 
     updateArgs();
     addEventListener("hashchange", updateArgs());

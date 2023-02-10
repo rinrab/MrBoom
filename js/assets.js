@@ -1,4 +1,4 @@
-function loadAssets(scale = 2) {
+async function loadAssets(scale = 2) {
     function loadImage(imgElement, x, y, width, height) {
         return {
             img: imgElement,
@@ -84,7 +84,7 @@ function loadAssets(scale = 2) {
         ];
     }
 
-    function loadBonus(img) {
+    async function loadBonus(img) {
         const canvas = document.createElement("canvas");
         const frameColors = [
             "#FC00FC",
@@ -120,10 +120,12 @@ function loadAssets(scale = 2) {
             img.draw(ctx, x, y);
         }
 
-        return loadImageStripe(canvas, 0, 0, width, height, frameColors.length);
+        const bitmap = await createImageBitmap(canvas);
+
+        return loadImageStripe(bitmap, 0, 0, width, height, frameColors.length);
     }
 
-    function loadPermanentWall(fire, wall) {
+    async function loadPermanentWall(fire, wall) {
         const width = Math.max(fire[0].rect.width, wall.rect.width);
         const height = Math.max(fire[0].rect.height, wall.rect.height);
 
@@ -144,7 +146,9 @@ function loadAssets(scale = 2) {
             }
         }
 
-        return loadImageStripe(canvas, 0, 0, width, height, fire.length + 1);
+        const bitmap = await createImageBitmap(canvas);
+
+        return loadImageStripe(bitmap, 0, 0, width, height, fire.length + 1);
     }
 
     const imgNeige1 = document.getElementById("NEIGE1");
@@ -237,26 +241,26 @@ function loadAssets(scale = 2) {
             loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
         ],
         permanentWalls: [
-            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
-            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
-            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 0, 16, 16)),
-            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
-            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
-            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
+            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
+            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
+            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 0, 16, 16)),
+            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
+            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
+            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
         ],
         powerups:
             [
-                loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 8 * 16, 3 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 1 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 2 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 3 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 4 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 5 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 6 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 7 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 8 * 16, 16, 16)),
-                loadBonus(loadImage(imgSprite2, 9 * 16, 9 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 8 * 16, 3 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 1 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 2 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 3 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 4 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 5 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 6 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 7 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 8 * 16, 16, 16)),
+                await loadBonus(loadImage(imgSprite2, 9 * 16, 9 * 16, 16, 16)),
             ],
         boomMid: loadImageStripe(imgSprite2, 0 * 16, 46 + 0 * 16, 16, 16, 4),
         boomHor: loadImageStripe(imgSprite2, 0 * 16, 46 + 1 * 16, 16, 16, 4),

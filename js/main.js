@@ -375,7 +375,7 @@ class Terrain {
                                 });
                             }
 
-                            this.playSound("sac");
+                            //this.playSound("sac");
                         }
                     }
                 }

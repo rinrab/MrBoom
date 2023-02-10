@@ -1688,6 +1688,11 @@ class Monster {
             this.step = 4;
         }
 
+
+        if (this.isDie && this.frameIndex < 8) {
+            this.frameIndex += 1 / 5;
+        }
+
         this.skip += this.speed;
         if (this.skip < 1) {
             return;
@@ -1712,9 +1717,7 @@ class Monster {
         if (this.wait > 0) {
             this.wait--;
             this.frameIndex = 0;
-        } else if (this.isDie) {
-            if (this.frameIndex < 8) this.frameIndex += 1 / 5;
-        } else {
+        } else if (!this.isDie) {
             if (this.x % 16 == 0 && this.y % 16 == 0 && Math.random() < 0.1) {
                 this.wait = this.waitAfterTurn;
             } else if (this.wait != undefined) {

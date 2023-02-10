@@ -859,14 +859,7 @@ class DrawMenu {
 let fade = {
     fade: 0,
     direction: 0,
-    sleepTime: 0,
 
-    sleep(time) {
-        this.sleepTime = time;
-    },
-    isSleep: function () {
-        return !this.sleepTime == 0;
-    },
     fadeIn: function () {
         if (this.direction >= 0) {
             this.fade = 15;
@@ -881,19 +874,15 @@ let fade = {
         this.action = action;
     },
     update: function () {
-        if (this.sleepTime > 0) {
-            this.sleepTime--;
-        } else {
-            this.fade += this.direction;
+        this.fade += this.direction;
 
-            if (this.direction > 0 && this.fade >= 15) {
-                this.direction = 0;
-                if (this.action) {
-                    this.action();
-                }
-            } else if (this.direction < 0 && this.fade <= 0) {
-                this.direction = 0;
+        if (this.direction > 0 && this.fade >= 15) {
+            this.direction = 0;
+            if (this.action) {
+                this.action();
             }
+        } else if (this.direction < 0 && this.fade <= 0) {
+            this.direction = 0;
         }
     },
     getOpacity: function () {

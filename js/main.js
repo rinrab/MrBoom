@@ -25,6 +25,8 @@ let results;
 
 let levelAssets;
 
+let keyStory = [];
+
 const controlKeys = {
     "KeyW": true,
     "KeyS": true,
@@ -670,6 +672,19 @@ async function init() {
             e.preventDefault();
             e.stopPropagation();
         }
+        keyStory.push(e.code);
+        if (checkEnd(keyStory, "IDDQD")) {
+            console.log("God mode activated");
+            for (let sprite of sprites) {
+                sprite.unplugin = 999999;
+                sprite.blinking = 999999;
+                sprite.blinkingSpeed = 30;
+            }
+        }
+        if (checkEnd(keyStory, "IDCLEV$")) {
+            map = newMap(parseInt(keyStory[keyStory.length - 1]["Digit".length - 1 + 1]) % maps.length);
+            startGame(startMenu.playerList);
+        }
     })
 
     addEventListener("keyup", function (e) {
@@ -695,6 +710,20 @@ async function init() {
     if (args.includes("-s")) {
         start();
     }
+}
+
+function checkEnd(array, search) {
+    if (array.length >= search.length) {
+        let areEqual = true;
+        for (let i = 0; i < search.length; i++) {
+            if (array[array.length - search.length + i] != "Key" + search[i] && search[i] != "$") {
+                areEqual = false;
+                break;
+            }
+        }
+        return areEqual;
+    }
+    return false;
 }
 
 function start() {

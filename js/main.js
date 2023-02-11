@@ -650,7 +650,7 @@ async function init() {
         "music/unreeeal.mp3",
     ]);
 
-    map = newMap(0);
+    map = newMap();
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d", { alpha: false });
@@ -682,8 +682,12 @@ async function init() {
             }
         }
         if (checkEnd(keyStory, "IDCLEV$")) {
-            map = newMap(parseInt(keyStory[keyStory.length - 1]["Digit".length - 1 + 1]) % maps.length);
-            startGame(startMenu.playerList);
+            const char = keyStory[keyStory.length - 1][5];
+            const index = (parseInt(char) - 1) % maps.length;
+            if (index != undefined && !isNaN(index)) {
+                map = newMap(index);
+                startGame(startMenu.playerList);
+            }
         }
     })
 
@@ -829,6 +833,7 @@ class StartMenu {
                 fade.fadeOut(() => {
                     isDemo = false;
                     music.next();
+                    map = newMap();
                     startGame(this.playerList);
                     results = new Results(this.playerList);
                 });
@@ -904,6 +909,7 @@ class Results {
         if (getKeysDownCount() > 0 && this.frame > 120) {
             fade.fadeOut(() => {
                 if (this.next == "game") {
+                    map = newMap();
                     startGame(startMenu.playerList);
                 } else {
                     victory = new Victory(this.next);
@@ -950,6 +956,7 @@ class DrawMenu {
         this.frame++;
         if (getKeysDownCount() > 0 && this.frame > 120) {
             fade.fadeOut(() => {
+                map = newMap();
                 startGame(startMenu.playerList);
             });
         }
@@ -1130,7 +1137,7 @@ function drawAll(interpolationPercentage) {
 
 function startGame(playerList) {
     state = States.game;
-    map = newMap();
+    //map = newMap();
     sprites = [];
     fade.fadeIn();
 

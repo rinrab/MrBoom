@@ -176,91 +176,6 @@ async function loadAssets(scale = 2) {
 
     return {
         bomb: loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
-        backGrounds:
-            [
-                [
-                    loadImage(imgNeige1, 0, 0, 320, 200),
-                    loadImage(imgNeige2, 0, 0, 320, 200),
-                    loadImage(imgNeige3, 0, 0, 320, 200),
-                ],
-                [
-                    loadImage(document.getElementById("GAME1"), 0, 0, 320, 200),
-                    loadImage(document.getElementById("GAME2"), 0, 0, 320, 200),
-                    loadImage(document.getElementById("GAME3"), 0, 0, 320, 200),
-                ],
-                //[
-                //    loadImage(document.getElementById("HELL1"), 0, 0, 320, 200),
-                //    loadImage(document.getElementById("HELL2"), 0, 0, 320, 200),
-                //    loadImage(document.getElementById("HELL3"), 0, 0, 320, 200),
-                //],
-                [
-                    loadImage(document.getElementById("FOOT"), 0, 0, 320, 200),
-                ],
-                [
-                    loadImage(document.getElementById("NUAGE1"), 0, 0, 320, 200),
-                    loadImage(document.getElementById("NUAGE2"), 0, 0, 320, 200),
-                ],
-                [
-                    loadImage(document.getElementById("FORET"), 0, 0, 320, 200),
-                ],
-                [
-                    loadImage(document.getElementById("SOCCER"), 0, 0, 320, 200),
-                ],
-                [
-                    loadImage(document.getElementById("CRAYON"), 0, 0, 320, 200),
-                ]
-            ],
-
-        mapOverlays: [
-            [
-                {
-                    x: 232, y: 57, idx: 0, animateDelay: 0, images: [
-                        loadImage(imgMed3, 0, 77, 6 * 8, 44),
-                    ]
-                },
-                {
-                    x: 112, y: 30, idx: 0, animateDelay: 1 / 20,
-                    images: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
-                },
-            ],
-            [],
-            //[],
-            [
-                {
-                    x: 232, y: 0, idx: 0, animateDelay: 1 / 15,
-                    images: loadImageStripe(imgSoucoupe, 0, 133, 88, 49, 2, 144)
-                }
-            ],
-            [],
-            [
-                {
-                    x: 0, y: 0, idx: 0, animateDelay: 0, images: [
-                        loadImage(document.getElementById("FEUILLE_OVERLAY"), 0, 0, 320, 200)
-                    ]
-                }
-            ],
-            [],
-            [],
-        ],
-        walls: [
-            loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
-            loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
-            //loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
-            loadImageStripe(imgPause, 160, 128, 16, 16, 8),
-            loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
-            loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
-            loadImageStripe(imgPause, 160, 112, 16, 16, 8),
-            loadImageStripe(imgPause, 0, 112, 16, 16, 8),
-        ],
-        permanentWalls: [
-            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
-            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
-            //loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 0, 16, 16)),
-            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
-            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
-            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
-            await loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
-        ],
         powerups:
             [
                 await loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16)),
@@ -369,7 +284,86 @@ async function loadAssets(scale = 2) {
             loadImage(document.getElementById("VIC3"), 0, 0, 320, 200),
             loadImage(document.getElementById("VIC4"), 0, 0, 320, 200),
         ],
-        sky: loadImage(imgSprite2, 64, 16, 48, 44)
+        sky: loadImage(imgSprite2, 64, 16, 48, 44),
+
+        levels: [
+            {
+                background: [
+                    loadImage(imgNeige1, 0, 0, 320, 200),
+                    loadImage(imgNeige2, 0, 0, 320, 200),
+                    loadImage(imgNeige3, 0, 0, 320, 200),
+                ],
+                overlays: [
+                    {
+                        x: 232, y: 57, idx: 0, animateDelay: 0, images: [
+                            loadImage(imgMed3, 0, 77, 6 * 8, 44),
+                        ]
+                    },
+                    {
+                        x: 112, y: 30, idx: 0, animateDelay: 1 / 20,
+                        images: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
+                    },
+                ],
+                walls: loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
+                permanentWalls: await loadPermanentWall(fire,
+                    loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
+            },
+            {
+                background: [
+                    loadImage(document.getElementById("GAME1"), 0, 0, 320, 200),
+                    loadImage(document.getElementById("GAME2"), 0, 0, 320, 200),
+                    loadImage(document.getElementById("GAME3"), 0, 0, 320, 200),
+                ],
+                overlays: [],
+                walls: loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
+                permanentWalls: await loadPermanentWall(fire,
+                    loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
+            },
+            // {},
+            {
+                background: [loadImage(document.getElementById("FOOT"), 0, 0, 320, 200)],
+                overlays: [
+                    {
+                        x: 232, y: 0, idx: 0, animateDelay: 1 / 15,
+                        images: loadImageStripe(imgSoucoupe, 0, 133, 88, 49 - 13, 2, 144)
+                    }
+                ],
+                walls: loadImageStripe(imgPause, 160, 128, 16, 16, 8),
+                permanentWalls: await loadPermanentWall(fire,
+                    loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
+            },
+            {
+                background: [
+                    loadImage(document.getElementById("NUAGE1"), 0, 0, 320, 200),
+                    loadImage(document.getElementById("NUAGE2"), 0, 0, 320, 200),
+                ],
+                overlays: [],
+                walls: loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
+                permanentWalls: await loadPermanentWall(fire,
+                    loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
+            },
+            {
+                background: [loadImage(document.getElementById("FORET"), 0, 0, 320, 200)],
+                overlays: [],
+                walls: loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
+                permanentWalls: await loadPermanentWall(fire,
+                    loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
+            },
+            {
+                background: [loadImage(document.getElementById("SOCCER"), 0, 0, 320, 200)],
+                overlays: [],
+                walls: loadImageStripe(imgPause, 160, 112, 16, 16, 8),
+                permanentWalls: await loadPermanentWall(fire,
+                    loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
+            },
+            {
+                background: [loadImage(document.getElementById("CRAYON"), 0, 0, 320, 200)],
+                overlays: [],
+                walls: loadImageStripe(imgPause, 0, 112, 16, 16, 8),
+                permanentWalls: await loadPermanentWall(fire,
+                    loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
+            },
+        ]
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

@@ -23,6 +23,8 @@ let elemFpsDisplay;
 
 let results;
 
+let levelAssets;
+
 const controlKeys = {
     "KeyW": true,
     "KeyS": true,
@@ -153,7 +155,7 @@ class Terrain {
                 } else if (src == '-') {
                     this.data[y * this.width + x] = {
                         type: TerrainType.TemporaryWall,
-                        image: assets.walls[mapIndex]
+                        image: levelAssets.walls
                     };
                 } else if (src == '*') {
                     this.spawns.push({ x: x, y: y });
@@ -369,11 +371,11 @@ class Terrain {
                             } else {
                                 this.setCell(x, y, {
                                     type: TerrainType.Apocalypse,
-                                    image: assets.permanentWalls[mapIndex],
+                                    image: levelAssets.permanentWalls,
                                     imageIdx: 0,
                                     next: {
                                         type: TerrainType.Apocalypse,
-                                        image: assets.permanentWalls[mapIndex]
+                                        image: levelAssets.permanentWalls,
                                     }
                                 });
                             }
@@ -399,11 +401,11 @@ class Terrain {
                         // TODO: use apocalypse map.
                         this.setCell(x, y, {
                             type: TerrainType.PermanentWall,
-                            image: assets.permanentWalls[mapIndex],
+                            image: levelAssets.permanentWalls,
                             imageIdx: 0,
                             next: {
                                 type: TerrainType.PermanentWall,
-                                image: assets.permanentWalls[mapIndex]
+                                image: levelAssets.permanentWalls,
                             }
                         });
                     }
@@ -492,7 +494,7 @@ class Terrain {
                     let next = this.generateGiven();
                     map.setCell(x, y, {
                         type: TerrainType.PermanentWall,
-                        image: assets.walls[mapIndex],
+                        image: levelAssets.walls,
                         imageIdx: 0,
                         animateDelay: 4,
                         next: next
@@ -588,6 +590,9 @@ function newMap(index = -1) {
     if (index == -1) {
         index = mapRandom.next(maps.length)
     }
+
+    levelAssets = assets.levels[index];
+
     mapIndex = index;
     const initial = maps[index];
     const rv = new Terrain(initial);
@@ -595,8 +600,6 @@ function newMap(index = -1) {
     rv.soundCallback = function (sound) {
         soundManager.playSound(sound);
     };
-
-    bg = { images: assets.backGrounds[mapIndex], time: 0 };
 
     return rv;
 }
@@ -963,8 +966,10 @@ function drawAll(interpolationPercentage) {
                 }
             }
         }
-        bg.images[Math.floor(bg.time) % bg.images.length].draw(ctx, 0, 0);
-        bg.time += 1 / 30;
+
+        levelAssets.background[Math.floor(map.timeLeft * 2) %
+            levelAssets.background.length].draw(ctx, 0, 0);
+        levelAssets.background.time += 1 / 30;
 
         for (let y = 0; y < map.height; y++) {
             for (let x = 0; x < map.width; x++) {
@@ -995,7 +1000,7 @@ function drawAll(interpolationPercentage) {
             sprite.draw(ctx)
         }
 
-        for (let overlay of assets.mapOverlays[mapIndex]) {
+        for (let overlay of levelAssets.overlays) {
             overlay.images[Math.floor(overlay.idx) % overlay.images.length].draw(ctx, overlay.x, overlay.y);
             overlay.idx += overlay.animateDelay;
         }

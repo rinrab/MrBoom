@@ -215,7 +215,9 @@ function loadAssets(scale = 2) {
                     x: 112, y: 30, idx: 0, animateDelay: 1 / 20,
                     images: loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
                 },
-            ], [], [],
+            ],
+            [],
+            [],
             [
                 {
                     x: 232, y: 0, idx: 0, animateDelay: 1 / 15,

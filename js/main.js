@@ -1520,7 +1520,8 @@ class Sprite {
                 isTouchMonster = true;
             }
         }
-        if (tile.type == TerrainType.Fire || tile.type == TerrainType.Apocalypse || isTouchMonster) {
+
+        if (tile.type == TerrainType.Fire || isTouchMonster) {
             if (!this.unplugin) {
                 if (this.lifeCount > 0) {
                     this.blinkingSpeed = 30;
@@ -1539,6 +1540,12 @@ class Sprite {
                     map.playSound("player_die");
                 }
             }
+        }
+
+        if (tile.type == TerrainType.Fire) {
+            this.isDie = true;
+            this.frameIndex = 0;
+            map.playSound("player_die");
         }
 
         if (this.controller.playerKeys[PlayerKeys.Bomb]) {

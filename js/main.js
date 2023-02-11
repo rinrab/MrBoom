@@ -230,6 +230,7 @@ class Terrain {
                 return true;
 
             case TerrainType.PermanentWall:
+            case TerrainType.Apocalypse:
                 return false;
 
             case TerrainType.TemporaryWall:
@@ -1708,7 +1709,7 @@ class Monster {
                     return true;
 
                 case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
-                case TerrainType.Bomb: case TerrainType.Fire:
+                case TerrainType.Bomb: case TerrainType.Fire: case TerrainType.Apocalypse:
                     return false;
 
                 default: return true;

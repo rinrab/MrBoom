@@ -482,7 +482,7 @@ class Terrain {
                 const y = bombY + i * dy;
                 const cell = map.getCell(x, y);
 
-                if (cell.type == TerrainType.PermanentWall) {
+                if (cell.type == TerrainType.PermanentWall || cell.type == TerrainType.Apocalypse) {
                     break;
                 };
 

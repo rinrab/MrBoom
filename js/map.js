@@ -233,7 +233,7 @@ const maps = [
             { type: PowerUpType.Life, count: 4 },
             { type: PowerUpType.RemoteControl, count: 1 },
             { type: PowerUpType.Shield, count: 1 },
-            { type: PowerUpType.Clock, count: 3 },
+            { type: PowerUpType.Clock, count: 1 },
             { type: PowerUpType.Kick, count: 1 }
         ],
         monsters: [

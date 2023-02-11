@@ -369,7 +369,7 @@ class Terrain {
                                     image: assets.permanentWalls[mapIndex],
                                     imageIdx: 0,
                                     next: {
-                                        type: TerrainType.PermanentWall,
+                                        type: TerrainType.Apocalypse,
                                         image: assets.permanentWalls[mapIndex]
                                     }
                                 });

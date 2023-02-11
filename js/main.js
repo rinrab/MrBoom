@@ -955,7 +955,7 @@ function drawAll(interpolationPercentage) {
     const colors = ["magenta", "red", "blue", "green"];
 
     if (state == States.game) {
-        if (mapIndex == 4) {
+        if (mapIndex == 3) {
             for (let y = 0; y < 5; y++) {
                 for (let x = 0; x < 8; x++) {
                     assets.sky.draw(ctx,
@@ -1101,7 +1101,7 @@ function startGame(playerList) {
         let spawn = 2;
         if (mapIndex == 0) spawn = 4;
         else if (mapIndex == 1) spawn = 2;
-        else if (mapIndex == 2) spawn = 3;
+        //else if (mapIndex == 2) spawn = 3;
         map.locateSprite(sprite, spawn);
         sprites.push(sprite);
         sprite.controller = new DemoController("lbrdwwbulllwwbrrddwwbuulllww", sprite);

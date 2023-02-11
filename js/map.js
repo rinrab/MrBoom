@@ -100,37 +100,37 @@ const maps = [
         time: 120,
         fin: defaultFin
     },
-    {
-        map: [
-            "###################",
-            "#* ------------- *#",
-            "# #-#-#-#-#-#-#-# #",
-            "#------*121*------#",
-            "#-#-#-#4#-#4#-#-#-#",
-            "#------ --- ------#",
-            "#-#-#-#3#-#3#-#-#-#",
-            "#------ --- ------#",
-            "#-#-#-#4#-#4#-#-#-#",
-            "#------*121*------#",
-            "# #-#-#-#-#-#-#-# #",
-            "#* ------------- *#",
-            "###################",
-        ],
-        powerUps: [
-            { type: PowerUpType.ExtraBomb, count: 10 },
-            { type: PowerUpType.ExtraFire, count: 10 },
-            { type: PowerUpType.Life, count: 1 },
-            { type: PowerUpType.RemoteControl, count: 1 },
-            { type: PowerUpType.RollerSkate, count: 1 },
-            { type: PowerUpType.Shield, count: 1 },
-            { type: PowerUpType.Kick, count: 2 }
-        ],
-        monsters: [
-            { startX: 7, startY: 9, waitAfterTurn: 60, type: 2, speed: 0.5, startDelay: 90 },
-        ],
-        time: 90,
-        fin: defaultFin
-    },
+    //{
+    //    map: [
+    //        "###################",
+    //        "#* ------------- *#",
+    //        "# #-#-#-#-#-#-#-# #",
+    //        "#------*121*------#",
+    //        "#-#-#-#4#-#4#-#-#-#",
+    //        "#------ --- ------#",
+    //        "#-#-#-#3#-#3#-#-#-#",
+    //        "#------ --- ------#",
+    //        "#-#-#-#4#-#4#-#-#-#",
+    //        "#------*121*------#",
+    //        "# #-#-#-#-#-#-#-# #",
+    //        "#* ------------- *#",
+    //        "###################",
+    //    ],
+    //    powerUps: [
+    //        { type: PowerUpType.ExtraBomb, count: 10 },
+    //        { type: PowerUpType.ExtraFire, count: 10 },
+    //        { type: PowerUpType.Life, count: 1 },
+    //        { type: PowerUpType.RemoteControl, count: 1 },
+    //        { type: PowerUpType.RollerSkate, count: 1 },
+    //        { type: PowerUpType.Shield, count: 1 },
+    //        { type: PowerUpType.Kick, count: 2 }
+    //    ],
+    //    monsters: [
+    //        { startX: 7, startY: 9, waitAfterTurn: 60, type: 2, speed: 0.5, startDelay: 90 },
+    //    ],
+    //    time: 90,
+    //    fin: defaultFin
+    //},
     {
         map: [
             "###################",

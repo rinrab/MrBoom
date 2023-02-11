@@ -184,11 +184,11 @@ function loadAssets(scale = 2) {
                     loadImage(document.getElementById("GAME2"), 0, 0, 320, 200),
                     loadImage(document.getElementById("GAME3"), 0, 0, 320, 200),
                 ],
-                [
-                    loadImage(document.getElementById("HELL1"), 0, 0, 320, 200),
-                    loadImage(document.getElementById("HELL2"), 0, 0, 320, 200),
-                    loadImage(document.getElementById("HELL3"), 0, 0, 320, 200),
-                ],
+                //[
+                //    loadImage(document.getElementById("HELL1"), 0, 0, 320, 200),
+                //    loadImage(document.getElementById("HELL2"), 0, 0, 320, 200),
+                //    loadImage(document.getElementById("HELL3"), 0, 0, 320, 200),
+                //],
                 [
                     loadImage(document.getElementById("FOOT"), 0, 0, 320, 200),
                 ],
@@ -217,7 +217,7 @@ function loadAssets(scale = 2) {
                 },
             ],
             [],
-            [],
+            //[],
             [
                 {
                     x: 232, y: 0, idx: 0, animateDelay: 1 / 15,
@@ -237,7 +237,7 @@ function loadAssets(scale = 2) {
         walls: [
             loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
-            loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
+            //loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
             loadImageStripe(imgPause, 160, 128, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
@@ -246,7 +246,7 @@ function loadAssets(scale = 2) {
         permanentWalls: [
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
-            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 0, 16, 16)),
+            //loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 0, 16, 16)),
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),

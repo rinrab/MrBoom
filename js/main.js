@@ -1542,7 +1542,7 @@ class Sprite {
             }
         }
 
-        if (tile.type == TerrainType.Fire) {
+        if (tile.type == TerrainType.Apocalypse) {
             this.isDie = true;
             this.frameIndex = 0;
             map.playSound("player_die");

@@ -621,7 +621,7 @@ async function init() {
     mapRandom = new UnrepeatableRandom();
     elemFpsDisplay = document.getElementById("fps-display");
 
-    assets = loadAssets();
+    assets = await loadAssets();
 
     soundManager = new SoundManager();
 

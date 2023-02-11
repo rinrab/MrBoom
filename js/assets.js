@@ -201,6 +201,9 @@ function loadAssets(scale = 2) {
                 ],
                 [
                     loadImage(document.getElementById("SOCCER"), 0, 0, 320, 200),
+                ],
+                [
+                    loadImage(document.getElementById("CRAYON"), 0, 0, 320, 200),
                 ]
             ],
 
@@ -233,6 +236,7 @@ function loadAssets(scale = 2) {
                 }
             ],
             [],
+            [],
         ],
         walls: [
             loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
@@ -242,6 +246,7 @@ function loadAssets(scale = 2) {
             loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
             loadImageStripe(imgPause, 160, 112, 16, 16, 8),
+            loadImageStripe(imgPause, 0, 112, 16, 16, 8),
         ],
         permanentWalls: [
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
@@ -251,6 +256,7 @@ function loadAssets(scale = 2) {
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
+            null,
         ],
         powerups:
             [
@@ -300,7 +306,14 @@ function loadAssets(scale = 2) {
                 [snail[2], snail[3], snail[2], snail[3]],
                 [snail[6], snail[7], snail[6], snail[7]],
                 [snail[8], snail[9], snail[10], snail[11], snail[12]]
-            ]
+            ],
+            loadMonster(
+                loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
+                loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
+                loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),
+                loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1).concat(
+                    loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)),
+                loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
         ],
         monsterGhosts: [
             null,
@@ -319,7 +332,13 @@ function loadAssets(scale = 2) {
                 [snailGhost[2], snailGhost[3], snailGhost[2], snailGhost[3]],
                 [snailGhost[6], snailGhost[7], snailGhost[6], snailGhost[7]],
                 null
-            ]
+            ],
+            loadMonster(
+                loadImageStripe(imgGhosts, 0 * 24 * 3, 180, 23, 21, 3, 1),
+                loadImageStripe(imgGhosts, 1 * 24 * 3, 180, 23, 21, 3, 1),
+                loadImageStripe(imgGhosts, 2 * 24 * 3, 180, 23, 21, 3, 1),
+                loadImageStripe(imgGhosts, 3 * 24 * 3, 180, 23, 21, 3, 1),
+                null),
         ],
         insertCoin: loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
         start: loadImage(document.getElementById("MENU"), 0, 0, 320, 200),

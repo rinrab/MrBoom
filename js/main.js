@@ -137,6 +137,8 @@ class Terrain {
             }
         }
 
+        this.initialBonus = initial.initialBonus;
+
         this.data = new Array(this.width * this.height);
 
         for (let y = 0; y < this.height; y++) {
@@ -230,6 +232,7 @@ class Terrain {
                 return true;
 
             case TerrainType.PermanentWall:
+            case TerrainType.Apocalypse:
                 return false;
 
             case TerrainType.TemporaryWall:
@@ -347,7 +350,7 @@ class Terrain {
             if (this.apocalypse % 2 == 0) {
                 const apocalypse = this.apocalypse / 2;
                 for (let i = 0; i < this.fin.length; i++) {
-                    if (this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) {
+                    if ((this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) && apocalypse != 255) {
                         const x = i % this.width;
                         const y = Int.divFloor(i, this.width);
 
@@ -369,13 +372,13 @@ class Terrain {
                                     image: assets.permanentWalls[mapIndex],
                                     imageIdx: 0,
                                     next: {
-                                        type: TerrainType.PermanentWall,
+                                        type: TerrainType.Apocalypse,
                                         image: assets.permanentWalls[mapIndex]
                                     }
                                 });
                             }
 
-                            this.playSound("sac");
+                            //this.playSound("sac");
                         }
                     }
                 }
@@ -420,7 +423,7 @@ class Terrain {
 
         if (this.toGameEnd == 0) {
             fade.fadeOut(() => {
-                if (playersCount == 1) {
+                if (playersCount == 1 && this.timeLeft > 0) {
                     results.win(sprites.find((v) => !v.isDie).controller.id);
                     state = States.results;
                 } else {
@@ -481,7 +484,7 @@ class Terrain {
                 const y = bombY + i * dy;
                 const cell = map.getCell(x, y);
 
-                if (cell.type == TerrainType.PermanentWall) {
+                if (cell.type == TerrainType.PermanentWall || cell.type == TerrainType.Apocalypse) {
                     break;
                 };
 
@@ -952,7 +955,7 @@ function drawAll(interpolationPercentage) {
     const colors = ["magenta", "red", "blue", "green"];
 
     if (state == States.game) {
-        if (mapIndex == 4) {
+        if (mapIndex == 3) {
             for (let y = 0; y < 5; y++) {
                 for (let x = 0; x < 8; x++) {
                     assets.sky.draw(ctx,
@@ -1098,7 +1101,7 @@ function startGame(playerList) {
         let spawn = 2;
         if (mapIndex == 0) spawn = 4;
         else if (mapIndex == 1) spawn = 2;
-        else if (mapIndex == 2) spawn = 3;
+        //else if (mapIndex == 2) spawn = 3;
         map.locateSprite(sprite, spawn);
         sprites.push(sprite);
         sprite.controller = new DemoController("lbrdwwbulllwwbrrddwwbuulllww", sprite);
@@ -1360,6 +1363,13 @@ class Sprite {
 
         this.x = 1 * 16;
         this.y = 1 * 16;
+
+        const initialBonus = map.initialBonus;
+        if (initialBonus) {
+            if (initialBonus.includes(PowerUpType.Kick)) {
+                this.isHaveKick = true;
+            }
+        }
     }
 
     xAlign(deltaY) {
@@ -1519,7 +1529,8 @@ class Sprite {
                 isTouchMonster = true;
             }
         }
-        if (tile.type == TerrainType.Fire || tile.type == TerrainType.Apocalypse || isTouchMonster) {
+
+        if (tile.type == TerrainType.Fire || isTouchMonster) {
             if (!this.unplugin) {
                 if (this.lifeCount > 0) {
                     this.blinkingSpeed = 30;
@@ -1538,6 +1549,12 @@ class Sprite {
                     map.playSound("player_die");
                 }
             }
+        }
+
+        if (tile.type == TerrainType.Apocalypse) {
+            this.isDie = true;
+            this.frameIndex = 0;
+            map.playSound("player_die");
         }
 
         if (this.controller.playerKeys[PlayerKeys.Bomb]) {
@@ -1688,6 +1705,11 @@ class Monster {
             this.step = 4;
         }
 
+
+        if (this.isDie && this.frameIndex < 8) {
+            this.frameIndex += 1 / 5;
+        }
+
         this.skip += this.speed;
         if (this.skip < 1) {
             return;
@@ -1703,7 +1725,7 @@ class Monster {
                     return true;
 
                 case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
-                case TerrainType.Bomb: case TerrainType.Fire:
+                case TerrainType.Bomb: case TerrainType.Fire: case TerrainType.Apocalypse:
                     return false;
 
                 default: return true;
@@ -1712,9 +1734,7 @@ class Monster {
         if (this.wait > 0) {
             this.wait--;
             this.frameIndex = 0;
-        } else if (this.isDie) {
-            if (this.frameIndex < 8) this.frameIndex += 1 / 5;
-        } else {
+        } else if (!this.isDie) {
             if (this.x % 16 == 0 && this.y % 16 == 0 && Math.random() < 0.1) {
                 this.wait = this.waitAfterTurn;
             } else if (this.wait != undefined) {

@@ -242,4 +242,38 @@ const maps = [
         time: 60,
         fin: defaultFin,
     },
+    {
+        map: [
+            "###################",
+            "#-----------------#",
+            "#-# #-#-#-#-#-# #-#",
+            "#- * --------- * -#",
+            "##-#-# #-#-# #-#-##",
+            "#---- * --- * ----#",
+            "#-#-#-#-#-#-#-#-#-#",
+            "#---- * --- * ----#",
+            "##-#-# #-#-# #-#-##",
+            "#- * --------- * -#",
+            "#-# #-#-#-#-#-# #-#",
+            "#-----------------#",
+            "###################",
+        ],
+        powerUps: [
+            { type: PowerUpType.ExtraBomb, count: 10 },
+            { type: PowerUpType.ExtraFire, count: 10 },
+            { type: PowerUpType.Life, count: 1 },
+            { type: PowerUpType.RemoteControl, count: 2 },
+            { type: PowerUpType.Shield, count: 1 },
+            { type: PowerUpType.Kick, count: 2 }
+        ],
+        monsters: [
+            { waitAfterTurn: 48, type: 1, livesCount: 3 },
+            { waitAfterTurn: 48, type: 4, livesCount: 3, speed: 0.3 },
+        ],
+        initialBonus: [
+            PowerUpType.Kick
+        ],
+        time: 90,
+        fin: defaultFin,
+    },
 ];

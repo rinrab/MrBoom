@@ -137,6 +137,8 @@ class Terrain {
             }
         }
 
+        this.initialBonus = initial.initialBonus;
+
         this.data = new Array(this.width * this.height);
 
         for (let y = 0; y < this.height; y++) {
@@ -1361,6 +1363,13 @@ class Sprite {
 
         this.x = 1 * 16;
         this.y = 1 * 16;
+
+        const initialBonus = map.initialBonus;
+        if (initialBonus) {
+            if (initialBonus.includes(PowerUpType.Kick)) {
+                this.isHaveKick = true;
+            }
+        }
     }
 
     xAlign(deltaY) {

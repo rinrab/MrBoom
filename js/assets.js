@@ -198,6 +198,9 @@ function loadAssets(scale = 2) {
                 ],
                 [
                     loadImage(document.getElementById("FORET"), 0, 0, 320, 200),
+                ],
+                [
+                    loadImage(document.getElementById("SOCCER"), 0, 0, 320, 200),
                 ]
             ],
 
@@ -227,6 +230,7 @@ function loadAssets(scale = 2) {
                     ]
                 }
             ],
+            [],
         ],
         walls: [
             loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
@@ -235,6 +239,7 @@ function loadAssets(scale = 2) {
             loadImageStripe(imgPause, 160, 128, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
             loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
+            loadImageStripe(imgPause, 160, 112, 16, 16, 8),
         ],
         permanentWalls: [
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
@@ -243,6 +248,7 @@ function loadAssets(scale = 2) {
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
             loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
+            loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
         ],
         powerups:
             [

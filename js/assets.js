@@ -101,17 +101,17 @@ async function loadAssets(scale = 2) {
         const width = img.rect.width;
         const height = img.rect.height;
 
-        canvas.width = (width) * frameColors.length  * scale;
-        canvas.height = (height) * scale;
+        canvas.width = width * frameColors.length * scale;
+        canvas.height = height * scale;
 
         const ctx = canvas.getContext("2d");
 
         for (let i = 0; i < frameColors.length; i++) {
-            const x = (width) * i;
+            const x = width * i;
             const y = 0;
 
             ctx.fillStyle = frameColors[i];
-            ctx.fillRect(x * scale, y * scale, (width) * scale, (height) * scale);
+            ctx.fillRect(x * scale, y * scale, width * scale, height * scale);
 
             ctx.fillStyle = "#6C90FC";
             ctx.fillRect((x + 1) * scale, 1 * scale, (width - 2) * scale, (height - 2) * scale);

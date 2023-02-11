@@ -457,9 +457,9 @@ class Terrain {
     }
 
     generateGiven() {
-        let rnd = Math.random();
+        let rnd = rand();
         if (rnd < 0.5) {
-            const powerUpIndex = Math.floor(Math.random() * this.powerUpList.length);
+            const powerUpIndex = Math.floor(rand() * this.powerUpList.length);
             const powerUpType = this.powerUpList[powerUpIndex];
             return {
                 type: TerrainType.PowerUp,
@@ -551,6 +551,15 @@ class Terrain {
     }
 }
 
+// Source: https://en.wikipedia.org/wiki/Pseudorandom_number_generator#Implementation
+let seed = Math.random();
+
+function rand() {
+    seed++;
+    let a = seed * 15485863;
+    return (a * a * a % 2038074743) / 2038074743;
+}
+
 class Int {
     static mod(val, divider) {
         return Math.floor(val) % divider;
@@ -569,7 +578,7 @@ class Int {
     }
 
     static random(max) {
-        return Math.floor(Math.random() * max);
+        return Math.floor(rand() * max);
     }
 }
 
@@ -1740,13 +1749,13 @@ class Monster {
             this.wait--;
             this.frameIndex = 0;
         } else if (!this.isDie) {
-            if (this.x % 16 == 0 && this.y % 16 == 0 && Math.random() < 0.1) {
+            if (this.x % 16 == 0 && this.y % 16 == 0 && rand() < 0.1) {
                 this.wait = this.waitAfterTurn;
             } else if (this.wait != undefined) {
                 this.step = undefined;
                 let rnd = [];
                 for (let i = 0; i < 4; i++) {
-                    rnd.push({ i: i, rnd: Math.random() });
+                    rnd.push({ i: i, rnd: rand() });
                 }
                 rnd.sort((a, b) => a.rnd - b.rnd);
 

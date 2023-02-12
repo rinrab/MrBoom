@@ -364,10 +364,13 @@ class Terrain {
                     if ((this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) && apocalypse != 255) {
                         const x = i % this.width;
                         const y = Int.divFloor(i, this.width);
-
-                        if (this.getCell(x, y).type != TerrainType.PermanentWall) {
+                        const cell = this.getCell(x, y).type;
+                        if (cell.type != TerrainType.PermanentWall) {
+                            if (cell.type == TerrainType.Bomb) {
+                                cell.owner.bombsPlaced--;
+                            }
                             if (apocalypse == this.maxFin + 16) {
-                                if (this.getCell(x, y).type == TerrainType.TemporaryWall) {
+                                if (cell.type == TerrainType.TemporaryWall) {
                                     this.setCell(x, y, {
                                         type: TerrainType.PowerUpFire,
                                         image: assets.fire,

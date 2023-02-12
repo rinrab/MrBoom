@@ -1692,7 +1692,6 @@ class Monster {
             this.step = 4;
         }
 
-
         if (this.isDie && this.frameIndex < 8) {
             this.frameIndex += 1 / 5;
         }

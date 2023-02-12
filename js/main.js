@@ -1360,36 +1360,48 @@ class DemoController {
 class Sprite {
     animations;
 
-    x;
-    y;
+    movingSprite
+    get x () {
+        return this.movingSprite.x;
+    }
+    set x(val) {
+        this.movingSprite.x = val;
+    }
+    get y () {
+        return this.movingSprite.y;
+    }
+    set y(val) {
+        this.movingSprite.y = val;
+    }
 
     animateIndex;
     frameIndex;
 
     playerKeys;
 
-    speed;
+    get speed() {
+        return this.movingSprite.speed;
+    }
+    set speed(val) {
+        this.movingSprite.speed = val;
+    }
 
     maxBoom;
     maxBombsCount;
     bombsPlaced;
-
     rcAllowed;
     rcDitonate;
-
     isHaveRollers;
-
     isDie;
-
     blinking;
     blinkingSpeed;
     unplugin;
-
     lifeCount = 0;
-
     controller;
 
     constructor(spriteIndex) {
+        this.movingSprite = new MovingSprite();
+
         this.isPlayer = true;
         this.animations = [];
 
@@ -1434,30 +1446,6 @@ class Sprite {
         }
     }
 
-    xAlign(deltaY) {
-        if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divRound(this.y, 16) + deltaY)) {
-            this.x -= 1;
-
-            this.animateIndex = 2;
-        } else if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divRound(this.y, 16) + deltaY)) {
-            this.x += 1;
-
-            this.animateIndex = 1;
-        }
-    }
-
-    yAlign(deltaX) {
-        if (map.isWalkable(Int.divRound(this.x, 16) + deltaX, Int.divFloor(this.y - 1, 16))) {
-            this.y -= 1;
-
-            this.animateIndex = 3;
-        } else if (map.isWalkable(Int.divRound(this.x, 16) + deltaX), Int.divCeil(this.y + 1, 16)) {
-            this.y += 1;
-
-            this.animateIndex = 0;
-        }
-    }
-
     update() {
         if (this.unplugin >= 0) {
             this.blinking++;
@@ -1478,20 +1466,19 @@ class Sprite {
             this.frameIndex == 0;
         }
 
-        let direction;
-
         if (this.controller) {
             this.controller.update();
         }
 
+        this.movingSprite.direction = -1;
         if (this.controller.playerKeys[PlayerKeys.Up]) {
-            direction = Direction.Up;
+            this.movingSprite.direction = Direction.Up;
         } else if (this.controller.playerKeys[PlayerKeys.Left]) {
-            direction = Direction.Left;
+            this.movingSprite.direction = Direction.Left;
         } else if (this.controller.playerKeys[PlayerKeys.Right]) {
-            direction = Direction.Right;
+            this.movingSprite.direction = Direction.Right;
         } else if (this.controller.playerKeys[PlayerKeys.Down]) {
-            direction = Direction.Down;
+            this.movingSprite.direction = Direction.Down;
         }
 
         if (this.rcAllowed && this.controller.playerKeys[PlayerKeys.rcDitonate]) {
@@ -1500,84 +1487,22 @@ class Sprite {
             this.rcDitonate = false;
         }
 
-        const moveY = (delta) => {
-            if (Int.mod(this.x, 16) == 0) {
-                const newY = (delta < 0) ? Int.divFloor(this.y + delta, 16) : Int.divCeil(this.y + delta, 16);
-                const cellX = Int.divRound(this.x, 16);
-                const cellY = Int.divRound(this.y, 16);
-                const cell = map.getCell(cellX, cellY);
-
-                if (map.isWalkable(cellX, newY)) {
-                    this.y += delta;
-                }
-
-                if (newY == cellY && cell.type == TerrainType.Bomb) {
-                    this.y += delta;
-                } else {
-                    const newCell = map.getCell(cellX, newY);
-                    if (newCell.type == TerrainType.Bomb) {
-                        if (this.isHaveKick) {
-                            newCell.dy = delta * 2;
-                        } else {
-                            if (newCell.offsetX == 0) {
-                                newCell.dy = 0;
-                            }
-                        }
-                    }
-                }
-            } else {
-                this.xAlign(delta);
-            }
-
+        this.movingSprite.update();
+        if (this.movingSprite.direction == Direction.Up) {
+            this.animateIndex = 3;
             this.frameIndex += 1 / 18;
-        }
-        const moveX = (delta) => {
-            if (Int.mod(this.y, 16) == 0) {
-                const newX = (delta < 0) ? Int.divFloor(this.x + delta, 16) : Int.divCeil(this.x + delta, 16);
-                const cellX = Int.divRound(this.x, 16);
-                const cellY = Int.divRound(this.y, 16);
-                const cell = map.getCell(cellX, cellY);
 
-                if (map.isWalkable(newX, cellY)) {
-                    this.x += delta;
-                }
-
-                if (newX == cellX && cell.type == TerrainType.Bomb) {
-                    this.x += delta;
-                } else {
-                    const newCell = map.getCell(newX, cellY);
-                    if (newCell.type == TerrainType.Bomb) {
-                        if (this.isHaveKick) {
-                            newCell.dx = delta * 2;
-                        } else {
-                            if (newCell.offsetX == 0) {
-                                newCell.dx = 0;
-                            }
-                        }
-                    }
-                }
-            } else {
-                this.yAlign(delta);
-            }
-
+        } else if (this.movingSprite.direction == Direction.Down) {
+            this.animateIndex = 0;
             this.frameIndex += 1 / 18;
-        }
-        for (let i = 0; i < this.speed; i++) {
-            if (direction == Direction.Up) {
-                this.animateIndex = 3;
-                moveY(-1);
-            } else if (direction == Direction.Down) {
-                this.animateIndex = 0;
-                moveY(1);
-            } else if (direction == Direction.Left) {
-                moveX(-1);
-                this.animateIndex = 2;
-            } else if (direction == Direction.Right) {
-                moveX(1);
-                this.animateIndex = 1;
-            } else {
-                this.frameIndex = 0;
-            }
+        } else if (this.movingSprite.direction == Direction.Left) {
+            this.animateIndex = 2;
+            this.frameIndex += 1 / 18;
+        } else if (this.movingSprite.direction == Direction.Right) {
+            this.animateIndex = 1;
+            this.frameIndex += 1 / 18;
+        } else {
+            this.frameIndex = 0;
         }
 
         const tileX = Int.divRound(this.x, 16);
@@ -1848,6 +1773,119 @@ class Monster {
             img = imgSet[this.type][this.step][Math.floor(this.frameIndex)];
         }
         img.draw(ctx, this.x + 8 + 8 - Int.divFloor(img.rect.width, 2), this.y + 16 - img.rect.height);
+    }
+}
+
+class MovingSprite {
+    direction;
+    x;
+    y;
+    speed = 1;
+
+    update() {
+        const moveY = (delta) => {
+            if (Int.mod(this.x, 16) == 0) {
+                const newY = (delta < 0) ? Int.divFloor(this.y + delta, 16) : Int.divCeil(this.y + delta, 16);
+                const cellX = Int.divRound(this.x, 16);
+                const cellY = Int.divRound(this.y, 16);
+                const cell = map.getCell(cellX, cellY);
+
+                if (map.isWalkable(cellX, newY)) {
+                    this.y += delta;
+                }
+
+                if (newY == cellY && cell.type == TerrainType.Bomb) {
+                    this.y += delta;
+                } else {
+                    const newCell = map.getCell(cellX, newY);
+                    if (newCell.type == TerrainType.Bomb) {
+                        if (this.isHaveKick) {
+                            newCell.dy = delta * 2;
+                        } else {
+                            if (newCell.offsetX == 0) {
+                                newCell.dy = 0;
+                            }
+                        }
+                    }
+                }
+            } else {
+                this.xAlign(delta);
+            }
+
+        }
+        const moveX = (delta) => {
+            if (Int.mod(this.y, 16) == 0) {
+                const newX = (delta < 0) ? Int.divFloor(this.x + delta, 16) : Int.divCeil(this.x + delta, 16);
+                const cellX = Int.divRound(this.x, 16);
+                const cellY = Int.divRound(this.y, 16);
+                const cell = map.getCell(cellX, cellY);
+
+                if (map.isWalkable(newX, cellY)) {
+                    this.x += delta;
+                }
+
+                if (newX == cellX && cell.type == TerrainType.Bomb) {
+                    this.x += delta;
+                } else {
+                    const newCell = map.getCell(newX, cellY);
+                    if (newCell.type == TerrainType.Bomb) {
+                        if (this.isHaveKick) {
+                            newCell.dx = delta * 2;
+                        } else {
+                            if (newCell.offsetX == 0) {
+                                newCell.dx = 0;
+                            }
+                        }
+                    }
+                }
+            } else {
+                this.yAlign(delta);
+            }
+
+            this.frameIndex += 1 / 18;
+        }
+
+        for (let i = 0; i < this.speed; i++) {
+            if (this.direction == Direction.Up) {
+                this.animateIndex = 3;
+                moveY(-1);
+            } else if (this.direction == Direction.Down) {
+                this.animateIndex = 0;
+                moveY(1);
+            } else if (this.direction == Direction.Left) {
+                moveX(-1);
+                this.animateIndex = 2;
+            } else if (this.direction == Direction.Right) {
+                moveX(1);
+                this.animateIndex = 1;
+            } else {
+                this.frameIndex = 0;
+            }
+        }
+    }
+
+    xAlign(deltaY) {
+        if (map.isWalkable(Int.divFloor(this.x - 1, 16), Int.divRound(this.y, 16) + deltaY)) {
+            this.x -= 1;
+
+            this.animateIndex = 2;
+        } else if (map.isWalkable(Int.divCeil(this.x + 1, 16), Int.divRound(this.y, 16) + deltaY)) {
+            this.x += 1;
+
+            this.animateIndex = 1;
+        }
+    }
+
+    yAlign(deltaX) {
+        if (map.isWalkable(Int.divRound(this.x, 16) + deltaX, Int.divFloor(this.y - 1, 16))) {
+            this.y -= 1;
+
+            this.animateIndex = 3;
+        } else if (map.isWalkable(Int.divRound(this.x, 16) + deltaX), Int.divCeil(this.y + 1, 16)) {
+            this.y += 1;
+
+            this.animateIndex = 0;
+        }
     }
 }
 

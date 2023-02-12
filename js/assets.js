@@ -363,6 +363,13 @@ async function loadAssets(scale = 2) {
                 permanentWalls: await loadPermanentWall(fire,
                     loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
             },
+            {
+                background: [loadImage(document.getElementById("MICRO"), 0, 0, 320, 200)],
+                overlays: [],
+                walls: null,
+                permanentWalls: await loadPermanentWall(fire,
+                    loadImage(imgPause, 256 + 16 * 2, 16 * 1, 16, 16)),
+            },
         ]
 
         // igloo penguin

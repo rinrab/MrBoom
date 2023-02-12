@@ -50,7 +50,8 @@ const TerrainType =
     Bomb: 3,
     PowerUp: 4,
     PowerUpFire: 5,
-    Apocalypse: 6
+    Apocalypse: 6,
+    Rubber: 7
 };
 
 const PowerUpType = {
@@ -164,6 +165,10 @@ class Terrain {
                     this.data[y * this.width + x] = {
                         type: TerrainType.Free
                     };
+                } else if (src == '%') {
+                    this.data[y * this.width + x] = {
+                        type: TerrainType.Rubber,
+                    };
                 } else if (bonusStr.includes(src)) {
                     const index = bonusStr.charAt(src);
                     this.data[y * this.width + x] = {
@@ -236,6 +241,7 @@ class Terrain {
                 return true;
 
             case TerrainType.PermanentWall:
+            case TerrainType.Rubber:
             case TerrainType.Apocalypse:
                 return false;
 
@@ -284,14 +290,14 @@ class Terrain {
                 }
 
                 if (cell.type == TerrainType.Bomb) {
-                    if (cell.offsetX == 0) {
-                        if (this.getCell(x + getSign(cell.dx), y).type != TerrainType.Free) {
-                            cell.dx = 0;
-                        }
-                    }
-                    if (cell.offsetY == 0) {
-                        if (this.getCell(x, y + getSign(cell.dy)).type != TerrainType.Free) {
+                    if (cell.offsetX == 0 && cell.offsetY == 0) {
+                        const next = this.getCell(x + getSign(cell.dx), y + getSign(cell.dy)).type;
+                        if (next == TerrainType.Rubber) {
+                            cell.dx = -cell.dx;
+                            cell.dy = -cell.dy;
+                        } else if (next != TerrainType.Free) {
                             cell.dy = 0;
+                            cell.dx = 0;
                         }
                     }
 
@@ -350,9 +356,10 @@ class Terrain {
             this.apocalypse = 1;
         }
 
+        const speed = (mapIndex == 7) ? 4 : 2;
         if (this.apocalypse) {
-            if (this.apocalypse % 2 == 0) {
-                const apocalypse = this.apocalypse / 2;
+            if (this.apocalypse % speed == 0) {
+                const apocalypse = this.apocalypse / speed;
                 for (let i = 0; i < this.fin.length; i++) {
                     if ((this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) && apocalypse != 255) {
                         const x = i % this.width;
@@ -488,7 +495,8 @@ class Terrain {
                 const y = bombY + i * dy;
                 const cell = map.getCell(x, y);
 
-                if (cell.type == TerrainType.PermanentWall || cell.type == TerrainType.Apocalypse) {
+                if (cell.type == TerrainType.PermanentWall || cell.type == TerrainType.Apocalypse ||
+                    cell.type == TerrainType.Rubber) {
                     break;
                 };
 
@@ -1420,6 +1428,10 @@ class Sprite {
                 this.isHaveKick = true;
             }
         }
+        if (mapIndex == 7) {
+            this.maxBoom = 8;
+            this.maxBombsCount = 8;
+        }
     }
 
     xAlign(deltaY) {
@@ -1776,6 +1788,7 @@ class Monster {
 
                 case TerrainType.PermanentWall: case TerrainType.TemporaryWall:
                 case TerrainType.Bomb: case TerrainType.Fire: case TerrainType.Apocalypse:
+                case TerrainType.Rubber:
                     return false;
 
                 default: return true;

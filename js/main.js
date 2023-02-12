@@ -1437,7 +1437,7 @@ class Sprite {
         const initialBonus = map.initialBonus;
         if (initialBonus) {
             if (initialBonus.includes(PowerUpType.Kick)) {
-                this.isHaveKick = true;
+                this.movingSprite.isHaveKick = true;
             }
         }
         if (mapIndex == 7) {
@@ -1526,7 +1526,7 @@ class Sprite {
                     this.lifeCount--;
                     this.rcAllowed = false;
                     this.isHaveRollers = false;
-                    this.isHaveKick = false;
+                    this.movingSprite.isHaveKick = false;
                     this.speed = 1;
                     this.maxBombsCount = Math.min(this.maxBombsCount, 3);
                     map.playSound("oioi");
@@ -1584,10 +1584,10 @@ class Sprite {
                     doFire = true;
                 }
             } else if (powerUpType == PowerUpType.Kick) {
-                if (this.isHaveKick) {
+                if (this.movingSprite.isHaveKick) {
                     doFire = true;
                 } else {
-                    this.isHaveKick = true;
+                    this.movingSprite.isHaveKick = true;
                 }
             } else if (powerUpType == PowerUpType.Life) {
                 this.lifeCount++;
@@ -1780,6 +1780,7 @@ class MovingSprite {
     x;
     y;
     speed = 1;
+    isHaveKick;
 
     update() {
         const moveY = (delta) => {

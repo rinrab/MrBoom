@@ -347,7 +347,7 @@ async function loadAssets(scale = 2) {
                 overlays: [],
                 walls: loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
                 permanentWalls: await loadPermanentWall(fire,
-                    loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
+                    loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
             },
             {
                 background: [loadImage(document.getElementById("SOCCER"), 0, 0, 320, 200)],

@@ -65,6 +65,7 @@ const contentToCache = [
     "music/unreeeal.mp3",
     "favicon.ico",
     "favicon.png",
+    "./",
 ];
 // Installing Service Worker
 self.addEventListener('install', (e) => {

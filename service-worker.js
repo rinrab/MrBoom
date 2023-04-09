@@ -82,7 +82,7 @@ self.addEventListener('activate', event => {
 });
 
 // Fetching content using Service Worker
-self.addEveself.addEventListener('fetch', (e) => {
+self.addEventListener('fetch', (e) => {
     // Cache http and https only, skip unsupported chrome-extension:// and file://...
     if (e.request.url.startsWith('http:') || e.request.url.startsWith('https:')) {
         e.respondWith((async () => {

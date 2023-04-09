@@ -66,6 +66,7 @@ const contentToCache = [
     "favicon.ico",
     "favicon.png",
     "./",
+    "manifest.json",
 ];
 // Installing Service Worker
 self.addEventListener('install', (e) => {

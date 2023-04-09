@@ -86,6 +86,7 @@ self.addEventListener('fetch', (e) => {
     // Cache http and https only, skip unsupported chrome-extension:// and file://...
     if (e.request.url.startsWith('http:') || e.request.url.startsWith('https:')) {
         e.respondWith((async () => {
+            const cache = await caches.open(cacheName);
             const r = await caches.match(e.request);
             if (r) {
                 console.log(`[Service Worker] Serving ${e.request.url} from cache.`);
@@ -93,9 +94,9 @@ self.addEventListener('fetch', (e) => {
             } else {
                 console.warn(`[Service Worker] Serving ${e.request.url} from server.`);
                 const response = await fetch(e.request);
-                const cache = await caches.open(cacheName);
                 console.log(`[Service Worker] Caching new resource: ${e.request.url}`);
-                cache.put(e.request, response.clone());
+
+                // cache.put(e.request, response.clone());
                 return response;
             }
         })());

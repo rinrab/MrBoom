@@ -711,8 +711,10 @@ async function init() {
         }
     })
 
-    controllersList.push(new KeyboardController("KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft", "AltLeft"));
-    controllersList.push(new KeyboardController("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight", "AltRight"));
+    controllersList.push(new KeyboardController(
+        "KeyW", "KeyS", "KeyA", "KeyD", "ControlLeft", "AltLeft"));
+    controllersList.push(new KeyboardController(
+        "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ControlRight", "AltRight"));
     addEventListener("gamepadconnected", function (e) {
         ctrl = new GamepadController(e.gamepad);
         controllersList.push(ctrl);

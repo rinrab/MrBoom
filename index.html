@@ -1,4 +1,4 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -7,6 +7,13 @@
   <title>Mr Boom</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
 
+  <script>
+    // Registering Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+  
   <script src='js/mainloop.min.js'></script>
   <script src='js/assets.js'></script>
   <script src='js/sound.js'></script>
@@ -65,4 +72,5 @@
     <label id="fps-display"></label>
   </div>
 </body>
+
 </html>

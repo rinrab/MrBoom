@@ -601,11 +601,6 @@ const FPS = 60;
 
 let keys = {};
 
-// Registering Service Worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-}
-
 addEventListener("load", function () {
     init();
 });

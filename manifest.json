@@ -18,6 +18,12 @@
       "purpose": "any"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "Play",
+      "url": "index.html"
+    }
+  ],
   "screenshots": [],
   "categories": [
     "games"

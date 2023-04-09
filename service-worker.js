@@ -1,6 +1,7 @@
 // Files to cache
 const cacheName = 'MrBoom-v1';
 const contentToCache = [
+    "index.html",
     "Gfx2x/NEIGE1.PNG",
     "Gfx2x/NEIGE2.PNG",
     "Gfx2x/NEIGE3.PNG",

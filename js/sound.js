@@ -39,7 +39,7 @@ async function loadSoundAssets() {
 
         return {
             pool: await Promise.all(promises),
-            play: function() {
+            play: function () {
                 let audio = this.pool.pop();
 
                 if (audio) {
@@ -58,20 +58,25 @@ async function loadSoundAssets() {
         };
     }
 
-    let result = {
-        bang: await makeSoundPool("bang"),
-        posebomb: await makeSoundPool("posebomb"),
-        sac: await makeSoundPool("sac"),
-        pick: await makeSoundPool("pick"),
-        player_die: await makeSoundPool("player_die"),
-        oioi: await makeSoundPool("oioi"),
-        ai: await makeSoundPool("ai"),
-        addplayer: await makeSoundPool("addplayer"),
-        victory: await makeSoundPool("victory"),
-        draw: await makeSoundPool("draw"),
-        clock: await makeSoundPool("clock"),
-        time_end: await makeSoundPool("time_end"),
-    };
+    sounds = [
+        "bang",
+        "posebomb",
+        "sac",
+        "pick",
+        "player_die",
+        "oioi",
+        "ai",
+        "addplayer",
+        "victory",
+        "draw",
+        "clock",
+        "time_end"
+    ]
+
+    let result = {};
+    for (let name of sounds) {
+        result[name] = await makeSoundPool(name);
+    }
 
     return result;
 }

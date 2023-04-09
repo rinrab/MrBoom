@@ -770,10 +770,12 @@ function start() {
     });
 }
 
-const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " + 
-    "players can join using their drop bomb button   use enter or lt and rt on gamepad controller to start game   " +
+const helpText = "welcome to mr.boom v0.1!   right keyboard controller:   " +
+    "players can join using their drop bomb button   use enter or lt and rt on gamepad" +
+    "controller to start game   " +
     "use arrows to move   use ctr to drop bomb   use alt to triger it by radio control   " +
-    "gamepad controller:   use d-pad arrows to move   use   use b button to drop bomb   use a button to triger it by radio control";
+    "gamepad controller:   use d-pad arrows to move   use   use b button to drop bomb  " +
+    "use a button to triger it by radio control";
 
 function begin(timestamp, delta) {
     for (let c of controllersList) {
@@ -1208,7 +1210,9 @@ function end(fps, panic) {
         // time). See the documentation for `MainLoop.setEnd()` for additional
         // explanation.
         var discardedTime = Math.round(MainLoop.resetFrameDelta());
-        console.warn('Main loop panicked, probably because the browser tab was put in the background. Discarding ' + discardedTime + 'ms');
+        console.warn(
+            'Main loop panicked, probably because the browser tab was put in the background. Discarding '
+            + discardedTime + 'ms');
     }
 }
 
@@ -1366,13 +1370,13 @@ class Sprite {
     animations;
 
     movingSprite
-    get x () {
+    get x() {
         return this.movingSprite.x;
     }
     set x(val) {
         this.movingSprite.x = val;
     }
-    get y () {
+    get y() {
         return this.movingSprite.y;
     }
     set y(val) {
@@ -1754,10 +1758,10 @@ class Monster {
             } else {
                 this.wait = this.waitAfterTurn;
             }
-            
+
             this.frameIndex %= 4;
         }
-        
+
         this.blinking -= this.blinkingSpeed / 30;
         if (this.blinking < 0) {
             this.blinkingSpeed = 0;

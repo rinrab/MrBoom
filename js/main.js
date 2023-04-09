@@ -855,12 +855,28 @@ class StartMenu {
             }
         }
 
+        if (keys["Space"]) {
+            if (!this.isSpacePressed) {
+                const id = Int.random(1000000);
+                const name = this.names.splice(Int.random(this.names.length), 1)[0];
+                const controller = new BotController();
+                this.playerList.push({ id: id, name: name, controller: controller });
+                controllersList.push(controller);
+                controller.id = id;
+                soundManager.playSound("addplayer");
+                this.isSpacePressed = true;
+            }
+        } else {
+            this.isSpacePressed = false;
+        }
+
         this.frame++;
     }
 
     playerList = [];
     subtitlesMove = 0;
     frame = 0;
+    isSpacePressed = false;
 }
 
 let victory;
@@ -1188,9 +1204,10 @@ function startGame(playerList) {
         }
     } else {
         for (let i = 0; i < playerList.length; i++) {
-            sprite = new Sprite(i);
+            const sprite = new Sprite(i);
             map.locateSprite(sprite);
             sprite.controller = playerList[i].controller;
+            playerList[i].controller.sprite = sprite;
             sprites.push(sprite);
         }
     }
@@ -1225,9 +1242,11 @@ function getKeysDownCount() {
     }
     for (let ctr of controllersList) {
         ctr.update();
-        for (let key of ctr.playerKeys) {
-            if (key) {
-                keyCount++;
+        if (ctr.playerKeys && !ctr.isBot) {
+            for (let key of ctr.playerKeys) {
+                if (key) {
+                    keyCount++;
+                }
             }
         }
     }
@@ -1362,6 +1381,49 @@ class DemoController {
         }
         if (this.currentMove >= this.moves.length) {
             this.currentMove = 0;
+        }
+    }
+}
+
+class BotController {
+    playerKeys = {};
+    sprite;
+    isBot = true;
+    step = 0;
+
+    constructor() {
+    }
+
+
+
+    update() {
+        this.step++;
+        if (this.sprite) {
+            if (this.sprite.x % 16 == 0 && this.sprite.y % 16 == 0) {
+                this.playerKeys = {};
+
+                const get = (dx, dy) => map.getCell((this.sprite.x / 16) + dx, (this.sprite.y / 16) + dy);
+                const canDitonate = (dx, dy) => {
+                    return get(dx, dy).type == TerrainType.TemporaryWall;
+                }
+                const delta = [
+                    { x: 0, y: 1, d: PlayerKeys.Down },
+                    { x: 0, y: -1, d: PlayerKeys.Up },
+                    { x: 1, y: 0, d: PlayerKeys.Right },
+                    { x: -1, y: 0, d: PlayerKeys.Left },
+                ]
+                delta.sort((a, b) => Math.random() - 0.5);
+                for (let d of delta) {
+                    if (canDitonate(d.x, d.y)) {
+                        this.playerKeys[PlayerKeys.Bomb] = true;
+                    }
+                    if (get(d.x, d.y).type == TerrainType.Free) {
+                        this.playerKeys[d.d] = true;
+                    }
+                }
+            }
+        } else {
+            this.playerKeys = {};
         }
     }
 }

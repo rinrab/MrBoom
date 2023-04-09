@@ -3,7 +3,7 @@
   "name": "MrBoom",
   "short_name": "MrBoom",
   "description": "There is clone of old game MrBoom (or Bomberman) on JavaScript",
-  "start_url": ".",
+  "start_url": "index.html",
   "display": "fullscreen",
   "background_color": "#000",
   "orientation": "landscape",

@@ -1393,9 +1393,7 @@ class BotController {
 
     constructor() {
     }
-
-
-
+    
     update() {
         this.step++;
         if (this.sprite) {

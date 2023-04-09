@@ -62,6 +62,8 @@ const contentToCache = [
     "music/external.mp3",
     "music/matkamie.mp3",
     "music/unreeeal.mp3",
+    "favicon.ico",
+    "favicon.png",
 ];
 // Installing Service Worker
 self.addEventListener('install', (e) => {

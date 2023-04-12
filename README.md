@@ -1,4 +1,4 @@
-# MrBoom
+# Mr.Boom
 
 Mr.Boom is a modern implementation of the great DOS game mr.boom. Explode walls by bombs to get power ups and win your opponent. Play with 8 friends on one device.
 Controls

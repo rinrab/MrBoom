@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
   "name": "MrBoom",
   "short_name": "MrBoom",
-  "description": "There is clone of old game MrBoom (or Bomberman) on JavaScript",
+  "description": "This is clone of old game MrBoom (or Bomberman) on JavaScript",
   "start_url": "index.html",
   "display": "fullscreen",
   "background_color": "#000",

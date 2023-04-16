@@ -27,6 +27,8 @@ let levelAssets;
 
 let keyStory = [];
 
+let isPaused = false;
+
 const controlKeys = {
     "KeyW": true,
     "KeyS": true,
@@ -700,6 +702,12 @@ async function init() {
                 startGame(startMenu.playerList);
             }
         }
+        console.log(e.code)
+        if (e.code == "KeyP" && state == States.game && !isDemo) {
+            isPaused = !isPaused;
+            console.log("p");
+            // assets.pause.tick = 0;
+        }
     })
 
     addEventListener("keyup", function (e) {
@@ -783,9 +791,14 @@ function begin(timestamp, delta) {
     }
 }
 
+let pauseIdx = 0;
 function update(deltaTime) {
     if (state == States.game) {
-        map.update();
+        if (!isPaused) {
+            map.update();
+        } else {
+            pauseIdx += 0.04;
+        }
     } else if (state == States.start) {
         startMenu.update();
     } else if (state == States.results) {
@@ -1083,6 +1096,10 @@ function drawAll(interpolationPercentage) {
                     x += 14;
                 }
             }
+        }
+
+        if (isPaused) {
+            assets.pause[Int.mod(pauseIdx, 4)].draw(ctx, 320 / 2 - 48 / 2, 200 / 2 - 64 / 2);
         }
     } else if (state == States.start) {
         assets.start.draw(ctx, 0, 0);

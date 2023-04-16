@@ -199,6 +199,7 @@ async function loadAssets(scale = 2) {
         boomBottomEnd: loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
         fire: fire,
         players: loadPlayers(imgSprite, imgSprite3),
+        pause: loadImageStripe(imgPause, 0, 0, 48, 64, 4, 0),
         monsters: [
             loadMonster(
                 loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),

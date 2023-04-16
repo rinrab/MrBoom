@@ -239,7 +239,7 @@ const maps = [
         monsters: [
             { waitAfterTurn: 48, type: 4, livesCount: 3, speed: 0.3 },
         ],
-        time: 60,
+        time: 120,
         fin: defaultFin,
     },
     {

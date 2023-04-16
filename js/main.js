@@ -111,6 +111,7 @@ class Terrain {
     timeLeft;
     fin;
     maxFin = 0;
+    lastApocalypsePlayed = 0;
 
     get width() {
         return this.width;
@@ -392,12 +393,15 @@ class Terrain {
                                 });
                             }
 
-                            //this.playSound("sac");
+                            if (this.lastApocalypsePlayed > 5) {
+                                this.playSound("sac");
+                                this.lastApocalypsePlayed = 0;
+                            }
                         }
                     }
                 }
             }
-
+            this.lastApocalypsePlayed++;
             this.apocalypse++;
         }
 

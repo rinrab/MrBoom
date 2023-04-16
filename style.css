@@ -23,16 +23,6 @@ body {
     align-items: center;
 }
 
-#fps-display {
-    font-size: 20px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4em;
-    text-align: right;
-    color: white;
-}
-
 .btn-start {
     font-size: calc(var(--fs) * 2);
     --foreground-color: blue;

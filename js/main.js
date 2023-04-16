@@ -19,8 +19,6 @@ let cheats = {
 
 let startMenu;
 
-let elemFpsDisplay;
-
 let results;
 
 let levelAssets;
@@ -599,8 +597,6 @@ class Int {
 
 let map;
 
-const FPS = 60;
-
 let keys = {};
 
 addEventListener("load", function () {
@@ -646,7 +642,6 @@ function updateArgs() {
 
 async function init() {
     mapRandom = new UnrepeatableRandom();
-    elemFpsDisplay = document.getElementById("fps-display");
 
     assets = await loadAssets();
 
@@ -1218,8 +1213,6 @@ function startGame(playerList) {
 }
 
 function end(fps, panic) {
-    elemFpsDisplay.innerText = Math.round(fps) + ' FPS';
-
     if (panic) {
         // This pattern introduces non-deterministic behavior, but in this case
         // it's better than the alternative (the application would look like it

@@ -449,6 +449,20 @@ class Terrain {
                 }
             }
         }
+        if (mapIndex == 6 && this.apocalypse > 5 && Int.random(30) == 0) {
+            let direction = Int.random(2);
+            this.setCell(direction * 16 + 1, Int.random(6) * 2 + 1, {
+                type: TerrainType.Bomb,
+                image: assets.bomb,
+                imageIdx: 0,
+                animateDelay: 12,
+                bombTime: 210,
+                maxBoom: 3,
+                rcAllowed: false,
+                owner: {},
+                offsetX: 0, offsetY: 0, dx:  direction * -4 + 2, dy: 0
+            });
+        }
         if (playersCount == 1 && sprites.length > 1 && !this.toGameEnd) {
             this.toGameEnd = 60 * 3;
         }

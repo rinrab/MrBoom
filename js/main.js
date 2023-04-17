@@ -362,10 +362,31 @@ class Terrain {
             if (this.apocalypse % speed == 0) {
                 const apocalypse = this.apocalypse / speed;
                 for (let i = 0; i < this.fin.length; i++) {
-                    if ((this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) && apocalypse != 255) {
-                        const x = i % this.width;
-                        const y = Int.divFloor(i, this.width);
-                        const cell = this.getCell(x, y).type;
+                    const x = i % this.width;
+                    const y = Int.divFloor(i, this.width);
+                    const cell = this.getCell(x, y).type;
+
+                    let aMax = 0;
+                    for (let a of this.fin) {
+                        if (a != 255) {
+                            aMax = Math.max(a, aMax);
+                        }
+                    }
+
+                    if (apocalypse == aMax + 1) {
+                        if (this.fin[i] == 255 && cell == TerrainType.TemporaryWall) {
+                            map.setCell(x, y, {
+                                type: TerrainType.PermanentWall,
+                                image: levelAssets.walls,
+                                imageIdx: 0,
+                                animateDelay: 4,
+                                next: {
+                                    type: TerrainType.Free
+                                }
+                            });
+                        }
+                    } if (apocalypse == 255) {
+                    } else if (this.fin[i] == apocalypse || apocalypse == this.maxFin + 16) {
                         if (cell.type != TerrainType.PermanentWall) {
                             if (cell.type == TerrainType.Bomb) {
                                 cell.owner.bombsPlaced--;

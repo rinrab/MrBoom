@@ -12,9 +12,9 @@
   "id": "Mr.Boom",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "mrboom.png",
       "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
-      "type": "image/ico",
+      "type": "image/png",
       "purpose": "any"
     }
   ],

@@ -3,7 +3,7 @@
   "name": "MrBoom",
   "short_name": "MrBoom",
   "description": "This is clone of old game MrBoom (or Bomberman) on JavaScript",
-  "start_url": "https://mrboom.app/index.html/?mode=app",
+  "start_url": "index.html",
   "display": "fullscreen",
   "background_color": "#000",
   "orientation": "landscape",
@@ -13,7 +13,7 @@
   "shortcuts": [
     {
       "name": "Play",
-      "url": "https://mrboom.app/index.html/?mode=app"
+      "url": "index.html"
     }
   ],
   "screenshots": [

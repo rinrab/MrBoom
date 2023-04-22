@@ -680,7 +680,7 @@ function updateArgs() {
 }
 
 
-const inApp = new URL(document.location).searchParams.get("mode") == "app";
+const inApp = location.pathname == "/index.html";
 
 async function init() {
     mapRandom = new UnrepeatableRandom();

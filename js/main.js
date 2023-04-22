@@ -679,6 +679,9 @@ function updateArgs() {
     }
 }
 
+
+const inApp = new URL(document.location).searchParams.get("mode") == "app";
+
 async function init() {
     mapRandom = new UnrepeatableRandom();
 
@@ -698,14 +701,23 @@ async function init() {
     ]);
 
     map = newMap();
+    startMenu = new StartMenu();
+
+    if (inApp) {
+        document.getElementById("insert-coin").remove();
+        isDemo = false;
+        state = States.splash;
+        splash = new Splash();
+    } else {
+        document.getElementById("insert-coin").addEventListener("click", start);
+        startGame([]);
+    }
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d", { alpha: false });
 
     updateArgs();
     addEventListener("hashchange", updateArgs());
-
-    startGame([]);
 
     MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);
@@ -761,14 +773,6 @@ async function init() {
         ctrl = new GamepadController(e.gamepad);
         controllersList.push(ctrl);
     });
-
-    startMenu = new StartMenu();
-
-    document.getElementById("insert-coin").addEventListener("click", start);
-
-    if (args.includes("-s")) {
-        start();
-    }
 }
 
 function checkEnd(array, search) {
@@ -841,6 +845,8 @@ function update(deltaTime) {
         victory.update();
     } else if (state == States.draw) {
         drawMenu.update();
+    } else if (state == States.splash) {
+        splash.update();
     }
 }
 
@@ -854,6 +860,23 @@ function drawString(ctx, x, y, str, alphaImageName = "original") {
             assets.alpha[alphaImageName][index].draw(ctx, x + i * 8, y);
         }
     }
+}
+
+class Splash {
+    constructor() {
+        fade.fadeIn();
+    }
+
+    update() {
+        this.frame++;
+        if (this.frame > 90) {
+            start();
+        }
+    }
+
+    playerList = [];
+    subtitlesMove = 0;
+    frame = 0;
 }
 
 class StartMenu {
@@ -912,6 +935,7 @@ class StartMenu {
 
 let victory;
 let drawMenu;
+let splash;
 
 class Results {
     frame = 0;
@@ -1162,6 +1186,8 @@ function drawAll(interpolationPercentage) {
         drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
         assets.draw[Math.floor(drawMenu.frame / 20) % 2].draw(ctx, 0, 0);
+    } else if (state == States.splash) {
+        assets.splash.draw(ctx, 0, 0);
     } else if (state == States.results) {
         assets.med.draw(ctx, 0, 0);
 

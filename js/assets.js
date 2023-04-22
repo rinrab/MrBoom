@@ -376,7 +376,8 @@ async function loadAssets(scale = 2) {
                 permanentWalls: await loadPermanentWall(fire,
                     loadImage(imgPause, 256 + 16 * 2, 16 * 1, 16, 16)),
             },
-        ]
+        ],
+        splash: loadImage(document.getElementById("MRFOND"), 0, 0, 320, 200)
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

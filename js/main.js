@@ -679,7 +679,6 @@ function updateArgs() {
     }
 }
 
-
 const inApp = new URL(document.location).searchParams.get("mode") == "app";
 
 async function init() {

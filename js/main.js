@@ -679,7 +679,8 @@ function updateArgs() {
     }
 }
 
-const inApp = new URL(document.location).searchParams.get("mode") == "app";
+const inApp = (document.location.pathname.includes("index.html") && document.location.protocol != "file:") ||
+              new URL(document.location).searchParams.get("mode") == "app";
 
 async function init() {
     mapRandom = new UnrepeatableRandom();

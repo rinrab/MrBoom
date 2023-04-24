@@ -679,9 +679,15 @@ function updateArgs() {
     }
 }
 
-const inApp = document.location.toString().includes("mrboom.app/index.html");
+let inApp = false;
 
 async function init() {
+    if (document.location.toString().includes("mrboom.app/index.html")) {
+        inApp = true;
+    } else if (new URLSearchParams(document.location.search).get("mode") == "app") {
+        inApp = true;
+    }
+
     mapRandom = new UnrepeatableRandom();
 
     assets = await loadAssets();

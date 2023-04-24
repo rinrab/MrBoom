@@ -31,13 +31,13 @@ async function loadSoundAssets() {
     }
 
     async function makeSoundPool(name) {
-        let promises = [];
+        let pool = [];
         for (let i = 0; i < poolSize; i++) {
-            promises.push(loadSound(name));
+            pool.push(await loadSound(name));
         }
 
         return {
-            pool: await Promise.all(promises),
+            pool: pool,
             play: function () {
                 let audio = this.pool.pop();
 

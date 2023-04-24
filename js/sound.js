@@ -27,8 +27,6 @@ async function loadSoundAssets() {
             result = audio;
         }
 
-        audio.load();
-
         return result;
     }
 

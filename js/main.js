@@ -863,6 +863,8 @@ function drawString(ctx, x, y, str, alphaImageName = "original") {
 }
 
 class Splash {
+    frame = 0;
+
     constructor() {
         fade.fadeIn();
     }
@@ -873,10 +875,6 @@ class Splash {
             start();
         }
     }
-
-    playerList = [];
-    subtitlesMove = 0;
-    frame = 0;
 }
 
 class StartMenu {

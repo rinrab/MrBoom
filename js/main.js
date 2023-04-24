@@ -869,7 +869,7 @@ class Splash {
 
     update() {
         this.frame++;
-        if (this.frame > 90) {
+        if (this.frame == 90) {
             start();
         }
     }

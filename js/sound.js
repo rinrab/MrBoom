@@ -6,23 +6,24 @@ async function loadSoundAssets() {
         audio.loop = false;
 
         let result;
-        console.debug("audio: " + name, audio.readyState);
 
         if (audio.readyState != 4) {
+            console.debug("audio (" + name + ") is not ready. Loading...");
             result = new Promise((resolve, reject) => {
                 audio.oncanplaythrough = () => {
-                    console.debug("audio: " + name, audio.readyState);
+                    console.debug("audio (" + name + ") loaded.");
                     resolve(audio);
                     audio.oncanplaythrough = null;
                 };
 
                 audio.onerror = () => {
-                    console.warn("audio error: " + name, audio.readyState);
+                    console.warn("audio (" + name + ") error.");
                     reject();
                     audio.onerror = null;
                 };
             });
         } else {
+            console.debug("audio (" + name + ") is ready.");
             result = audio;
         }
 

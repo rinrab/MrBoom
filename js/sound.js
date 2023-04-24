@@ -17,7 +17,7 @@ async function loadSoundAssets() {
                 };
 
                 audio.onerror = () => {
-                    console.debug("audio: " + name, audio.readyState);
+                    console.warn("audio error: " + name, audio.readyState);
                     reject();
                     audio.onerror = null;
                 };

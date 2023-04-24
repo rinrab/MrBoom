@@ -91,6 +91,8 @@ class SoundManager {
     playSound(name) {
         if (this.soundAssets && this.soundAssets[name]) {
             this.soundAssets[name].play();
+        } else {
+            console.error("Can not find " + name + "sound in assets");
         }
     }
 }

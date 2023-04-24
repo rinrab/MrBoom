@@ -810,9 +810,6 @@ function start() {
         sprites = [];
         map = newMap();
 
-        addEventListener("beforeunload", (e) => {
-            e.preventDefault();
-        });
         state = States.start;
 
         music.start(3);

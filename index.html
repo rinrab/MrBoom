@@ -9,7 +9,8 @@
 
   <script>
     // Registering Service Worker
-    if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator && (document.location.protocol == "http:" ||
+        document.location.protocol == "https:" )) {
       navigator.serviceWorker.register('service-worker.js');
     }
   </script>

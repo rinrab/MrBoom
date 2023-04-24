@@ -49,7 +49,16 @@ async function loadSoundAssets() {
                         audio.onended = undefined;
                     };
 
-                    audio.play();
+                    try {
+                        let promise = audio.play();
+                        if (promise) {
+                            promise.then(() => { }, () => {
+                                this.pool.push(audio);
+                            });
+                        }
+                    } catch(e) {
+                        this.pool.push(audio);
+                    }
                 } else {
                     console.warn("Out of audio object for '" + name + "'");
                 }

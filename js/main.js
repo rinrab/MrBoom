@@ -687,6 +687,14 @@ async function init() {
     assets = await loadAssets();
 
     soundManager = new SoundManager();
+    (async function() {
+        try {
+            await soundManager.init();
+        }
+        catch (e) {
+            console.error("Error while loading audo assets: ", e);
+        }
+    })();
 
     music = new MusicManager([
         "music/anar11.mp3",
@@ -789,8 +797,6 @@ function checkEnd(array, search) {
 }
 
 function start() {
-    soundManager.init();
-
     fade.fadeOut(() => {
         startMenu = new StartMenu();
 

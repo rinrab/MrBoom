@@ -1,7 +1,6 @@
 // Files to cache
 const cacheName = 'MrBoom-v1';
 const contentToCache = [
-    "index.html",
 ];
 // Installing Service Worker
 self.addEventListener('install', (e) => {

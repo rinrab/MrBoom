@@ -65,7 +65,6 @@ const contentToCache = [
     "music/unreeeal.mp3",
     "favicon.ico",
     "favicon.png",
-    "./",
     "manifest.json"
 ];
 // Installing Service Worker

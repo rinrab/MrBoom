@@ -7,33 +7,14 @@
   <title>Mr Boom</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-  </script>
-  <script type="module" src="/build/p-af21227c.js" data-stencil data-resources-url="/build/"
-    data-stencil-namespace="app"></script>
-  <script nomodule="" src="/build/app.js" data-stencil></script>
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/apple-touch-icon.png">
-  <link rel="icon" type="image/x-icon" href="/assets/icon/favicon.ico">
-  <link rel="manifest" href="/manifest.json">
-
   <script>
-    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(function (reg) {
-            reg.onupdatefound = function () {
-              var installingWorker = reg.installing;
-              installingWorker.onstatechange = function () {
-                if (installingWorker.state === 'installed') {
-                  window.dispatchEvent(new Event('swUpdate'))
-                }
-              }
-            }
-          })
-          .catch(function (err) { console.error('service worker error', err) });
-      });
-    }
+    // Registering Service Worker
+    // if ('serviceWorker' in navigator && (document.location.protocol == "http:" ||
+    //     document.location.protocol == "https:" )) {
+    //   navigator.serviceWorker.register('service-worker.js');
+    // }
   </script>
-
+  
   <script src='js/mainloop.min.js'></script>
   <script src='js/assets.js'></script>
   <script src='js/sound.js'></script>

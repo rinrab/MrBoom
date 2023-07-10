@@ -9,11 +9,12 @@
 
   <script>
     // Registering Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
+    if ('serviceWorker' in navigator && (document.location.protocol == "http:" ||
+      document.location.protocol == "https:")) {
+      navigator.serviceWorker.register('sw.js');
     }
   </script>
-  
+
   <script src='js/mainloop.min.js'></script>
   <script src='js/assets.js'></script>
   <script src='js/sound.js'></script>
@@ -62,6 +63,7 @@
     <img src="Gfx2x/VIC4.PNG" id="VIC4">
     <img src="Gfx2x/CRAYON2.PNG" id="CRAYON2">
     <img src="Gfx2x/SOUCOUPE.PNG" id="SOUCOUPE">
+    <img src="Gfx2x/MRFOND.PNG" id="MRFOND">
   </div>
   <div class="container">
     <div style="z-index: 99999999; height: 100%;">

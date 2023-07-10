@@ -6,39 +6,38 @@ async function loadSoundAssets() {
         audio.loop = false;
 
         let result;
-        console.debug("audio: " + name, audio.readyState);
 
         if (audio.readyState != 4) {
+            console.debug("audio (" + name + ") is not ready. Loading...");
             result = new Promise((resolve, reject) => {
                 audio.oncanplaythrough = () => {
-                    console.debug("audio: " + name, audio.readyState);
+                    console.debug("audio (" + name + ") loaded.");
                     resolve(audio);
                     audio.oncanplaythrough = null;
                 };
 
                 audio.onerror = () => {
-                    console.debug("audio: " + name, audio.readyState);
+                    console.warn("audio (" + name + ") error.");
                     reject();
                     audio.onerror = null;
                 };
             });
         } else {
+            console.debug("audio (" + name + ") is ready.");
             result = audio;
         }
-
-        audio.load();
 
         return result;
     }
 
     async function makeSoundPool(name) {
-        let promises = [];
+        let pool = [];
         for (let i = 0; i < poolSize; i++) {
-            promises.push(loadSound(name));
+            pool.push(await loadSound(name));
         }
 
         return {
-            pool: await Promise.all(promises),
+            pool: pool,
             play: function () {
                 let audio = this.pool.pop();
 
@@ -50,7 +49,16 @@ async function loadSoundAssets() {
                         audio.onended = undefined;
                     };
 
-                    audio.play();
+                    try {
+                        let promise = audio.play();
+                        if (promise) {
+                            promise.then(() => { }, () => {
+                                this.pool.push(audio);
+                            });
+                        }
+                    } catch(e) {
+                        this.pool.push(audio);
+                    }
                 } else {
                     console.warn("Out of audio object for '" + name + "'");
                 }
@@ -92,6 +100,8 @@ class SoundManager {
     playSound(name) {
         if (this.soundAssets && this.soundAssets[name]) {
             this.soundAssets[name].play();
+        } else {
+            console.error("Can not find " + name + "sound in assets");
         }
     }
 }

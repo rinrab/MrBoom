@@ -679,12 +679,28 @@ function updateArgs() {
     }
 }
 
+let inApp = false;
+
 async function init() {
+    if (document.location.toString().includes("mrboom.app/index.html")) {
+        inApp = true;
+    } else if (new URLSearchParams(document.location.search).get("mode") == "app") {
+        inApp = true;
+    }
+
     mapRandom = new UnrepeatableRandom();
 
     assets = await loadAssets();
 
     soundManager = new SoundManager();
+    (async function() {
+        try {
+            await soundManager.init();
+        }
+        catch (e) {
+            console.error("Error while loading audo assets: ", e);
+        }
+    })();
 
     music = new MusicManager([
         "music/anar11.mp3",
@@ -698,14 +714,23 @@ async function init() {
     ]);
 
     map = newMap();
+    startMenu = new StartMenu();
+
+    if (inApp) {
+        document.getElementById("insert-coin").remove();
+        isDemo = false;
+        state = States.splash;
+        splash = new Splash();
+    } else {
+        document.getElementById("insert-coin").addEventListener("click", start);
+        startGame([]);
+    }
 
     canvas = document.getElementById("grafic");
     ctx = canvas.getContext("2d", { alpha: false });
 
     updateArgs();
     addEventListener("hashchange", updateArgs());
-
-    startGame([]);
 
     MainLoop.setBegin(begin);
     MainLoop.setUpdate(update);
@@ -761,14 +786,6 @@ async function init() {
         ctrl = new GamepadController(e.gamepad);
         controllersList.push(ctrl);
     });
-
-    startMenu = new StartMenu();
-
-    document.getElementById("insert-coin").addEventListener("click", start);
-
-    if (args.includes("-s")) {
-        start();
-    }
 }
 
 function checkEnd(array, search) {
@@ -786,8 +803,6 @@ function checkEnd(array, search) {
 }
 
 function start() {
-    soundManager.init();
-
     fade.fadeOut(() => {
         startMenu = new StartMenu();
 
@@ -795,17 +810,6 @@ function start() {
         sprites = [];
         map = newMap();
 
-        if (document.body.requestFullscreen) {
-            document.body.requestFullscreen();
-        } else if (document.body.webkitRequestFullscreen) {
-            document.body.webkitRequestFullscreen();
-        } else if (document.body.msRequestFullscreen) {
-            document.body.msRequestFullscreen();
-        }
-
-        addEventListener("beforeunload", (e) => {
-            e.preventDefault();
-        });
         state = States.start;
 
         music.start(3);
@@ -841,6 +845,8 @@ function update(deltaTime) {
         victory.update();
     } else if (state == States.draw) {
         drawMenu.update();
+    } else if (state == States.splash) {
+        splash.update();
     }
 }
 
@@ -852,6 +858,21 @@ function drawString(ctx, x, y, str, alphaImageName = "original") {
         const index = alpha.indexOf(str[i]);
         if (index != -1) {
             assets.alpha[alphaImageName][index].draw(ctx, x + i * 8, y);
+        }
+    }
+}
+
+class Splash {
+    frame = 0;
+
+    constructor() {
+        fade.fadeIn();
+    }
+
+    update() {
+        this.frame++;
+        if (this.frame == 90) {
+            start();
         }
     }
 }
@@ -912,6 +933,7 @@ class StartMenu {
 
 let victory;
 let drawMenu;
+let splash;
 
 class Results {
     frame = 0;
@@ -1162,6 +1184,8 @@ function drawAll(interpolationPercentage) {
         drawString(ctx, 320 - startMenu.subtitlesMove, 192, helpText, "white");
     } else if (state == States.draw) {
         assets.draw[Math.floor(drawMenu.frame / 20) % 2].draw(ctx, 0, 0);
+    } else if (state == States.splash) {
+        assets.splash.draw(ctx, 0, 0);
     } else if (state == States.results) {
         assets.med.draw(ctx, 0, 0);
 

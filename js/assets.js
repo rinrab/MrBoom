@@ -345,12 +345,7 @@ async function loadAssets(scale = 2) {
             },
             {
                 background: [loadImage(document.getElementById("FORET"), 0, 0, 320, 200)],
-                overlays: [
-                    {
-                        x: 0, y: 0, idx: 0, animateDelay: 1,
-                        images: [loadImage(document.getElementById("FEUILLE_OVERLAY"), 0, 0, 320, 200)]
-                    }
-                ],
+                overlays: [],
                 walls: loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
                 permanentWalls: await loadPermanentWall(fire,
                     loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
@@ -376,8 +371,7 @@ async function loadAssets(scale = 2) {
                 permanentWalls: await loadPermanentWall(fire,
                     loadImage(imgPause, 256 + 16 * 2, 16 * 1, 16, 16)),
             },
-        ],
-        splash: loadImage(document.getElementById("MRFOND"), 0, 0, 320, 200)
+        ]
 
         // igloo penguin
         //    for(let i = 0; i < 5; i++) {

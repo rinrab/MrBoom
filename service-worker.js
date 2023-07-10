@@ -2,12 +2,10 @@
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
-const cacheName = "mrboom.v1";
+const CACHE = "mrboom.v1";
 
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
-const cache = [
-    "index.html"
-];
+const offlineFallbackPage = "ToDo-replace-this-name.html";
 
 self.addEventListener("message", (event) => {
     if (event.data && event.data.type === "SKIP_WAITING") {
@@ -17,8 +15,8 @@ self.addEventListener("message", (event) => {
 
 self.addEventListener('install', async (event) => {
     event.waitUntil(
-        caches.open(cacheName)
-            .then((cache) => cache.addAll(offlineFallbackPage))
+        caches.open(CACHE)
+            .then((cache) => cache.add(offlineFallbackPage))
     );
 });
 
@@ -40,7 +38,7 @@ self.addEventListener('fetch', (event) => {
                 return networkResp;
             } catch (error) {
 
-                const cache = await caches.open(cacheName);
+                const cache = await caches.open(CACHE);
                 const cachedResp = await cache.match(offlineFallbackPage);
                 return cachedResp;
             }

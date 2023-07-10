@@ -87,7 +87,7 @@ self.addEventListener('fetch', (e) => {
     if (e.request.url.startsWith('http:') || e.request.url.startsWith('https:')) {
         e.respondWith((async () => {
             const cache = await caches.open(cacheName);
-            const r = await caches.match(e.request);
+            const r = await cache.match(e.request);
             if (r) {
                 console.log(`[Service Worker] Serving ${e.request.url} from cache.`);
                 return r;

@@ -1,5 +1,5 @@
 // Files to cache
-const cacheName = 'MrBoom-v1';
+const cacheName = 'MrBoom-v2';
 const contentToCache = [
     "index.html",
     "Gfx2x/NEIGE1.PNG",
@@ -37,7 +37,6 @@ const contentToCache = [
     "Gfx2x/VIC4.PNG",
     "Gfx2x/CRAYON2.PNG",
     "Gfx2x/SOUCOUPE.PNG",
-    "Gfx2x/MRFOND.PNG",
     "js/mainloop.min.js",
     "js/assets.js",
     "js/sound.js",
@@ -66,8 +65,8 @@ const contentToCache = [
     "music/unreeeal.mp3",
     "favicon.ico",
     "favicon.png",
-    "mrboom.png",
-    "manifest.json"
+    "./",
+    "manifest.json",
 ];
 // Installing Service Worker
 self.addEventListener('install', (e) => {
@@ -89,7 +88,7 @@ self.addEventListener('fetch', (e) => {
     if (e.request.url.startsWith('http:') || e.request.url.startsWith('https:')) {
         e.respondWith((async () => {
             const cache = await caches.open(cacheName);
-            const r = await cache.match(e.request);
+            const r = await caches.match(e.request);
             if (r) {
                 console.log(`[Service Worker] Serving ${e.request.url} from cache.`);
                 return r;

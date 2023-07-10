@@ -37,6 +37,7 @@ const contentToCache = [
     "Gfx2x/VIC4.PNG",
     "Gfx2x/CRAYON2.PNG",
     "Gfx2x/SOUCOUPE.PNG",
+    "Gfx2x/MRFOND.PNG",
     "js/mainloop.min.js",
     "js/assets.js",
     "js/sound.js",
@@ -65,6 +66,7 @@ const contentToCache = [
     "music/unreeeal.mp3",
     "favicon.ico",
     "favicon.png",
+    "mrboom.png",
     "manifest.json"
 ];
 // Installing Service Worker

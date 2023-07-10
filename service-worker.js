@@ -6,7 +6,8 @@ const cacheName = "mrboom.v1";
 
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const cache = [
-    "index.html"
+    "./index.html",
+    "./js/main.js"
 ];
 
 self.addEventListener("message", (event) => {

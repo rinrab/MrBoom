@@ -9,12 +9,11 @@
 
   <script>
     // Registering Service Worker
-    if ('serviceWorker' in navigator && (document.location.protocol == "http:" ||
-        document.location.protocol == "https:" )) {
+    if (typeof navigator.serviceWorker !== 'undefined') {
       navigator.serviceWorker.register('service-worker.js');
     }
   </script>
-  
+
   <script src='js/mainloop.min.js'></script>
   <script src='js/assets.js'></script>
   <script src='js/sound.js'></script>

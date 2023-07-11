@@ -5,6 +5,14 @@
     <UapAppxPackageBuildMode>StoreOnly</UapAppxPackageBuildMode>
     <AppxBuildConfigurationSelection>x86|x64</AppxBuildConfigurationSelection>
     <PackageOptionalProjectsInIdeBuilds>True</PackageOptionalProjectsInIdeBuilds>
+    <Source>C:\Users\tima\Documents\MrBoom\mrboom.png</Source>
+    <SmallTileSource>C:\Users\tima\Documents\MrBoom\mrboom.png</SmallTileSource>
+    <MediumTileSource>C:\Users\tima\Documents\MrBoom\mrboom.png</MediumTileSource>
+    <WideTileSource>C:\Users\tima\Documents\MrBoom\mrboom.png</WideTileSource>
+    <LargeTileSource>C:\Users\tima\Documents\MrBoom\mrboom.png</LargeTileSource>
+    <AppIconSource>C:\Users\tima\Documents\MrBoom\mrboom.png</AppIconSource>
+    <SplashScreenSource>C:\Users\tima\Documents\MrBoom\mrboom-transparent.png</SplashScreenSource>
+    <PackageLogoSource>C:\Users\tima\Documents\MrBoom\mrboom.png</PackageLogoSource>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <DeviceId>30f105c9-681e-420b-a277-7c086ead8a4e</DeviceId>

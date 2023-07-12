@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,21 @@ namespace UWP
         public MainPage()
         {
             this.InitializeComponent();
+
+            Init();
+        }
+
+        private async void Init()
+        {
+            await WebView2.EnsureCoreWebView2Async();
+
+            WebView2.CoreWebView2.IsMuted = false;
+            WebView2.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+
+            WebView2.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                "mrboom.app", "Assets/www",
+                Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
+            WebView2.Source = new Uri("https://mrboom.app/index.html");
         }
     }
 }

@@ -8,7 +8,6 @@
       mc:Ignorable="d"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Grid>
-    <controls:WebView2 x:Name="WebView2"
-                       Source="https://mrboom.app/index.html" />
+    <controls:WebView2 x:Name="WebView2" />
   </Grid>
 </Page>

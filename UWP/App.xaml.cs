@@ -26,11 +26,13 @@ namespace UWP
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
-        public App()
-        {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
-        }
+         public App()
+         {
+             Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--autoplay-policy=no-user-gesture-required");
+
+             this.InitializeComponent();
+             this.Suspending += OnSuspending;
+         }
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

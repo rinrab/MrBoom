@@ -42,5 +42,13 @@ namespace UWP
                 Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
             WebView2.Source = new Uri("https://mrboom.app/index.html");
         }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            float scale = (float)Math.Min(e.NewSize.Height / 400, e.NewSize.Width / 640);
+
+            transform.ScaleX = scale;
+            transform.ScaleY = scale;
+        }
     }
 }

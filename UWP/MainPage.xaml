@@ -6,8 +6,20 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:controls="using:Microsoft.UI.Xaml.Controls"
       mc:Ignorable="d"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-  <Grid>
-    <controls:WebView2 x:Name="WebView2" />
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      MinWidth="640"
+      MinHeight="400">
+  <Grid SizeChanged="Page_SizeChanged">
+    <controls:WebView2 Grid.Row="0"
+                       Grid.Column="0"
+                       x:Name="WebView2"
+                       Width="640"
+                       Height="400">
+      <controls:WebView2.RenderTransform>
+        <CompositeTransform x:Name="transform"
+                            CenterX="320"
+                            CenterY="200"></CompositeTransform>
+      </controls:WebView2.RenderTransform>
+    </controls:WebView2>
   </Grid>
 </Page>

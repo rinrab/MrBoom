@@ -26,8 +26,6 @@ namespace MrBoom
         protected override void Initialize()
         {
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 640;
-            graphics.PreferredBackBufferHeight = 400;
             graphics.ApplyChanges();
 
             assets = Assets.Load(Content);
@@ -56,7 +54,11 @@ namespace MrBoom
         {
             GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin(); // Begin drawing
+            // Begin drawing
+            spriteBatch.Begin(
+                SpriteSortMode.Immediate,
+                samplerState: SamplerState.PointWrap, 
+                transformMatrix: Matrix.CreateScale(3));
 
             var bgs = assets.levels[0].Backgrounds;
             bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);

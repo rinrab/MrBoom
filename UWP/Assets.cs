@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Xml.Linq;
+using Windows.UI.Xaml.Controls;
 
 namespace MrBoom
 {
@@ -38,6 +40,7 @@ namespace MrBoom
         public AssetImage[] Vic { get; private set; }
         public AssetImage Sky { get; private set; }
         public AssetImage Splash { get; private set; }
+        public AssetImage[][] PowerUps { get; private set; }
 
         public static int scale = 2;
 
@@ -45,6 +48,9 @@ namespace MrBoom
         {
             private Texture2D texture;
             private Rectangle rect;
+
+            public int Width { get { return rect.Width; } }
+            public int Height { get { return rect.Height; } }
 
             public AssetImage(Texture2D texture, int x, int y, int width, int height)
             {
@@ -137,6 +143,51 @@ namespace MrBoom
                 return result.ToArray();
             }
 
+            AssetImage[] loadBonus(AssetImage img)
+            {
+                // TODO:
+                // const frameColors = [
+                //     "#FC00FC",
+                //     "#FC6CFC",
+                //     "#FC90FC",
+                //     "#FCB4FC",
+                //     "#FCD8FC",
+                //     "#FCFCFC",
+                //     "#FCD8FC",
+                //     "#FCB4FC",
+                //     "#FC90FC",
+                //     "#FC6CFC"
+                // ];
+
+                var width = img.Width;
+                var height = img.Height;
+
+                // TODO:
+                //canvas.width = width * frameColors.length * scale;
+                //canvas.height = height * scale;
+
+                //const ctx = canvas.getContext("2d");
+
+                //for (let i = 0; i < frameColors.length; i++)
+                //{
+                //    const x = width * i;
+                //    const y = 0;
+
+                //    ctx.fillStyle = frameColors[i];
+                //    ctx.fillRect(x * scale, y * scale, width * scale, height * scale);
+
+                //    ctx.fillStyle = "#6C90FC";
+                //    ctx.fillRect((x + 1) * scale, 1 * scale, (width - 2) * scale, (height - 2) * scale);
+
+                //    // image.draw() handles scaling internally..
+                //    img.draw(ctx, x, y);
+                //}
+
+                //const bitmap = await createImageBitmap(canvas);
+
+                return new AssetImage[] { img};
+            }
+
             var imgNeige1 = content.Load<Texture2D>("NEIGE1");
             var imgNeige2 = content.Load<Texture2D>("NEIGE2");
             var imgNeige3 = content.Load<Texture2D>("NEIGE3");
@@ -163,6 +214,19 @@ namespace MrBoom
             return new Assets()
             {
                 Bomb = loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
+                PowerUps = new AssetImage[][] {
+                    loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 8 * 16, 3 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 1 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 2 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 3 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 4 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 5 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 6 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 7 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 8 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 9 * 16, 16, 16)),
+                },
                 levels = new Level[]
                 {
                     new Level()

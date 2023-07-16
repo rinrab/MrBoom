@@ -1,33 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <ItemGroup>
-        <Content Include="..\www\Gfx2x\**\*.*">
-            <Link>Assets\www\Gfx2x\%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\www\Gfx\**\*.*">
-            <Link>Assets\www\Gfx\%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\www\js\**\*.*">
-            <Link>Assets\www\js\%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\www\music\**\*.*">
-            <Link>Assets\www\music\%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\www\sound\**\*.*">
-            <Link>Assets\www\sound\%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\www\index.html">
-            <Link>Assets\www\%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\www\style.css">
-            <Link>Assets\www\%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
 </Project>

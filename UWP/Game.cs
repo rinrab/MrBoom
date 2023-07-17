@@ -16,12 +16,19 @@ namespace MrBoom
 
         private Terrain terrain;
 
+        private List<IController> Controllers;
+
         public Game()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             IsFixedTimeStep = true;
+
+            Controllers = new List<IController>()
+            {
+                new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.LeftAlt),
+            };
         }
 
         protected override void Initialize()
@@ -32,9 +39,10 @@ namespace MrBoom
             assets = Assets.Load(Content);
 
             terrain = new Terrain(0, assets);
+
             Sprite sprite = new Sprite(terrain, assets.Players[0], assets.Bomb)
             {
-                Controller = new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.LeftAlt)
+                Controller = Controllers[0]
             };
             terrain.LocateSprite(sprite);
 

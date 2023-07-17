@@ -15,6 +15,7 @@ namespace MrBoom
         public class Level
         {
             public AssetImage[] Backgrounds;
+            public AssetImage[] Walls;
         }
 
         public Level[] levels { get; private set; }
@@ -236,7 +237,8 @@ namespace MrBoom
                             loadImage(content.Load<Texture2D>("GAME1"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("GAME2"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("GAME3"), 0, 0, 320, 200),
-                        }
+                        },
+                        Walls = loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
                     }
                 },
                 BoomMid = loadImageStripe(imgSprite2, 0 * 16, 46 + 0 * 16, 16, 16, 4),

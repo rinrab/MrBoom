@@ -6,7 +6,7 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
-        private GraphicsDeviceManager graphics;
+        private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
         private Assets assets;

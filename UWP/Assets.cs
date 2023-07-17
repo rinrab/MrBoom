@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,7 @@ namespace MrBoom
         public AssetImage Sky { get; private set; }
         public AssetImage Splash { get; private set; }
         public AssetImage[][] PowerUps { get; private set; }
+        public AssetImage[][] Alpha;
 
         public static int scale = 2;
 
@@ -255,6 +257,14 @@ namespace MrBoom
                 //MonsterGhosts = 
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),
+                Alpha = new AssetImage[][] {
+                    loadImageStripe(imgAlpha, 0, 0, 8, 6, 44),
+                    loadImageStripe(imgAlpha, 0, 8, 8, 6, 44),
+                    loadImageStripe(imgAlpha, 0, 16, 8, 6, 44),
+                    loadImageStripe(imgAlpha, 0, 24, 8, 6, 44),
+                    loadImageStripe(imgAlpha, 0, 32, 8, 6, 44),
+                    loadImageStripe(imgAlpha, 0, 40, 8, 6, 44),
+                },
                 BigDigits = loadImageStripe(imgFeuille, 80, 83, 15, 16, 11, 1),
                 Draw = new AssetImage[] {
                     loadImage(content.Load<Texture2D>("DRAW1"), 0, 0, 320, 200),

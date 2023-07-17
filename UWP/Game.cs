@@ -8,9 +8,10 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
-        class Player
+        public class Player
         {
             public IController Controller;
+            public string Name;
 
             public Player(IController controller)
             {
@@ -18,19 +19,17 @@ namespace MrBoom
             }
         }
 
-        private List<Player> Players;
+        public List<Player> Players;
+        public Assets assets;
+        public List<IController> Controllers;
+        public Terrain terrain;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
-
-        private Assets assets;
-
+        private State state;
+        private IState menu;
         private int bgTick = 0;
-
-        private Terrain terrain;
-
-        private List<IController> Controllers;
 
         public Game()
         {
@@ -45,11 +44,7 @@ namespace MrBoom
                 new KeyboardController(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.RightControl, Keys.End),
             };
 
-            Players = new List<Player>()
-            {
-                new Player(Controllers[0]),
-                new Player(Controllers[1])
-            };
+            Players = new List<Player>();
         }
 
         protected override void Initialize()
@@ -59,6 +54,17 @@ namespace MrBoom
 
             assets = Assets.Load(Content);
 
+            state = State.StartMenu;
+            menu = new StartMenu(this);
+
+            renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+
+            base.Initialize();
+        }
+
+        public void StartGame()
+        {
             terrain = new Terrain(0, assets);
 
             for (int i = 0; i < Players.Count; i++)
@@ -70,10 +76,7 @@ namespace MrBoom
                 terrain.LocateSprite(sprite);
             }
 
-            renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
-                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
-
-            base.Initialize();
+            state = State.Game;
         }
 
         protected override void LoadContent()
@@ -83,9 +86,16 @@ namespace MrBoom
 
         protected override void Update(GameTime gameTime)
         {
-            bgTick++;
+            if (state == State.Game)
+            {
+                bgTick++;
 
-            terrain.Update();
+                terrain.Update();
+            }
+            else
+            {
+                menu.Update();
+            }
 
             base.Update(gameTime);
         }
@@ -97,30 +107,37 @@ namespace MrBoom
 
             spriteBatch.Begin();
 
-            var bgs = assets.levels[0].Backgrounds;
-            bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
-
-            for (int y = 0; y < terrain.Height; y++)
+            if (state == State.Game)
             {
-                for (int x = 0; x < terrain.Width; x++)
-                {
-                    Cell cell = terrain.GetCell(x, y);
-                    if (cell.Images != null)
-                    {
-                        int index = (cell.Index == -1) ? 0 : cell.Index;
-                        var image = cell.Images[index];
+                var bgs = assets.levels[0].Backgrounds;
+                bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
 
-                        image.Draw(spriteBatch, x * 16 + 8 + 8 - image.Width / 2, y * 16 + 16 - image.Height);
+                for (int y = 0; y < terrain.Height; y++)
+                {
+                    for (int x = 0; x < terrain.Width; x++)
+                    {
+                        Cell cell = terrain.GetCell(x, y);
+                        if (cell.Images != null)
+                        {
+                            int index = (cell.Index == -1) ? 0 : cell.Index;
+                            var image = cell.Images[index];
+
+                            image.Draw(spriteBatch, x * 16 + 8 + 8 - image.Width / 2, y * 16 + 16 - image.Height);
+                        }
                     }
                 }
+
+                List<Sprite> spritesToDraw = new List<Sprite>(terrain.Players);
+                spritesToDraw.Sort((a, b) => a.y - b.y);
+
+                foreach (Sprite sprite in spritesToDraw)
+                {
+                    sprite.Draw(spriteBatch);
+                }
             }
-
-            List<Sprite> spritesToDraw = new List<Sprite>(terrain.Players);
-            spritesToDraw.Sort((a, b) => a.y - b.y);
-
-            foreach (Sprite sprite in spritesToDraw)
+            else
             {
-                sprite.Draw(spriteBatch);
+                menu.Draw(spriteBatch);
             }
 
             spriteBatch.End();
@@ -143,6 +160,20 @@ namespace MrBoom
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public static void DrawString(SpriteBatch ctx, int x, int y, string text, Assets.AssetImage[] images)
+        {
+            string alpha = "abcdefghijklmnopqrstuvwxyz0123456789!.-:/()?";
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                int index = alpha.IndexOf(text[i]);
+                if (index != -1)
+                {
+                    images[index].Draw(ctx, x + i * 8, y);
+                }
+            }
         }
     }
 }

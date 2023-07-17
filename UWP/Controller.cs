@@ -19,12 +19,14 @@ namespace MrBoom
     public interface IController
     {
         Dictionary<PlayerKeys, bool> Keys { get; }
+        bool IsJoined { get; set; }
         void Update();
     }
 
     public class KeyboardController : IController
     {
         public Dictionary<PlayerKeys, bool> Keys { get; }
+        public bool IsJoined { get; set; } = false;
 
         readonly Keys KeyUp;
         readonly Keys KeyDown;

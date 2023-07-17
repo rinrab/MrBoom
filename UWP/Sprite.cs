@@ -7,12 +7,15 @@ namespace MrBoom
     {
         public IController Controller;
         public int BombsPlaced;
+        public bool rcDitonate = false;
+
+        public bool rcAllowed { get; private set; }
+        public bool isDie { get; private set; } = false;
 
         private Assets.AssetImage[][] animations;
         private int maxBoom;
         private int maxBombsCount;
         private Assets.AssetImage[] bombAssets;
-        private bool isDie = false;
 
         public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] bombAssets) : base(map)
         {
@@ -29,7 +32,7 @@ namespace MrBoom
             this.maxBombsCount = 1;
             this.BombsPlaced = 0;
 
-            //this.rcAllowed = false;
+            this.rcAllowed = false;
 
             //this.blinking = undefined;
             //this.blinkingSpeed = 15;
@@ -97,6 +100,8 @@ namespace MrBoom
                 this.Direction = Directions.Down;
             }
 
+            this.rcDitonate = this.rcAllowed && this.Controller.Keys[PlayerKeys.RcDitonate];
+
             base.Update();
 
             int cellX = (this.x + 8) / 16;
@@ -114,7 +119,7 @@ namespace MrBoom
                         animateDelay = 12,
                         bombTime = 210,
                         maxBoom = this.maxBoom,
-                        rcAllowed = false,
+                        rcAllowed = this.rcAllowed,
                         owner = this
                     });
                     this.BombsPlaced++;
@@ -136,14 +141,14 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.RemoteControl)
                 {
-                    //if (!this.rcAllowed)
-                    //{
-                    //    this.rcAllowed = true;
-                    //}
-                    //else
-                    //{
-                    //    doFire = true;
-                    //}
+                    if (!this.rcAllowed)
+                    {
+                        this.rcAllowed = true;
+                    }
+                    else
+                    {
+                        doFire = true;
+                    }
                 }
                 else if (powerUpType == PowerUpType.RollerSkate)
                 {

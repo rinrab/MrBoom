@@ -169,12 +169,12 @@ namespace MrBoom
 
                     if (cell.Type == TerrainType.Bomb)
                     {
-                        //if (!cell.rcAllowed || !cell.owner.rcAllowed || cell.owner.isDie)
+                        if (!cell.rcAllowed || !cell.owner.rcAllowed || cell.owner.isDie)
                         {
                             cell.bombTime--;
                         }
 
-                        if (cell.bombTime == 0)
+                        if (cell.bombTime == 0 | (cell.owner.rcDitonate && cell.rcAllowed))
                         {
                             this.ditonateBomb(x, y);
                             continue;

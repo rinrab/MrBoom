@@ -12,7 +12,8 @@ namespace MrBoom
         Down,
         Left,
         Right,
-        Bomb
+        Bomb,
+        RcDitonate
     }
 
     public interface IController
@@ -53,7 +54,7 @@ namespace MrBoom
             this.Keys[PlayerKeys.Left] = keyboardState.IsKeyDown(KeyLeft);
             this.Keys[PlayerKeys.Right] = keyboardState.IsKeyDown(KeyRight);
             this.Keys[PlayerKeys.Bomb] = keyboardState.IsKeyDown(KeyBomb);
-            //this.playerKeys[PlayerKeys.rcDitonate] = keys[this.keyRcDitonate];
+            this.Keys[PlayerKeys.RcDitonate] = keyboardState.IsKeyDown(KeyRcDitonate);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace MrBoom
         private int maxBoom;
         private int maxBombsCount;
         private Assets.AssetImage[] bombAssets;
+        private bool isDie = false;
 
         public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] bombAssets) : base(map)
         {
@@ -60,6 +61,20 @@ namespace MrBoom
 
         public void Update()
         {
+            if (this.isDie)
+            {
+                this.animateIndex = 4;
+                if (this.frameIndex < 7 * 20 && this.frameIndex != -1)
+                {
+                    this.frameIndex += 4;
+                }
+                else
+                {
+                    this.frameIndex = -1;
+                }
+                return;
+            }
+
             this.Direction = MovingSprite.Directions.Right;
 
             Controller.Update();
@@ -199,21 +214,31 @@ namespace MrBoom
                     //map.playSound("pick");
                 }
             }
+
+            if (cell.Type == TerrainType.Fire)
+            {
+                this.isDie = true;
+                this.frameIndex = 0;
+                //map.playSound("player_die");
+            }
         }
 
         public void Draw(SpriteBatch ctx)
         {
-            Assets.AssetImage[] animation = this.animations[this.animateIndex];
-            Assets.AssetImage img = animation[frameIndex / 20 % animation.Length];
-            //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
-            //{
-            //    img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];
-            //}
+            if (frameIndex != -1)
+            {
+                Assets.AssetImage[] animation = this.animations[this.animateIndex];
+                Assets.AssetImage img = animation[frameIndex / 20 % animation.Length];
+                //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
+                //{
+                //    img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];
+                //}
 
-            int x = this.x + 8 + 8 - img.Width / 2;
-            int y = this.y + 16 - img.Height;
+                int x = this.x + 8 + 8 - img.Width / 2;
+                int y = this.y + 16 - img.Height;
 
-            img.Draw(ctx, x, y);
+                img.Draw(ctx, x, y);
+            }
         }
     }
 }

@@ -69,8 +69,9 @@ namespace MrBoom
                     this.XAlign(delta);
                 }
 
+                this.frameIndex += 1;
             }
-        void moveX(int delta) {
+            void moveX(int delta) {
             if (this.y % 16 == 0)
             {
                 var newX = (delta < 0) ? this.x / 16 : this.x / 16 + 1;

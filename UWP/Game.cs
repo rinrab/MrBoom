@@ -7,6 +7,18 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
+        class Player
+        {
+            public IController Controller;
+
+            public Player(IController controller)
+            {
+                Controller = controller;
+            }
+        }
+
+        private List<Player> Players;
+
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
@@ -28,6 +40,13 @@ namespace MrBoom
             Controllers = new List<IController>()
             {
                 new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.LeftAlt),
+                new KeyboardController(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.RightControl, Keys.RightAlt),
+            };
+
+            Players = new List<Player>()
+            {
+                new Player(Controllers[0]),
+                new Player(Controllers[1])
             };
         }
 
@@ -40,11 +59,14 @@ namespace MrBoom
 
             terrain = new Terrain(0, assets);
 
-            Sprite sprite = new Sprite(terrain, assets.Players[0], assets.Bomb)
+            for (int i = 0; i < Players.Count; i++)
             {
-                Controller = Controllers[0]
-            };
-            terrain.LocateSprite(sprite);
+                Sprite sprite = new Sprite(terrain, assets.Players[i], assets.Bomb)
+                {
+                    Controller = this.Players[i].Controller
+                };
+                terrain.LocateSprite(sprite);
+            }
 
             base.Initialize();
         }

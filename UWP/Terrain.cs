@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -14,6 +15,8 @@ namespace MrBoom
 {
     public class Terrain
     {
+        public static Random Random = new Random();
+
         public readonly int Width;
         public readonly int Height;
         public List<Sprite> Players;
@@ -23,12 +26,21 @@ namespace MrBoom
         private int time;
         private Assets assets;
         private int levelIndex;
+        private List<Spawn> spawns;
+
         private Assets.Level LevelAssets
         {
             get
             {
                 return this.assets.levels[levelIndex];
             }
+        }
+
+        private class Spawn
+        {
+            public int x;
+            public int y;
+            public bool busy;
         }
 
         public Terrain(int levelIndex, Assets assets)
@@ -47,7 +59,7 @@ namespace MrBoom
             this.Width = initial.Data[0].Length;
             this.Height = initial.Data.Length;
             //this.monsters = [];
-            //this.spawns = [];
+            this.spawns = new List<Spawn>();
             this.TimeLeft = initial.Time * 60 + 31;
             //this.fin = [];
             //for (let fin of initial.fin)
@@ -85,7 +97,12 @@ namespace MrBoom
                     }
                     else if (src == '*')
                     {
-                        //this.spawns.push({ x: x, y: y });
+                        this.spawns.Add(new Spawn()
+                        {
+                            x = x,
+                            y = y,
+                            busy = false
+                        });
                         this.data[y * this.Width + x] = new Cell(TerrainType.Free);
                     }
                     else if (src == '%')
@@ -111,10 +128,11 @@ namespace MrBoom
             }
         }
 
-        public void LocateSprite(Sprite sprite)
+        public void LocateSprite(Sprite sprite, int index = -1)
         {
-            sprite.x = 1 * 16;
-            sprite.y = 1 * 16;
+            var spawn = this.spawns[this.generateSpawn(index)];
+            sprite.x = spawn.x * 16;
+            sprite.y = spawn.y * 16;
 
             this.Players.Add(sprite);
         }
@@ -320,6 +338,24 @@ namespace MrBoom
             burn(-1, 0, assets.BoomHor, assets.BoomLeftEnd);
             burn(0, 1, assets.BoomVert, assets.BoomBottomEnd);
             burn(0, -1, assets.BoomVert, assets.BoomTopEnd);
+        }
+
+        int generateSpawn(int spawnIndex = -1)
+        {
+            if (spawnIndex == -1)
+            {
+                var indexList = new List<int>();
+                for (int i = 0; i < this.spawns.Count; i++)
+                {
+                    if (!this.spawns[i].busy)
+                    {
+                        indexList.Add(i);
+                    }
+                }
+                spawnIndex = indexList[Random.Next(indexList.Count)];
+            }
+            this.spawns[spawnIndex].busy = true;
+            return spawnIndex;
         }
     }
 

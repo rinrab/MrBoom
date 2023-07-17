@@ -132,7 +132,7 @@ namespace MrBoom
                         {
                             var frameX = index + x * 3 + spriteIndex * framesCount;
 
-                            newImages.Add(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
+                            newImages.Add(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
                         }
 
                         player.Add(newImages.ToArray());

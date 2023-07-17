@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace MrBoom
@@ -21,6 +22,7 @@ namespace MrBoom
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private RenderTarget2D renderTarget;
 
         private Assets assets;
 
@@ -68,6 +70,9 @@ namespace MrBoom
                 terrain.LocateSprite(sprite);
             }
 
+            renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+
             base.Initialize();
         }
 
@@ -87,12 +92,10 @@ namespace MrBoom
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.SetRenderTarget(renderTarget);
             GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin(
-                SpriteSortMode.Immediate,
-                samplerState: SamplerState.PointWrap,
-                transformMatrix: Matrix.CreateScale(3));
+            spriteBatch.Begin();
 
             var bgs = assets.levels[0].Backgrounds;
             bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
@@ -119,6 +122,21 @@ namespace MrBoom
             {
                 sprite.Draw(spriteBatch);
             }
+
+            spriteBatch.End();
+            
+            GraphicsDevice.SetRenderTarget(null);
+
+            float height = GraphicsDevice.PresentationParameters.Bounds.Height;
+            float width = GraphicsDevice.PresentationParameters.Bounds.Width;
+            float scale = Math.Min(height / 400, width / 640);
+
+            spriteBatch.Begin(
+                SpriteSortMode.Immediate,
+                samplerState: SamplerState.PointWrap,
+                transformMatrix: Matrix.CreateScale(scale));
+
+            spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.White);
 
             spriteBatch.End();
 

@@ -33,6 +33,9 @@ namespace MrBoom
             assets = Assets.Load(Content);
 
             terrain = new Terrain(Map.Maps[0], assets.levels[0]);
+            Sprite sprite = new Sprite(terrain, assets.Players[0]);
+            sprite.Controller = new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.LeftAlt);
+            terrain.LocateSprite(sprite);
 
             base.Initialize();
         }
@@ -50,6 +53,8 @@ namespace MrBoom
                 Exit();
 
             bgTick++;
+
+            terrain.Update();
 
             base.Update(gameTime);
         }
@@ -83,8 +88,15 @@ namespace MrBoom
 
             assets.Bomb[bgTick / 20 % assets.Bomb.Length].Draw(spriteBatch, 100, 100);
 
-            assets.Players[0][0][0].Draw(spriteBatch, 0, 0);
-            assets.PowerUps[0][0].Draw(spriteBatch, 32, 32);
+            var spritesToDraw = terrain.Players;
+            //spritesToDraw.Sort((a, b) => a.y - b.y);
+
+            foreach (Sprite sprite in spritesToDraw)
+            {
+                sprite.Draw(spriteBatch);
+            }
+
+            //assets.PowerUps[0][0].Draw(spriteBatch, 32, 32);
 
             spriteBatch.End(); // Stop drawing
 

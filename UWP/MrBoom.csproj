@@ -94,11 +94,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Assets.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Map.cs" />
+    <Compile Include="MovingSprite.cs" />
+    <Compile Include="Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Terrain.cs" />
   </ItemGroup>

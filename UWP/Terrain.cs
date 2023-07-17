@@ -12,6 +12,7 @@ namespace MrBoom
     {
         public readonly int Width;
         public readonly int Height;
+        public List<Sprite> Players;
 
         private readonly Cell[] data;
         private int TimeLeft;
@@ -44,6 +45,7 @@ namespace MrBoom
             //    }
             //}
 
+            this.Players = new List<Sprite>();
 
             //this.initialBonus = initial.initialBonus;
 
@@ -94,9 +96,20 @@ namespace MrBoom
             }
         }
 
+        public void LocateSprite(Sprite sprite)
+        {
+            sprite.x = 1 * 16;
+            sprite.y = 1 * 16;
+
+            this.Players.Add(sprite);
+        }
+
         public void Update()
         {
-
+            foreach (Sprite player in this.Players)
+            {
+                player.Update();
+            }
         }
 
         public Cell GetCell(int x, int y)

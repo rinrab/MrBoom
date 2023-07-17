@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace MrBoom
 {
@@ -31,8 +32,10 @@ namespace MrBoom
             assets = Assets.Load(Content);
 
             terrain = new Terrain(0, assets);
-            Sprite sprite = new Sprite(terrain, assets.Players[0], assets.Bomb);
-            sprite.Controller = new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.LeftAlt);
+            Sprite sprite = new Sprite(terrain, assets.Players[0], assets.Bomb)
+            {
+                Controller = new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.LeftAlt)
+            };
             terrain.LocateSprite(sprite);
 
             base.Initialize();
@@ -56,7 +59,6 @@ namespace MrBoom
         {
             GraphicsDevice.Clear(Color.Black);
 
-            // Begin drawing
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,
                 samplerState: SamplerState.PointWrap,
@@ -69,7 +71,7 @@ namespace MrBoom
             {
                 for (int x = 0; x < terrain.Width; x++)
                 {
-                    var cell = terrain.GetCell(x, y);
+                    Cell cell = terrain.GetCell(x, y);
                     if (cell.Images != null)
                     {
                         int index = (cell.Index == -1) ? 0 : cell.Index;
@@ -80,9 +82,7 @@ namespace MrBoom
                 }
             }
 
-            assets.Bomb[bgTick / 20 % assets.Bomb.Length].Draw(spriteBatch, 100, 100);
-
-            var spritesToDraw = terrain.Players;
+            List<Sprite> spritesToDraw = terrain.Players;
             //spritesToDraw.Sort((a, b) => a.y - b.y);
 
             foreach (Sprite sprite in spritesToDraw)
@@ -90,9 +90,7 @@ namespace MrBoom
                 sprite.Draw(spriteBatch);
             }
 
-            //assets.PowerUps[0][0].Draw(spriteBatch, 32, 32);
-
-            spriteBatch.End(); // Stop drawing
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -61,7 +61,7 @@ namespace MrBoom
             // Begin drawing
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,
-                samplerState: SamplerState.PointWrap, 
+                samplerState: SamplerState.PointWrap,
                 transformMatrix: Matrix.CreateScale(3));
 
             var bgs = assets.levels[0].Backgrounds;

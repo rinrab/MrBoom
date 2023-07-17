@@ -26,7 +26,7 @@ namespace MrBoom
 
         public int AnimateIndex { get; private set; }
 
-        public void Update()
+        public virtual void Update()
         {
             void moveY(int delta) {
                 if (this.x % 16 == 0)

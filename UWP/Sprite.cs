@@ -59,7 +59,7 @@ namespace MrBoom
             //}
         }
 
-        public void Update()
+        public override void Update()
         {
             if (this.isDie)
             {

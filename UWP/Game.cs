@@ -8,11 +8,9 @@ namespace MrBoom
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private Texture2D startGameSplash;
 
         private Assets assets;
 
-        private Texture2D[] levelTextures;
         private int bgTick = 0;
 
         private Terrain terrain;
@@ -43,8 +41,6 @@ namespace MrBoom
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            startGameSplash = Content.Load<Texture2D>("MICRO");
         }
 
         protected override void Update(GameTime gameTime)

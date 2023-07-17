@@ -82,8 +82,8 @@ namespace MrBoom
                 }
             }
 
-            List<Sprite> spritesToDraw = terrain.Players;
-            //spritesToDraw.Sort((a, b) => a.y - b.y);
+            List<Sprite> spritesToDraw = new List<Sprite>(terrain.Players);
+            spritesToDraw.Sort((a, b) => a.y - b.y);
 
             foreach (Sprite sprite in spritesToDraw)
             {

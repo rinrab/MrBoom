@@ -130,11 +130,13 @@ namespace MrBoom
             float height = GraphicsDevice.PresentationParameters.Bounds.Height;
             float width = GraphicsDevice.PresentationParameters.Bounds.Width;
             float scale = Math.Min(height / 400, width / 640);
+            Matrix matrix = Matrix.CreateScale(scale);
+            matrix.Translation = new Vector3((width - 640 * scale) / 2, (height - 400 * scale) / 2, 0);
 
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,
                 samplerState: SamplerState.PointWrap,
-                transformMatrix: Matrix.CreateScale(scale));
+                transformMatrix: matrix);
 
             spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.White);
 

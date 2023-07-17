@@ -30,8 +30,8 @@ namespace MrBoom
 
             assets = Assets.Load(Content);
 
-            terrain = new Terrain(Map.Maps[0], assets.levels[0]);
-            Sprite sprite = new Sprite(terrain, assets.Players[0]);
+            terrain = new Terrain(0, assets);
+            Sprite sprite = new Sprite(terrain, assets.Players[0], assets.Bomb);
             sprite.Controller = new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.LeftAlt);
             terrain.LocateSprite(sprite);
 
@@ -72,7 +72,8 @@ namespace MrBoom
                     var cell = terrain.GetCell(x, y);
                     if (cell.Images != null)
                     {
-                        var image = cell.Images[cell.Index];
+                        int index = (cell.Index == -1) ? 0 : cell.Index;
+                        var image = cell.Images[index];
 
                         image.Draw(spriteBatch, x * 16 + 16 + 8 - image.Width / 2, y * 16 + 32 - image.Height);
                     }

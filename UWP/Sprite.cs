@@ -5,24 +5,27 @@ namespace MrBoom
     public class Sprite : MovingSprite
     {
         public IController Controller;
+        public int BombsPlaced;
 
         private Assets.AssetImage[][] animations;
+        private int maxBoom;
+        private int maxBombsCount;
+        private Assets.AssetImage[] bombAssets;
 
-        public Sprite(Terrain map, Assets.AssetImage[][] animations) : base(map)
+        public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] bombAssets) : base(map)
         {
             //this.isPlayer = true;
             this.animations = animations;
+            this.bombAssets = bombAssets;
 
             this.animateIndex = 0;
             this.frameIndex = 0;
 
-            //this.playerKeys = { };
-
             this.speed = 1;
 
-            //this.maxBoom = 1;
-            //this.maxBombsCount = 1;
-            //this.bombsPlaced = 0;
+            this.maxBoom = 1;
+            this.maxBombsCount = 1;
+            this.BombsPlaced = 0;
 
             //this.rcAllowed = false;
 
@@ -79,6 +82,28 @@ namespace MrBoom
             }
 
             base.Update();
+
+            int cellX = (this.x + 8) / 16;
+            int cellY = (this.y + 8) / 16;
+            var cell = terrain.GetCell(cellX, cellY);
+
+            if (this.Controller.Keys[PlayerKeys.Bomb])
+            {
+                if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
+                {
+                    terrain.SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
+                    {
+                        Images = bombAssets,
+                        Index = 0,
+                        animateDelay = 12,
+                        bombTime = 210,
+                        maxBoom = 3,
+                        rcAllowed = false,
+                        owner = this
+                    });
+                    this.BombsPlaced++;
+                }
+            }
         }
 
         public void Draw(SpriteBatch ctx)

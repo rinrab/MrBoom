@@ -20,13 +20,14 @@ namespace MrBoom
         public readonly int Width;
         public readonly int Height;
         public List<Sprite> Players;
+        public Assets assets;
 
         private readonly Cell[] data;
         private int TimeLeft;
         private int time;
-        private Assets assets;
         private int levelIndex;
         private List<Spawn> spawns;
+        private List<PowerUpType> powerUpList;
 
         private Assets.Level LevelAssets
         {
@@ -48,14 +49,14 @@ namespace MrBoom
             var initial = Map.Maps[levelIndex];
             this.levelIndex = levelIndex;
             this.assets = assets;
-            //this.powerUpList = [];
-            //for (let bonus of initial.powerUps)
-            //{
-            //    for (let i = 0; i < bonus.count; i++)
-            //    {
-            //        this.powerUpList.push(bonus.type);
-            //    }
-            //}
+            this.powerUpList = new List<PowerUpType>();
+            foreach (var bonus in initial.PowerUps)
+            {
+                for (int i = 0; i < bonus.Count; i++)
+                {
+                    this.powerUpList.Add(bonus.Type);
+                }
+            }
             this.Width = initial.Data[0].Length;
             this.Height = initial.Data.Length;
             //this.monsters = [];
@@ -281,8 +282,7 @@ namespace MrBoom
 
                     if (cell.Type == TerrainType.TemporaryWall)
                     {
-                        Cell next = new Cell(TerrainType.Free);
-                        //this.generateGiven();
+                        Cell next = this.GenerateGiven();
 
                         this.SetCell(x, y, new Cell(TerrainType.PermanentWall)
                         {
@@ -340,6 +340,27 @@ namespace MrBoom
             burn(0, -1, assets.BoomVert, assets.BoomTopEnd);
         }
 
+        Cell GenerateGiven()
+        {
+            int rnd = Random.Next(int.MaxValue);
+            if (rnd < int.MaxValue / 2)
+            {
+                var powerUpIndex = Random.Next(this.powerUpList.Count);
+                var powerUpType = this.powerUpList[powerUpIndex];
+                return new Cell(TerrainType.PowerUp)
+                {
+                    Images = assets.PowerUps[(int)powerUpType],
+                    Index = 0,
+                    animateDelay = 8,
+                    PowerUpType = powerUpType
+                };
+            }
+            else
+            {
+                return new Cell(TerrainType.Free);
+            }
+        }
+
         int generateSpawn(int spawnIndex = -1)
         {
             if (spawnIndex == -1)
@@ -383,11 +404,27 @@ namespace MrBoom
         public bool rcAllowed;
         public Sprite owner;
         public Cell Next;
+        public PowerUpType PowerUpType;
 
         public Cell(TerrainType type)
         {
             Type = type;
             Index = -1;
         }
+    }
+
+    public enum PowerUpType
+    {
+        Banana,
+        ExtraBomb,
+        ExtraFire,
+        Skull,
+        Shield,
+        Life,
+        RemoteControl,
+        Kick,
+        RollerSkate,
+        Clock,
+        MultiBomb,
     }
 }

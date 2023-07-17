@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1.Effects;
 
 namespace MrBoom
 {
@@ -97,11 +98,105 @@ namespace MrBoom
                         Index = 0,
                         animateDelay = 12,
                         bombTime = 210,
-                        maxBoom = 3,
+                        maxBoom = this.maxBoom,
                         rcAllowed = false,
                         owner = this
                     });
                     this.BombsPlaced++;
+                }
+            }
+
+            if (cell.Type == TerrainType.PowerUp)
+            {
+                var powerUpType = cell.PowerUpType;
+                var doFire = false;
+
+                if (powerUpType == PowerUpType.ExtraFire)
+                {
+                    this.maxBoom++;
+                }
+                else if (powerUpType == PowerUpType.ExtraBomb)
+                {
+                    this.maxBombsCount++;
+                }
+                else if (powerUpType == PowerUpType.RemoteControl)
+                {
+                    //if (!this.rcAllowed)
+                    //{
+                    //    this.rcAllowed = true;
+                    //}
+                    //else
+                    //{
+                    //    doFire = true;
+                    //}
+                }
+                else if (powerUpType == PowerUpType.RollerSkate)
+                {
+                    //if (!this.isHaveRollers)
+                    //{
+                    //    this.speed = 2;
+                    //    this.isHaveRollers = true;
+                    //}
+                    //else
+                    //{
+                    //    doFire = true;
+                    //}
+                }
+                else if (powerUpType == PowerUpType.Kick)
+                {
+                    //if (this.movingSprite.isHaveKick)
+                    //{
+                    //    doFire = true;
+                    //}
+                    //else
+                    //{
+                    //    this.movingSprite.isHaveKick = true;
+                    //}
+                }
+                else if (powerUpType == PowerUpType.Life)
+                {
+                    //this.lifeCount++;
+                }
+                else if (powerUpType == PowerUpType.Shield)
+                {
+                    //this.unplugin = 600;
+                    //this.blinkingSpeed = 30;
+                    //this.blinking = 0;
+                }
+                else if (powerUpType == PowerUpType.Banana)
+                {
+                    //for (let y = 0; y < map.height; y++)
+                    //{
+                    //    for (let x = 0; x < map.width; x++)
+                    //    {
+                    //        if (map.getCell(x, y).type == TerrainType.Bomb)
+                    //        {
+                    //            map.ditonateBomb(x, y);
+                    //        }
+                    //    }
+                    //}
+                }
+                else if (powerUpType == PowerUpType.Clock)
+                {
+                    //map.timeLeft += 60;
+                    //soundManager.playSound("clock");
+                }
+
+                if (doFire)
+                {
+                    terrain.SetCell(cellX, cellY, new Cell(TerrainType.PowerUpFire)
+                    {
+                        Images = terrain.assets.Fire,
+                        Index = 0,
+                        animateDelay = 6,
+                        Next = new Cell(TerrainType.Free)
+                    });
+                    //map.playSound("sac");
+                }
+                else
+                {
+                    terrain.SetCell(cellX, cellY, new Cell(TerrainType.Free));
+                    //map.playSound("pick");
                 }
             }
         }
@@ -115,8 +210,8 @@ namespace MrBoom
             //    img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];
             //}
 
-            int x = this.x + 8 + 8 - img.Width / 2 / 2;
-            int y = this.y + 16 - img.Height / 2;
+            int x = this.x + 8 + 8 - img.Width / 2;
+            int y = this.y + 16 - img.Height;
 
             img.Draw(ctx, x, y);
         }

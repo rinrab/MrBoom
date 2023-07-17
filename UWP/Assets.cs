@@ -50,8 +50,8 @@ namespace MrBoom
             private Texture2D texture;
             private Rectangle rect;
 
-            public int Width { get { return rect.Width; } }
-            public int Height { get { return rect.Height; } }
+            public int Width { get { return rect.Width / scale; } }
+            public int Height { get { return rect.Height / scale; } }
 
             public AssetImage(Texture2D texture, int x, int y, int width, int height)
             {

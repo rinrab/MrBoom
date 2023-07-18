@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace MrBoom
 {
@@ -36,6 +37,11 @@ namespace MrBoom
         public StartMenu(Game game)
         {
             this.game = game;
+            game.Players = new List<Game.Player>();
+            foreach (IController controller in game.Controllers)
+            {
+                controller.IsJoined = false;
+            }
             game.NextSong(3);
         }
 
@@ -240,7 +246,6 @@ namespace MrBoom
             this.game = game;
             this.winner = winner;
             game.sound.Victory.Play();
-            game.Players.Clear();
         }
 
         public void Draw(SpriteBatch ctx)

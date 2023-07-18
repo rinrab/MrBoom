@@ -56,8 +56,6 @@ namespace MrBoom
                 new GamepadController(PlayerIndex.Three),
                 new GamepadController(PlayerIndex.Four),
             };
-
-            Players = new List<Player>();
         }
 
         protected override void Initialize()
@@ -110,6 +108,12 @@ namespace MrBoom
                 bgTick++;
 
                 terrain.Update();
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                {
+                    menu = new StartMenu(this);
+                    state = State.StartMenu;
+                }
             }
             else
             {

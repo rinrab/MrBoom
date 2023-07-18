@@ -67,7 +67,7 @@
                     "#* ------------- *#",
                     "###################",
                 },
-                Time = 10,
+                Time = 120,
                 PowerUps = new PowerUpData[]
                 {
                     new PowerUpData(PowerUpType.ExtraBomb, 10),

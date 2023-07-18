@@ -361,18 +361,6 @@
 /processorParam:TextureFormat=Color
 /build:../../www/Gfx2x/MICRO.PNG;MICRO.PNG
 
-#begin ../../www/Gfx2x/MICRO.PNG
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MICRO.PNG;MICRO.PNG
-
 #begin ../../www/Gfx2x/MORT.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -588,4 +576,124 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:../../www/Gfx2x/VIC4.PNG;VIC4.PNG
+
+#begin ../../www/music/anar11.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../www/music/anar11.mp3;music/anar11.mp3
+
+#begin ../../www/music/chipmunk.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../www/music/chipmunk.mp3;music/chipmunk.mp3
+
+#begin ../../www/music/chiptune.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../www/music/chiptune.mp3;music/chiptune.mp3
+
+#begin ../../www/music/deadfeel.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../www/music/deadfeel.mp3;music/deadfeel.mp3
+
+#begin ../../www/music/drop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../www/music/drop.mp3;music/drop.mp3
+
+#begin ../../www/music/external.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../www/music/external.mp3;music/external.mp3
+
+#begin ../../www/music/matkamie.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../www/music/matkamie.mp3;music/matkamie.mp3
+
+#begin ../../www/music/unreeeal.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../www/music/unreeeal.mp3;music/unreeeal.mp3
+
+#begin ../../www/sound/addplayer.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/addplayer.wav;sound/addplayer.wav
+
+#begin ../../www/sound/ai.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/ai.wav;sound/ai.wav
+
+#begin ../../www/sound/bang.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/bang.wav;sound/bang.wav
+
+#begin ../../www/sound/clock.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/clock.wav;sound/clock.wav
+
+#begin ../../www/sound/draw.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/draw.wav;sound/draw.wav
+
+#begin ../../www/sound/oioi.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/oioi.wav;sound/oioi.wav
+
+#begin ../../www/sound/pick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/pick.wav;sound/pick.wav
+
+#begin ../../www/sound/player_die.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/player_die.wav;sound/player_die.wav
+
+#begin ../../www/sound/posebomb.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/posebomb.wav;sound/posebomb.wav
+
+#begin ../../www/sound/sac.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/sac.wav;sound/sac.wav
+
+#begin ../../www/sound/time_end.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/time_end.wav;sound/time_end.wav
+
+#begin ../../www/sound/victory.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/victory.wav;sound/victory.wav
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace MrBoom
 {
@@ -57,6 +58,34 @@ namespace MrBoom
             this.Keys[PlayerKeys.Right] = keyboardState.IsKeyDown(KeyRight);
             this.Keys[PlayerKeys.Bomb] = keyboardState.IsKeyDown(KeyBomb);
             this.Keys[PlayerKeys.RcDitonate] = keyboardState.IsKeyDown(KeyRcDitonate);
+        }
+    }
+
+    public class GamepadController : IController
+    {
+        public bool IsJoined { get; set; } = false;
+        public Dictionary<PlayerKeys, bool> Keys { get; }
+
+        private PlayerIndex index;
+
+        public GamepadController(PlayerIndex index)
+        {
+            Keys = new Dictionary<PlayerKeys, bool>();
+            this.index = index;
+        }
+
+        public void Update()
+        {
+            var state = GamePad.GetState(this.index);
+
+            float deadZone = 0.5f;
+
+            Keys[PlayerKeys.Up] = state.ThumbSticks.Left.Y > deadZone || state.IsButtonDown(Buttons.DPadUp);
+            Keys[PlayerKeys.Down] = state.ThumbSticks.Left.Y < -deadZone || state.IsButtonDown(Buttons.DPadDown);
+            Keys[PlayerKeys.Left] = state.ThumbSticks.Left.X < -deadZone || state.IsButtonDown(Buttons.DPadLeft);
+            Keys[PlayerKeys.Right] = state.ThumbSticks.Left.X > deadZone || state.IsButtonDown(Buttons.DPadRight);
+            Keys[PlayerKeys.Bomb] = state.IsButtonDown(Buttons.A);
+            Keys[PlayerKeys.RcDitonate] = state.IsButtonDown(Buttons.B);
         }
     }
 }

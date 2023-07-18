@@ -42,6 +42,10 @@ namespace MrBoom
             {
                 new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.X),
                 new KeyboardController(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.RightControl, Keys.End),
+                new GamepadController(PlayerIndex.One),
+                new GamepadController(PlayerIndex.Two),
+                new GamepadController(PlayerIndex.Three),
+                new GamepadController(PlayerIndex.Four),
             };
 
             Players = new List<Player>();

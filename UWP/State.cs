@@ -211,6 +211,7 @@ namespace MrBoom
         public DrawMenu(Game game)
         {
             this.game = game;
+            game.sound.Draw.Play();
         }
 
         public void Draw(SpriteBatch ctx)

@@ -95,7 +95,7 @@ namespace MrBoom
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
                     this.game.Players.Add(new Game.Player(controller) { Name = name });
-                    //soundManager.playSound("addplayer");
+                    game.sound.Addplayer.Play();
                 }
                 if (controller.IsStart)
                 {
@@ -133,6 +133,7 @@ namespace MrBoom
             this.game = game;
             this.players = players;
             this.winner = winner;
+            game.sound.Victory.Play();
         }
 
         public void Draw(SpriteBatch ctx)
@@ -236,6 +237,7 @@ namespace MrBoom
         {
             this.game = game;
             this.winner = winner;
+            game.sound.Victory.Play();
         }
 
         public void Draw(SpriteBatch ctx)

@@ -25,6 +25,7 @@ namespace MrBoom
 
         public List<Player> Players;
         public Assets assets;
+        public SoundAssets sound;
         public List<IController> Controllers;
         public Terrain terrain;
         public State state;
@@ -63,6 +64,7 @@ namespace MrBoom
             graphics.ApplyChanges();
 
             assets = Assets.Load(Content);
+            sound = SoundAssets.Load(Content);
 
             state = State.StartMenu;
             menu = new StartMenu(this);

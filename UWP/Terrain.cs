@@ -407,7 +407,7 @@ namespace MrBoom
                 }
             }
 
-            //this.playSound("bang");
+            Game.game.sound.Bang.Play();
 
             this.SetCell(bombX, bombY, new Cell(TerrainType.Fire)
             {

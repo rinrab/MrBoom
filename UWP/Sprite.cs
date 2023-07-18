@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.ComponentModel.DataAnnotations;
 
 namespace MrBoom
@@ -123,6 +124,7 @@ namespace MrBoom
                         owner = this
                     });
                     this.BombsPlaced++;
+                    Game.game.sound.PoseBomb.Play();
                 }
             }
 
@@ -211,12 +213,12 @@ namespace MrBoom
                         animateDelay = 6,
                         Next = new Cell(TerrainType.Free)
                     });
-                    //map.playSound("sac");
+                    Game.game.sound.Sac.Play();
                 }
                 else
                 {
                     terrain.SetCell(cellX, cellY, new Cell(TerrainType.Free));
-                    //map.playSound("pick");
+                    Game.game.sound.Pick.Play();
                 }
             }
 
@@ -233,7 +235,7 @@ namespace MrBoom
             {
                 this.isDie = true;
                 this.frameIndex = 0;
-                //map.playSound("player_die");
+                Game.game.sound.PlayerDie.Play();
             }
         }
 

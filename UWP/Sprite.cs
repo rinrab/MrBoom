@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using System.ComponentModel.DataAnnotations;
 
 namespace MrBoom
 {
@@ -219,7 +220,16 @@ namespace MrBoom
                 }
             }
 
-            if (cell.Type == TerrainType.Fire)
+            bool isTouchingMonster = false;
+            foreach (Monster m in terrain.Monsters)
+            {
+                if (!m.IsDie && (m.x + 8) / 16 == (x + 8) / 16 && (m.y + 8) / 16 == (y + 8) / 16)
+                {
+                    isTouchingMonster = true;
+                }
+            }
+
+            if (cell.Type == TerrainType.Fire || isTouchingMonster)
             {
                 this.isDie = true;
                 this.frameIndex = 0;
@@ -227,7 +237,7 @@ namespace MrBoom
             }
         }
 
-        public void Draw(SpriteBatch ctx)
+        public override void Draw(SpriteBatch ctx)
         {
             if (frameIndex != -1)
             {

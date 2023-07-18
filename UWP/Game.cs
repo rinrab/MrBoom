@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MrBoom
 {
@@ -85,6 +86,8 @@ namespace MrBoom
                 terrain.LocateSprite(sprite);
             }
 
+            terrain.InitializeMonsters();
+
             state = State.Game;
         }
 
@@ -136,10 +139,15 @@ namespace MrBoom
                     }
                 }
 
-                List<Sprite> spritesToDraw = new List<Sprite>(terrain.Players);
+                List<MovingSprite> spritesToDraw = new List<MovingSprite>(terrain.Players);
+                foreach (var monster in terrain.Monsters)
+                {
+                    spritesToDraw.Add(monster);
+                }
+
                 spritesToDraw.Sort((a, b) => a.y - b.y);
 
-                foreach (Sprite sprite in spritesToDraw)
+                foreach (MovingSprite sprite in spritesToDraw)
                 {
                     sprite.Draw(spriteBatch);
                 }

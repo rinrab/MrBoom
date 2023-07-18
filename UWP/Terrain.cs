@@ -13,6 +13,7 @@ namespace MrBoom
         public readonly int Height;
         public List<Sprite> Players;
         public Assets assets;
+        public List<Monster> Monsters;
 
         private readonly Cell[] data;
         private int TimeLeft;
@@ -39,6 +40,7 @@ namespace MrBoom
 
         public Terrain(int levelIndex, Assets assets)
         {
+            Monsters = new List<Monster>();
             var initial = Map.Maps[levelIndex];
             this.levelIndex = levelIndex;
             this.assets = assets;
@@ -129,6 +131,20 @@ namespace MrBoom
             sprite.y = spawn.y * 16;
 
             this.Players.Add(sprite);
+        }
+
+        public void InitializeMonsters()
+        {
+            int count = this.spawns.Count - this.Players.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                Monster monster = new Monster(this, Map.Maps[this.levelIndex].Monsters[0], assets.Monsters[0]);
+                int spawn = generateSpawn();
+                monster.x = spawns[spawn].x * 16;
+                monster.y = spawns[spawn].y * 16;
+                this.Monsters.Add(monster);
+            }
         }
 
         public void Update()
@@ -277,6 +293,11 @@ namespace MrBoom
             foreach (Sprite player in this.Players)
             {
                 player.Update();
+            }
+
+            foreach (Monster monster in this.Monsters)
+            {
+                monster.Update();
             }
         }
 

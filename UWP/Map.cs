@@ -14,9 +14,20 @@
             }
         }
 
+        public class MonsterData
+        {
+            public int WaitAfterTurn { get; }
+
+            public MonsterData(int waitAfterTurn)
+            {
+                WaitAfterTurn = waitAfterTurn;
+            }
+        }
+
         public string[] Data;
         public int Time;
         public PowerUpData[] PowerUps;
+        public MonsterData[] Monsters;
 
         public static Map[] Maps = new Map[]
         {
@@ -48,6 +59,10 @@
                     new PowerUpData(PowerUpType.RollerSkate, 1),
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Kick, 2),
+                },
+                Monsters = new MonsterData[]
+                {
+                    new MonsterData(30)
                 }
             }
         };

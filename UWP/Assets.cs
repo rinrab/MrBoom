@@ -38,6 +38,8 @@ namespace MrBoom
         public AssetImage Sky { get; private set; }
         public AssetImage Splash { get; private set; }
         public AssetImage[][] PowerUps { get; private set; }
+        public AssetImage[][][] Monsters { get; private set; }
+
         public AssetImage[][] Alpha;
 
         public static int scale = 2;
@@ -139,6 +141,18 @@ namespace MrBoom
                 }
 
                 return result.ToArray();
+            }
+
+            AssetImage[][] loadMonster(AssetImage[] up, AssetImage[] left, AssetImage[] right, AssetImage[] down, AssetImage[] die)
+            {
+                return new AssetImage[][]
+                {
+                    new AssetImage[] { up[0], up[1], up[0], up[2] },
+                    new AssetImage[] { left[0], left[1], left[0], left[2] },
+                    new AssetImage[] { right[0], right[1], right[0], right[2] },
+                    new AssetImage[] { down[0], down[1], down[0], down[2] },
+                    die
+                };
             }
 
             AssetImage[] loadBonus(AssetImage img)
@@ -248,7 +262,16 @@ namespace MrBoom
                 Fire = fire,
                 Players = loadPlayers(imgSprite, imgSprite3),
                 Pause = loadImageStripe(imgPause, 0, 0, 48, 64, 4, 0),
-                //Monsters = 
+                Monsters = new AssetImage[][][]
+                {
+                    loadMonster(
+                        loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
+                        loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
+                        loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
+                        loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
+                        loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1)
+                            .Concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)).ToArray()),
+                },
                 //MonsterGhosts = 
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),

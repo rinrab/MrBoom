@@ -1,4 +1,6 @@
-﻿namespace MrBoom
+﻿using Microsoft.Xna.Framework.Graphics;
+
+namespace MrBoom
 {
     public class MovingSprite
     {
@@ -24,7 +26,7 @@
             {
                 if (this.x % 16 == 0)
                 {
-                    var newY = (delta < 0) ? (this.y + delta - 1) / 16 : (this.y + delta - 1) / 16 + 1;
+                    var newY = (delta < 0) ? (this.y + delta) / 16 : this.y / 16 + 1;
                     var cellX = (this.x + 8) / 16;
                     var cellY = (this.y + 8) / 16;
                     var cell = terrain.GetCell(cellX, cellY);
@@ -68,7 +70,7 @@
             {
                 if (this.y % 16 == 0)
                 {
-                    var newX = (delta < 0) ? (this.x + delta - 1) / 16 : (this.x + delta - 1) / 16 + 1;
+                    var newX = (delta < 0) ? (this.x + delta) / 16 : this.x / 16 + 1;
                     var cellX = (this.x + 8) / 16;
                     var cellY = (this.y + 8) / 16;
                     var cell = terrain.GetCell(cellX, cellY);
@@ -176,6 +178,11 @@
             Down,
             Left,
             Right,
+        }
+
+        public virtual void Draw(SpriteBatch ctx)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

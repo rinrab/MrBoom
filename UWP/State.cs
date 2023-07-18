@@ -19,14 +19,17 @@ namespace MrBoom
     public class StartMenu : IState
     {
         private int tick = 0;
-        private Game game;
-        private string helpText = 
-            "welcome to mr.boom v0.1!   right keyboard controller:   " +
-            "players can join using their drop bomb button   use enter or lt and rt on gamepad" +
-            "controller to start game   " +
-            "use arrows to move   use ctr to drop bomb   use alt to triger it by radio control   " +
-            "gamepad controller:   use d-pad arrows to move   use   use b button to drop bomb  " +
-            "use a button to triger it by radio control";
+
+        private readonly Game game;
+        private readonly string helpText = 
+            "welcome to mr.boom v0.1!!!   " +
+            "players can join using their drop bomb button   use enter to start game   " +
+            "right keyboard controller: use arrows to move ctrl to drop bomb " +
+            "and alt to triger it by radio control   " +
+            "left keyboard controller: use wasd to move rigth ctrl to drop bomb " +
+            "and right alt to triger it by radio control   " +
+            "gamepad controller: use d-pad arrows to move a button to drop bomb " +
+            "b button to triger it by radio control";
 
         public StartMenu(Game game)
         {
@@ -36,7 +39,6 @@ namespace MrBoom
         public void Draw(SpriteBatch ctx)
         {
             game.assets.Start.Draw(ctx, 0, 0);
-            var colors = new string[] { "magenta", "red", "blue", "green" };
 
             for (int x = 0; x < 4; x++)
             {

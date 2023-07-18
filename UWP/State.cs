@@ -240,6 +240,7 @@ namespace MrBoom
             this.game = game;
             this.winner = winner;
             game.sound.Victory.Play();
+            game.Players.Clear();
         }
 
         public void Draw(SpriteBatch ctx)

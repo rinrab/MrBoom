@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace MrBoom
 {
@@ -21,7 +20,7 @@ namespace MrBoom
         private int tick = 0;
 
         private readonly Game game;
-        private readonly string helpText = 
+        private readonly string helpText =
             "welcome to mr.boom v0.1!!!   " +
             "players can join using their drop bomb button   use enter to start game   " +
             "right keyboard controller: use arrows to move ctrl to drop bomb " +

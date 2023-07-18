@@ -1,12 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct2D1;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MrBoom
+﻿namespace MrBoom
 {
     public class MovingSprite
     {
@@ -28,7 +20,8 @@ namespace MrBoom
 
         public virtual void Update()
         {
-            void moveY(int delta) {
+            void moveY(int delta)
+            {
                 if (this.x % 16 == 0)
                 {
                     var newY = (delta < 0) ? (this.y + delta - 1) / 16 : (this.y + delta - 1) / 16 + 1;
@@ -50,17 +43,17 @@ namespace MrBoom
                         var newCell = terrain.GetCell(cellX, newY);
                         //if (newCell.Type == TerrainType.Bomb)
                         //{
-                            //if (this.isHaveKick)
-                            //{
-                            //    newCell.dy = delta * 2;
-                            //}
-                            //else
-                            //{
-                            //    if (newCell.offsetX == 0)
-                            //    {
-                            //        newCell.dy = 0;
-                            //    }
-                            //}
+                        //if (this.isHaveKick)
+                        //{
+                        //    newCell.dy = delta * 2;
+                        //}
+                        //else
+                        //{
+                        //    if (newCell.offsetX == 0)
+                        //    {
+                        //        newCell.dy = 0;
+                        //    }
+                        //}
                         //}
                     }
                 }
@@ -71,51 +64,52 @@ namespace MrBoom
 
                 this.frameIndex += 1;
             }
-            void moveX(int delta) {
-            if (this.y % 16 == 0)
+            void moveX(int delta)
             {
-                var newX = (delta < 0) ? (this.x + delta - 1) / 16 : (this.x + delta - 1) / 16 + 1;
-                var cellX = (this.x + 8) / 16;
-                var cellY = (this.y + 8) / 16;
-                var cell = terrain.GetCell(cellX, cellY);
-
-                if (terrain.isWalkable(newX, cellY))
+                if (this.y % 16 == 0)
                 {
-                    this.x += delta;
-                }
+                    var newX = (delta < 0) ? (this.x + delta - 1) / 16 : (this.x + delta - 1) / 16 + 1;
+                    var cellX = (this.x + 8) / 16;
+                    var cellY = (this.y + 8) / 16;
+                    var cell = terrain.GetCell(cellX, cellY);
 
-                if (newX == cellX && cell.Type == TerrainType.Bomb)
-                {
-                    this.x += delta;
+                    if (terrain.isWalkable(newX, cellY))
+                    {
+                        this.x += delta;
+                    }
+
+                    if (newX == cellX && cell.Type == TerrainType.Bomb)
+                    {
+                        this.x += delta;
+                    }
+                    else
+                    {
+                        var newCell = terrain.GetCell(newX, cellY);
+                        //if (newCell.Type == TerrainType.Bomb)
+                        //{
+                        //    if (this.isHaveKick)
+                        //    {
+                        //        newCell.dx = delta * 2;
+                        //    }
+                        //    else
+                        //    {
+                        //        if (newCell.offsetX == 0)
+                        //        {
+                        //            newCell.dx = 0;
+                        //        }
+                        //    }
+                        //}
+                    }
                 }
                 else
                 {
-                    var newCell = terrain.GetCell(newX, cellY);
-                    //if (newCell.Type == TerrainType.Bomb)
-                    //{
-                    //    if (this.isHaveKick)
-                    //    {
-                    //        newCell.dx = delta * 2;
-                    //    }
-                    //    else
-                    //    {
-                    //        if (newCell.offsetX == 0)
-                    //        {
-                    //            newCell.dx = 0;
-                    //        }
-                    //    }
-                    //}
+                    this.YAlign(delta);
                 }
-            }
-            else
-            {
-                this.YAlign(delta);
+
+                this.frameIndex += 1;
             }
 
-            this.frameIndex += 1;
-        }
-
-        for (int i = 0; i < this.speed; i++)
+            for (int i = 0; i < this.speed; i++)
             {
                 if (this.Direction == Directions.Up)
                 {
@@ -167,7 +161,8 @@ namespace MrBoom
                 this.y -= 1;
                 this.AnimateIndex = 3;
             }
-            else if (terrain.isWalkable((this.x + 8) / 16 + deltaX, (this.y + 16) / 16)) {
+            else if (terrain.isWalkable((this.x + 8) / 16 + deltaX, (this.y + 16) / 16))
+            {
                 this.y += 1;
 
                 this.AnimateIndex = 0;

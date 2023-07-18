@@ -1,7 +1,4 @@
-﻿using MrBoom;
-using System.Collections.Generic;
-
-namespace MrBoom
+﻿namespace MrBoom
 {
     public class Map
     {

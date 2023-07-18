@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework.Input;
-using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
 
 namespace MrBoom
 {

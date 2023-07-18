@@ -145,7 +145,7 @@ namespace MrBoom
             }
 
             spriteBatch.End();
-            
+
             GraphicsDevice.SetRenderTarget(null);
 
             float height = GraphicsDevice.PresentationParameters.Bounds.Height;

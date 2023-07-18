@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct2D1.Effects;
 
 namespace MrBoom
 {

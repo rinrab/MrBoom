@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -174,8 +175,16 @@ namespace MrBoom
                         }
                     }
 
-                    Game.game.menu = new Results(players, winner, Game.game);
-                    Game.game.state = State.Draw;
+                    if (players[winner].VictoryCount >= 5)
+                    {
+                        Game.game.menu = new Victory(Game.game, winner);
+                        Game.game.state = State.Victory;
+                    }
+                    else
+                    {
+                        Game.game.menu = new Results(players, winner, Game.game);
+                        Game.game.state = State.Draw;
+                    }
                 }
                 else
                 {

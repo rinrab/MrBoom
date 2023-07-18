@@ -9,7 +9,8 @@ namespace MrBoom
     {
         StartMenu,
         Game,
-        Draw
+        Draw,
+        Victory
     }
 
     public interface IState
@@ -123,10 +124,10 @@ namespace MrBoom
 
     public class Results : IState
     {
-        private Game game;
-        private Game.Player[] players;
+        private readonly Game game;
+        private readonly Game.Player[] players;
+        private readonly int winner;
         private int tick;
-        private int winner;
 
         public Results(Game.Player[] players, int winner, Game game)
         {
@@ -203,7 +204,7 @@ namespace MrBoom
 
     public class DrawMenu : IState
     {
-        private Game game;
+        private readonly Game game;
         private int tick;
 
         public DrawMenu(Game game)
@@ -222,6 +223,41 @@ namespace MrBoom
             if (tick > 120 && game.IsAnyKeyPressed())
             {
                 game.StartGame();
+            }
+        }
+    }
+
+    public class Victory : IState
+    {
+        private int tick;
+        private readonly int winner;
+        private readonly Game game;
+
+        public Victory(Game game, int winner)
+        {
+            this.game = game;
+            this.winner = winner;
+        }
+
+        public void Draw(SpriteBatch ctx)
+        {
+            game.assets.Vic[tick / 5 % game.assets.Vic.Length].Draw(ctx, 0, 0);
+
+            Assets.AssetImage img = game.assets.Players[winner][0][tick / 20 % game.assets.Players[winner][0].Length];
+            img.Draw(ctx, 320 / 2 - img.Width / 2, 80 - img.Height);
+        }
+
+        public void Update()
+        {
+            tick++;
+            if (tick > 120 && game.IsAnyKeyPressed())
+            {
+                foreach (Game.Player player in game.Players)
+                {
+                    player.VictoryCount = 0;
+                }
+                game.menu = new StartMenu(game);
+                game.state = State.StartMenu;
             }
         }
     }

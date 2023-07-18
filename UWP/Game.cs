@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 
 namespace MrBoom
 {
@@ -159,6 +162,29 @@ namespace MrBoom
                 foreach (MovingSprite sprite in spritesToDraw)
                 {
                     sprite.Draw(spriteBatch);
+                }
+
+                if (terrain.TimeLeft > 30 * 60)
+                {
+                    int min = (terrain.TimeLeft - 30 * 60) / 60 / 60;
+                    int sec = (terrain.TimeLeft - 30 * 60) / 60 % 60;
+
+                    string time = min.ToString() + ":" + ((sec < 10) ? 0 + sec.ToString() : sec.ToString());
+                    int x = 270;
+                    foreach (char c in time)
+                    {
+                        string alpha = "0123456789:";
+                        int index = alpha.IndexOf(c);
+                        assets.BigDigits[index].Draw(spriteBatch, x, 182);
+                        if (index == 10)
+                        {
+                            x += 9;
+                        }
+                        else
+                        {
+                            x += 14;
+                        }
+                    }
                 }
             }
             else

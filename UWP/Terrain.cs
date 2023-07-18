@@ -14,9 +14,9 @@ namespace MrBoom
         public List<Sprite> Players;
         public Assets assets;
         public List<Monster> Monsters;
+        public int TimeLeft;
 
         private readonly Cell[] data;
-        private int TimeLeft;
         private int timeToEnd = -1;
         private int time;
         private int levelIndex;
@@ -57,7 +57,7 @@ namespace MrBoom
             this.Height = initial.Data.Length;
             //this.monsters = [];
             this.spawns = new List<Spawn>();
-            this.TimeLeft = initial.Time * 60 + 31;
+            this.TimeLeft = (initial.Time + 31) * 60;
             //this.fin = [];
             //for (let fin of initial.fin)
             //{
@@ -151,6 +151,7 @@ namespace MrBoom
         public void Update()
         {
             this.time++;
+            TimeLeft--;
 
             if (this.timeToEnd != -1)
             {
@@ -169,7 +170,6 @@ namespace MrBoom
             if (this.timeToEnd == 0) {
                 if (playersCount == 1)
                 {
-
                     Sprite winnerSprite = null;
                     foreach (Sprite sprite in this.Players)
                     {

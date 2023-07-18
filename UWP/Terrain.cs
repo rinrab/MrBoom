@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace MrBoom
 {
@@ -14,6 +15,7 @@ namespace MrBoom
 
         private readonly Cell[] data;
         private int TimeLeft;
+        private int timeToEnd = -1;
         private int time;
         private int levelIndex;
         private List<Spawn> spawns;
@@ -131,6 +133,66 @@ namespace MrBoom
         public void Update()
         {
             this.time++;
+
+            if (this.timeToEnd != -1)
+            {
+                this.timeToEnd--;
+            }
+
+            int playersCount = 0;
+            foreach (Sprite player in this.Players)
+            {
+                if (!player.isDie)
+                {
+                    playersCount++;
+                }
+            }
+
+            if (this.timeToEnd == 0) {
+                if (playersCount == 1)
+                {
+
+                    Sprite winnerSprite = null;
+                    foreach (Sprite sprite in this.Players)
+                    {
+                        if (!sprite.isDie)
+                        {
+                            winnerSprite = sprite;
+                        }
+                    }
+
+                    Game.Player[] players = Game.game.Players.ToArray();
+
+                    int winner = -1;
+                    for (int i = 0; i < players.Length; i++)
+                    {
+                        Game.Player player = players[i];
+                        if (winnerSprite.Controller == player.Controller)
+                        {
+                            player.VictoryCount++;
+                            winner = i;
+                        }
+                    }
+
+                    Game.game.menu = new Results(players, winner, Game.game);
+                    Game.game.state = State.Draw;
+                }
+                else
+                {
+                    Game.game.menu = new DrawMenu(Game.game);
+                    Game.game.state = State.Draw;
+                }
+            }
+
+            if (playersCount == 1 && Players.Count > 1 && this.timeToEnd == -1)
+            {
+                this.timeToEnd = 60 * 3;
+            }
+            if (playersCount == 0 && this.timeToEnd == -1)
+            {
+                this.timeToEnd = 60 * 3;
+            }
+
 
             for (int y = 0; y < this.Height; y++)
             {

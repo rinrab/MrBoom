@@ -8,10 +8,13 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
+        public static Game game;
+
         public class Player
         {
             public IController Controller;
             public string Name;
+            public int VictoryCount;
 
             public Player(IController controller)
             {
@@ -23,12 +26,12 @@ namespace MrBoom
         public Assets assets;
         public List<IController> Controllers;
         public Terrain terrain;
+        public State state;
+        public IState menu;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
-        private State state;
-        private IState menu;
         private int bgTick = 0;
 
         public Game()
@@ -53,6 +56,8 @@ namespace MrBoom
 
         protected override void Initialize()
         {
+            game = this;
+
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
 
@@ -178,6 +183,23 @@ namespace MrBoom
                     images[index].Draw(ctx, x + i * 8, y);
                 }
             }
+        }
+
+        public bool IsAnyKeyPressed()
+        {
+            if (Keyboard.GetState().GetPressedKeys().Length > 0)
+            {
+                return true;
+            }
+            foreach (var controller in Controllers)
+            {
+                controller.Update();
+                if (controller.Keys.ContainsValue(true))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

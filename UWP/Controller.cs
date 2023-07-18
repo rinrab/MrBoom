@@ -20,7 +20,11 @@ namespace MrBoom
     public interface IController
     {
         Dictionary<PlayerKeys, bool> Keys { get; }
+
         bool IsJoined { get; set; }
+
+        bool IsStart { get; }
+
         void Update();
     }
 
@@ -28,6 +32,8 @@ namespace MrBoom
     {
         public Dictionary<PlayerKeys, bool> Keys { get; }
         public bool IsJoined { get; set; } = false;
+
+        public bool IsStart => false;
 
         readonly Keys KeyUp;
         readonly Keys KeyDown;
@@ -66,7 +72,9 @@ namespace MrBoom
         public bool IsJoined { get; set; } = false;
         public Dictionary<PlayerKeys, bool> Keys { get; }
 
-        private PlayerIndex index;
+        public bool IsStart => GamePad.GetState(index).IsButtonDown(Buttons.Start);
+
+        private readonly PlayerIndex index;
 
         public GamepadController(PlayerIndex index)
         {

@@ -78,7 +78,7 @@ namespace MrBoom
         {
             tick++;
 
-            bool isGamepadStart = false;
+            bool isStart = false;
 
             foreach (var controller in game.Controllers)
             {
@@ -95,17 +95,13 @@ namespace MrBoom
                     this.game.Players.Add(new Game.Player(controller) { Name = name });
                     //soundManager.playSound("addplayer");
                 }
-                //if (controller.gamepad)
-                //{
-                //    const buttons = controller.gamepad.buttons;
-                //    if (buttons[6].pressed && buttons[7].pressed)
-                //    {
-                //        isGamepadStart = true;
-                //    }
-                //}
+                if (controller.IsStart)
+                {
+                    isStart = true;
+                }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter) || isGamepadStart)
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) || isStart)
             {
                 if (this.game.Players.Count >= 1)
                 {

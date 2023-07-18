@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,7 @@ namespace MrBoom
 
             assets = Assets.Load(Content);
             sound = SoundAssets.Load(Content);
+            MediaPlayer.IsRepeating = true;
 
             state = State.StartMenu;
             menu = new StartMenu(this);
@@ -109,6 +111,11 @@ namespace MrBoom
             else
             {
                 menu.Update();
+            }
+
+            if (MediaPlayer.State == MediaState.Stopped)
+            {
+                NextSong();
             }
 
             base.Update(gameTime);
@@ -210,6 +217,15 @@ namespace MrBoom
                 }
             }
             return false;
+        }
+
+        public void NextSong(int index = -1)
+        {
+            if (index == -1)
+            {
+                index = Terrain.Random.Next(sound.Musics.Length);
+            }
+            sound.Musics[index].Play();
         }
     }
 }

@@ -33,6 +33,7 @@ namespace MrBoom
                         animateDelay = 8,
                         PowerUpType = PowerUpType.Life
                     });
+                    Game.game.sound.Ai.Play();
                 }
                 else
                 {

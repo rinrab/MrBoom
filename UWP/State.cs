@@ -36,6 +36,7 @@ namespace MrBoom
         public StartMenu(Game game)
         {
             this.game = game;
+            game.NextSong(3);
         }
 
         public void Draw(SpriteBatch ctx)

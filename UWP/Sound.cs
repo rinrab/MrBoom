@@ -12,14 +12,29 @@ namespace MrBoom
         {
             private SoundEffect sound;
 
-            public Sound(SoundEffect song)
+            public Sound(SoundEffect sound)
             {
-                this.sound = song;
+                this.sound = sound;
             }
 
             public void Play()
             {
                 sound.Play();
+            }
+        }
+        
+        public class Music
+        {
+            private Song song;
+
+            public Music(Song song)
+            {
+                this.song = song;
+            }
+
+            public void Play()
+            {
+                MediaPlayer.Play(song);
             }
         }
 
@@ -35,12 +50,18 @@ namespace MrBoom
         public Sound Draw;
         public Sound Clock;
         public Sound TimeEnd;
+        public Music[] Musics;
 
         public static SoundAssets Load(ContentManager content)
         {
             Sound loadSound(string name)
             {
                 return new Sound(content.Load<SoundEffect>("sound\\" + name));
+            }
+
+            Music loadMusic(string name)
+            {
+                return new Music(content.Load<Song>("music\\" + name));
             }
 
             return new SoundAssets()
@@ -57,6 +78,17 @@ namespace MrBoom
                 Draw = loadSound("draw"),
                 Clock = loadSound("clock"),
                 TimeEnd = loadSound("time_end"),
+                Musics = new Music[]
+                {
+                    loadMusic("anar11"),
+                    loadMusic("chipmunk"),
+                    loadMusic("chiptune"),
+                    loadMusic("deadfeel"),
+                    loadMusic("drop"),
+                    loadMusic("external"),
+                    loadMusic("matkamie"),
+                    loadMusic("unreeeal"),
+                }
             };
         }
     }

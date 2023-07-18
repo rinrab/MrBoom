@@ -41,6 +41,7 @@ namespace MrBoom
         public Terrain(int levelIndex, Assets assets)
         {
             Monsters = new List<Monster>();
+            Game.game.NextSong();
             var initial = Map.Maps[levelIndex];
             this.levelIndex = levelIndex;
             this.assets = assets;

@@ -22,7 +22,8 @@ namespace MrBoom
         {
             if (!IsDie)
             {
-                if (terrain.GetCell((x + 8) / 16, (y + 8) / 16).Type == TerrainType.Fire)
+                var cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
+                if (cell.Type == TerrainType.Fire)
                 {
                     IsDie = true;
                     frameIndex = 0;
@@ -33,6 +34,12 @@ namespace MrBoom
                         animateDelay = 8,
                         PowerUpType = PowerUpType.Life
                     });
+                    Game.game.sound.Ai.Play();
+                }
+                else if (cell.Type == TerrainType.Apocalypse)
+                {
+                    IsDie = true;
+                    frameIndex = 0;
                     Game.game.sound.Ai.Play();
                 }
                 else

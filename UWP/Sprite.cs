@@ -237,6 +237,12 @@ namespace MrBoom
                 this.frameIndex = 0;
                 Game.game.sound.PlayerDie.Play();
             }
+            if (cell.Type == TerrainType.Apocalypse)
+            {
+                this.isDie = true;
+                this.frameIndex = 0;
+                Game.game.sound.PlayerDie.Play();
+            }
         }
 
         public override void Draw(SpriteBatch ctx)

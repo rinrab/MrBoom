@@ -16,6 +16,9 @@ namespace MrBoom
         public List<Monster> Monsters;
         public int TimeLeft;
 
+        private byte[] final;
+        private int apocalypse = -1;
+        private int lastApocalypseSound = -1;
         private readonly Cell[] data;
         private int timeToEnd = -1;
         private int time;
@@ -58,17 +61,7 @@ namespace MrBoom
             //this.monsters = [];
             this.spawns = new List<Spawn>();
             this.TimeLeft = (initial.Time + 31) * 60;
-            //this.fin = [];
-            //for (let fin of initial.fin)
-            //{
-            //    const finNum = parseInt(fin);
-            //    this.fin.push(finNum);
-            //    if (finNum != 255 && finNum > this.maxFin)
-            //    {
-            //        this.maxFin = finNum;
-            //    }
-            //}
-
+            this.final = initial.Final;
             this.Players = new List<Sprite>();
 
             //this.initialBonus = initial.initialBonus;
@@ -164,6 +157,66 @@ namespace MrBoom
                 if (!player.isDie)
                 {
                     playersCount++;
+                }
+            }
+
+            int speed = 2;
+            
+            int maxFin = 0;
+            foreach (byte fin in final)
+            {
+                if (fin != 255)
+                {
+                    maxFin = Math.Max(maxFin, fin);
+                }
+            }
+
+            if (TimeLeft < 30 * 60 - 1)
+            {
+                if (TimeLeft % speed == 0)
+                {
+                    int index = (30 * 60 - TimeLeft) / speed;
+                    if (index != 255)
+                    {
+                        for (int i = 0; i < final.Length; i++)
+                        {
+                            if (index == Math.Min(maxFin + 5, 255))
+                            {
+                                var cell = GetCell(i % Width, i / Width);
+                                if (cell.Type == TerrainType.TemporaryWall)
+                                {
+                                    SetCell(i % Width, i / Width, new Cell(TerrainType.PowerUpFire)
+                                    {
+                                        Images = assets.Fire,
+                                        Index = 0,
+                                        Next = new Cell(TerrainType.Free)
+                                    });
+                                    Game.game.sound.Sac.Play();
+                                }
+                            }
+                            else if (final[i] == index)
+                            {
+                                var cell = GetCell(i % Width, i / Width);
+                                if (cell.Type != TerrainType.PermanentWall)
+                                {
+                                    SetCell(i % Width, i / Width, new Cell(TerrainType.Apocalypse)
+                                    {
+                                        Images = assets.Fire,
+                                        Index = 0,
+                                        Next = new Cell(TerrainType.PermanentWall)
+                                        {
+                                            Images = assets.levels[levelIndex].PermanentWalls,
+                                        }
+                                    });
+                                    if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
+                                    {
+                                        Game.game.sound.Sac.Play();
+                                        lastApocalypseSound = TimeLeft;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

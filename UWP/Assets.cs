@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,7 @@ namespace MrBoom
         {
             public AssetImage[] Backgrounds;
             public AssetImage[] Walls;
+            public AssetImage[] PermanentWalls;
         }
 
         public Level[] levels { get; private set; }
@@ -200,6 +202,11 @@ namespace MrBoom
                 return new AssetImage[] { img };
             }
 
+            AssetImage[] loadPermanentWall(AssetImage[] fireImages, AssetImage wall)
+            {
+                return new AssetImage[] { wall };
+            }
+
             var imgNeige1 = content.Load<Texture2D>("NEIGE1");
             var imgNeige2 = content.Load<Texture2D>("NEIGE2");
             var imgNeige3 = content.Load<Texture2D>("NEIGE3");
@@ -250,6 +257,8 @@ namespace MrBoom
                             loadImage(content.Load<Texture2D>("GAME3"), 0, 0, 320, 200),
                         },
                         Walls = loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
+                        PermanentWalls = loadPermanentWall(fire,
+                            loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
                     }
                 },
                 BoomMid = loadImageStripe(imgSprite2, 0 * 16, 46 + 0 * 16, 16, 16, 4),

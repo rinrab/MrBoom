@@ -321,6 +321,25 @@ namespace MrBoom
                         Walls = loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
                     },
+                    new Level()
+                    {
+                        Backgrounds = new AssetImage[]
+                        {
+                            loadImage(content.Load<Texture2D>("FORET"), 0, 0, 320, 200),
+                        },
+                        Overlays = new Level.Overlay[]
+                        {
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE_OVERLAY"), 0, 0, 320, 200),
+                                x = 0,
+                                y = 0,
+                                AnimationDelay = 1
+                            }
+                        },
+                        Walls = loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
+                    },
                 },
                 BoomMid = loadImageStripe(imgSprite2, 0 * 16, 46 + 0 * 16, 16, 16, 4),
                 BoomHor = loadImageStripe(imgSprite2, 0 * 16, 46 + 1 * 16, 16, 16, 4),
@@ -334,40 +353,37 @@ namespace MrBoom
                 Pause = loadImageStripe(imgPause, 0, 0, 48, 64, 4, 0),
                 Monsters = new AssetImage[][][]
                 {
-                    loadMonster(
-                        loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
-                        loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
-                        loadImageStripe(imgSprite, 144, 144, 17, 18, 3, 7),
-                        loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7)
-                            .Concat(loadImageStripe(imgSprite, 0, 163, 17, 18, 1, 7)).ToArray(),
-                        loadImageStripe(imgSprite, 24, 163, 17, 18, 8, 7)),
+                    loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
+                                loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
+                                loadImageStripe(imgSprite, 144, 144, 17, 18, 3, 7),
+                                loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7)
+                                    .Concat(loadImageStripe(imgSprite, 0, 163, 17, 18, 1, 7)).ToArray(),
+                                loadImageStripe(imgSprite, 24, 163, 17, 18, 8, 7)),
 
-                     loadMonster(
-                            loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
-                            loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
-                            loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
-                            loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
-                            loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1)
+                    loadMonster(loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
+                                loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
+                                loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
+                                loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
+                                loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1)
                                 .Concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)).ToArray()),
 
-                     loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
-                        loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
-                    // [
-                    //    [snail[0], snail[1], snail[0], snail[1]],
-                    //    [snail[4], snail[5], snail[4], snail[5]],
-                    //    [snail[2], snail[3], snail[2], snail[3]],
-                    //    [snail[6], snail[7], snail[6], snail[7]],
-                    //    [snail[8], snail[9], snail[10], snail[11], snail[12]]
-                    //],
+                    loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
+                                loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
+
+                    loadMonster(new AssetImage[] { snail[0], snail[1], snail[0], snail[1] },
+                                new AssetImage[] { snail[4], snail[5], snail[4], snail[5] },
+                                new AssetImage[] { snail[2], snail[3], snail[2], snail[3] },
+                                new AssetImage[] { snail[6], snail[7], snail[6], snail[7] },
+                                new AssetImage[] { snail[8], snail[9], snail[10], snail[11], snail[12] }),
+
                     loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
-                            loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
-                    loadMonster(
-                        loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
-                        loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
-                        loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),
-                        loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1)
-                            .Concat(loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)).ToArray(),
-                        loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
+                                loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
+                    loadMonster(loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
+                                loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
+                                loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),
+                                loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1)
+                                    .Concat(loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)).ToArray(),
+                                loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
                 },
                 //MonsterGhosts = 
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),

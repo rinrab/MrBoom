@@ -340,6 +340,32 @@ namespace MrBoom
                         Walls = loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
                     },
+                    new Level()
+                    {
+                        Backgrounds = new AssetImage[]
+                        {
+                            loadImage(content.Load<Texture2D>("SOCCER"), 0, 0, 320, 200),
+                        },
+                        Walls = loadImageStripe(imgPause, 160, 112, 16, 16, 8),
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
+                    },
+                    new Level()
+                    {
+                        Backgrounds = new AssetImage[]
+                        {
+                            loadImage(content.Load<Texture2D>("CRAYON"), 0, 0, 320, 200),
+                        },
+                        Walls = loadImageStripe(imgPause, 0, 112, 16, 16, 8),
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
+                    },
+                    new Level()
+                    {
+                        Backgrounds = new AssetImage[]
+                        {
+                            loadImage(content.Load<Texture2D>("MICRO"), 0, 0, 320, 200),
+                        },
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 1, 16, 16)),
+                    },
                 },
                 BoomMid = loadImageStripe(imgSprite2, 0 * 16, 46 + 0 * 16, 16, 16, 4),
                 BoomHor = loadImageStripe(imgSprite2, 0 * 16, 46 + 1 * 16, 16, 16, 4),
@@ -378,6 +404,7 @@ namespace MrBoom
 
                     loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
                                 loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
+
                     loadMonster(loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
                                 loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
                                 loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),

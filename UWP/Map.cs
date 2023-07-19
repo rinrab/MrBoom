@@ -17,10 +17,12 @@
         public class MonsterData
         {
             public int WaitAfterTurn { get; }
+            public int Type { get; }
 
-            public MonsterData(int waitAfterTurn)
+            public MonsterData(int type, int waitAfterTurn)
             {
                 WaitAfterTurn = waitAfterTurn;
+                Type = type;
             }
         }
 
@@ -80,7 +82,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(30)
+                    new MonsterData(0, 30)
                 },
                 Final = DefaultFinal
             },
@@ -115,7 +117,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(30)
+                    new MonsterData(1, 30)
                 },
                 Final = DefaultFinal
             }

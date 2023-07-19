@@ -132,7 +132,8 @@ namespace MrBoom
 
             for (int i = 0; i < count; i++)
             {
-                Monster monster = new Monster(this, Map.Maps[this.levelIndex].Monsters[0], assets.Monsters[0]);
+                var data = Map.Maps[this.levelIndex].Monsters[0];
+                Monster monster = new Monster(this, data, assets.Monsters[data.Type]);
                 int spawn = generateSpawn();
                 monster.x = spawns[spawn].x * 16;
                 monster.y = spawns[spawn].y * 16;

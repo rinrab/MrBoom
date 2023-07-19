@@ -307,12 +307,21 @@ namespace MrBoom
                 Monsters = new AssetImage[][][]
                 {
                     loadMonster(
-                        loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
-                        loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
-                        loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
-                        loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
-                        loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1)
-                            .Concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)).ToArray()),
+                        loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
+                        loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
+                        loadImageStripe(imgSprite, 144, 144, 17, 18, 3, 7),
+                        loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7)
+                            .Concat(loadImageStripe(imgSprite, 0, 163, 17, 18, 1, 7)).ToArray(),
+                        loadImageStripe(imgSprite, 24, 163, 17, 18, 8, 7)),
+
+                     loadMonster(
+                            loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
+                            loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
+                            loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
+                            loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
+                            loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1)
+                                .Concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)).ToArray()),
+
                 },
                 //MonsterGhosts = 
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),

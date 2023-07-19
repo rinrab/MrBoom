@@ -234,10 +234,12 @@ namespace MrBoom
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
             var monster2ghost = loadImageStripe(imgGhosts, 195, 93, 16, 19, 3, 0);
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
+
             var snail = loadImageStripe(imgFeuille, 41, 17, 38, 32, 6, 1)
-                .Concat(loadImageStripe(imgFeuille, 41, 50, 38, 32, 7, 1)).ToArray();
+                .Concat(loadImageStripe(imgFeuille, 41, 50, 38, 32, 6, 1)).ToArray();
             var snailGhost = loadImageStripe(imgGhosts, 1, 114, 38, 32, 6, 1)
-                .Concat(loadImageStripe(imgGhosts, 1, 147, 38, 32, 7, 1)).ToArray();
+                     .Concat(loadImageStripe(imgGhosts, 1, 147, 38, 32, 7, 1)).ToArray();
+
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
 
             return new Assets()
@@ -339,7 +341,7 @@ namespace MrBoom
                             }
                         },
                         Walls = loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16)),
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
                     },
                     new Level()
                     {
@@ -348,7 +350,7 @@ namespace MrBoom
                             loadImage(content.Load<Texture2D>("SOCCER"), 0, 0, 320, 200),
                         },
                         Walls = loadImageStripe(imgPause, 160, 112, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
                     },
                     new Level()
                     {
@@ -401,7 +403,7 @@ namespace MrBoom
                                 new AssetImage[] { snail[4], snail[5], snail[4], snail[5] },
                                 new AssetImage[] { snail[2], snail[3], snail[2], snail[3] },
                                 new AssetImage[] { snail[6], snail[7], snail[6], snail[7] },
-                                new AssetImage[] { snail[8], snail[9], snail[10], snail[11], snail[12] }),
+                                new AssetImage[] { snail[8], snail[9], snail[10], snail[11] }),
 
                     loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
                                 loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),

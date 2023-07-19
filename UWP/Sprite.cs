@@ -187,16 +187,16 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Banana)
                 {
-                    //for (let y = 0; y < map.height; y++)
-                    //{
-                    //    for (let x = 0; x < map.width; x++)
-                    //    {
-                    //        if (map.getCell(x, y).type == TerrainType.Bomb)
-                    //        {
-                    //            map.ditonateBomb(x, y);
-                    //        }
-                    //    }
-                    //}
+                    for (int y = 0; y < terrain.Height; y++)
+                    {
+                        for (int x = 0; x < terrain.Width; x++)
+                        {
+                            if (terrain.GetCell(x, y).Type == TerrainType.Bomb)
+                            {
+                                terrain.ditonateBomb(x, y);
+                            }
+                        }
+                    }
                 }
                 else if (powerUpType == PowerUpType.Clock)
                 {

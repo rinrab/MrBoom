@@ -290,9 +290,27 @@ namespace MrBoom
                             loadImage(content.Load<Texture2D>("GAME3"), 0, 0, 320, 200),
                         },
                         Walls = loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire,
-                            loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
-                    }
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
+                    },
+                    new Level()
+                    {
+                        Backgrounds = new AssetImage[]
+                        {
+                            loadImage(content.Load<Texture2D>("FOOT"), 0, 0, 320, 200),
+                        },
+                        Overlays = new Level.Overlay[]
+                        {
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(imgSoucoupe, 0, 133, 88, 32, 2, 144),
+                                AnimationDelay = 30,
+                                x = 320 - 88,
+                                y = 0
+                            }
+                        },
+                        Walls = loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
+                    },
                 },
                 BoomMid = loadImageStripe(imgSprite2, 0 * 16, 46 + 0 * 16, 16, 16, 4),
                 BoomHor = loadImageStripe(imgSprite2, 0 * 16, 46 + 1 * 16, 16, 16, 4),

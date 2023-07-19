@@ -73,6 +73,7 @@ namespace MrBoom
                     char src = initial.Data[y][x];
                     //const bonusStr = "0123456789AB";
 
+                    string bonusStr = "123456789A";
                     if (src == '#')
                     {
                         this.data[y * this.Width + x] = new Cell(TerrainType.PermanentWall);
@@ -98,17 +99,17 @@ namespace MrBoom
                     {
                         this.data[y * this.Width + x] = new Cell(TerrainType.Rubber);
                     }
-                    //else if (bonusStr.includes(src))
-                    //{
-                    //    const index = bonusStr.charAt(src);
-                    //    this.data[y * this.width + x] = {
-                    //    type: TerrainType.PowerUp,
-                    //    image: assets.powerups[index],
-                    //    imageIdx: 0,
-                    //    animateDelay: 8,
-                    //    powerUpType: index
-                    //                    }
-                    //}
+                    else if (bonusStr.Contains(src.ToString()))
+                    {
+                        int index = bonusStr.IndexOf(src);
+                        this.data[y * this.Width + x] = new Cell(TerrainType.PowerUp)
+                        {
+                            Images = assets.PowerUps[index],
+                            Index = 0,
+                            animateDelay = 8,
+                            PowerUpType = (PowerUpType)index
+                        };
+                    }
                     else
                     {
                         this.data[y * this.Width + x] = new Cell(TerrainType.Free);
@@ -132,7 +133,7 @@ namespace MrBoom
 
             for (int i = 0; i < count; i++)
             {
-                var data = Map.Maps[this.levelIndex].Monsters[0];
+                var data = Map.Maps[this.levelIndex].Monsters[Random.Next(Map.Maps[this.levelIndex].Monsters.Length)];
                 Monster monster = new Monster(this, data, assets.Monsters[data.Type]);
                 int spawn = generateSpawn();
                 monster.x = spawns[spawn].x * 16;

@@ -137,6 +137,17 @@ namespace MrBoom
 
             if (state == State.Game)
             {
+                if (terrain.levelIndex == 3)
+                {
+                    for (int y = 0; y < 5; y++)
+                    {
+                        for (int x = 0; x < 8; x++)
+                        {
+                            assets.Sky.Draw(spriteBatch, 48 * 8 - (bgTick / 2 + x * 48 + y * 24) % (48 * 8) - 48, y * 44);
+                        }
+                    }
+                }
+
                 var bgs = assets.levels[terrain.levelIndex].Backgrounds;
                 bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
 

@@ -308,6 +308,16 @@ namespace MrBoom
                                 y = 0
                             }
                         },
+                        Walls = loadImageStripe(imgPause, 160, 128, 16, 16, 8),
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16))
+                    },
+                    new Level()
+                    {
+                        Backgrounds = new AssetImage[]
+                        {
+                            loadImage(content.Load<Texture2D>("NUAGE1"), 0, 0, 320, 200),
+                            loadImage(content.Load<Texture2D>("NUAGE2"), 0, 0, 320, 200),
+                        },
                         Walls = loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
                     },

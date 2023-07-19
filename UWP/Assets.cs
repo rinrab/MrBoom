@@ -11,9 +11,18 @@ namespace MrBoom
     {
         public class Level
         {
+            public class Overlay
+            {
+                public AssetImage[] Images;
+                public int AnimationDelay;
+                public int x;
+                public int y;
+            }
+
             public AssetImage[] Backgrounds;
             public AssetImage[] Walls;
             public AssetImage[] PermanentWalls;
+            public Overlay[] Overlays;
         }
 
         public Level[] levels { get; private set; }
@@ -248,6 +257,30 @@ namespace MrBoom
                 },
                 levels = new Level[]
                 {
+                    new Level()
+                    {
+                        Backgrounds =new AssetImage[] {
+                            loadImage(imgNeige1, 0, 0, 320, 200),
+                            loadImage(imgNeige2, 0, 0, 320, 200),
+                            loadImage(imgNeige3, 0, 0, 320, 200),
+                        },
+                        Overlays =new Level.Overlay[] {
+                            new Level.Overlay() {
+                                x=  232,
+                                y = 57,
+                                AnimationDelay = 1,
+                                Images = new AssetImage[] { loadImage(imgMed3, 0, 77, 6 * 8, 44) }
+                            },
+                            new Level.Overlay() {
+                                x = 112,
+                                y = 30,
+                                AnimationDelay = 20,
+                                Images = loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
+                            },
+                        },
+                        Walls = loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
+                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
+                    },
                     new Level()
                     {
                         Backgrounds = new AssetImage[]

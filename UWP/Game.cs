@@ -80,7 +80,7 @@ namespace MrBoom
 
         public void StartGame()
         {
-            terrain = new Terrain(0, assets);
+            terrain = new Terrain(Terrain.Random.Next(Map.Maps.Length), assets);
 
             for (int i = 0; i < Players.Count; i++)
             {
@@ -137,7 +137,7 @@ namespace MrBoom
 
             if (state == State.Game)
             {
-                var bgs = assets.levels[0].Backgrounds;
+                var bgs = assets.levels[terrain.levelIndex].Backgrounds;
                 bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
 
                 for (int y = 0; y < terrain.Height; y++)
@@ -166,6 +166,15 @@ namespace MrBoom
                 foreach (MovingSprite sprite in spritesToDraw)
                 {
                     sprite.Draw(spriteBatch);
+                }
+
+                var overlays = assets.levels[terrain.levelIndex].Overlays;
+                if (overlays != null)
+                {
+                    foreach (var overlay in overlays)
+                    {
+                        overlay.Images[bgTick / overlay.AnimationDelay % overlay.Images.Length].Draw(spriteBatch, overlay.x, overlay.y);
+                    }
                 }
 
                 if (terrain.TimeLeft > 30 * 60)

@@ -15,14 +15,13 @@ namespace MrBoom
         public Assets assets;
         public List<Monster> Monsters;
         public int TimeLeft;
+        public int levelIndex;
 
         private byte[] final;
-        private int apocalypse = -1;
         private int lastApocalypseSound = -1;
         private readonly Cell[] data;
         private int timeToEnd = -1;
         private int time;
-        private int levelIndex;
         private List<Spawn> spawns;
         private List<PowerUpType> powerUpList;
 

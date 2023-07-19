@@ -322,6 +322,24 @@ namespace MrBoom
                             loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1)
                                 .Concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)).ToArray()),
 
+                     loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
+                        loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
+                    // [
+                    //    [snail[0], snail[1], snail[0], snail[1]],
+                    //    [snail[4], snail[5], snail[4], snail[5]],
+                    //    [snail[2], snail[3], snail[2], snail[3]],
+                    //    [snail[6], snail[7], snail[6], snail[7]],
+                    //    [snail[8], snail[9], snail[10], snail[11], snail[12]]
+                    //],
+                    loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
+                            loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
+                    loadMonster(
+                        loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
+                        loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
+                        loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),
+                        loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1)
+                            .Concat(loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)).ToArray(),
+                        loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
                 },
                 //MonsterGhosts = 
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),

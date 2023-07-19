@@ -18,6 +18,8 @@ namespace MrBoom
         private int maxBombsCount;
         private Assets.AssetImage[] bombAssets;
         private bool IsHaveRollers;
+        private int lifeCount;
+        private int unplugin;
 
         public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] bombAssets) : base(map)
         {
@@ -178,13 +180,11 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Life)
                 {
-                    //this.lifeCount++;
+                    this.lifeCount++;
                 }
                 else if (powerUpType == PowerUpType.Shield)
                 {
-                    //this.unplugin = 600;
-                    //this.blinkingSpeed = 30;
-                    //this.blinking = 0;
+                    this.unplugin = 600;
                 }
                 else if (powerUpType == PowerUpType.Banana)
                 {
@@ -232,17 +232,30 @@ namespace MrBoom
                 }
             }
 
-            if (cell.Type == TerrainType.Fire || isTouchingMonster)
+            if ((cell.Type == TerrainType.Fire || isTouchingMonster) && unplugin == 0)
             {
-                this.isDie = true;
-                this.frameIndex = 0;
-                Game.game.sound.PlayerDie.Play();
+                if (lifeCount > 0)
+                {
+                    lifeCount--;
+                    this.unplugin = 165;
+                }
+                else
+                {
+                    this.isDie = true;
+                    this.frameIndex = 0;
+                    Game.game.sound.PlayerDie.Play();
+                }
             }
             if (cell.Type == TerrainType.Apocalypse)
             {
                 this.isDie = true;
                 this.frameIndex = 0;
                 Game.game.sound.PlayerDie.Play();
+            }
+
+            if (unplugin != 0)
+            {
+                unplugin--;
             }
         }
 
@@ -260,7 +273,15 @@ namespace MrBoom
                 int x = this.x + 8 + 8 - img.Width / 2;
                 int y = this.y + 16 - img.Height;
 
-                img.Draw(ctx, x, y);
+                if (unplugin == 0 || unplugin % 30 < 15)
+                {
+                    img.Draw(ctx, x, y);
+                }
+                else
+                {
+                    var ghosts = Game.game.assets.PlayerBoyGhosts;
+                    ghosts[animateIndex * 3 + frameIndex / 20 % 3].Draw(ctx, x, y);
+                }
             }
         }
     }

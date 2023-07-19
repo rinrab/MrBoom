@@ -50,6 +50,7 @@ namespace MrBoom
         public AssetImage Splash { get; private set; }
         public AssetImage[][] PowerUps { get; private set; }
         public AssetImage[][][] Monsters { get; private set; }
+        public AssetImage[] PlayerBoyGhosts { get; private set; }
 
         public AssetImage[][] Alpha;
 
@@ -259,14 +260,14 @@ namespace MrBoom
                 {
                     new Level()
                     {
-                        Backgrounds =new AssetImage[] {
+                        Backgrounds = new AssetImage[] {
                             loadImage(imgNeige1, 0, 0, 320, 200),
                             loadImage(imgNeige2, 0, 0, 320, 200),
                             loadImage(imgNeige3, 0, 0, 320, 200),
                         },
-                        Overlays =new Level.Overlay[] {
+                        Overlays = new Level.Overlay[] {
                             new Level.Overlay() {
-                                x=  232,
+                                x = 232,
                                 y = 57,
                                 AnimationDelay = 1,
                                 Images = new AssetImage[] { loadImage(imgMed3, 0, 77, 6 * 8, 44) }
@@ -412,6 +413,7 @@ namespace MrBoom
                                     .Concat(loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)).ToArray(),
                                 loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
                 },
+                PlayerBoyGhosts = loadImageStripe(imgGhosts, 0, 0, 23, 23, 12, 1),
                 //MonsterGhosts = 
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),

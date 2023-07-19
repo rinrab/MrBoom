@@ -17,6 +17,7 @@ namespace MrBoom
         private int maxBoom;
         private int maxBombsCount;
         private Assets.AssetImage[] bombAssets;
+        private bool IsHaveRollers;
 
         public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] bombAssets) : base(map)
         {
@@ -154,15 +155,15 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.RollerSkate)
                 {
-                    //if (!this.isHaveRollers)
-                    //{
-                    //    this.speed = 2;
-                    //    this.isHaveRollers = true;
-                    //}
-                    //else
-                    //{
-                    //    doFire = true;
-                    //}
+                    if (!this.IsHaveRollers)
+                    {
+                        this.speed = 2;
+                        this.IsHaveRollers = true;
+                    }
+                    else
+                    {
+                        doFire = true;
+                    }
                 }
                 else if (powerUpType == PowerUpType.Kick)
                 {

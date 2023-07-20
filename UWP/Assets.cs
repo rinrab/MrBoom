@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
+using Windows.UI.Xaml.Controls;
 
 namespace MrBoom
 {
@@ -195,7 +197,38 @@ namespace MrBoom
 
             AssetImage[] loadPermanentWall(AssetImage[] fireImages, AssetImage wall)
             {
-                return new AssetImage[] { wall };
+                int width = Math.Max(fireImages[0].Width, wall.Width);
+                int height = Math.Max(fireImages[0].Height, wall.Height);
+
+                RenderTarget2D result = new RenderTarget2D(
+                    graphics,
+                    width * (fireImages.Length + 1) * scale,
+                    height * height * scale,
+                    false, SurfaceFormat.Color, DepthFormat.None,
+                    graphics.PresentationParameters.MultiSampleCount,
+                    RenderTargetUsage.PreserveContents);
+
+                graphics.SetRenderTarget(result);
+                using (SpriteBatch batch = new SpriteBatch(graphics))
+                {
+                    batch.Begin(SpriteSortMode.Immediate);
+                    for (int i = 0; i < fireImages.Length + 1; i++)
+                    {
+                        int x = width * i;
+                        int y = 0;
+
+                        wall.Draw(batch, x + (width - wall.Width) / 2, height - wall.Height);
+
+                        if (i > 0)
+                        {
+                            fireImages[i - 1].Draw(batch, x, y);
+                        }
+                    }
+                    batch.End();
+                }
+                graphics.SetRenderTarget(null);
+
+                return loadImageStripe(result, 0, 0, width, height, fireImages.Length + 1);
             }
 
             var imgNeige1 = content.Load<Texture2D>("NEIGE1");

@@ -202,7 +202,7 @@ namespace MrBoom
                                 {
                                     SetCell(i % Width, i / Width, new Cell(TerrainType.Apocalypse)
                                     {
-                                        Images = assets.Fire,
+                                        Images = assets.levels[levelIndex].PermanentWalls,
                                         Index = 0,
                                         Next = new Cell(TerrainType.PermanentWall)
                                         {

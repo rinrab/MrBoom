@@ -220,7 +220,14 @@ namespace MrBoom
 
             if (this.tick > 120 && Game.IsAnyKeyPressed(controllers))
             {
-                Next = State.Game;
+                if (players[winner].VictoryCount >= 5)
+                {
+                    Next = State.Victory;
+                }
+                else
+                {
+                    Next = State.Game;
+                }
             }
 
             this.tick++;
@@ -279,8 +286,6 @@ namespace MrBoom
             this.winner = winner;
             this.assets = assets;
             this.controllers = controllers;
-
-            SoundsToPlay |= Sound.Victory;
         }
 
         public void Draw(SpriteBatch ctx)

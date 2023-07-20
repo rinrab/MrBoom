@@ -125,18 +125,9 @@ namespace MrBoom
                         }
                     }
 
-                    if (players[winner].VictoryCount >= 5)
-                    {
-                        menu = new Victory(players, winner, assets, Controllers);
-                        PlaySounds(menu.SoundsToPlay);
-                        state = State.Victory;
-                    }
-                    else
-                    {
-                        menu = new Results(players, winner, assets, Controllers);
-                        PlaySounds(menu.SoundsToPlay);
-                        state = State.Results;
-                    }
+                    menu = new Results(players, winner, assets, Controllers);
+                    PlaySounds(menu.SoundsToPlay);
+                    state = State.Results;
                 }
                 else if (terrain.Result == GameResult.Draw)
                 {

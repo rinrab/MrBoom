@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
 {
@@ -22,6 +26,27 @@ namespace MrBoom
         {
             tick++;
 
+            bool isWalkable(int dx, int dy)
+            {
+                switch (terrain.GetCell((x + dx * 8 + 8 + dx) / 16, (y + dy * 8 + 8 + dy) / 16).Type)
+                {
+                    case TerrainType.Free:
+                    case TerrainType.PowerUpFire:
+                    case TerrainType.PowerUp:
+                        return true;
+
+                    case TerrainType.PermanentWall:
+                    case TerrainType.TemporaryWall:
+                    case TerrainType.Bomb:
+                    case TerrainType.Fire:
+                    case TerrainType.Apocalypse:
+                    case TerrainType.Rubber:
+                        return false;
+
+                    default: return true;
+                }
+            }
+
             if (!IsDie)
             {
                 var cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
@@ -41,19 +66,31 @@ namespace MrBoom
                 }
                 else
                 {
-                    int _x = x;
-                    int _y = y;
+                    Point[] delta = new Point[]
+                    {
+                        new Point(0, -1),
+                        new Point(0, 1),
+                        new Point(-1, 0),
+                        new Point(1, 0),
+                    };
+
                     if (wait == 0)
                     {
                         wait = -1;
 
-                        for (int i = 0; _x == x && _y == y; i++)
+                        for (int i = 0; ; i++)
                         {
-                            this.Direction = (Directions)Terrain.Random.Next(1, 5);
-                            base.Update();
-                            if (i > 10)
+                            int index = Terrain.Random.Next(4);
+
+                            if (isWalkable(delta[index].X, delta[index].Y))
+                            {
+                                Direction = (Directions)index + 1;
+                                break;
+                            }
+                            if (i >= 32)
                             {
                                 Direction = Directions.None;
+                                wait = monsterData.WaitAfterTurn;
                                 break;
                             }
                         }
@@ -70,14 +107,14 @@ namespace MrBoom
                             }
                             else
                             {
-                                base.Update();
-                                if (_x == x && _y == y)
+                                if (!isWalkable(delta[(int)Direction - 1].X, delta[(int)Direction - 1].Y))
                                 {
                                     wait = this.monsterData.WaitAfterTurn;
                                     frameIndex = 0;
                                     Direction = Directions.None;
                                 }
                             }
+                            base.Update();
                         }
                     }
                     else

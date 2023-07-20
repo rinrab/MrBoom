@@ -201,8 +201,8 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Clock)
                 {
-                    //map.timeLeft += 60;
-                    //soundManager.playSound("clock");
+                    terrain.TimeLeft += 60 * 60;
+                    terrain.PlaySound(Sound.Clock);
                 }
 
                 if (doFire)

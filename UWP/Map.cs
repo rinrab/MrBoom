@@ -80,6 +80,7 @@
                     new PowerUpData(PowerUpType.RollerSkate, 1),
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
                 },
                 Monsters = new MonsterData[]
                 {
@@ -115,6 +116,7 @@
                     new PowerUpData(PowerUpType.RollerSkate, 1),
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
                 },
                 Monsters = new MonsterData[]
                 {
@@ -151,6 +153,7 @@
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Banana, 10),
                     new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
                 },
                 Monsters = new MonsterData[]
                 {
@@ -186,6 +189,7 @@
                     new PowerUpData(PowerUpType.RollerSkate, 1),
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
                 },
                 Monsters = new MonsterData[]
                 {
@@ -242,6 +246,7 @@
                     new PowerUpData(PowerUpType.RollerSkate, 1),
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
                 },
                 Monsters = new MonsterData[]
                 {
@@ -277,6 +282,7 @@
                     new PowerUpData(PowerUpType.RollerSkate, 1),
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
                 },
                 Monsters = new MonsterData[]
                 {
@@ -312,6 +318,7 @@
                     new PowerUpData(PowerUpType.RemoteControl, 2),
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
                 },
                 Monsters = new MonsterData[]
                 {
@@ -362,6 +369,7 @@
                     new PowerUpData(PowerUpType.RollerSkate, 1),
                     new PowerUpData(PowerUpType.Shield, 1),
                     new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
                 },
                 Monsters = new MonsterData[]
                 {

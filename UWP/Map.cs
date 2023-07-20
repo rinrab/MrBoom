@@ -194,8 +194,8 @@
                     new MonsterData(1, 60),
                     new MonsterData(1, 60),
                     new MonsterData(2, 60) { Slow = 2 },
-                    new MonsterData(3, 30) { Slow = 3 },
-                    new MonsterData(3, 30) { Slow = 3 },
+                    new MonsterData(3, 90) { Slow = 3 },
+                    new MonsterData(3, 90) { Slow = 3 },
                 },
                 Final = new byte[]
                 {
@@ -245,7 +245,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(3, 30) { Slow = 3 },
+                    new MonsterData(3, 90) { Slow = 3 },
                 },
                 Final = DefaultFinal
             },
@@ -281,7 +281,7 @@
                 Monsters = new MonsterData[]
                 {
                     new MonsterData(1, 30),
-                    new MonsterData(3, 30) { Slow = 3 },
+                    new MonsterData(3, 90) { Slow = 3 },
                 },
                 Final = DefaultFinal
             },

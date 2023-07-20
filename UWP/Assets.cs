@@ -51,6 +51,7 @@ namespace MrBoom
         public AssetImage[][] PowerUps { get; private set; }
         public AssetImage[][][] Monsters { get; private set; }
         public AssetImage[] PlayerBoyGhosts { get; private set; }
+        public AssetImage[][] MonsterGhosts { get; private set; }
 
         public AssetImage[][] Alpha;
 
@@ -429,7 +430,6 @@ namespace MrBoom
                                     .Concat(loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)).ToArray(),
                                 loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
                 },
-                //MonsterGhosts = 
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),
                 Alpha = new AssetImage[][] {
@@ -450,6 +450,22 @@ namespace MrBoom
                     .Concat(loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)).ToArray(),
                 BoyGhost = loadImageStripe(imgGhosts, 0, 0, 23, 23, 12, 1),
                 GirlGhost = loadImageStripe(imgGhosts, 0, 24, 23, 25, 12, 1),
+                MonsterGhosts = new AssetImage[][]
+                {
+                    null,
+                    loadImageStripe(imgGhosts, 0, 47, 32, 32, 6, 1).Concat(
+                        loadImageStripe(imgGhosts, 99, 47 + 33, 32, 32, 6, 1)).ToArray(),
+                    monster2ghost.Concat(monster2ghost.Concat(monster2ghost).Concat(monster2ghost)).ToArray(),
+                    new AssetImage[]
+                    {
+                        snailGhost[0], snailGhost[1], snailGhost[0], snailGhost[1],
+                        snailGhost[4], snailGhost[5], snailGhost[4], snailGhost[5],
+                        snailGhost[2], snailGhost[3], snailGhost[2], snailGhost[3],
+                        snailGhost[6], snailGhost[7], snailGhost[6], snailGhost[7]
+                    },
+                    null,
+                    loadImageStripe(imgGhosts, 0, 180, 23, 21, 12, 1),
+                },
                 Vic = new AssetImage[] {
                     loadImage(content.Load<Texture2D>("VIC1"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("VIC2"), 0, 0, 320, 200),

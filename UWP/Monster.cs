@@ -12,14 +12,19 @@ namespace MrBoom
 
         private readonly Map.MonsterData monsterData;
         private readonly Assets.AssetImage[][] assets;
+        private readonly Assets.AssetImage[] ghosts;
         private int wait = -1;
         private int tick = 0;
+        private int livesCount;
+        private int unplugin;
 
-        public Monster(Terrain map, Map.MonsterData monsterData, Assets.AssetImage[][] assets) : base(map)
+        public Monster(Terrain map, Map.MonsterData monsterData, Assets.AssetImage[][] assets, Assets.AssetImage[] ghosts) : base(map)
         {
             this.monsterData = monsterData;
+            this.livesCount = monsterData.LivesCount - 1;
             this.Direction = (Directions)Terrain.Random.Next(1, 5);
             this.assets = assets;
+            this.ghosts = ghosts;
         }
 
         public override void Update()
@@ -49,14 +54,26 @@ namespace MrBoom
 
             if (!IsDie)
             {
-                var cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
-                if (cell.Type == TerrainType.Fire)
+                if (unplugin != 0)
                 {
-                    IsDie = true;
-                    frameIndex = 0;
-                    terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
+                    unplugin--;
+                }
 
-                    terrain.PlaySound(Sound.Ai);
+                var cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
+                if (cell.Type == TerrainType.Fire && unplugin == 0)
+                {
+                    if (livesCount > 0)
+                    {
+                        terrain.PlaySound(Sound.Ai);
+                        livesCount--;
+                        this.unplugin = 165;
+                    }
+                    else
+                    {
+                        IsDie = true;
+                        frameIndex = 0;
+                        terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
+                    }
                 }
                 else if (cell.Type == TerrainType.Apocalypse)
                 {
@@ -151,7 +168,22 @@ namespace MrBoom
                 int x = this.x + 8 + 8 - img.Width / 2;
                 int y = this.y + 16 - img.Height;
 
-                img.Draw(ctx, x, y);
+                if (unplugin == 0 || unplugin % 30 < 15)
+                {
+                    img.Draw(ctx, x, y);
+                }
+                else
+                {
+                    if (ghosts.Length / 4 == 2)
+                    {
+                        ghosts[animateIndex * 2 + frameIndex / 20 % 2].Draw(ctx, x, y);
+                    }
+                    else
+                    {
+                        int[] index = new int[] { 0, 1, 0, 2 };
+                        ghosts[animateIndex * 3 + index[frameIndex / 20 % 4]].Draw(ctx, x, y);
+                    }
+                }
             }
         }
     }

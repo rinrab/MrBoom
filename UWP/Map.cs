@@ -16,14 +16,18 @@
 
         public class MonsterData
         {
-            public int Slow = 1;
+            public int Slow;
             public int WaitAfterTurn { get; }
             public int Type { get; }
+            public int LivesCount { get; }
 
-            public MonsterData(int type, int waitAfterTurn)
+            public MonsterData(int type, int waitAfterTurn, int livesCount)
             {
                 WaitAfterTurn = waitAfterTurn;
                 Type = type;
+                LivesCount = livesCount;
+
+                Slow = 1;
             }
         }
 
@@ -84,7 +88,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(0, 30)
+                    new MonsterData(0, 30, 1)
                 },
                 Final = DefaultFinal
             },
@@ -120,7 +124,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(1, 30)
+                    new MonsterData(1, 30, 3)
                 },
                 Final = DefaultFinal
             },
@@ -157,7 +161,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(4, 60)
+                    new MonsterData(4, 60, 1)
                 },
                 Final = DefaultFinal
             },
@@ -193,13 +197,13 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(0, 60),
-                    new MonsterData(0, 60),
-                    new MonsterData(1, 60),
-                    new MonsterData(1, 60),
-                    new MonsterData(2, 60) { Slow = 2 },
-                    new MonsterData(3, 90) { Slow = 3 },
-                    new MonsterData(3, 90) { Slow = 3 },
+                    new MonsterData(0, 30, 1),
+                    new MonsterData(0, 30, 1),
+                    new MonsterData(1, 30, 3),
+                    new MonsterData(1, 30, 3),
+                    new MonsterData(2, 60, 1) { Slow = 2 },
+                    new MonsterData(3, 90, 3) { Slow = 3 },
+                    new MonsterData(3, 90, 3) { Slow = 3 },
                 },
                 Final = new byte[]
                 {
@@ -250,7 +254,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(3, 90) { Slow = 3 },
+                    new MonsterData(3, 90, 3) { Slow = 3 },
                 },
                 Final = DefaultFinal
             },
@@ -286,8 +290,8 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(1, 30),
-                    new MonsterData(3, 90) { Slow = 3 },
+                    new MonsterData(1, 30, 3),
+                    new MonsterData(3, 90, 3) { Slow = 3 },
                 },
                 Final = DefaultFinal
             },
@@ -322,7 +326,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(5, 30),
+                    new MonsterData(5, 30, 2),
                 },
                 Final = new byte[]
                 {
@@ -373,7 +377,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(1, 30),
+                    new MonsterData(1, 30, 3),
                 },
                 Final = new byte[]
                 {

@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
 {

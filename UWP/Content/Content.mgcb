@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:../../www/Gfx2x/ALPHA.PNG;ALPHA.PNG
 
+#begin ../../www/Gfx2x/BONUS.PNG
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../www/Gfx2x/BONUS.PNG;BONUS.PNG
+
 #begin ../../www/Gfx2x/CRAYON.PNG
 /importer:TextureImporter
 /processor:TextureProcessor

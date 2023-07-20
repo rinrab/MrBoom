@@ -65,7 +65,7 @@ namespace MrBoom
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
 
-            assets = Assets.Load(Content);
+            assets = Assets.Load(Content, GraphicsDevice);
             sound = SoundAssets.Load(Content);
             MediaPlayer.IsRepeating = true;
 

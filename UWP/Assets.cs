@@ -76,7 +76,7 @@ namespace MrBoom
             }
         }
 
-        public static Assets Load(ContentManager content)
+        public static Assets Load(ContentManager content, GraphicsDevice graphics)
         {
             AssetImage loadImage(Texture2D texture, int x, int y, int width, int height)
             {
@@ -167,49 +167,30 @@ namespace MrBoom
                 };
             }
 
-            AssetImage[] loadBonus(AssetImage img)
+            AssetImage[] loadBonus(AssetImage img, AssetImage background)
             {
-                // TODO:
-                // const frameColors = [
-                //     "#FC00FC",
-                //     "#FC6CFC",
-                //     "#FC90FC",
-                //     "#FCB4FC",
-                //     "#FCD8FC",
-                //     "#FCFCFC",
-                //     "#FCD8FC",
-                //     "#FCB4FC",
-                //     "#FC90FC",
-                //     "#FC6CFC"
-                // ];
+                RenderTarget2D result = new RenderTarget2D(
+                    graphics, background.Width * scale, background.Height * scale,
+                    false, SurfaceFormat.Color, DepthFormat.None, 
+                    graphics.PresentationParameters.MultiSampleCount, 
+                    RenderTargetUsage.PreserveContents);
 
-                var width = img.Width;
-                var height = img.Height;
+                int count = 0;
+                graphics.SetRenderTarget(result);
+                using (SpriteBatch batch = new SpriteBatch(graphics))
+                {
+                    batch.Begin(SpriteSortMode.Immediate);
+                    background.Draw(batch, 0, 0);
+                    for (int x = 0; x < background.Width; x+= img.Width)
+                    {
+                        img.Draw(batch, x, 0);
+                        count++;
+                    }
+                    batch.End();
+                }
+                graphics.SetRenderTarget(null);
 
-                // TODO:
-                //canvas.width = width * frameColors.length * scale;
-                //canvas.height = height * scale;
-
-                //const ctx = canvas.getContext("2d");
-
-                //for (let i = 0; i < frameColors.length; i++)
-                //{
-                //    const x = width * i;
-                //    const y = 0;
-
-                //    ctx.fillStyle = frameColors[i];
-                //    ctx.fillRect(x * scale, y * scale, width * scale, height * scale);
-
-                //    ctx.fillStyle = "#6C90FC";
-                //    ctx.fillRect((x + 1) * scale, 1 * scale, (width - 2) * scale, (height - 2) * scale);
-
-                //    // image.draw() handles scaling internally..
-                //    img.draw(ctx, x, y);
-                //}
-
-                //const bitmap = await createImageBitmap(canvas);
-
-                return new AssetImage[] { img };
+                return loadImageStripe(result, 0, 0, img.Width, img.Height, count);
             }
 
             AssetImage[] loadPermanentWall(AssetImage[] fireImages, AssetImage wall)
@@ -230,6 +211,7 @@ namespace MrBoom
             var imgGhosts = content.Load<Texture2D>("GHOST");
             var imgCrayon2 = content.Load<Texture2D>("CRAYON2");
             var imgSoucoupe = content.Load<Texture2D>("SOUCOUPE");
+            var imgBonus = content.Load<Texture2D>("BONUS");
 
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
             var monster2ghost = loadImageStripe(imgGhosts, 195, 93, 16, 19, 3, 0);
@@ -241,22 +223,23 @@ namespace MrBoom
                      .Concat(loadImageStripe(imgGhosts, 1, 147, 38, 32, 7, 1)).ToArray();
 
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
+            var bonusBackground = loadImage(imgBonus, 0, 0, 160, 16);
 
             return new Assets()
             {
                 Bomb = loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
                 PowerUps = new AssetImage[][] {
-                    loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 8 * 16, 3 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 1 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 2 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 3 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 4 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 5 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 6 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 7 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 8 * 16, 16, 16)),
-                    loadBonus(loadImage(imgSprite2, 9 * 16, 9 * 16, 16, 16)),
+                    loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 8 * 16, 3 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 1 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 2 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 3 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 4 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 5 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 6 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 7 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 8 * 16, 16, 16), bonusBackground),
+                    loadBonus(loadImage(imgSprite2, 9 * 16, 9 * 16, 16, 16), bonusBackground),
                 },
                 levels = new Level[]
                 {

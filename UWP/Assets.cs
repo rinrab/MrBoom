@@ -321,7 +321,7 @@ namespace MrBoom
                         {
                             new Level.Overlay()
                             {
-                                Images = loadImageStripe(imgSoucoupe, 0, 133, 88, 32, 2, 144),
+                                Images = loadImageStripe(imgSoucoupe, 0, 133, 88, 49 - 13, 2, 144),
                                 AnimationDelay = 30,
                                 x = 320 - 88,
                                 y = 0

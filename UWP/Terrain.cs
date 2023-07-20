@@ -473,6 +473,17 @@ namespace MrBoom
             burn(0, -1, assets.BoomVert, assets.BoomTopEnd);
         }
 
+        public Cell GeneratePowerUp(PowerUpType powerUpType)
+        {
+            return new Cell(TerrainType.PowerUp)
+            {
+                Images = assets.PowerUps[(int)powerUpType],
+                Index = 0,
+                animateDelay = 8,
+                PowerUpType = powerUpType
+            };
+        }
+
         Cell GenerateGiven()
         {
             int rnd = Random.Next(int.MaxValue);
@@ -480,13 +491,8 @@ namespace MrBoom
             {
                 var powerUpIndex = Random.Next(this.powerUpList.Count);
                 var powerUpType = this.powerUpList[powerUpIndex];
-                return new Cell(TerrainType.PowerUp)
-                {
-                    Images = assets.PowerUps[(int)powerUpType],
-                    Index = 0,
-                    animateDelay = 8,
-                    PowerUpType = powerUpType
-                };
+
+                return GeneratePowerUp(powerUpType);
             }
             else
             {

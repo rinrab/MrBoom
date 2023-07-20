@@ -29,13 +29,8 @@ namespace MrBoom
                 {
                     IsDie = true;
                     frameIndex = 0;
-                    terrain.SetCell((x + 8) / 16, (y + 8) / 16, new Cell(TerrainType.PowerUp)
-                    {
-                        Images = Game.game.assets.PowerUps[(int)PowerUpType.Life],
-                        Index = 0,
-                        animateDelay = 8,
-                        PowerUpType = PowerUpType.Life
-                    });
+                    terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
+
                     Game.game.sound.Ai.Play();
                 }
                 else if (cell.Type == TerrainType.Apocalypse)

@@ -14,6 +14,7 @@ namespace MrBoom
         public List<Monster> Monsters;
         public int TimeLeft;
         public int levelIndex;
+        public Sound SoundsToPlay;
         public Assets.Level LevelAssets
         {
             get
@@ -147,6 +148,7 @@ namespace MrBoom
 
         public void Update()
         {
+            SoundsToPlay = 0;
             this.time++;
             TimeLeft--;
 
@@ -195,7 +197,7 @@ namespace MrBoom
                                         Index = 0,
                                         Next = new Cell(TerrainType.Free)
                                     });
-                                    Game.game.sound.Sac.Play();
+                                    PlaySound(Sound.Sac);
                                 }
                             }
                             else if (final[i] == index)
@@ -214,7 +216,7 @@ namespace MrBoom
                                     });
                                     if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
                                     {
-                                        Game.game.sound.Sac.Play();
+                                        PlaySound(Sound.Sac);
                                         lastApocalypseSound = TimeLeft;
                                     }
                                 }
@@ -442,7 +444,7 @@ namespace MrBoom
                             animateDelay = 6,
                             Next = new Cell(TerrainType.Free)
                         });
-                        //this.playSound("sac");
+                        this.PlaySound(Sound.Sac);
                         break;
                     }
                     else if (cell.Type == TerrainType.Bomb)
@@ -465,7 +467,7 @@ namespace MrBoom
                 }
             }
 
-            Game.game.sound.Bang.Play();
+            PlaySound(Sound.Bang);
 
             this.SetCell(bombX, bombY, new Cell(TerrainType.Fire)
             {
@@ -523,6 +525,11 @@ namespace MrBoom
             }
             this.spawns[spawnIndex].busy = true;
             return spawnIndex;
+        }
+
+        public void PlaySound(Sound sound)
+        {
+            SoundsToPlay |= sound;
         }
     }
 

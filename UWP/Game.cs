@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using SharpDX.MediaFoundation;
 
 namespace MrBoom
 {
@@ -105,6 +106,8 @@ namespace MrBoom
 
                 terrain.Update();
 
+                PlaySounds(terrain.SoundsToPlay);
+
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 {
                     menu = new StartMenu(this);
@@ -122,6 +125,22 @@ namespace MrBoom
             }
 
             base.Update(gameTime);
+        }
+
+        private void PlaySounds(Sound soundsToPlay)
+        {
+            if (soundsToPlay.HasFlag(Sound.Bang)) sound.Bang.Play();
+            if (soundsToPlay.HasFlag(Sound.PoseBomb)) sound.PoseBomb.Play();
+            if (soundsToPlay.HasFlag(Sound.Sac)) sound.Sac.Play();
+            if (soundsToPlay.HasFlag(Sound.Pick)) sound.Pick.Play();
+            if (soundsToPlay.HasFlag(Sound.PlayerDie)) sound.PlayerDie.Play();
+            if (soundsToPlay.HasFlag(Sound.Oioi)) sound.Oioi.Play();
+            if (soundsToPlay.HasFlag(Sound.Ai)) sound.Ai.Play();
+            if (soundsToPlay.HasFlag(Sound.Addplayer)) sound.Addplayer.Play();
+            if (soundsToPlay.HasFlag(Sound.Victory)) sound.Victory.Play();
+            if (soundsToPlay.HasFlag(Sound.Draw)) sound.Draw.Play();
+            if (soundsToPlay.HasFlag(Sound.Clock)) sound.Clock.Play();
+            if (soundsToPlay.HasFlag(Sound.TimeEnd)) sound.TimeEnd.Play();
         }
 
         protected override void Draw(GameTime gameTime)

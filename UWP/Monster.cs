@@ -31,13 +31,13 @@ namespace MrBoom
                     frameIndex = 0;
                     terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
 
-                    Game.game.sound.Ai.Play();
+                    terrain.PlaySound(Sound.Ai);
                 }
                 else if (cell.Type == TerrainType.Apocalypse)
                 {
                     IsDie = true;
                     frameIndex = 0;
-                    Game.game.sound.Ai.Play();
+                    terrain.PlaySound(Sound.Ai);
                 }
                 else
                 {

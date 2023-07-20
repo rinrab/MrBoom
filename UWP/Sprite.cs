@@ -125,7 +125,7 @@ namespace MrBoom
                         owner = this
                     });
                     this.BombsPlaced++;
-                    Game.game.sound.PoseBomb.Play();
+                    terrain.PlaySound(Sound.PoseBomb);
                 }
             }
 
@@ -212,12 +212,12 @@ namespace MrBoom
                         animateDelay = 6,
                         Next = new Cell(TerrainType.Free)
                     });
-                    Game.game.sound.Sac.Play();
+                    terrain.PlaySound(Sound.Sac);
                 }
                 else
                 {
                     terrain.SetCell(cellX, cellY, new Cell(TerrainType.Free));
-                    Game.game.sound.Pick.Play();
+                    terrain.PlaySound(Sound.Pick);
                 }
             }
 
@@ -241,7 +241,7 @@ namespace MrBoom
                 {
                     this.isDie = true;
                     this.frameIndex = 0;
-                    Game.game.sound.PlayerDie.Play();
+                    terrain.PlaySound(Sound.PlayerDie);
                 }
             }
             if (cell.Type == TerrainType.Apocalypse)
@@ -249,7 +249,7 @@ namespace MrBoom
                 unplugin = 0;
                 this.isDie = true;
                 this.frameIndex = 0;
-                Game.game.sound.PlayerDie.Play();
+                terrain.PlaySound(Sound.PlayerDie);
             }
 
             if (unplugin != 0)

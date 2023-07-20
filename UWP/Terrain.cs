@@ -202,11 +202,11 @@ namespace MrBoom
                                 {
                                     SetCell(i % Width, i / Width, new Cell(TerrainType.Apocalypse)
                                     {
-                                        Images = assets.levels[levelIndex].PermanentWalls,
+                                        Images = LevelAssets.PermanentWalls,
                                         Index = 0,
                                         Next = new Cell(TerrainType.PermanentWall)
                                         {
-                                            Images = assets.levels[levelIndex].PermanentWalls,
+                                            Images = LevelAssets.PermanentWalls,
                                         }
                                     });
                                     if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)

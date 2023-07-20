@@ -10,6 +10,7 @@ namespace MrBoom
         StartMenu,
         Game,
         Draw,
+        Results,
         Victory
     }
 

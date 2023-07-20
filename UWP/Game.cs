@@ -10,8 +10,6 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
-        public static Game game;
-
         public class Player
         {
             public IController Controller;
@@ -57,8 +55,6 @@ namespace MrBoom
 
         protected override void Initialize()
         {
-            game = this;
-
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
 
@@ -79,9 +75,11 @@ namespace MrBoom
         {
             terrain = new Terrain(Terrain.Random.Next(Map.Maps.Length), assets);
 
+            NextSong();
+
             for (int i = 0; i < Players.Count; i++)
             {
-                Sprite sprite = new Sprite(terrain, assets.Players[i], assets.Bomb)
+                Sprite sprite = new Sprite(terrain, assets.Players[i], assets.BoyGhost, assets.Bomb)
                 {
                     Controller = this.Players[i].Controller
                 };
@@ -107,6 +105,40 @@ namespace MrBoom
                 terrain.Update();
 
                 PlaySounds(terrain.SoundsToPlay);
+
+                if (terrain.Result == GameResult.Victory)
+                {
+                    Player[] players = Players.ToArray();
+
+                    int winner = -1;
+                    var winnerSprite = terrain.Players[terrain.Winner];
+
+                    for (int i = 0; i < players.Length; i++)
+                    {
+                        Game.Player player = players[i];
+                        if (winnerSprite.Controller == player.Controller)
+                        {
+                            player.VictoryCount++;
+                            winner = i;
+                        }
+                    }
+
+                    if (players[winner].VictoryCount >= 5)
+                    {
+                        menu = new Victory(this, winner);
+                        state = State.Victory;
+                    }
+                    else
+                    {
+                        menu = new Results(players, winner, this);
+                        state = State.Results;
+                    }
+                }
+                else if (terrain.Result == GameResult.Draw)
+                {
+                    menu = new DrawMenu(this);
+                    state = State.Draw;
+                }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 {

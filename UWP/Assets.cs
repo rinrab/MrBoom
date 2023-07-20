@@ -429,7 +429,6 @@ namespace MrBoom
                                     .Concat(loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)).ToArray(),
                                 loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
                 },
-                PlayerBoyGhosts = loadImageStripe(imgGhosts, 0, 0, 23, 23, 12, 1),
                 //MonsterGhosts = 
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),

@@ -15,6 +15,8 @@ namespace MrBoom
         public int TimeLeft;
         public int levelIndex;
         public Sound SoundsToPlay;
+        public GameResult Result = GameResult.None;
+
         public Assets.Level LevelAssets
         {
             get
@@ -22,6 +24,8 @@ namespace MrBoom
                 return levelAssets;
             }
         }
+
+        public int Winner { get; private set; }
 
         private byte[] final;
         private int lastApocalypseSound = -1;
@@ -44,7 +48,6 @@ namespace MrBoom
         public Terrain(int levelIndex, Assets assets)
         {
             Monsters = new List<Monster>();
-            Game.game.NextSong();
 
             this.levelIndex = levelIndex;
             this.assets = assets;
@@ -229,43 +232,18 @@ namespace MrBoom
             if (this.timeToEnd == 0) {
                 if (playersCount == 1)
                 {
-                    Sprite winnerSprite = null;
-                    foreach (Sprite sprite in this.Players)
+                    for (int i = 0; i < Players.Count; i++)
                     {
-                        if (!sprite.isDie)
+                        if (!Players[i].isDie)
                         {
-                            winnerSprite = sprite;
+                            Winner = i;
                         }
                     }
-
-                    Game.Player[] players = Game.game.Players.ToArray();
-
-                    int winner = -1;
-                    for (int i = 0; i < players.Length; i++)
-                    {
-                        Game.Player player = players[i];
-                        if (winnerSprite.Controller == player.Controller)
-                        {
-                            player.VictoryCount++;
-                            winner = i;
-                        }
-                    }
-
-                    if (players[winner].VictoryCount >= 5)
-                    {
-                        Game.game.menu = new Victory(Game.game, winner);
-                        Game.game.state = State.Victory;
-                    }
-                    else
-                    {
-                        Game.game.menu = new Results(players, winner, Game.game);
-                        Game.game.state = State.Draw;
-                    }
+                    Result = GameResult.Victory;
                 }
                 else
                 {
-                    Game.game.menu = new DrawMenu(Game.game);
-                    Game.game.state = State.Draw;
+                    Result = GameResult.Draw;
                 }
             }
 
@@ -579,5 +557,12 @@ namespace MrBoom
         RollerSkate,
         Clock,
         MultiBomb,
+    }
+
+    public enum GameResult
+    {
+        None,
+        Victory,
+        Draw,
     }
 }

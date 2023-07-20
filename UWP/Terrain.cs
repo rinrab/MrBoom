@@ -24,6 +24,7 @@ namespace MrBoom
         private int time;
         private List<Spawn> spawns;
         private List<PowerUpType> powerUpList;
+        private readonly Map map;
 
         private Assets.Level LevelAssets
         {
@@ -44,23 +45,23 @@ namespace MrBoom
         {
             Monsters = new List<Monster>();
             Game.game.NextSong();
-            var initial = Map.Maps[levelIndex];
+            map = Map.Maps[levelIndex];
             this.levelIndex = levelIndex;
             this.assets = assets;
             this.powerUpList = new List<PowerUpType>();
-            foreach (var bonus in initial.PowerUps)
+            foreach (var bonus in map.PowerUps)
             {
                 for (int i = 0; i < bonus.Count; i++)
                 {
                     this.powerUpList.Add(bonus.Type);
                 }
             }
-            this.Width = initial.Data[0].Length;
-            this.Height = initial.Data.Length;
+            this.Width = map.Data[0].Length;
+            this.Height = map.Data.Length;
             //this.monsters = [];
             this.spawns = new List<Spawn>();
-            this.TimeLeft = (initial.Time + 31) * 60;
-            this.final = initial.Final;
+            this.TimeLeft = (map.Time + 31) * 60;
+            this.final = map.Final;
             this.Players = new List<Sprite>();
 
             //this.initialBonus = initial.initialBonus;
@@ -70,7 +71,7 @@ namespace MrBoom
             {
                 for (int x = 0; x < this.Width; x++)
                 {
-                    char src = initial.Data[y][x];
+                    char src = map.Data[y][x];
                     //const bonusStr = "0123456789AB";
 
                     string bonusStr = "123456789A";
@@ -133,7 +134,7 @@ namespace MrBoom
 
             for (int i = 0; i < count; i++)
             {
-                var data = Map.Maps[this.levelIndex].Monsters[Random.Next(Map.Maps[this.levelIndex].Monsters.Length)];
+                var data = map.Monsters[Random.Next(map.Monsters.Length)];
                 Monster monster = new Monster(this, data, assets.Monsters[data.Type]);
                 int spawn = generateSpawn();
                 monster.x = spawns[spawn].x * 16;

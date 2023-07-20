@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using static MrBoom.Game;
 
 namespace MrBoom
 {
@@ -26,6 +27,8 @@ namespace MrBoom
 
         private readonly Game game;
         private readonly Assets assets;
+        private readonly List<Game.Player> players;
+        private readonly List<IController> controllers;
         private readonly string helpText =
             "welcome to mr.boom v0.1!!!   " +
             "players can join using their drop bomb button   use enter to start game   " +
@@ -36,16 +39,17 @@ namespace MrBoom
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
 
-        public StartMenu(Game game, Assets assets)
+        public StartMenu(Game game, Assets assets, List<Game.Player> players, List<IController> controllers)
         {
             this.game = game;
             this.assets = assets;
-            game.Players = new List<Game.Player>();
-            foreach (IController controller in game.Controllers)
+            this.players = players;
+            this.controllers = controllers;
+
+            foreach (IController controller in controllers)
             {
                 controller.IsJoined = false;
             }
-            game.NextSong(3);
         }
 
         public void Draw(SpriteBatch ctx)
@@ -92,19 +96,19 @@ namespace MrBoom
 
             bool isStart = false;
 
-            foreach (var controller in game.Controllers)
+            foreach (var controller in controllers)
             {
                 controller.Update();
                 if (controller.Keys[PlayerKeys.Bomb] && !controller.IsJoined)
                 {
                     controller.IsJoined = true;
-                    var names = new string[]
+                    string[] names = new string[]
                     {
                         "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
                         "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus"
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
-                    this.game.Players.Add(new Game.Player(controller) { Name = name });
+                    this.players.Add(new Game.Player(controller) { Name = name });
                     game.sound.Addplayer.Play();
                 }
                 if (controller.IsStart)
@@ -274,7 +278,9 @@ namespace MrBoom
                 {
                     player.VictoryCount = 0;
                 }
-                game.menu = new StartMenu(game, assets);
+                game.Players = new List<Player>();
+                game.NextSong(3);
+                game.menu = new StartMenu(game, assets, game.Players, game.Controllers);
                 game.state = State.StartMenu;
             }
         }

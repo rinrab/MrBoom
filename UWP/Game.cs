@@ -63,7 +63,10 @@ namespace MrBoom
             MediaPlayer.IsRepeating = true;
 
             state = State.StartMenu;
-            menu = new StartMenu(this, assets);
+            Players = new List<Player>();
+            NextSong(3);
+
+            menu = new StartMenu(this, assets, Players, Controllers);
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -142,7 +145,9 @@ namespace MrBoom
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 {
-                    menu = new StartMenu(this, assets);
+                    Players = new List<Player>();
+                    NextSong(3);
+                    menu = new StartMenu(this, assets, Players, Controllers);
                     state = State.StartMenu;
                 }
             }

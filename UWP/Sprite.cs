@@ -246,6 +246,7 @@ namespace MrBoom
             }
             if (cell.Type == TerrainType.Apocalypse)
             {
+                unplugin = 0;
                 this.isDie = true;
                 this.frameIndex = 0;
                 Game.game.sound.PlayerDie.Play();

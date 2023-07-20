@@ -26,13 +26,7 @@ namespace MrBoom
         private List<PowerUpType> powerUpList;
         private readonly Map map;
 
-        private Assets.Level LevelAssets
-        {
-            get
-            {
-                return this.assets.levels[levelIndex];
-            }
-        }
+        private readonly Assets.Level levelAssets;
 
         private class Spawn
         {
@@ -45,10 +39,13 @@ namespace MrBoom
         {
             Monsters = new List<Monster>();
             Game.game.NextSong();
-            map = Map.Maps[levelIndex];
+
             this.levelIndex = levelIndex;
             this.assets = assets;
+            this.levelAssets = assets.levels[levelIndex];
+            this.map = Map.Maps[levelIndex];
             this.powerUpList = new List<PowerUpType>();
+
             foreach (var bonus in map.PowerUps)
             {
                 for (int i = 0; i < bonus.Count; i++)
@@ -83,7 +80,7 @@ namespace MrBoom
                     {
                         this.data[y * this.Width + x] = new Cell(TerrainType.TemporaryWall)
                         {
-                            Images = LevelAssets.Walls
+                            Images = levelAssets.Walls
                         };
                     }
                     else if (src == '*')
@@ -203,11 +200,11 @@ namespace MrBoom
                                 {
                                     SetCell(i % Width, i / Width, new Cell(TerrainType.Apocalypse)
                                     {
-                                        Images = LevelAssets.PermanentWalls,
+                                        Images = levelAssets.PermanentWalls,
                                         Index = 0,
                                         Next = new Cell(TerrainType.PermanentWall)
                                         {
-                                            Images = LevelAssets.PermanentWalls,
+                                            Images = levelAssets.PermanentWalls,
                                         }
                                     });
                                     if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
@@ -424,7 +421,7 @@ namespace MrBoom
 
                         this.SetCell(x, y, new Cell(TerrainType.PermanentWall)
                         {
-                            Images = LevelAssets.Walls,
+                            Images = levelAssets.Walls,
                             Index = 0,
                             animateDelay = 4,
                             Next = next

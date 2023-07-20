@@ -19,6 +19,7 @@ namespace MrBoom
     public interface IState
     {
         State Next { get; }
+        Sound SoundsToPlay { get; }
 
         void Update();
         void Draw(SpriteBatch ctx);
@@ -26,9 +27,11 @@ namespace MrBoom
 
     public class StartMenu : IState
     {
+        public State Next { get; private set; }
+        public Sound SoundsToPlay { get; private set; }
+
         private int tick = 0;
 
-        private readonly Game game;
         private readonly Assets assets;
         private readonly List<Game.Player> players;
         private readonly List<IController> controllers;
@@ -42,11 +45,8 @@ namespace MrBoom
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
 
-        public State Next { get; private set; }
-
-        public StartMenu(Game game, Assets assets, List<Game.Player> players, List<IController> controllers)
+        public StartMenu(Assets assets, List<Game.Player> players, List<IController> controllers)
         {
-            this.game = game;
             this.assets = assets;
             this.players = players;
             this.controllers = controllers;
@@ -67,9 +67,9 @@ namespace MrBoom
                 {
                     int index = y * 4 + x;
                     Assets.AssetImage[] images = assets.Alpha[index / 2 + 2];
-                    if (index < game.Players.Count)
+                    if (index < players.Count)
                     {
-                        Game.Player player = game.Players[index];
+                        Game.Player player = players[index];
 
                         Game.DrawString(ctx, 13 + x * 80, 78 + y * 70, "name ?", images);
                         Game.DrawString(ctx, 21 + x * 80, 88 + y * 70, player.Name, images);
@@ -97,6 +97,8 @@ namespace MrBoom
 
         public void Update()
         {
+            SoundsToPlay = 0;
+
             tick++;
 
             bool isStart = false;
@@ -114,7 +116,7 @@ namespace MrBoom
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
                     this.players.Add(new Game.Player(controller) { Name = name });
-                    game.sound.Addplayer.Play();
+                    SoundsToPlay |= Sound.Addplayer;
                 }
                 if (controller.IsStart)
                 {
@@ -124,7 +126,7 @@ namespace MrBoom
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) || isStart)
             {
-                if (this.game.Players.Count >= 1)
+                if (this.players.Count >= 1)
                 {
                     //fade.fadeOut(() =>
                     //{
@@ -143,20 +145,23 @@ namespace MrBoom
     public class Results : IState
     {
         public State Next { get; private set; }
+        public Sound SoundsToPlay { get; private set; }
 
-        private readonly Game game;
-        private readonly Assets assets;
         private readonly Game.Player[] players;
         private readonly int winner;
+        private readonly List<IController> controllers;
+        private readonly Assets assets;
+
         private int tick;
 
-        public Results(Game.Player[] players, Assets assets, int winner, Game game)
+        public Results(Game.Player[] players, int winner, Assets assets, List<IController> controllers)
         {
-            this.game = game;
-            this.assets = assets;
             this.players = players;
             this.winner = winner;
-            game.sound.Victory.Play();
+            this.assets = assets;
+            this.controllers = controllers;
+
+            SoundsToPlay |= Sound.Victory;
         }
 
         public void Draw(SpriteBatch ctx)
@@ -210,7 +215,9 @@ namespace MrBoom
 
         public void Update()
         {
-            if (this.tick > 120 && game.IsAnyKeyPressed())
+            SoundsToPlay = 0;
+
+            if (this.tick > 120 && Game.IsAnyKeyPressed(controllers))
             {
                 Next = State.Game;
             }
@@ -222,16 +229,18 @@ namespace MrBoom
     public class DrawMenu : IState
     {
         public State Next { get; private set; }
+        public Sound SoundsToPlay { get; private set; }
+        public List<IController> controllers;
 
-        private readonly Game game;
         private readonly Assets assets;
         private int tick;
 
-        public DrawMenu(Game game, Assets assets)
+        public DrawMenu(Assets assets, List<IController> controllers)
         {
-            this.game = game;
             this.assets = assets;
-            game.sound.Draw.Play();
+            this.controllers = controllers;
+
+            SoundsToPlay |= Sound.Draw;
         }
 
         public void Draw(SpriteBatch ctx)
@@ -241,10 +250,12 @@ namespace MrBoom
 
         public void Update()
         {
+            SoundsToPlay = 0;
+
             tick++;
-            if (tick > 120 && game.IsAnyKeyPressed())
+            if (tick > 120 && Game.IsAnyKeyPressed(controllers))
             {
-                game.StartGame();
+                Next = State.Game;
             }
         }
     }
@@ -252,18 +263,23 @@ namespace MrBoom
     public class Victory : IState
     {
         public State Next { get; private set; }
+        public Sound SoundsToPlay { get; private set; }
 
         private int tick;
-        private readonly Game game;
-        private readonly Assets assets;
-        private readonly int winner;
 
-        public Victory(Game game, Assets assets, int winner)
+        private readonly Player[] players;
+        private readonly int winner;
+        private readonly Assets assets;
+        private readonly List<IController> controllers;
+
+        public Victory(Player[] players, int winner, Assets assets, List<IController> controllers)
         {
-            this.game = game;
-            this.assets = assets;
+            this.players = players;
             this.winner = winner;
-            game.sound.Victory.Play();
+            this.assets = assets;
+            this.controllers = controllers;
+
+            SoundsToPlay |= Sound.Victory;
         }
 
         public void Draw(SpriteBatch ctx)
@@ -276,10 +292,12 @@ namespace MrBoom
 
         public void Update()
         {
+            SoundsToPlay = 0;
+
             tick++;
-            if (tick > 120 && game.IsAnyKeyPressed())
+            if (tick > 120 && Game.IsAnyKeyPressed(controllers))
             {
-                foreach (Game.Player player in game.Players)
+                foreach (Game.Player player in players)
                 {
                     player.VictoryCount = 0;
                 }

@@ -67,7 +67,7 @@ namespace MrBoom
             Players = new List<Player>();
             NextSong(3);
 
-            menu = new StartMenu(this, assets, Players, Controllers);
+            menu = new StartMenu(assets, Players, Controllers);
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -129,18 +129,21 @@ namespace MrBoom
 
                     if (players[winner].VictoryCount >= 5)
                     {
-                        menu = new Victory(this, assets, winner);
+                        menu = new Victory(players, winner, assets, Controllers);
+                        PlaySounds(menu.SoundsToPlay);
                         state = State.Victory;
                     }
                     else
                     {
-                        menu = new Results(players, assets, winner, this);
+                        menu = new Results(players, winner, assets, Controllers);
+                        PlaySounds(menu.SoundsToPlay);
                         state = State.Results;
                     }
                 }
                 else if (terrain.Result == GameResult.Draw)
                 {
-                    menu = new DrawMenu(this, assets);
+                    menu = new DrawMenu(assets, Controllers);
+                    PlaySounds(menu.SoundsToPlay);
                     state = State.Draw;
                 }
 
@@ -148,13 +151,15 @@ namespace MrBoom
                 {
                     Players = new List<Player>();
                     NextSong(3);
-                    menu = new StartMenu(this, assets, Players, Controllers);
+                    menu = new StartMenu(assets, Players, Controllers);
+                    PlaySounds(menu.SoundsToPlay);
                     state = State.StartMenu;
                 }
             }
             else
             {
                 menu.Update();
+                PlaySounds(menu.SoundsToPlay);
                 UpdateNavigation();
             }
 
@@ -168,8 +173,7 @@ namespace MrBoom
 
         private void UpdateNavigation()
         {
-            // TODO: remove this if
-            if (state != State.Game)
+            if (state != State.Game && menu.Next != State.None)
             {
                 if (menu.Next == State.Game)
                 {
@@ -180,23 +184,25 @@ namespace MrBoom
                     state = State.StartMenu;
                     Players = new List<Player>();
                     NextSong(3);
-                    menu = new StartMenu(this, assets, Players, Controllers);
+                    menu = new StartMenu(assets, Players, Controllers);
                 }
                 else if (menu.Next == State.Results)
                 {
                     state = State.Results;
-                    menu = new Results(Players.ToArray(), assets, terrain.Winner, this);
+                    menu = new Results(Players.ToArray(), terrain.Winner, assets, Controllers);
                 }
                 else if (menu.Next == State.Draw)
                 {
                     state = State.Draw;
-                    menu = new DrawMenu(this, assets);
+                    menu = new DrawMenu(assets, Controllers);
                 }
                 else if (menu.Next == State.Victory)
                 {
                     state = State.Victory;
-                    menu = new Victory(this, assets, terrain.Winner);
+                    menu = new Victory(Players.ToArray(), terrain.Winner, assets, Controllers);
                 }
+
+                PlaySounds(menu.SoundsToPlay);
             }
         }
 
@@ -340,13 +346,13 @@ namespace MrBoom
             }
         }
 
-        public bool IsAnyKeyPressed()
+        public static bool IsAnyKeyPressed(List<IController> controllers)
         {
             if (Keyboard.GetState().GetPressedKeys().Length > 0)
             {
                 return true;
             }
-            foreach (var controller in Controllers)
+            foreach (var controller in controllers)
             {
                 controller.Update();
                 if (controller.Keys.ContainsValue(true))

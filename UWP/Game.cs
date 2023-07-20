@@ -144,7 +144,7 @@ namespace MrBoom
                     }
                 }
 
-                var bgs = assets.levels[terrain.levelIndex].Backgrounds;
+                var bgs = terrain.LevelAssets.Backgrounds;
                 bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
 
                 for (int y = 0; y < terrain.Height; y++)
@@ -175,7 +175,7 @@ namespace MrBoom
                     sprite.Draw(spriteBatch);
                 }
 
-                var overlays = assets.levels[terrain.levelIndex].Overlays;
+                var overlays = terrain.LevelAssets.Overlays;
                 if (overlays != null)
                 {
                     foreach (var overlay in overlays)

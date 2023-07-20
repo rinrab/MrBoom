@@ -14,6 +14,13 @@ namespace MrBoom
         public List<Monster> Monsters;
         public int TimeLeft;
         public int levelIndex;
+        public Assets.Level LevelAssets
+        {
+            get
+            { 
+                return levelAssets;
+            }
+        }
 
         private byte[] final;
         private int lastApocalypseSound = -1;

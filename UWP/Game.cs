@@ -38,7 +38,9 @@ namespace MrBoom
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
+            graphics.ToggleFullScreen();
+
             IsFixedTimeStep = true;
 
             Controllers = new List<IController>()
@@ -54,7 +56,11 @@ namespace MrBoom
 
         protected override void Initialize()
         {
+#if DEBUG
             graphics.IsFullScreen = false;
+#else
+            graphics.IsFullScreen = true;
+#endif
             graphics.ApplyChanges();
 
             assets = Assets.Load(Content, GraphicsDevice);

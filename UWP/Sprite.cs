@@ -19,6 +19,9 @@ namespace MrBoom
         private bool IsHaveRollers;
         private int lifeCount;
         private int unplugin;
+        private int reverse;
+        private int autoBombPlacing;
+        private int bombsPlacingDisabled;
 
         public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] ghosts, Assets.AssetImage[] bombAssets) : base(map)
         {
@@ -104,6 +107,14 @@ namespace MrBoom
                 this.Direction = Directions.Down;
             }
 
+            if (reverse > 0)
+            {
+                if (Direction == Directions.Up) Direction = Directions.Down;
+                else if (Direction == Directions.Down) Direction = Directions.Up;
+                if (Direction == Directions.Left) Direction = Directions.Right;
+                else if (Direction == Directions.Right) Direction = Directions.Left;
+            }
+
             this.rcDitonate = this.rcAllowed && this.Controller.Keys[PlayerKeys.RcDitonate];
 
             base.Update();
@@ -112,9 +123,9 @@ namespace MrBoom
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if (this.Controller.Keys[PlayerKeys.Bomb])
+            if (this.Controller.Keys[PlayerKeys.Bomb] || autoBombPlacing > 0)
             {
-                if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
+                if ((cell.Type == TerrainType.Free || this.BombsPlaced < this.maxBombsCount) && bombsPlacingDisabled == 0)
                 {
                     terrain.SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
                     {
@@ -129,6 +140,19 @@ namespace MrBoom
                     this.BombsPlaced++;
                     terrain.PlaySound(Sound.PoseBomb);
                 }
+            }
+
+            if (autoBombPlacing > 0)
+            {
+                autoBombPlacing--;
+            }
+            if (bombsPlacingDisabled > 0)
+            {
+                bombsPlacingDisabled--;
+            }
+            if (reverse > 0)
+            {
+                reverse--;
             }
 
             if (cell.Type == TerrainType.PowerUp)
@@ -203,6 +227,22 @@ namespace MrBoom
                 {
                     terrain.TimeLeft += 60 * 60;
                     terrain.PlaySound(Sound.Clock);
+                }
+                else if (powerUpType == PowerUpType.Skull)
+                {
+                    int rnd = Terrain.Random.Next(3);
+                    if (rnd == 0)
+                    {
+                        reverse = 600;
+                    }
+                    else if (rnd == 1)
+                    {
+                        bombsPlacingDisabled = 600;
+                    }
+                    else if (rnd == 2)
+                    {
+                        autoBombPlacing = 600;
+                    }
                 }
 
                 if (doFire)

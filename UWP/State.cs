@@ -25,6 +25,7 @@ namespace MrBoom
         private int tick = 0;
 
         private readonly Game game;
+        private readonly Assets assets;
         private readonly string helpText =
             "welcome to mr.boom v0.1!!!   " +
             "players can join using their drop bomb button   use enter to start game   " +
@@ -35,9 +36,10 @@ namespace MrBoom
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
 
-        public StartMenu(Game game)
+        public StartMenu(Game game, Assets assets)
         {
             this.game = game;
+            this.assets = assets;
             game.Players = new List<Game.Player>();
             foreach (IController controller in game.Controllers)
             {
@@ -48,14 +50,14 @@ namespace MrBoom
 
         public void Draw(SpriteBatch ctx)
         {
-            game.assets.Start.Draw(ctx, 0, 0);
+            assets.Start.Draw(ctx, 0, 0);
 
             for (int x = 0; x < 4; x++)
             {
                 for (int y = 0; y < 2; y++)
                 {
                     int index = y * 4 + x;
-                    Assets.AssetImage[] images = game.assets.Alpha[index / 2 + 2];
+                    Assets.AssetImage[] images = assets.Alpha[index / 2 + 2];
                     if (index < game.Players.Count)
                     {
                         Game.Player player = game.Players[index];
@@ -81,7 +83,7 @@ namespace MrBoom
                 }
             }
 
-            Game.DrawString(ctx, 320 - tick % (helpText.Length * 8 + 320), 192, helpText, game.assets.Alpha[1]);
+            Game.DrawString(ctx, 320 - tick % (helpText.Length * 8 + 320), 192, helpText, assets.Alpha[1]);
         }
 
         public void Update()
@@ -132,13 +134,15 @@ namespace MrBoom
     public class Results : IState
     {
         private readonly Game game;
+        private readonly Assets assets;
         private readonly Game.Player[] players;
         private readonly int winner;
         private int tick;
 
-        public Results(Game.Player[] players, int winner, Game game)
+        public Results(Game.Player[] players, Assets assets, int winner, Game game)
         {
             this.game = game;
+            this.assets = assets;
             this.players = players;
             this.winner = winner;
             game.sound.Victory.Play();
@@ -146,8 +150,8 @@ namespace MrBoom
 
         public void Draw(SpriteBatch ctx)
         {
-            game.assets.Med.Draw(ctx, 0, 0);
-            
+            assets.Med.Draw(ctx, 0, 0);
+
             Point[] positions = new Point[] {
                 new Point(0, 0),
                 new Point(0, 1),
@@ -162,7 +166,7 @@ namespace MrBoom
             for (int i = 0; i < players.Length; i++)
             {
                 for (int j = 0; j < players[i].VictoryCount; j++) {
-                    int index = (tick / (8 + j)) % game.assets.Coin.Length;
+                    int index = (tick / (8 + j)) % assets.Coin.Length;
                     if (i == this.winner && j == players[i].VictoryCount - 1)
                     {
                         if (tick % 60 < 30)
@@ -177,7 +181,7 @@ namespace MrBoom
 
                     if (index != -1)
                     {
-                        game.assets.Coin[index].Draw(ctx, positions[i].X * 161 + 44 + j * 23, positions[i].Y * 42 + 27);
+                        assets.Coin[index].Draw(ctx, positions[i].X * 161 + 44 + j * 23, positions[i].Y * 42 + 27);
                     }
                 }
             }
@@ -188,7 +192,7 @@ namespace MrBoom
                 if (i < players.Length)
                 {
                     Game.DrawString(ctx, positions[i].X * 161 + 10, positions[i].Y * 42 + 44,
-                        players[i].Name, game.assets.Alpha[i / 2 + 2]);
+                        players[i].Name, assets.Alpha[i / 2 + 2]);
                 }
             }
         }
@@ -213,17 +217,19 @@ namespace MrBoom
     public class DrawMenu : IState
     {
         private readonly Game game;
+        private readonly Assets assets;
         private int tick;
 
-        public DrawMenu(Game game)
+        public DrawMenu(Game game, Assets assets)
         {
             this.game = game;
+            this.assets = assets;
             game.sound.Draw.Play();
         }
 
         public void Draw(SpriteBatch ctx)
         {
-            game.assets.Draw[tick / 30 % game.assets.Draw.Length].Draw(ctx, 0, 0);
+            assets.Draw[tick / 30 % assets.Draw.Length].Draw(ctx, 0, 0);
         }
 
         public void Update()
@@ -239,21 +245,23 @@ namespace MrBoom
     public class Victory : IState
     {
         private int tick;
-        private readonly int winner;
         private readonly Game game;
+        private readonly Assets assets;
+        private readonly int winner;
 
-        public Victory(Game game, int winner)
+        public Victory(Game game, Assets assets, int winner)
         {
             this.game = game;
+            this.assets = assets;
             this.winner = winner;
             game.sound.Victory.Play();
         }
 
         public void Draw(SpriteBatch ctx)
         {
-            game.assets.Vic[tick / 5 % game.assets.Vic.Length].Draw(ctx, 0, 0);
+            assets.Vic[tick / 5 % assets.Vic.Length].Draw(ctx, 0, 0);
 
-            Assets.AssetImage img = game.assets.Players[winner][0][tick / 20 % game.assets.Players[winner][0].Length];
+            Assets.AssetImage img = assets.Players[winner][0][tick / 20 % assets.Players[winner][0].Length];
             img.Draw(ctx, 320 / 2 - img.Width / 2, 80 - img.Height);
         }
 
@@ -266,7 +274,7 @@ namespace MrBoom
                 {
                     player.VictoryCount = 0;
                 }
-                game.menu = new StartMenu(game);
+                game.menu = new StartMenu(game, assets);
                 game.state = State.StartMenu;
             }
         }

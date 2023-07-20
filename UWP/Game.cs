@@ -63,7 +63,7 @@ namespace MrBoom
             MediaPlayer.IsRepeating = true;
 
             state = State.StartMenu;
-            menu = new StartMenu(this);
+            menu = new StartMenu(this, assets);
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -125,24 +125,24 @@ namespace MrBoom
 
                     if (players[winner].VictoryCount >= 5)
                     {
-                        menu = new Victory(this, winner);
+                        menu = new Victory(this, assets, winner);
                         state = State.Victory;
                     }
                     else
                     {
-                        menu = new Results(players, winner, this);
+                        menu = new Results(players, assets, winner, this);
                         state = State.Results;
                     }
                 }
                 else if (terrain.Result == GameResult.Draw)
                 {
-                    menu = new DrawMenu(this);
+                    menu = new DrawMenu(this, assets);
                     state = State.Draw;
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 {
-                    menu = new StartMenu(this);
+                    menu = new StartMenu(this, assets);
                     state = State.StartMenu;
                 }
             }

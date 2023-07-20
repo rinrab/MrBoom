@@ -8,6 +8,7 @@ namespace MrBoom
 {
     public enum State
     {
+        None,
         StartMenu,
         Game,
         Draw,
@@ -17,6 +18,8 @@ namespace MrBoom
 
     public interface IState
     {
+        State Next { get; }
+
         void Update();
         void Draw(SpriteBatch ctx);
     }
@@ -38,6 +41,8 @@ namespace MrBoom
             "and right alt to triger it by radio control   " +
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
+
+        public State Next { get; private set; }
 
         public StartMenu(Game game, Assets assets, List<Game.Player> players, List<IController> controllers)
         {
@@ -129,7 +134,7 @@ namespace MrBoom
                     //    startGame(this.playerList);
                     //    results = new Results(this.playerList);
                     //});
-                    this.game.StartGame();
+                    Next = State.Game;
                 }
             }
         }
@@ -137,6 +142,8 @@ namespace MrBoom
 
     public class Results : IState
     {
+        public State Next { get; private set; }
+
         private readonly Game game;
         private readonly Assets assets;
         private readonly Game.Player[] players;
@@ -205,13 +212,7 @@ namespace MrBoom
         {
             if (this.tick > 120 && game.IsAnyKeyPressed())
             {
-                //if (this.next == "game")
-                game.StartGame();
-                //else
-                //{
-                //    victory = new Victory(this.next);
-                //    state = States.victory;
-                //}
+                Next = State.Game;
             }
 
             this.tick++;
@@ -220,6 +221,8 @@ namespace MrBoom
 
     public class DrawMenu : IState
     {
+        public State Next { get; private set; }
+
         private readonly Game game;
         private readonly Assets assets;
         private int tick;
@@ -248,6 +251,8 @@ namespace MrBoom
 
     public class Victory : IState
     {
+        public State Next { get; private set; }
+
         private int tick;
         private readonly Game game;
         private readonly Assets assets;
@@ -278,10 +283,7 @@ namespace MrBoom
                 {
                     player.VictoryCount = 0;
                 }
-                game.Players = new List<Player>();
-                game.NextSong(3);
-                game.menu = new StartMenu(game, assets, game.Players, game.Controllers);
-                game.state = State.StartMenu;
+                Next = State.StartMenu;
             }
         }
     }

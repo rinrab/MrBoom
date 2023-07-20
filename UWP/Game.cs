@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using SharpDX.MediaFoundation;
+using Windows.UI.WebUI;
 
 namespace MrBoom
 {
@@ -154,6 +155,7 @@ namespace MrBoom
             else
             {
                 menu.Update();
+                UpdateNavigation();
             }
 
             if (MediaPlayer.State == MediaState.Stopped)
@@ -162,6 +164,40 @@ namespace MrBoom
             }
 
             base.Update(gameTime);
+        }
+
+        private void UpdateNavigation()
+        {
+            // TODO: remove this if
+            if (state != State.Game)
+            {
+                if (menu.Next == State.Game)
+                {
+                    StartGame();
+                }
+                else if (menu.Next == State.StartMenu)
+                {
+                    state = State.StartMenu;
+                    Players = new List<Player>();
+                    NextSong(3);
+                    menu = new StartMenu(this, assets, Players, Controllers);
+                }
+                else if (menu.Next == State.Results)
+                {
+                    state = State.Results;
+                    menu = new Results(Players.ToArray(), assets, terrain.Winner, this);
+                }
+                else if (menu.Next == State.Draw)
+                {
+                    state = State.Draw;
+                    menu = new DrawMenu(this, assets);
+                }
+                else if (menu.Next == State.Victory)
+                {
+                    state = State.Victory;
+                    menu = new Victory(this, assets, terrain.Winner);
+                }
+            }
         }
 
         private void PlaySounds(Sound soundsToPlay)

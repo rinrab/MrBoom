@@ -186,20 +186,14 @@ namespace MrBoom
                     NextSong(3);
                     menu = new StartMenu(assets, Players, Controllers);
                 }
-                else if (menu.Next == State.Results)
-                {
-                    state = State.Results;
-                    menu = new Results(Players.ToArray(), terrain.Winner, assets, Controllers);
-                }
-                else if (menu.Next == State.Draw)
-                {
-                    state = State.Draw;
-                    menu = new DrawMenu(assets, Controllers);
-                }
                 else if (menu.Next == State.Victory)
                 {
                     state = State.Victory;
                     menu = new Victory(Players.ToArray(), terrain.Winner, assets, Controllers);
+                }
+                else
+                {
+                    throw new Exception("Can't navigate to " + menu.Next);
                 }
 
                 PlaySounds(menu.SoundsToPlay);

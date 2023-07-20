@@ -171,8 +171,8 @@ namespace MrBoom
             {
                 RenderTarget2D result = new RenderTarget2D(
                     graphics, background.Width * scale, background.Height * scale,
-                    false, SurfaceFormat.Color, DepthFormat.None, 
-                    graphics.PresentationParameters.MultiSampleCount, 
+                    false, SurfaceFormat.Color, DepthFormat.None,
+                    graphics.PresentationParameters.MultiSampleCount,
                     RenderTargetUsage.PreserveContents);
 
                 int count = 0;
@@ -181,7 +181,7 @@ namespace MrBoom
                 {
                     batch.Begin(SpriteSortMode.Immediate);
                     background.Draw(batch, 0, 0);
-                    for (int x = 0; x < background.Width; x+= img.Width)
+                    for (int x = 0; x < background.Width; x += img.Width)
                     {
                         img.Draw(batch, x, 0);
                         count++;

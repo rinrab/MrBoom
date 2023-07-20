@@ -20,7 +20,7 @@ namespace MrBoom
         public Assets.Level LevelAssets
         {
             get
-            { 
+            {
                 return levelAssets;
             }
         }
@@ -170,7 +170,7 @@ namespace MrBoom
             }
 
             int speed = 2;
-            
+
             int maxFin = 0;
             foreach (byte fin in final)
             {
@@ -229,7 +229,8 @@ namespace MrBoom
                 }
             }
 
-            if (this.timeToEnd == 0) {
+            if (this.timeToEnd == 0)
+            {
                 if (playersCount == 1)
                 {
                     for (int i = 0; i < Players.Count; i++)

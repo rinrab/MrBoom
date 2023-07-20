@@ -21,7 +21,7 @@ namespace MrBoom
                 sound.Play();
             }
         }
-        
+
         public class Music
         {
             private Song song;

@@ -181,7 +181,8 @@ namespace MrBoom
 
             for (int i = 0; i < players.Length; i++)
             {
-                for (int j = 0; j < players[i].VictoryCount; j++) {
+                for (int j = 0; j < players[i].VictoryCount; j++)
+                {
                     int index = (tick / (8 + j)) % assets.Coin.Length;
                     if (i == this.winner && j == players[i].VictoryCount - 1)
                     {

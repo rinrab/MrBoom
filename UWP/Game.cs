@@ -293,6 +293,18 @@ namespace MrBoom
                         }
                     }
                 }
+                else if (terrain.TimeLeft < 60 * 30 - terrain.ApocalypseSpeed * (terrain.MaxApocalypse + 5))
+                {
+                    int x = 320 / 2 - assets.DrawGameIn.Width / 2;
+                    int y = 20;
+                    assets.DrawGameIn.Draw(spriteBatch, x, y);
+
+                    int firstNumber = terrain.TimeLeft / 60 / 10;
+                    int secondNumber = terrain.TimeLeft / 60 % 10;
+
+                    assets.DrawGameInNumbers[firstNumber].Draw(spriteBatch, x + 42, y + 15);
+                    assets.DrawGameInNumbers[secondNumber].Draw(spriteBatch, x + 8 + 42, y + 15);
+                }
             }
             else
             {

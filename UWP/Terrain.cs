@@ -18,6 +18,8 @@ namespace MrBoom
         public GameResult Result = GameResult.None;
         public int StartMaxFire;
         public int StartMaxBombsCount;
+        public int ApocalypseSpeed = 2;
+        public int MaxApocalypse;
 
         public Assets.Level LevelAssets
         {
@@ -70,6 +72,13 @@ namespace MrBoom
             this.spawns = new List<Spawn>();
             this.TimeLeft = (map.Time + 31) * 60;
             this.final = map.Final;
+            foreach (int fin in final)
+            {
+                if (fin != 255)
+                {
+                    MaxApocalypse = Math.Max(fin, MaxApocalypse);
+                }
+            }
             this.Players = new List<Sprite>();
 
             this.StartMaxBombsCount = map.StartMaxBombsCount;
@@ -172,27 +181,16 @@ namespace MrBoom
                 }
             }
 
-            int speed = 2;
-
-            int maxFin = 0;
-            foreach (byte fin in final)
-            {
-                if (fin != 255)
-                {
-                    maxFin = Math.Max(maxFin, fin);
-                }
-            }
-
             if (TimeLeft < 30 * 60 - 1)
             {
-                if (TimeLeft % speed == 0)
+                if (TimeLeft % ApocalypseSpeed == 0)
                 {
-                    int index = (30 * 60 - TimeLeft) / speed;
+                    int index = (30 * 60 - TimeLeft) / ApocalypseSpeed;
                     if (index != 255)
                     {
                         for (int i = 0; i < final.Length; i++)
                         {
-                            if (index == Math.Min(maxFin + 5, 255))
+                            if (index == Math.Min(MaxApocalypse + 5, 255))
                             {
                                 var cell = GetCell(i % Width, i / Width);
                                 if (cell.Type == TerrainType.TemporaryWall)
@@ -249,6 +247,11 @@ namespace MrBoom
                 {
                     Result = GameResult.Draw;
                 }
+            }
+
+            if (TimeLeft <= 0)
+            {
+                Result = GameResult.Draw;
             }
 
             if (playersCount == 1 && Players.Count > 1 && this.timeToEnd == -1)

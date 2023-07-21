@@ -375,6 +375,30 @@ namespace MrBoom
                         {
                             loadImage(content.Load<Texture2D>("CRAYON"), 0, 0, 320, 200),
                         },
+                        Overlays = new Level.Overlay[]
+                        {
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(imgCrayon2, 0, 0, 50, 200),
+                                x = 0,
+                                y = 0,
+                                AnimationDelay = 1
+                            },
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(imgCrayon2, 320 - 50, 0, 50, 200),
+                                x = 320 - 50,
+                                y = 0,
+                                AnimationDelay = 1
+                            },
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(imgCrayon2, 0, 0, 320, 10),
+                                x = 0,
+                                y = 0,
+                                AnimationDelay = 1
+                            }
+                        },
                         Walls = loadImageStripe(imgPause, 0, 112, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
                     },

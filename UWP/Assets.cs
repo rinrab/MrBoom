@@ -245,6 +245,8 @@ namespace MrBoom
             var imgSoucoupe = content.Load<Texture2D>("SOUCOUPE");
             var imgBonus = content.Load<Texture2D>("BONUS");
 
+            var monster1ghost = loadImageStripe(imgGhosts, 0, 47, 32, 32, 6, 1).Concat(
+                loadImageStripe(imgGhosts, 0, 47 + 33, 32, 32, 6, 1)).ToArray();
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
             var monster2ghost = loadImageStripe(imgGhosts, 195, 93, 16, 19, 3, 0);
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
@@ -453,14 +455,19 @@ namespace MrBoom
                 MonsterGhosts = new AssetImage[][]
                 {
                     null,
-                    loadImageStripe(imgGhosts, 0, 47, 32, 32, 6, 1).Concat(
-                        loadImageStripe(imgGhosts, 99, 47 + 33, 32, 32, 6, 1)).ToArray(),
+                    new AssetImage[]
+                    {
+                        monster1ghost[0], monster1ghost[1], monster1ghost[2],
+                        monster1ghost[3], monster1ghost[4], monster1ghost[5],
+                        monster1ghost[9], monster1ghost[10], monster1ghost[11],
+                        monster1ghost[6], monster1ghost[7], monster1ghost[8],
+                    },
                     monster2ghost.Concat(monster2ghost.Concat(monster2ghost).Concat(monster2ghost)).ToArray(),
                     new AssetImage[]
                     {
                         snailGhost[0], snailGhost[1], snailGhost[0], snailGhost[1],
-                        snailGhost[4], snailGhost[5], snailGhost[4], snailGhost[5],
                         snailGhost[2], snailGhost[3], snailGhost[2], snailGhost[3],
+                        snailGhost[4], snailGhost[5], snailGhost[4], snailGhost[5],
                         snailGhost[6], snailGhost[7], snailGhost[6], snailGhost[7]
                     },
                     null,

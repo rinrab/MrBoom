@@ -114,22 +114,19 @@ namespace MrBoom
                     }
                     else if (wait == -1)
                     {
-                        if (tick % monsterData.Slow == 0)
+                        if (x % 16 == 0 && y % 16 == 0 && Terrain.Random.Next(16) == 0)
                         {
-                            if (x % 16 == 0 && y % 16 == 0 && Terrain.Random.Next(16) == 0)
+                            wait = this.monsterData.WaitAfterTurn;
+                            frameIndex = 0;
+                            Direction = Directions.None;
+                        }
+                        else
+                        {
+                            if (!isWalkable(delta[(int)Direction - 1].X, delta[(int)Direction - 1].Y))
                             {
                                 wait = this.monsterData.WaitAfterTurn;
                                 frameIndex = 0;
                                 Direction = Directions.None;
-                            }
-                            else
-                            {
-                                if (!isWalkable(delta[(int)Direction - 1].X, delta[(int)Direction - 1].Y))
-                                {
-                                    wait = this.monsterData.WaitAfterTurn;
-                                    frameIndex = 0;
-                                    Direction = Directions.None;
-                                }
                             }
                         }
                     }
@@ -138,7 +135,7 @@ namespace MrBoom
                         wait--;
                     }
                 }
-                base.Update();
+                base.Update(tick % monsterData.Slow == 0);
             }
             else
             {

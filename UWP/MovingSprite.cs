@@ -22,6 +22,11 @@ namespace MrBoom
 
         public virtual void Update()
         {
+            Update(true);
+        }
+
+        public virtual void Update(bool move)
+        {
             {
                 Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
 
@@ -113,31 +118,34 @@ namespace MrBoom
                 this.frameIndex += 1;
             }
 
-            for (int i = 0; i < this.speed; i++)
+            if (move)
             {
-                if (this.Direction == Directions.Up)
+                for (int i = 0; i < this.speed; i++)
                 {
-                    this.animateIndex = 3;
-                    moveY(-1);
-                }
-                else if (this.Direction == Directions.Down)
-                {
-                    this.animateIndex = 0;
-                    moveY(1);
-                }
-                else if (this.Direction == Directions.Left)
-                {
-                    moveX(-1);
-                    this.animateIndex = 2;
-                }
-                else if (this.Direction == Directions.Right)
-                {
-                    moveX(1);
-                    this.animateIndex = 1;
-                }
-                else
-                {
-                    this.frameIndex = 0;
+                    if (this.Direction == Directions.Up)
+                    {
+                        this.animateIndex = 3;
+                        moveY(-1);
+                    }
+                    else if (this.Direction == Directions.Down)
+                    {
+                        this.animateIndex = 0;
+                        moveY(1);
+                    }
+                    else if (this.Direction == Directions.Left)
+                    {
+                        moveX(-1);
+                        this.animateIndex = 2;
+                    }
+                    else if (this.Direction == Directions.Right)
+                    {
+                        moveX(1);
+                        this.animateIndex = 1;
+                    }
+                    else
+                    {
+                        this.frameIndex = 0;
+                    }
                 }
             }
         }

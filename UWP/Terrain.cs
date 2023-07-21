@@ -16,6 +16,8 @@ namespace MrBoom
         public int levelIndex;
         public Sound SoundsToPlay;
         public GameResult Result = GameResult.None;
+        public int StartMaxFire;
+        public int StartMaxBombsCount;
 
         public Assets.Level LevelAssets
         {
@@ -71,6 +73,8 @@ namespace MrBoom
             this.Players = new List<Sprite>();
 
             //this.initialBonus = initial.initialBonus;
+            this.StartMaxBombsCount = map.StartMaxBombsCount;
+            this.StartMaxFire = map.StartMaxFire;
 
             data = new Cell[this.Width * this.Height];
             for (int y = 0; y < this.Height; y++)

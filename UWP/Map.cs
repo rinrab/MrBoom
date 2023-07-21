@@ -36,6 +36,8 @@
         public PowerUpData[] PowerUps;
         public MonsterData[] Monsters;
         public byte[] Final;
+        public int StartMaxFire = 1;
+        public int StartMaxBombsCount = 1;
 
         public static byte[] DefaultFinal = new byte[]
         {
@@ -363,6 +365,8 @@
                     "%*               *%",
                     "#%%%%%%%%%%%%%%%%%#",
                 },
+                StartMaxFire = 8,
+                StartMaxBombsCount = 8,
                 Time = 30,
                 PowerUps = new PowerUpData[]
                 {

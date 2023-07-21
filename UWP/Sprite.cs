@@ -35,8 +35,6 @@ namespace MrBoom
 
             this.speed = 1;
 
-            this.maxBoom = 1;
-            this.maxBombsCount = 1;
             this.BombsPlaced = 0;
 
             this.rcAllowed = false;
@@ -62,11 +60,8 @@ namespace MrBoom
             //        this.movingSprite.isHaveKick = true;
             //    }
             //}
-            //if (mapIndex == 7)
-            //{
-            //    this.maxBoom = 8;
-            //    this.maxBombsCount = 8;
-            //}
+            this.maxBoom = map.StartMaxFire;
+            this.maxBombsCount = map.StartMaxBombsCount;
         }
 
         public override void Update()
@@ -123,9 +118,9 @@ namespace MrBoom
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if (this.Controller.Keys[PlayerKeys.Bomb] || autoBombPlacing > 0)
+            if ((this.Controller.Keys[PlayerKeys.Bomb] || autoBombPlacing > 0) && bombsPlacingDisabled == 0)
             {
-                if ((cell.Type == TerrainType.Free || this.BombsPlaced < this.maxBombsCount) && bombsPlacingDisabled == 0)
+                if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {
                     terrain.SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
                     {

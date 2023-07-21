@@ -22,6 +22,16 @@ namespace MrBoom
 
         public virtual void Update()
         {
+            {
+                Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
+
+                if (cell.Type == TerrainType.Bomb && cell.OffsetX == 0 && cell.OffsetY == 0)
+                {
+                    cell.DeltaX = 0;
+                    cell.DeltaY = 0;
+                }
+            }
+
             void moveY(int delta)
             {
                 if (this.x % 16 == 0)
@@ -42,21 +52,17 @@ namespace MrBoom
                     }
                     else
                     {
-                        var newCell = terrain.GetCell(cellX, newY);
-                        //if (newCell.Type == TerrainType.Bomb)
-                        //{
-                        //if (this.isHaveKick)
-                        //{
-                        //    newCell.dy = delta * 2;
-                        //}
-                        //else
-                        //{
-                        //    if (newCell.offsetX == 0)
-                        //    {
-                        //        newCell.dy = 0;
-                        //    }
-                        //}
-                        //}
+                        Cell newCell = terrain.GetCell(cellX, newY);
+                        if (newCell.Type == TerrainType.Bomb)
+                        {
+                            if (this.isHaveKick)
+                            {
+                                if (newCell.DeltaX == 0)
+                                {
+                                    newCell.DeltaY = delta * 2;
+                                }
+                            }
+                        }
                     }
                 }
                 else
@@ -86,21 +92,17 @@ namespace MrBoom
                     }
                     else
                     {
-                        var newCell = terrain.GetCell(newX, cellY);
-                        //if (newCell.Type == TerrainType.Bomb)
-                        //{
-                        //    if (this.isHaveKick)
-                        //    {
-                        //        newCell.dx = delta * 2;
-                        //    }
-                        //    else
-                        //    {
-                        //        if (newCell.offsetX == 0)
-                        //        {
-                        //            newCell.dx = 0;
-                        //        }
-                        //    }
-                        //}
+                        Cell newCell = terrain.GetCell(newX, cellY);
+                        if (newCell.Type == TerrainType.Bomb)
+                        {
+                            if (this.isHaveKick)
+                            {
+                                if (newCell.DeltaY == 0)
+                                {
+                                    newCell.DeltaX = delta * 2;
+                                }
+                            }
+                        }
                     }
                 }
                 else

@@ -62,6 +62,7 @@ namespace MrBoom
             //}
             this.maxBoom = map.StartMaxFire;
             this.maxBombsCount = map.StartMaxBombsCount;
+            isHaveKick = map.StartKick;
         }
 
         public override void Update()
@@ -188,14 +189,14 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Kick)
                 {
-                    //if (this.movingSprite.isHaveKick)
-                    //{
-                    //    doFire = true;
-                    //}
-                    //else
-                    //{
-                    //    this.movingSprite.isHaveKick = true;
-                    //}
+                    if (this.isHaveKick)
+                    {
+                        doFire = true;
+                    }
+                    else
+                    {
+                        this.isHaveKick = true;
+                    }
                 }
                 else if (powerUpType == PowerUpType.Life)
                 {

@@ -38,6 +38,7 @@
         public byte[] Final;
         public int StartMaxFire = 1;
         public int StartMaxBombsCount = 1;
+        public bool StartKick;
 
         public static byte[] DefaultFinal = new byte[]
         {
@@ -283,6 +284,7 @@
                     "#-----------------#",
                     "###################",
                 },
+                StartKick = true,
                 Time = 90,
                 PowerUps = new PowerUpData[]
                 {
@@ -321,6 +323,7 @@
                     "#* ------------- *#",
                     "###################",
                 },
+                StartKick = true,
                 Time = 120,
                 PowerUps = new PowerUpData[]
                 {
@@ -372,6 +375,7 @@
                     "%*               *%",
                     "#%%%%%%%%%%%%%%%%%#",
                 },
+                StartKick = true,
                 StartMaxFire = 8,
                 StartMaxBombsCount = 8,
                 Time = 30,

@@ -131,7 +131,6 @@ namespace MrBoom
                                     Direction = Directions.None;
                                 }
                             }
-                            base.Update();
                         }
                     }
                     else
@@ -139,6 +138,7 @@ namespace MrBoom
                         wait--;
                     }
                 }
+                base.Update();
             }
             else
             {

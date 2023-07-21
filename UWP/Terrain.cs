@@ -36,6 +36,7 @@ namespace MrBoom
         private int time;
         private List<Spawn> spawns;
         private List<PowerUpType> powerUpList;
+        internal bool StartKick;
         private readonly Map map;
 
         private readonly Assets.Level levelAssets;
@@ -66,15 +67,14 @@ namespace MrBoom
             }
             this.Width = map.Data[0].Length;
             this.Height = map.Data.Length;
-            //this.monsters = [];
             this.spawns = new List<Spawn>();
             this.TimeLeft = (map.Time + 31) * 60;
             this.final = map.Final;
             this.Players = new List<Sprite>();
 
-            //this.initialBonus = initial.initialBonus;
             this.StartMaxBombsCount = map.StartMaxBombsCount;
             this.StartMaxFire = map.StartMaxFire;
+            StartKick = map.StartKick;
 
             data = new Cell[this.Width * this.Height];
             for (int y = 0; y < this.Height; y++)
@@ -82,9 +82,8 @@ namespace MrBoom
                 for (int x = 0; x < this.Width; x++)
                 {
                     char src = map.Data[y][x];
-                    //const bonusStr = "0123456789AB";
 
-                    string bonusStr = "123456789A";
+                    string bonusStr = "123456789AB";
                     if (src == '#')
                     {
                         this.data[y * this.Width + x] = new Cell(TerrainType.PermanentWall);
@@ -299,36 +298,33 @@ namespace MrBoom
                             this.ditonateBomb(x, y);
                             continue;
                         }
-                        //if (cell.offsetX == 0 && cell.offsetY == 0)
-                        //{
-                        //    const next = this.getCell(x + getSign(cell.dx), y + getSign(cell.dy)).type;
-                        //    if (next == TerrainType.Rubber)
-                        //    {
-                        //        cell.dx = -cell.dx;
-                        //        cell.dy = -cell.dy;
-                        //    }
-                        //    else if (next != TerrainType.Free)
-                        //    {
-                        //        cell.dy = 0;
-                        //        cell.dx = 0;
-                        //    }
-                        //}
+                        if (cell.OffsetX == 0 && cell.OffsetY == 0)
+                        {
+                            var next = this.GetCell(x + cell.DeltaX / 2, y + cell.DeltaY / 2).Type;
+                            if (next == TerrainType.Rubber)
+                            {
+                                cell.DeltaX = -cell.DeltaX;
+                                cell.DeltaY = -cell.DeltaY;
+                            }
+                            else if (next != TerrainType.Free)
+                            {
+                                cell.DeltaY = 0;
+                                cell.DeltaX = 0;
+                            }
+                        }
 
-                        //const newX = Int.divRound(x * 16 + cell.offsetX + cell.dx, 16);
-                        //const newY = Int.divRound(y * 16 + cell.offsetY + cell.dy, 16);
+                        int newX = (x * 16 + cell.OffsetX + cell.DeltaX + 8) / 16;
+                        int newY = (y * 16 + cell.OffsetY + cell.DeltaY + 8) / 16;
 
-                        //cell.offsetX += cell.dx;
-                        //cell.offsetY += cell.dy;
+                        cell.OffsetX += cell.DeltaX;
+                        cell.OffsetY += cell.DeltaY;
 
-                        //this.setCell(x, y, {
-                        //type: TerrainType.Free
-                        //});
+                        this.SetCell(x, y, new Cell(TerrainType.Free));
 
-                        //    this.setCell(newX, newY, cell);
+                        this.SetCell(newX, newY, cell);
 
-                        //    cell.offsetX += (x - newX) * 16;
-                        //    cell.offsetY += (y - newY) * 16;
-                        //}
+                        cell.OffsetX += (x - newX) * 16;
+                        cell.OffsetY += (y - newY) * 16;
                     }
                 }
             }
@@ -541,6 +537,10 @@ namespace MrBoom
         public Sprite owner;
         public Cell Next;
         public PowerUpType PowerUpType;
+        public int OffsetX;
+        public int OffsetY;
+        public int DeltaX;
+        public int DeltaY;
 
         public Cell(TerrainType type)
         {

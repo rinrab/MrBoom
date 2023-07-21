@@ -244,7 +244,7 @@ namespace MrBoom
                             int index = (cell.Index == -1) ? 0 : cell.Index;
                             var image = cell.Images[index];
 
-                            image.Draw(spriteBatch, x * 16 + 8 + 8 - image.Width / 2, y * 16 + 16 - image.Height);
+                            image.Draw(spriteBatch, x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX, y * 16 + 16 - image.Height + cell.OffsetY);
                         }
                     }
                 }

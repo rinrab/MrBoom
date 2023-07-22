@@ -13,7 +13,6 @@ namespace MrBoom
         public Assets assets;
         public SoundAssets sound;
         public List<IController> Controllers;
-        public Terrain terrain;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -65,7 +64,7 @@ namespace MrBoom
 
         public void StartGame()
         {
-            terrain = new Terrain(Terrain.Random.Next(Map.Maps.Length), assets);
+            Terrain terrain = new Terrain(Terrain.Random.Next(Map.Maps.Length), assets);
 
             NextSong();
 

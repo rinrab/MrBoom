@@ -137,7 +137,7 @@ namespace MrBoom
                 }
                 else if (terrain.Result == GameResult.Draw)
                 {
-                    menu = new DrawMenu(assets, Controllers);
+                    menu = new DrawScreen(assets, Controllers);
                     PlaySounds(menu.SoundsToPlay);
                     state = Screen.Draw;
                 }

@@ -234,7 +234,7 @@ namespace MrBoom
         }
     }
 
-    public class DrawMenu : IScreen
+    public class DrawScreen : IScreen
     {
         public Screen Next { get; private set; }
         public Sound SoundsToPlay { get; private set; }
@@ -243,7 +243,7 @@ namespace MrBoom
         private readonly Assets assets;
         private int tick;
 
-        public DrawMenu(Assets assets, List<IController> controllers)
+        public DrawScreen(Assets assets, List<IController> controllers)
         {
             this.assets = assets;
             this.controllers = controllers;

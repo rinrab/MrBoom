@@ -39,7 +39,7 @@ namespace MrBoom
             tick++;
             if (tick > 120 && Game.IsAnyKeyPressed(controllers))
             {
-                foreach (Game.Player player in players)
+                foreach (Player player in players)
                 {
                     player.VictoryCount = 0;
                 }

@@ -111,6 +111,7 @@
     <Compile Include="Map.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MovingSprite.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="ResultScreen.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Sound.cs" />

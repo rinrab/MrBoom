@@ -12,7 +12,7 @@ namespace MrBoom
         private int tick = 0;
 
         private readonly Assets assets;
-        private readonly List<Game.Player> players;
+        private readonly List<Player> players;
         private readonly List<IController> controllers;
         private readonly string helpText =
             "welcome to mr.boom v0.1!!!   " +
@@ -24,7 +24,7 @@ namespace MrBoom
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
 
-        public StartScreen(Assets assets, List<Game.Player> players, List<IController> controllers)
+        public StartScreen(Assets assets, List<Player> players, List<IController> controllers)
         {
             this.assets = assets;
             this.players = players;
@@ -48,7 +48,7 @@ namespace MrBoom
                     Assets.AssetImage[] images = assets.Alpha[index / 2 + 2];
                     if (index < players.Count)
                     {
-                        Game.Player player = players[index];
+                        Player player = players[index];
 
                         Game.DrawString(ctx, 13 + x * 80, 78 + y * 70, "name ?", images);
                         Game.DrawString(ctx, 21 + x * 80, 88 + y * 70, player.Name, images);
@@ -94,7 +94,7 @@ namespace MrBoom
                         "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus"
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
-                    this.players.Add(new Game.Player(controller) { Name = name });
+                    this.players.Add(new Player(controller) { Name = name });
                     SoundsToPlay |= Sound.Addplayer;
                 }
                 if (controller.IsStart)

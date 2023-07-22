@@ -9,18 +9,6 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
-        public class Player
-        {
-            public IController Controller;
-            public string Name;
-            public int VictoryCount;
-
-            public Player(IController controller)
-            {
-                Controller = controller;
-            }
-        }
-
         public List<Player> Players;
         public Assets assets;
         public SoundAssets sound;

@@ -42,7 +42,7 @@ namespace MrBoom
 
                 for (int i = 0; i < players.Length; i++)
                 {
-                    Game.Player player = players[i];
+                    Player player = players[i];
                     if (winnerSprite.Controller == player.Controller)
                     {
                         player.VictoryCount++;

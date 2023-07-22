@@ -106,6 +106,7 @@
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameScreen.cs" />
     <Compile Include="IScreen.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Monster.cs" />

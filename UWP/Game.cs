@@ -32,7 +32,6 @@ namespace MrBoom
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
-        private int bgTick = 0;
 
         public Game()
         {
@@ -97,6 +96,7 @@ namespace MrBoom
             terrain.InitializeMonsters();
 
             state = Screen.Game;
+            menu = new GameScreen(terrain, assets);
         }
 
         protected override void LoadContent()
@@ -108,8 +108,7 @@ namespace MrBoom
         {
             if (state == Screen.Game)
             {
-                bgTick++;
-
+                menu.Update();
                 terrain.Update();
 
                 PlaySounds(terrain.SoundsToPlay);
@@ -218,98 +217,7 @@ namespace MrBoom
 
             spriteBatch.Begin();
 
-            if (state == Screen.Game)
-            {
-                if (terrain.levelIndex == 3)
-                {
-                    for (int y = 0; y < 5; y++)
-                    {
-                        for (int x = 0; x < 8; x++)
-                        {
-                            assets.Sky.Draw(spriteBatch, 48 * 8 - (bgTick / 2 + x * 48 + y * 24) % (48 * 8) - 48, y * 44);
-                        }
-                    }
-                }
-
-                var bgs = terrain.LevelAssets.Backgrounds;
-                bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
-
-                for (int y = 0; y < terrain.Height; y++)
-                {
-                    for (int x = 0; x < terrain.Width; x++)
-                    {
-                        Cell cell = terrain.GetCell(x, y);
-                        if (cell.Images != null)
-                        {
-                            int index = (cell.Index == -1) ? 0 : cell.Index;
-                            var image = cell.Images[index];
-
-                            image.Draw(spriteBatch, x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX, y * 16 + 16 - image.Height + cell.OffsetY);
-                        }
-                    }
-                }
-
-                List<MovingSprite> spritesToDraw = new List<MovingSprite>(terrain.Players);
-                foreach (var monster in terrain.Monsters)
-                {
-                    spritesToDraw.Add(monster);
-                }
-
-                spritesToDraw.Sort((a, b) => a.y - b.y);
-
-                foreach (MovingSprite sprite in spritesToDraw)
-                {
-                    sprite.Draw(spriteBatch);
-                }
-
-                var overlays = terrain.LevelAssets.Overlays;
-                if (overlays != null)
-                {
-                    foreach (var overlay in overlays)
-                    {
-                        overlay.Images[bgTick / overlay.AnimationDelay % overlay.Images.Length].Draw(spriteBatch, overlay.x, overlay.y);
-                    }
-                }
-
-                if (terrain.TimeLeft > 30 * 60)
-                {
-                    int min = (terrain.TimeLeft - 30 * 60) / 60 / 60;
-                    int sec = (terrain.TimeLeft - 30 * 60) / 60 % 60;
-
-                    string time = min.ToString() + ":" + ((sec < 10) ? 0 + sec.ToString() : sec.ToString());
-                    int x = 270;
-                    foreach (char c in time)
-                    {
-                        string alpha = "0123456789:";
-                        int index = alpha.IndexOf(c);
-                        assets.BigDigits[index].Draw(spriteBatch, x, 182);
-                        if (index == 10)
-                        {
-                            x += 9;
-                        }
-                        else
-                        {
-                            x += 14;
-                        }
-                    }
-                }
-                else if (terrain.TimeLeft < 60 * 30 - terrain.ApocalypseSpeed * (terrain.MaxApocalypse + 5))
-                {
-                    int x = 320 / 2 - assets.DrawGameIn.Width / 2;
-                    int y = 20;
-                    assets.DrawGameIn.Draw(spriteBatch, x, y);
-
-                    int firstNumber = terrain.TimeLeft / 60 / 10;
-                    int secondNumber = terrain.TimeLeft / 60 % 10;
-
-                    assets.DrawGameInNumbers[firstNumber].Draw(spriteBatch, x + 42, y + 15);
-                    assets.DrawGameInNumbers[secondNumber].Draw(spriteBatch, x + 8 + 42, y + 15);
-                }
-            }
-            else
-            {
-                menu.Draw(spriteBatch);
-            }
+            menu.Draw(spriteBatch);
 
             spriteBatch.End();
 

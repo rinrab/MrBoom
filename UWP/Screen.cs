@@ -142,7 +142,7 @@ namespace MrBoom
         }
     }
 
-    public class Results : IScreen
+    public class ResultScreen : IScreen
     {
         public Screen Next { get; private set; }
         public Sound SoundsToPlay { get; private set; }
@@ -154,7 +154,7 @@ namespace MrBoom
 
         private int tick;
 
-        public Results(Game.Player[] players, int winner, Assets assets, List<IController> controllers)
+        public ResultScreen(Game.Player[] players, int winner, Assets assets, List<IController> controllers)
         {
             this.players = players;
             this.winner = winner;

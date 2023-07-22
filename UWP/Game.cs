@@ -131,7 +131,7 @@ namespace MrBoom
                         }
                     }
 
-                    menu = new Results(players, winner, assets, Controllers);
+                    menu = new ResultScreen(players, winner, assets, Controllers);
                     PlaySounds(menu.SoundsToPlay);
                     state = Screen.Results;
                 }

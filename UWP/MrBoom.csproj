@@ -101,18 +101,23 @@
     </Compile>
     <Compile Include="Assets.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="DrawScreen.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IScreen.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MovingSprite.cs" />
+    <Compile Include="ResultScreen.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
+    <Compile Include="StartScreen.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="VictoryScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

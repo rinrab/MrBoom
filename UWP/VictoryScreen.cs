@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using static MrBoom.Game;
 
 namespace MrBoom
 {

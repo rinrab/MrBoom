@@ -84,7 +84,7 @@ namespace MrBoom
             {
                 if (players[winner].VictoryCount >= 5)
                 {
-                    Next = Screen.Victory;
+                    ScreenManager.SetScreen(new VictoryScreen(players, winner, assets, controllers));
                 }
                 else
                 {

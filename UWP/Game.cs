@@ -117,10 +117,6 @@ namespace MrBoom
                     NextSong(3);
                     ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
                 }
-                else if (ScreenManager.Next == Screen.Victory)
-                {
-                    ScreenManager.SetScreen(new VictoryScreen(Players.ToArray(), terrain.Winner, assets, Controllers));
-                }
                 else
                 {
                     throw new Exception("Can't navigate to " + ScreenManager.Next);

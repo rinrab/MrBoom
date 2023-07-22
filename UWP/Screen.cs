@@ -6,7 +6,7 @@ using static MrBoom.Game;
 
 namespace MrBoom
 {
-    public enum State
+    public enum Screen
     {
         None,
         StartMenu,
@@ -16,18 +16,18 @@ namespace MrBoom
         Victory
     }
 
-    public interface IState
+    public interface IScreen
     {
-        State Next { get; }
+        Screen Next { get; }
         Sound SoundsToPlay { get; }
 
         void Update();
         void Draw(SpriteBatch ctx);
     }
 
-    public class StartMenu : IState
+    public class StartMenu : IScreen
     {
-        public State Next { get; private set; }
+        public Screen Next { get; private set; }
         public Sound SoundsToPlay { get; private set; }
 
         private int tick = 0;
@@ -136,15 +136,15 @@ namespace MrBoom
                     //    startGame(this.playerList);
                     //    results = new Results(this.playerList);
                     //});
-                    Next = State.Game;
+                    Next = Screen.Game;
                 }
             }
         }
     }
 
-    public class Results : IState
+    public class Results : IScreen
     {
-        public State Next { get; private set; }
+        public Screen Next { get; private set; }
         public Sound SoundsToPlay { get; private set; }
 
         private readonly Game.Player[] players;
@@ -222,11 +222,11 @@ namespace MrBoom
             {
                 if (players[winner].VictoryCount >= 5)
                 {
-                    Next = State.Victory;
+                    Next = Screen.Victory;
                 }
                 else
                 {
-                    Next = State.Game;
+                    Next = Screen.Game;
                 }
             }
 
@@ -234,9 +234,9 @@ namespace MrBoom
         }
     }
 
-    public class DrawMenu : IState
+    public class DrawMenu : IScreen
     {
-        public State Next { get; private set; }
+        public Screen Next { get; private set; }
         public Sound SoundsToPlay { get; private set; }
         public List<IController> controllers;
 
@@ -263,14 +263,14 @@ namespace MrBoom
             tick++;
             if (tick > 120 && Game.IsAnyKeyPressed(controllers))
             {
-                Next = State.Game;
+                Next = Screen.Game;
             }
         }
     }
 
-    public class Victory : IState
+    public class Victory : IScreen
     {
-        public State Next { get; private set; }
+        public Screen Next { get; private set; }
         public Sound SoundsToPlay { get; private set; }
 
         private int tick;
@@ -307,7 +307,7 @@ namespace MrBoom
                 {
                     player.VictoryCount = 0;
                 }
-                Next = State.StartMenu;
+                Next = Screen.StartMenu;
             }
         }
     }

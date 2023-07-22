@@ -26,8 +26,8 @@ namespace MrBoom
         public SoundAssets sound;
         public List<IController> Controllers;
         public Terrain terrain;
-        public State state;
-        public IState menu;
+        public Screen state;
+        public IScreen menu;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -67,7 +67,7 @@ namespace MrBoom
             sound = SoundAssets.Load(Content);
             MediaPlayer.IsRepeating = true;
 
-            state = State.StartMenu;
+            state = Screen.StartMenu;
             Players = new List<Player>();
             NextSong(3);
 
@@ -96,7 +96,7 @@ namespace MrBoom
 
             terrain.InitializeMonsters();
 
-            state = State.Game;
+            state = Screen.Game;
         }
 
         protected override void LoadContent()
@@ -106,7 +106,7 @@ namespace MrBoom
 
         protected override void Update(GameTime gameTime)
         {
-            if (state == State.Game)
+            if (state == Screen.Game)
             {
                 bgTick++;
 
@@ -133,13 +133,13 @@ namespace MrBoom
 
                     menu = new Results(players, winner, assets, Controllers);
                     PlaySounds(menu.SoundsToPlay);
-                    state = State.Results;
+                    state = Screen.Results;
                 }
                 else if (terrain.Result == GameResult.Draw)
                 {
                     menu = new DrawMenu(assets, Controllers);
                     PlaySounds(menu.SoundsToPlay);
-                    state = State.Draw;
+                    state = Screen.Draw;
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -148,7 +148,7 @@ namespace MrBoom
                     NextSong(3);
                     menu = new StartMenu(assets, Players, Controllers);
                     PlaySounds(menu.SoundsToPlay);
-                    state = State.StartMenu;
+                    state = Screen.StartMenu;
                 }
             }
             else
@@ -168,22 +168,22 @@ namespace MrBoom
 
         private void UpdateNavigation()
         {
-            if (state != State.Game && menu.Next != State.None)
+            if (state != Screen.Game && menu.Next != Screen.None)
             {
-                if (menu.Next == State.Game)
+                if (menu.Next == Screen.Game)
                 {
                     StartGame();
                 }
-                else if (menu.Next == State.StartMenu)
+                else if (menu.Next == Screen.StartMenu)
                 {
-                    state = State.StartMenu;
+                    state = Screen.StartMenu;
                     Players = new List<Player>();
                     NextSong(3);
                     menu = new StartMenu(assets, Players, Controllers);
                 }
-                else if (menu.Next == State.Victory)
+                else if (menu.Next == Screen.Victory)
                 {
-                    state = State.Victory;
+                    state = Screen.Victory;
                     menu = new Victory(Players.ToArray(), terrain.Winner, assets, Controllers);
                 }
                 else
@@ -218,7 +218,7 @@ namespace MrBoom
 
             spriteBatch.Begin();
 
-            if (state == State.Game)
+            if (state == Screen.Game)
             {
                 if (terrain.levelIndex == 3)
                 {

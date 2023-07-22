@@ -25,7 +25,7 @@ namespace MrBoom
         void Draw(SpriteBatch ctx);
     }
 
-    public class StartMenu : IScreen
+    public class StartScreen : IScreen
     {
         public Screen Next { get; private set; }
         public Sound SoundsToPlay { get; private set; }
@@ -45,7 +45,7 @@ namespace MrBoom
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
 
-        public StartMenu(Assets assets, List<Game.Player> players, List<IController> controllers)
+        public StartScreen(Assets assets, List<Game.Player> players, List<IController> controllers)
         {
             this.assets = assets;
             this.players = players;

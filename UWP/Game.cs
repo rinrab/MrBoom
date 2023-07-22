@@ -71,7 +71,7 @@ namespace MrBoom
             Players = new List<Player>();
             NextSong(3);
 
-            menu = new StartMenu(assets, Players, Controllers);
+            menu = new StartScreen(assets, Players, Controllers);
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -146,7 +146,7 @@ namespace MrBoom
                 {
                     Players = new List<Player>();
                     NextSong(3);
-                    menu = new StartMenu(assets, Players, Controllers);
+                    menu = new StartScreen(assets, Players, Controllers);
                     PlaySounds(menu.SoundsToPlay);
                     state = Screen.StartMenu;
                 }
@@ -179,7 +179,7 @@ namespace MrBoom
                     state = Screen.StartMenu;
                     Players = new List<Player>();
                     NextSong(3);
-                    menu = new StartMenu(assets, Players, Controllers);
+                    menu = new StartScreen(assets, Players, Controllers);
                 }
                 else if (menu.Next == Screen.Victory)
                 {

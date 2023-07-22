@@ -27,7 +27,6 @@ namespace MrBoom
         public List<IController> Controllers;
         public Terrain terrain;
         public Screen state;
-        public IScreen menu;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -70,7 +69,7 @@ namespace MrBoom
             Players = new List<Player>();
             NextSong(3);
 
-            menu = new StartScreen(assets, Players, Controllers);
+            ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -96,7 +95,7 @@ namespace MrBoom
             terrain.InitializeMonsters();
 
             state = Screen.Game;
-            menu = new GameScreen(terrain, assets);
+            ScreenManager.SetScreen(new GameScreen(terrain, assets));
         }
 
         protected override void LoadContent()
@@ -108,7 +107,7 @@ namespace MrBoom
         {
             if (state == Screen.Game)
             {
-                menu.Update();
+                ScreenManager.Update();
                 terrain.Update();
 
                 PlaySounds(terrain.SoundsToPlay);
@@ -130,14 +129,14 @@ namespace MrBoom
                         }
                     }
 
-                    menu = new ResultScreen(players, winner, assets, Controllers);
-                    PlaySounds(menu.SoundsToPlay);
+                    ScreenManager.SetScreen(new ResultScreen(players, winner, assets, Controllers));
+                    PlaySounds(ScreenManager.SoundsToPlay);
                     state = Screen.Results;
                 }
                 else if (terrain.Result == GameResult.Draw)
                 {
-                    menu = new DrawScreen(assets, Controllers);
-                    PlaySounds(menu.SoundsToPlay);
+                    ScreenManager.SetScreen(new DrawScreen(assets, Controllers));
+                    PlaySounds(ScreenManager.SoundsToPlay);
                     state = Screen.Draw;
                 }
 
@@ -145,15 +144,15 @@ namespace MrBoom
                 {
                     Players = new List<Player>();
                     NextSong(3);
-                    menu = new StartScreen(assets, Players, Controllers);
-                    PlaySounds(menu.SoundsToPlay);
+                    ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
+                    PlaySounds(ScreenManager.SoundsToPlay);
                     state = Screen.StartMenu;
                 }
             }
             else
             {
-                menu.Update();
-                PlaySounds(menu.SoundsToPlay);
+                ScreenManager.Update();
+                PlaySounds(ScreenManager.SoundsToPlay);
                 UpdateNavigation();
             }
 
@@ -167,30 +166,30 @@ namespace MrBoom
 
         private void UpdateNavigation()
         {
-            if (state != Screen.Game && menu.Next != Screen.None)
+            if (state != Screen.Game && ScreenManager.Next != Screen.None)
             {
-                if (menu.Next == Screen.Game)
+                if (ScreenManager.Next == Screen.Game)
                 {
                     StartGame();
                 }
-                else if (menu.Next == Screen.StartMenu)
+                else if (ScreenManager.Next == Screen.StartMenu)
                 {
                     state = Screen.StartMenu;
                     Players = new List<Player>();
                     NextSong(3);
-                    menu = new StartScreen(assets, Players, Controllers);
+                    ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
                 }
-                else if (menu.Next == Screen.Victory)
+                else if (ScreenManager.Next == Screen.Victory)
                 {
                     state = Screen.Victory;
-                    menu = new VictoryScreen(Players.ToArray(), terrain.Winner, assets, Controllers);
+                    ScreenManager.SetScreen(new VictoryScreen(Players.ToArray(), terrain.Winner, assets, Controllers));
                 }
                 else
                 {
-                    throw new Exception("Can't navigate to " + menu.Next);
+                    throw new Exception("Can't navigate to " + ScreenManager.Next);
                 }
 
-                PlaySounds(menu.SoundsToPlay);
+                PlaySounds(ScreenManager.SoundsToPlay);
             }
         }
 
@@ -217,7 +216,7 @@ namespace MrBoom
 
             spriteBatch.Begin();
 
-            menu.Draw(spriteBatch);
+            ScreenManager.Draw(spriteBatch);
 
             spriteBatch.End();
 

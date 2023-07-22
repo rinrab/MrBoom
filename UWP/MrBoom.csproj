@@ -112,6 +112,7 @@
     <Compile Include="Monster.cs" />
     <Compile Include="MovingSprite.cs" />
     <Compile Include="ResultScreen.cs" />
+    <Compile Include="ScreenManager.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

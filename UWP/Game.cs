@@ -184,7 +184,7 @@ namespace MrBoom
                 else if (menu.Next == Screen.Victory)
                 {
                     state = Screen.Victory;
-                    menu = new Victory(Players.ToArray(), terrain.Winner, assets, Controllers);
+                    menu = new VictoryScreen(Players.ToArray(), terrain.Winner, assets, Controllers);
                 }
                 else
                 {

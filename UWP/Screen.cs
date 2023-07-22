@@ -268,7 +268,7 @@ namespace MrBoom
         }
     }
 
-    public class Victory : IScreen
+    public class VictoryScreen : IScreen
     {
         public Screen Next { get; private set; }
         public Sound SoundsToPlay { get; private set; }
@@ -280,7 +280,7 @@ namespace MrBoom
         private readonly Assets assets;
         private readonly List<IController> controllers;
 
-        public Victory(Player[] players, int winner, Assets assets, List<IController> controllers)
+        public VictoryScreen(Player[] players, int winner, Assets assets, List<IController> controllers)
         {
             this.players = players;
             this.winner = winner;

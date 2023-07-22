@@ -349,7 +349,7 @@ namespace MrBoom
 
         public static bool IsAnyKeyPressed(List<IController> controllers)
         {
-            if (Keyboard.GetState().GetPressedKeys().Length > 0)
+            if (Keyboard.GetState().GetPressedKeyCount() > 0)
             {
                 return true;
             }

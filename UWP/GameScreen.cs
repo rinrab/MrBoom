@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using static MrBoom.Game;
 
 namespace MrBoom
 {
@@ -11,21 +13,56 @@ namespace MrBoom
     {
         private readonly Terrain terrain;
         private readonly Assets assets;
+        private readonly Game game;
         private int bgTick = 0;
 
         public Screen Next { get; private set; }
 
-        public Sound SoundsToPlay { get; private set; }
+        public Sound SoundsToPlay { get => terrain.SoundsToPlay; }
 
-        public GameScreen(Terrain terrain, Assets assets)
+        public GameScreen(Terrain terrain, Assets assets, Game game)
         {
             this.terrain = terrain;
             this.assets = assets;
+            this.game = game;
         }
 
         public void Update()
         {
             bgTick++;
+
+            terrain.Update();
+
+            if (terrain.Result == GameResult.Victory)
+            {
+                Player[] players = game.Players.ToArray();
+
+                int winner = -1;
+                var winnerSprite = terrain.Players[terrain.Winner];
+
+                for (int i = 0; i < players.Length; i++)
+                {
+                    Game.Player player = players[i];
+                    if (winnerSprite.Controller == player.Controller)
+                    {
+                        player.VictoryCount++;
+                        winner = i;
+                    }
+                }
+
+                ScreenManager.SetScreen(new ResultScreen(players, winner, assets, game.Controllers));
+            }
+            else if (terrain.Result == GameResult.Draw)
+            {
+                ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                game.Players = new List<Player>();
+                game.NextSong(3);
+                ScreenManager.SetScreen(new StartScreen(assets, game.Players, game.Controllers));
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

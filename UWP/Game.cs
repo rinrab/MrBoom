@@ -26,7 +26,6 @@ namespace MrBoom
         public SoundAssets sound;
         public List<IController> Controllers;
         public Terrain terrain;
-        public Screen state;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -65,7 +64,6 @@ namespace MrBoom
             sound = SoundAssets.Load(Content);
             MediaPlayer.IsRepeating = true;
 
-            state = Screen.StartMenu;
             Players = new List<Player>();
             NextSong(3);
 
@@ -94,8 +92,7 @@ namespace MrBoom
 
             terrain.InitializeMonsters();
 
-            state = Screen.Game;
-            ScreenManager.SetScreen(new GameScreen(terrain, assets));
+            ScreenManager.SetScreen(new GameScreen(terrain, assets, this));
         }
 
         protected override void LoadContent()
@@ -105,56 +102,10 @@ namespace MrBoom
 
         protected override void Update(GameTime gameTime)
         {
-            if (state == Screen.Game)
-            {
-                ScreenManager.Update();
-                terrain.Update();
+            ScreenManager.Update();
 
-                PlaySounds(terrain.SoundsToPlay);
-
-                if (terrain.Result == GameResult.Victory)
-                {
-                    Player[] players = Players.ToArray();
-
-                    int winner = -1;
-                    var winnerSprite = terrain.Players[terrain.Winner];
-
-                    for (int i = 0; i < players.Length; i++)
-                    {
-                        Game.Player player = players[i];
-                        if (winnerSprite.Controller == player.Controller)
-                        {
-                            player.VictoryCount++;
-                            winner = i;
-                        }
-                    }
-
-                    ScreenManager.SetScreen(new ResultScreen(players, winner, assets, Controllers));
-                    PlaySounds(ScreenManager.SoundsToPlay);
-                    state = Screen.Results;
-                }
-                else if (terrain.Result == GameResult.Draw)
-                {
-                    ScreenManager.SetScreen(new DrawScreen(assets, Controllers));
-                    PlaySounds(ScreenManager.SoundsToPlay);
-                    state = Screen.Draw;
-                }
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                {
-                    Players = new List<Player>();
-                    NextSong(3);
-                    ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
-                    PlaySounds(ScreenManager.SoundsToPlay);
-                    state = Screen.StartMenu;
-                }
-            }
-            else
-            {
-                ScreenManager.Update();
-                PlaySounds(ScreenManager.SoundsToPlay);
-                UpdateNavigation();
-            }
+            PlaySounds(ScreenManager.SoundsToPlay);
+            UpdateNavigation();
 
             if (MediaPlayer.State == MediaState.Stopped)
             {
@@ -166,7 +117,7 @@ namespace MrBoom
 
         private void UpdateNavigation()
         {
-            if (state != Screen.Game && ScreenManager.Next != Screen.None)
+            if (ScreenManager.Next != Screen.None)
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
@@ -174,14 +125,12 @@ namespace MrBoom
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {
-                    state = Screen.StartMenu;
                     Players = new List<Player>();
                     NextSong(3);
                     ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
                 }
                 else if (ScreenManager.Next == Screen.Victory)
                 {
-                    state = Screen.Victory;
                     ScreenManager.SetScreen(new VictoryScreen(Players.ToArray(), terrain.Winner, assets, Controllers));
                 }
                 else

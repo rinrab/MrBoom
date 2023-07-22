@@ -64,22 +64,7 @@ namespace MrBoom
 
         public void StartGame()
         {
-            Terrain terrain = new Terrain(Terrain.Random.Next(Map.Maps.Length), assets);
-
-            NextSong();
-
-            for (int i = 0; i < Players.Count; i++)
-            {
-                Sprite sprite = new Sprite(terrain, assets.Players[i], assets.BoyGhost, assets.Bomb)
-                {
-                    Controller = this.Players[i].Controller
-                };
-                terrain.LocateSprite(sprite);
-            }
-
-            terrain.InitializeMonsters();
-
-            ScreenManager.SetScreen(new GameScreen(terrain, assets, this));
+            ScreenManager.SetScreen(new GameScreen(Players, assets, this));
         }
 
         protected override void LoadContent()

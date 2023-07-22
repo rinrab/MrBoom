@@ -20,11 +20,25 @@ namespace MrBoom
 
         public Sound SoundsToPlay { get => terrain.SoundsToPlay; }
 
-        public GameScreen(Terrain terrain, Assets assets, Game game)
+        public GameScreen(List<Player> players, Assets assets, Game game)
         {
-            this.terrain = terrain;
             this.assets = assets;
             this.game = game;
+
+            terrain = new Terrain(Terrain.Random.Next(Map.Maps.Length), assets);
+
+            game.NextSong();
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                Sprite sprite = new Sprite(terrain, assets.Players[i], assets.BoyGhost, assets.Bomb)
+                {
+                    Controller = players[i].Controller
+                };
+                terrain.LocateSprite(sprite);
+            }
+
+            terrain.InitializeMonsters();
         }
 
         public void Update()

@@ -6,7 +6,6 @@ namespace MrBoom
     public class VictoryScreen : IScreen
     {
         public Screen Next { get; private set; }
-        public Sound SoundsToPlay { get; private set; }
 
         private int tick;
 
@@ -33,8 +32,6 @@ namespace MrBoom
 
         public void Update()
         {
-            SoundsToPlay = 0;
-
             tick++;
             if (tick > 120 && Game.IsAnyKeyPressed(controllers))
             {

@@ -7,7 +7,6 @@ namespace MrBoom
     public class StartScreen : IScreen
     {
         public Screen Next { get; private set; }
-        public Sound SoundsToPlay { get; private set; }
 
         private int tick = 0;
 
@@ -76,8 +75,6 @@ namespace MrBoom
 
         public void Update()
         {
-            SoundsToPlay = 0;
-
             tick++;
 
             bool isStart = false;
@@ -95,7 +92,7 @@ namespace MrBoom
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
                     this.players.Add(new Player(controller) { Name = name });
-                    SoundsToPlay |= Sound.Addplayer;
+                    assets.Sounds.Addplayer.Play();
                 }
                 if (controller.IsStart)
                 {

@@ -13,8 +13,6 @@ namespace MrBoom
 
         public Screen Next { get; private set; }
 
-        public Sound SoundsToPlay { get => terrain.SoundsToPlay; }
-
         public GameScreen(List<Player> players, Assets assets, Game game)
         {
             this.assets = assets;
@@ -41,6 +39,8 @@ namespace MrBoom
             bgTick++;
 
             terrain.Update();
+
+            PlaySounds(terrain.SoundsToPlay);
 
             if (terrain.Result == GameResult.Victory)
             {
@@ -163,5 +163,21 @@ namespace MrBoom
             }
         }
 
+        private void PlaySounds(Sound soundsToPlay)
+        {
+            var soundAssets = assets.Sounds;
+            if (soundsToPlay.HasFlag(Sound.Bang)) soundAssets.Bang.Play();
+            if (soundsToPlay.HasFlag(Sound.PoseBomb)) soundAssets.PoseBomb.Play();
+            if (soundsToPlay.HasFlag(Sound.Sac)) soundAssets.Sac.Play();
+            if (soundsToPlay.HasFlag(Sound.Pick)) soundAssets.Pick.Play();
+            if (soundsToPlay.HasFlag(Sound.PlayerDie)) soundAssets.PlayerDie.Play();
+            if (soundsToPlay.HasFlag(Sound.Oioi)) soundAssets.Oioi.Play();
+            if (soundsToPlay.HasFlag(Sound.Ai)) soundAssets.Ai.Play();
+            if (soundsToPlay.HasFlag(Sound.Addplayer)) soundAssets.Addplayer.Play();
+            if (soundsToPlay.HasFlag(Sound.Victory)) soundAssets.Victory.Play();
+            if (soundsToPlay.HasFlag(Sound.Draw)) soundAssets.Draw.Play();
+            if (soundsToPlay.HasFlag(Sound.Clock)) soundAssets.Clock.Play();
+            if (soundsToPlay.HasFlag(Sound.TimeEnd)) soundAssets.TimeEnd.Play();
+        }
     }
 }

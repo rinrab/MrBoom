@@ -25,6 +25,7 @@ namespace MrBoom
             public Overlay[] Overlays;
         }
 
+        public SoundAssets Sounds { get; private set; }
         public Level[] levels { get; private set; }
         public AssetImage[] Bomb { get; private set; }
         public AssetImage[] BoomMid { get; private set; }
@@ -263,6 +264,7 @@ namespace MrBoom
 
             return new Assets()
             {
+                Sounds = SoundAssets.Load(content),
                 Bomb = loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
                 PowerUps = new AssetImage[][] {
                     loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16), bonusBackground),

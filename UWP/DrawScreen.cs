@@ -6,7 +6,6 @@ namespace MrBoom
     public class DrawScreen : IScreen
     {
         public Screen Next { get; private set; }
-        public Sound SoundsToPlay { get; private set; }
         public List<IController> controllers;
 
         private readonly Assets assets;
@@ -17,7 +16,7 @@ namespace MrBoom
             this.assets = assets;
             this.controllers = controllers;
 
-            SoundsToPlay |= Sound.Draw;
+            assets.Sounds.Draw.Play();
         }
 
         public void Draw(SpriteBatch ctx)
@@ -27,8 +26,6 @@ namespace MrBoom
 
         public void Update()
         {
-            SoundsToPlay = 0;
-
             tick++;
             if (tick > 120 && Game.IsAnyKeyPressed(controllers))
             {

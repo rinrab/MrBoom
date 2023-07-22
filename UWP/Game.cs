@@ -11,7 +11,6 @@ namespace MrBoom
     {
         public List<Player> Players;
         public Assets assets;
-        public SoundAssets sound;
         public List<IController> Controllers;
 
         private readonly GraphicsDeviceManager graphics;
@@ -48,7 +47,6 @@ namespace MrBoom
             graphics.ApplyChanges();
 
             assets = Assets.Load(Content, GraphicsDevice);
-            sound = SoundAssets.Load(Content);
             MediaPlayer.IsRepeating = true;
 
             Players = new List<Player>();
@@ -76,7 +74,6 @@ namespace MrBoom
         {
             ScreenManager.Update();
 
-            PlaySounds(ScreenManager.SoundsToPlay);
             UpdateNavigation();
 
             if (MediaPlayer.State == MediaState.Stopped)
@@ -105,25 +102,7 @@ namespace MrBoom
                 {
                     throw new Exception("Can't navigate to " + ScreenManager.Next);
                 }
-
-                PlaySounds(ScreenManager.SoundsToPlay);
             }
-        }
-
-        private void PlaySounds(Sound soundsToPlay)
-        {
-            if (soundsToPlay.HasFlag(Sound.Bang)) sound.Bang.Play();
-            if (soundsToPlay.HasFlag(Sound.PoseBomb)) sound.PoseBomb.Play();
-            if (soundsToPlay.HasFlag(Sound.Sac)) sound.Sac.Play();
-            if (soundsToPlay.HasFlag(Sound.Pick)) sound.Pick.Play();
-            if (soundsToPlay.HasFlag(Sound.PlayerDie)) sound.PlayerDie.Play();
-            if (soundsToPlay.HasFlag(Sound.Oioi)) sound.Oioi.Play();
-            if (soundsToPlay.HasFlag(Sound.Ai)) sound.Ai.Play();
-            if (soundsToPlay.HasFlag(Sound.Addplayer)) sound.Addplayer.Play();
-            if (soundsToPlay.HasFlag(Sound.Victory)) sound.Victory.Play();
-            if (soundsToPlay.HasFlag(Sound.Draw)) sound.Draw.Play();
-            if (soundsToPlay.HasFlag(Sound.Clock)) sound.Clock.Play();
-            if (soundsToPlay.HasFlag(Sound.TimeEnd)) sound.TimeEnd.Play();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -192,9 +171,9 @@ namespace MrBoom
         {
             if (index == -1)
             {
-                index = Terrain.Random.Next(sound.Musics.Length);
+                index = Terrain.Random.Next(assets.Sounds.Musics.Length);
             }
-            sound.Musics[index].Play();
+            assets.Sounds.Musics[index].Play();
         }
     }
 }

@@ -37,21 +37,6 @@ namespace MrBoom
             }
         }
 
-        public static Sound SoundsToPlay
-        {
-            get
-            {
-                if (currentScreen != null)
-                {
-                    return currentScreen.SoundsToPlay;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
-
         public static void SetScreen(IScreen screen)
         {
             currentScreen = screen;

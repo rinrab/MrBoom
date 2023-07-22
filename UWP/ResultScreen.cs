@@ -7,7 +7,6 @@ namespace MrBoom
     public class ResultScreen : IScreen
     {
         public Screen Next { get; private set; }
-        public Sound SoundsToPlay { get; private set; }
 
         private readonly Player[] players;
         private readonly int winner;
@@ -23,7 +22,7 @@ namespace MrBoom
             this.assets = assets;
             this.controllers = controllers;
 
-            SoundsToPlay |= Sound.Victory;
+            assets.Sounds.Victory.Play();
         }
 
         public void Draw(SpriteBatch ctx)
@@ -78,8 +77,6 @@ namespace MrBoom
 
         public void Update()
         {
-            SoundsToPlay = 0;
-
             if (this.tick > 120 && Game.IsAnyKeyPressed(controllers))
             {
                 if (players[winner].VictoryCount >= 5)

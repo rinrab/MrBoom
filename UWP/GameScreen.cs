@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace MrBoom
 {
@@ -68,7 +66,7 @@ namespace MrBoom
             }
 
             bool endGame = false;
-            foreach(var controller in game.Controllers)
+            foreach (var controller in game.Controllers)
             {
                 if (controller.IsKeyDown(PlayerKeys.EndGame))
                 {

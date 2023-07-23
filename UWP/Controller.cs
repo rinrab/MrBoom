@@ -99,7 +99,8 @@ namespace MrBoom
     {
         private readonly PlayerIndex index;
         private GamePadState state;
-        float deadZone = 0.5f;
+
+        readonly float deadZone = 0.5f;
 
         public GamepadController(PlayerIndex index)
         {

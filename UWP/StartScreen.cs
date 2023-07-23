@@ -94,13 +94,14 @@ namespace MrBoom
                     this.players.Add(new Player(controller) { Name = name });
                     assets.Sounds.Addplayer.Play();
                 }
-                if (controller.IsStart)
+
+                if (controller.IsKeyDown(PlayerKeys.StartGame))
                 {
                     isStart = true;
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter) || isStart)
+            if (isStart)
             {
                 if (this.players.Count >= 1)
                 {

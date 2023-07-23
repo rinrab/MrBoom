@@ -11,7 +11,8 @@ namespace MrBoom
         Left,
         Right,
         Bomb,
-        RcDitonate
+        RcDitonate,
+        StartGame
     }
 
     public interface IController
@@ -20,8 +21,6 @@ namespace MrBoom
 
         bool IsJoined { get; set; }
 
-        bool IsStart { get; }
-
         void Update();
         bool IsAnyKeyPressed();
     }
@@ -29,8 +28,6 @@ namespace MrBoom
     public class KeyboardController : IController
     {
         public bool IsJoined { get; set; } = false;
-
-        public bool IsStart => false;
 
         readonly Keys KeyUp;
         readonly Keys KeyDown;
@@ -73,6 +70,8 @@ namespace MrBoom
                     return keyboardState.IsKeyDown(KeyBomb);
                 case PlayerKeys.RcDitonate: 
                     return keyboardState.IsKeyDown(KeyRcDitonate);
+                case PlayerKeys.StartGame:
+                    return keyboardState.IsKeyDown(Keys.Enter);
                 default: 
                     return false;
             }
@@ -87,8 +86,6 @@ namespace MrBoom
     public class GamepadController : IController
     {
         public bool IsJoined { get; set; } = false;
-
-        public bool IsStart => GamePad.GetState(index).IsButtonDown(Buttons.Start);
 
         private readonly PlayerIndex index;
         private GamePadState state;
@@ -121,6 +118,8 @@ namespace MrBoom
                     return state.IsButtonDown(Buttons.A);
                 case PlayerKeys.RcDitonate:
                     return state.IsButtonDown(Buttons.B);
+                case PlayerKeys.StartGame:
+                    return state.IsButtonDown(Buttons.Start);
                 default:
                     return false;
             }

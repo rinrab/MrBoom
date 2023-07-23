@@ -289,13 +289,15 @@ namespace MrBoom
                     color = new Color(255, 0, 0);
                 }
 
+                int[] index = new int[] { 0, 1, 0, 2 };
+
                 if (unplugin == 0 || unplugin % 30 < 15)
                 {
                     img.Draw(ctx, x, y, color);
                 }
                 else
                 {
-                    ghosts[animateIndex * 3 + frameIndex / 20 % 3].Draw(ctx, x, y, color);
+                    ghosts[animateIndex * 3 + index[frameIndex / 20 % 4]].Draw(ctx, x, y, color);
                 }
             }
         }

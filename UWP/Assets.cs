@@ -67,6 +67,7 @@ namespace MrBoom
 
             public int Width { get { return rect.Width / scale; } }
             public int Height { get { return rect.Height / scale; } }
+            public Texture2D Texture { get => texture; }
 
             public AssetImage(Texture2D texture, int x, int y, int width, int height)
             {
@@ -98,6 +99,24 @@ namespace MrBoom
                 return result;
             }
 
+            Texture2D changeColor(Texture2D src, Color color)
+            {
+                Color[] data = new Color[src.Width * src.Height];
+                src.GetData(data);
+
+                for (int i = 0; i < data.Length; i++)
+                {
+                    if (data[i].A != 0)
+                    {
+                        data[i] = color;
+                    }
+                }
+
+                var texture = new Texture2D(graphics, src.Width, src.Height);
+                texture.SetData(data, 0, src.Width * src.Height);
+
+                return texture;
+            }
 
             AssetImage[][][] loadPlayers(Texture2D imgSpriteBoys, Texture2D imgSpriteGirl)
             {
@@ -261,6 +280,9 @@ namespace MrBoom
 
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
             var bonusBackground = loadImage(imgBonus, 0, 0, 160, 16);
+
+            var imgSpriteWhite = changeColor(imgSprite, Color.White);
+            var imgSprite3White = changeColor(imgSprite3, Color.White);
 
             return new Assets()
             {
@@ -478,8 +500,8 @@ namespace MrBoom
                 Med = loadImage(content.Load<Texture2D>("MED"), 0, 0, 320, 200),
                 Coin = loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1)
                     .Concat(loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)).ToArray(),
-                BoyGhost = loadImageStripe(imgGhosts, 0, 0, 23, 23, 12, 1),
-                GirlGhost = loadImageStripe(imgGhosts, 0, 24, 23, 25, 12, 1),
+                BoyGhost = loadImageStripe(imgSpriteWhite, 0, 0, 23, 23, 12, 1),
+                GirlGhost = loadImageStripe(imgSprite3White, 0, 0, 23, 25, 12, 1),
                 MonsterGhosts = new AssetImage[][]
                 {
                     null,

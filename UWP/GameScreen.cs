@@ -23,7 +23,8 @@ namespace MrBoom
 
             for (int i = 0; i < players.Count; i++)
             {
-                Sprite sprite = new Sprite(terrain, assets.Players[i], assets.BoyGhost, assets.Bomb)
+                var ghosts = (i % 2) == 0 ? assets.BoyGhost : assets.GirlGhost;
+                Sprite sprite = new Sprite(terrain, assets.Players[i], ghosts, assets.Bomb)
                 {
                     Controller = players[i].Controller
                 };

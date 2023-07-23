@@ -26,44 +26,17 @@ namespace MrBoom
 
         public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] ghosts, Assets.AssetImage[] bombAssets) : base(map)
         {
-            //this.isPlayer = true;
             this.animations = animations;
             this.ghosts = ghosts;
             this.bombAssets = bombAssets;
-
             this.animateIndex = 0;
             this.frameIndex = 0;
-
             this.speed = 1;
-
             this.BombsPlaced = 0;
-
             this.rcAllowed = false;
-
-            //this.blinking = undefined;
-            //this.blinkingSpeed = 15;
-
-            //if (cheats.god)
-            //{
-            //    this.unplugin = 999999;
-            //    this.blinking = 0;
-            //    this.blinkingSpeed = 30;
-            //}
-
-            this.x = 1 * 16;
-            this.y = 1 * 16;
-
-            //const initialBonus = map.initialBonus;
-            //if (initialBonus)
-            //{
-            //    if (initialBonus.includes(PowerUpType.Kick))
-            //    {
-            //        this.movingSprite.isHaveKick = true;
-            //    }
-            //}
+            this.isHaveKick = map.StartKick;
             this.maxBoom = map.StartMaxFire;
             this.maxBombsCount = map.StartMaxBombsCount;
-            isHaveKick = map.StartKick;
         }
 
         public override void Update()

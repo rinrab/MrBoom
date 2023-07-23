@@ -12,7 +12,8 @@ namespace MrBoom
         Right,
         Bomb,
         RcDitonate,
-        StartGame
+        StartGame,
+        EndGame
     }
 
     public interface IController
@@ -58,21 +59,23 @@ namespace MrBoom
         {
             switch (key)
             {
-                case PlayerKeys.Up: 
+                case PlayerKeys.Up:
                     return keyboardState.IsKeyDown(KeyUp);
-                case PlayerKeys.Down: 
+                case PlayerKeys.Down:
                     return keyboardState.IsKeyDown(KeyDown);
-                case PlayerKeys.Left: 
+                case PlayerKeys.Left:
                     return keyboardState.IsKeyDown(KeyLeft);
-                case PlayerKeys.Right: 
+                case PlayerKeys.Right:
                     return keyboardState.IsKeyDown(KeyRight);
-                case PlayerKeys.Bomb: 
+                case PlayerKeys.Bomb:
                     return keyboardState.IsKeyDown(KeyBomb);
-                case PlayerKeys.RcDitonate: 
+                case PlayerKeys.RcDitonate:
                     return keyboardState.IsKeyDown(KeyRcDitonate);
                 case PlayerKeys.StartGame:
                     return keyboardState.IsKeyDown(Keys.Enter);
-                default: 
+                case PlayerKeys.EndGame:
+                    return keyboardState.IsKeyDown(Keys.Escape);
+                default:
                     return false;
             }
         }
@@ -120,6 +123,8 @@ namespace MrBoom
                     return state.IsButtonDown(Buttons.B);
                 case PlayerKeys.StartGame:
                     return state.IsButtonDown(Buttons.Start);
+                case PlayerKeys.EndGame:
+                    return false;
                 default:
                     return false;
             }

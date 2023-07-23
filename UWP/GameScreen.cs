@@ -66,7 +66,16 @@ namespace MrBoom
                 ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            bool endGame = false;
+            foreach(var controller in game.Controllers)
+            {
+                if (controller.IsKeyDown(PlayerKeys.EndGame))
+                {
+                    endGame = true;
+                }
+            }
+
+            if (endGame)
             {
                 game.Players = new List<Player>();
                 game.NextSong(3);

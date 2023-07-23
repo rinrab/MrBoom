@@ -82,7 +82,7 @@ namespace MrBoom
             foreach (var controller in controllers)
             {
                 controller.Update();
-                if (controller.Keys[PlayerKeys.Bomb] && !controller.IsJoined)
+                if (controller.IsKeyDown(PlayerKeys.Bomb) && !controller.IsJoined)
                 {
                     controller.IsJoined = true;
                     string[] names = new string[]

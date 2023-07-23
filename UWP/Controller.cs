@@ -16,21 +16,23 @@ namespace MrBoom
 
     public interface IController
     {
-        Dictionary<PlayerKeys, bool> Keys { get; }
+        bool IsKeyDown(PlayerKeys key);
 
         bool IsJoined { get; set; }
 
         bool IsStart { get; }
 
         void Update();
+        bool IsAnyKeyPressed();
     }
 
     public class KeyboardController : IController
     {
-        public Dictionary<PlayerKeys, bool> Keys { get; }
         public bool IsJoined { get; set; } = false;
 
         public bool IsStart => false;
+
+        private readonly Dictionary<PlayerKeys, bool> keys;
 
         readonly Keys KeyUp;
         readonly Keys KeyDown;
@@ -49,33 +51,45 @@ namespace MrBoom
             this.KeyBomb = keyBomb;
             this.KeyRcDitonate = keyRcDitonate;
 
-            this.Keys = new Dictionary<PlayerKeys, bool>();
+            this.keys = new Dictionary<PlayerKeys, bool>();
         }
 
         public void Update()
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            this.Keys[PlayerKeys.Up] = keyboardState.IsKeyDown(KeyUp);
-            this.Keys[PlayerKeys.Down] = keyboardState.IsKeyDown(KeyDown);
-            this.Keys[PlayerKeys.Left] = keyboardState.IsKeyDown(KeyLeft);
-            this.Keys[PlayerKeys.Right] = keyboardState.IsKeyDown(KeyRight);
-            this.Keys[PlayerKeys.Bomb] = keyboardState.IsKeyDown(KeyBomb);
-            this.Keys[PlayerKeys.RcDitonate] = keyboardState.IsKeyDown(KeyRcDitonate);
+            this.keys[PlayerKeys.Up] = keyboardState.IsKeyDown(KeyUp);
+            this.keys[PlayerKeys.Down] = keyboardState.IsKeyDown(KeyDown);
+            this.keys[PlayerKeys.Left] = keyboardState.IsKeyDown(KeyLeft);
+            this.keys[PlayerKeys.Right] = keyboardState.IsKeyDown(KeyRight);
+            this.keys[PlayerKeys.Bomb] = keyboardState.IsKeyDown(KeyBomb);
+            this.keys[PlayerKeys.RcDitonate] = keyboardState.IsKeyDown(KeyRcDitonate);
+        }
+
+        public bool IsKeyDown(PlayerKeys key)
+        {
+            return this.keys[key];
+        }
+
+        public bool IsAnyKeyPressed()
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            return keyboardState.GetPressedKeyCount() > 0;
         }
     }
 
     public class GamepadController : IController
     {
         public bool IsJoined { get; set; } = false;
-        public Dictionary<PlayerKeys, bool> Keys { get; }
 
         public bool IsStart => GamePad.GetState(index).IsButtonDown(Buttons.Start);
 
         private readonly PlayerIndex index;
+        private readonly Dictionary<PlayerKeys, bool> keys;
 
         public GamepadController(PlayerIndex index)
         {
-            Keys = new Dictionary<PlayerKeys, bool>();
+            keys = new Dictionary<PlayerKeys, bool>();
             this.index = index;
         }
 
@@ -85,12 +99,22 @@ namespace MrBoom
 
             float deadZone = 0.5f;
 
-            Keys[PlayerKeys.Up] = state.ThumbSticks.Left.Y > deadZone || state.IsButtonDown(Buttons.DPadUp);
-            Keys[PlayerKeys.Down] = state.ThumbSticks.Left.Y < -deadZone || state.IsButtonDown(Buttons.DPadDown);
-            Keys[PlayerKeys.Left] = state.ThumbSticks.Left.X < -deadZone || state.IsButtonDown(Buttons.DPadLeft);
-            Keys[PlayerKeys.Right] = state.ThumbSticks.Left.X > deadZone || state.IsButtonDown(Buttons.DPadRight);
-            Keys[PlayerKeys.Bomb] = state.IsButtonDown(Buttons.A);
-            Keys[PlayerKeys.RcDitonate] = state.IsButtonDown(Buttons.B);
+            keys[PlayerKeys.Up] = state.ThumbSticks.Left.Y > deadZone || state.IsButtonDown(Buttons.DPadUp);
+            keys[PlayerKeys.Down] = state.ThumbSticks.Left.Y < -deadZone || state.IsButtonDown(Buttons.DPadDown);
+            keys[PlayerKeys.Left] = state.ThumbSticks.Left.X < -deadZone || state.IsButtonDown(Buttons.DPadLeft);
+            keys[PlayerKeys.Right] = state.ThumbSticks.Left.X > deadZone || state.IsButtonDown(Buttons.DPadRight);
+            keys[PlayerKeys.Bomb] = state.IsButtonDown(Buttons.A);
+            keys[PlayerKeys.RcDitonate] = state.IsButtonDown(Buttons.B);
+        }
+
+        public bool IsKeyDown(PlayerKeys key)
+        {
+            return this.keys[key];
+        }
+
+        public bool IsAnyKeyPressed()
+        {
+            return this.keys.ContainsValue(true);
         }
     }
 }

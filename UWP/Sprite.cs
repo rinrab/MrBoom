@@ -86,19 +86,19 @@ namespace MrBoom
             Controller.Update();
 
             this.Direction = MovingSprite.Directions.None;
-            if (this.Controller.Keys[PlayerKeys.Up])
+            if (this.Controller.IsKeyDown(PlayerKeys.Up))
             {
                 this.Direction = Directions.Up;
             }
-            else if (this.Controller.Keys[PlayerKeys.Left])
+            else if (this.Controller.IsKeyDown(PlayerKeys.Left))
             {
                 this.Direction = Directions.Left;
             }
-            else if (this.Controller.Keys[PlayerKeys.Right])
+            else if (this.Controller.IsKeyDown(PlayerKeys.Right))
             {
                 this.Direction = Directions.Right;
             }
-            else if (this.Controller.Keys[PlayerKeys.Down])
+            else if (this.Controller.IsKeyDown(PlayerKeys.Down))
             {
                 this.Direction = Directions.Down;
             }
@@ -111,7 +111,7 @@ namespace MrBoom
                 else if (Direction == Directions.Right) Direction = Directions.Left;
             }
 
-            this.rcDitonate = this.rcAllowed && this.Controller.Keys[PlayerKeys.RcDitonate];
+            this.rcDitonate = this.rcAllowed && this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
 
             base.Update();
 
@@ -119,7 +119,7 @@ namespace MrBoom
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if ((this.Controller.Keys[PlayerKeys.Bomb] || autoBombPlacing > 0) && bombsPlacingDisabled == 0)
+            if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) && bombsPlacingDisabled == 0)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {

@@ -152,14 +152,10 @@ namespace MrBoom
 
         public static bool IsAnyKeyPressed(List<IController> controllers)
         {
-            if (Keyboard.GetState().GetPressedKeyCount() > 0)
-            {
-                return true;
-            }
             foreach (var controller in controllers)
             {
                 controller.Update();
-                if (controller.Keys.ContainsValue(true))
+                if (controller.IsAnyKeyPressed())
                 {
                     return true;
                 }

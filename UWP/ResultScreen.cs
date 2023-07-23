@@ -77,7 +77,7 @@ namespace MrBoom
 
         public void Update()
         {
-            if (this.tick > 120 && Game.IsAnyKeyPressed(controllers))
+            if (this.tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
                 if (players[winner].VictoryCount >= 5)
                 {

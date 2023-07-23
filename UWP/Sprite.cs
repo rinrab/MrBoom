@@ -83,8 +83,6 @@ namespace MrBoom
 
             this.Direction = MovingSprite.Directions.Right;
 
-            Controller.Update();
-
             this.Direction = MovingSprite.Directions.None;
             if (this.Controller.IsKeyDown(PlayerKeys.Up))
             {

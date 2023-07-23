@@ -13,7 +13,24 @@ namespace MrBoom
         Bomb,
         RcDitonate,
         StartGame,
-        EndGame
+        EndGame,
+        Continue
+    }
+
+    public static class Controller
+    {
+        public static bool IsKeyDown(IEnumerable<IController> controllers, PlayerKeys key)
+        {
+            foreach (IController controller in controllers)
+            {
+                if (controller.IsKeyDown(key))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     public interface IController
@@ -23,7 +40,6 @@ namespace MrBoom
         bool IsJoined { get; set; }
 
         void Update();
-        bool IsAnyKeyPressed();
     }
 
     public class KeyboardController : IController
@@ -75,14 +91,11 @@ namespace MrBoom
                     return keyboardState.IsKeyDown(Keys.Enter);
                 case PlayerKeys.EndGame:
                     return keyboardState.IsKeyDown(Keys.Escape);
+                case PlayerKeys.Continue:
+                    return keyboardState.GetPressedKeyCount() > 0;
                 default:
                     return false;
             }
-        }
-
-        public bool IsAnyKeyPressed()
-        {
-            return keyboardState.GetPressedKeyCount() > 0;
         }
     }
 
@@ -125,14 +138,11 @@ namespace MrBoom
                     return state.IsButtonDown(Buttons.Start);
                 case PlayerKeys.EndGame:
                     return false;
+                case PlayerKeys.Continue:
+                    return !state.IsButtonUp(Buttons.A | Buttons.B | Buttons.X | Buttons.Y);
                 default:
                     return false;
             }
-        }
-
-        public bool IsAnyKeyPressed()
-        {
-            return !state.IsButtonUp(Buttons.None);
         }
     }
 }

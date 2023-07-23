@@ -81,7 +81,6 @@ namespace MrBoom
 
             foreach (var controller in controllers)
             {
-                controller.Update();
                 if (controller.IsKeyDown(PlayerKeys.Bomb) && !controller.IsJoined)
                 {
                     controller.IsJoined = true;

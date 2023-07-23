@@ -27,7 +27,8 @@ namespace MrBoom
         public void Update()
         {
             tick++;
-            if (tick > 120 && Game.IsAnyKeyPressed(controllers))
+
+            if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
                 Next = Screen.Game;
             }

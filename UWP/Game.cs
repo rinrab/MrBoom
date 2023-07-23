@@ -72,6 +72,11 @@ namespace MrBoom
 
         protected override void Update(GameTime gameTime)
         {
+            foreach (IController controller in Controllers)
+            {
+                controller.Update();
+            }
+
             ScreenManager.Update();
 
             UpdateNavigation();
@@ -148,19 +153,6 @@ namespace MrBoom
                     images[index].Draw(ctx, x + i * 8, y);
                 }
             }
-        }
-
-        public static bool IsAnyKeyPressed(List<IController> controllers)
-        {
-            foreach (var controller in controllers)
-            {
-                controller.Update();
-                if (controller.IsAnyKeyPressed())
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         public void NextSong(int index = -1)

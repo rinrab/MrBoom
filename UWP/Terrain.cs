@@ -175,7 +175,7 @@ namespace MrBoom
             int playersCount = 0;
             foreach (Sprite player in this.Players)
             {
-                if (!player.isDie)
+                if (!player.IsDie)
                 {
                     playersCount++;
                 }
@@ -236,7 +236,7 @@ namespace MrBoom
                 {
                     for (int i = 0; i < Players.Count; i++)
                     {
-                        if (!Players[i].isDie)
+                        if (!Players[i].IsDie)
                         {
                             Winner = i;
                         }
@@ -291,7 +291,7 @@ namespace MrBoom
 
                     if (cell.Type == TerrainType.Bomb)
                     {
-                        if (!cell.rcAllowed || !cell.owner.rcAllowed || cell.owner.isDie)
+                        if (!cell.rcAllowed || !cell.owner.RcAllowed || cell.owner.IsDie)
                         {
                             cell.bombTime--;
                         }

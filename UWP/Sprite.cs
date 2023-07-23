@@ -8,15 +8,16 @@ namespace MrBoom
         public IController Controller;
         public int BombsPlaced;
         public bool rcDitonate = false;
+        
+        public bool RcAllowed { get; private set; }
+        public bool IsDie { get; private set; } = false;
 
-        public bool rcAllowed { get; private set; }
-        public bool isDie { get; private set; } = false;
+        private readonly Assets.AssetImage[][] animations;
+        private readonly Assets.AssetImage[] ghosts;
+        private readonly Assets.AssetImage[] bombAssets;
 
-        private Assets.AssetImage[][] animations;
-        private Assets.AssetImage[] ghosts;
         private int maxBoom;
         private int maxBombsCount;
-        private Assets.AssetImage[] bombAssets;
         private bool IsHaveRollers;
         private int lifeCount;
         private int unplugin;
@@ -33,7 +34,7 @@ namespace MrBoom
             this.frameIndex = 0;
             this.speed = 1;
             this.BombsPlaced = 0;
-            this.rcAllowed = false;
+            this.RcAllowed = false;
             this.isHaveKick = map.StartKick;
             this.maxBoom = map.StartMaxFire;
             this.maxBombsCount = map.StartMaxBombsCount;
@@ -41,7 +42,7 @@ namespace MrBoom
 
         public override void Update()
         {
-            if (this.isDie)
+            if (this.IsDie)
             {
                 this.animateIndex = 4;
                 if (this.frameIndex < 7 * 20 && this.frameIndex != -1)
@@ -83,7 +84,7 @@ namespace MrBoom
                 else if (Direction == Directions.Right) Direction = Directions.Left;
             }
 
-            this.rcDitonate = this.rcAllowed && this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
+            this.rcDitonate = this.RcAllowed && this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
 
             base.Update();
 
@@ -102,7 +103,7 @@ namespace MrBoom
                         animateDelay = 12,
                         bombTime = 210,
                         maxBoom = this.maxBoom,
-                        rcAllowed = this.rcAllowed,
+                        rcAllowed = this.RcAllowed,
                         owner = this
                     });
                     this.BombsPlaced++;
@@ -138,9 +139,9 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.RemoteControl)
                 {
-                    if (!this.rcAllowed)
+                    if (!this.RcAllowed)
                     {
-                        this.rcAllowed = true;
+                        this.RcAllowed = true;
                     }
                     else
                     {
@@ -253,7 +254,7 @@ namespace MrBoom
                 }
                 else
                 {
-                    this.isDie = true;
+                    this.IsDie = true;
                     this.frameIndex = 0;
                     terrain.PlaySound(Sound.PlayerDie);
                 }
@@ -261,7 +262,7 @@ namespace MrBoom
             if (cell.Type == TerrainType.Apocalypse)
             {
                 unplugin = 0;
-                this.isDie = true;
+                this.IsDie = true;
                 this.frameIndex = 0;
                 terrain.PlaySound(Sound.PlayerDie);
             }

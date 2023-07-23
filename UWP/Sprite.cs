@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
 {
@@ -226,6 +227,10 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
+                    reverse = 0;
+                    bombsPlacingDisabled = 0;
+                    autoBombPlacing = 0;
+
                     int rnd = Terrain.Random.Next(3);
                     if (rnd == 0)
                     {
@@ -302,21 +307,24 @@ namespace MrBoom
             {
                 Assets.AssetImage[] animation = this.animations[this.animateIndex];
                 Assets.AssetImage img = animation[frameIndex / 20 % animation.Length];
-                //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
-                //{
-                //    img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];
-                //}
 
                 int x = this.x + 8 + 8 - img.Width / 2;
                 int y = this.y + 16 - img.Height;
 
+                Color color = Color.White;
+
+                if (autoBombPlacing % 30 > 15 || reverse % 30 > 15 || bombsPlacingDisabled % 30 > 15)
+                {
+                    color = new Color(255, 0, 0);
+                }
+
                 if (unplugin == 0 || unplugin % 30 < 15)
                 {
-                    img.Draw(ctx, x, y);
+                    img.Draw(ctx, x, y, color);
                 }
                 else
                 {
-                    ghosts[animateIndex * 3 + frameIndex / 20 % 3].Draw(ctx, x, y);
+                    ghosts[animateIndex * 3 + frameIndex / 20 % 3].Draw(ctx, x, y, color);
                 }
             }
         }

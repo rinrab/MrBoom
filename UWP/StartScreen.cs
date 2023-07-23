@@ -13,6 +13,7 @@ namespace MrBoom
         private readonly Assets assets;
         private readonly List<Player> players;
         private readonly List<IController> controllers;
+        private readonly List<IController> unjoinedControllers;
         private readonly string helpText =
             "welcome to mr.boom v0.1!!!   " +
             "players can join using their drop bomb button   use enter to start game   " +
@@ -28,11 +29,7 @@ namespace MrBoom
             this.assets = assets;
             this.players = players;
             this.controllers = controllers;
-
-            foreach (IController controller in controllers)
-            {
-                controller.IsJoined = false;
-            }
+            this.unjoinedControllers = new List<IController>(controllers);
         }
 
         public void Draw(SpriteBatch ctx)
@@ -77,13 +74,11 @@ namespace MrBoom
         {
             tick++;
 
-            bool isStart = false;
-
-            foreach (var controller in controllers)
+            List<IController> toRemove = new List<IController>();
+            foreach (IController controller in unjoinedControllers)
             {
-                if (controller.IsKeyDown(PlayerKeys.Bomb) && !controller.IsJoined)
+                if (controller.IsKeyDown(PlayerKeys.Bomb))
                 {
-                    controller.IsJoined = true;
                     string[] names = new string[]
                     {
                         "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
@@ -92,15 +87,17 @@ namespace MrBoom
                     string name = names[Terrain.Random.Next(names.Length)];
                     this.players.Add(new Player(controller) { Name = name });
                     assets.Sounds.Addplayer.Play();
-                }
 
-                if (controller.IsKeyDown(PlayerKeys.StartGame))
-                {
-                    isStart = true;
+                    toRemove.Add(controller);
                 }
             }
 
-            if (isStart)
+            foreach (IController controller in toRemove)
+            {
+                unjoinedControllers.Remove(controller);
+            }
+
+            if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame))
             {
                 if (this.players.Count >= 1)
                 {

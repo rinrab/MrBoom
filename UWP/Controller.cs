@@ -37,15 +37,11 @@ namespace MrBoom
     {
         bool IsKeyDown(PlayerKeys key);
 
-        bool IsJoined { get; set; }
-
         void Update();
     }
 
     public class KeyboardController : IController
     {
-        public bool IsJoined { get; set; } = false;
-
         readonly Keys KeyUp;
         readonly Keys KeyDown;
         readonly Keys KeyLeft;
@@ -101,8 +97,6 @@ namespace MrBoom
 
     public class GamepadController : IController
     {
-        public bool IsJoined { get; set; } = false;
-
         private readonly PlayerIndex index;
         private GamePadState state;
         float deadZone = 0.5f;

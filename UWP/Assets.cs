@@ -74,9 +74,9 @@ namespace MrBoom
                 rect = new Rectangle(x * scale, y * scale, width * scale, height * scale);
             }
 
-            public void Draw(SpriteBatch ctx, int x, int y)
+            public void Draw(SpriteBatch ctx, int x, int y, Color? color = null)
             {
-                ctx.Draw(texture, new Vector2(x * scale, y * scale), rect, Color.White);
+                ctx.Draw(texture, new Vector2(x * scale, y * scale), rect, (color == null) ? Color.White : (Color)color);
             }
         }
 

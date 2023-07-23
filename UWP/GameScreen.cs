@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -136,6 +137,7 @@ namespace MrBoom
                 }
             }
 
+            int drawInStart = 60 * 30 - terrain.ApocalypseSpeed * (terrain.MaxApocalypse + 5);
             if (terrain.TimeLeft > 30 * 60)
             {
                 int min = (terrain.TimeLeft - 30 * 60) / 60 / 60;
@@ -158,14 +160,20 @@ namespace MrBoom
                     }
                 }
             }
-            else if (terrain.TimeLeft < 60 * 30 - terrain.ApocalypseSpeed * (terrain.MaxApocalypse + 5))
+            else if (terrain.TimeLeft < drawInStart)
             {
-                int x = 320 / 2 - assets.DrawGameIn.Width / 2;
+                int x = 30;
                 int y = 20;
+                if (terrain.TimeLeft > drawInStart - 20 - assets.DrawGameIn.Height)
+                {
+                    y = drawInStart - terrain.TimeLeft - assets.DrawGameIn.Height;
+                }
+
                 assets.DrawGameIn.Draw(spriteBatch, x, y);
 
-                int firstNumber = terrain.TimeLeft / 60 / 10;
-                int secondNumber = terrain.TimeLeft / 60 % 10;
+                int timeLeft = (terrain.TimeLeft + terrain.ApocalypseSpeed * terrain.MaxApocalypse) / 60;
+                int firstNumber = timeLeft / 10;
+                int secondNumber = timeLeft % 10;
 
                 assets.DrawGameInNumbers[firstNumber].Draw(spriteBatch, x + 42, y + 15);
                 assets.DrawGameInNumbers[secondNumber].Draw(spriteBatch, x + 8 + 42, y + 15);

@@ -249,7 +249,7 @@ namespace MrBoom
                 }
             }
 
-            if (TimeLeft <= 0)
+            if (TimeLeft - ApocalypseSpeed * MaxApocalypse <= 0)
             {
                 Result = GameResult.Draw;
             }

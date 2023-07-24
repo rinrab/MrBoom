@@ -70,7 +70,7 @@ namespace MrBoom
             this.Width = map.Data[0].Length;
             this.Height = map.Data.Length;
             this.spawns = new List<Spawn>();
-            this.TimeLeft = (map.Time + 31) * 60;
+            this.TimeLeft = (map.Time + 31) * 60 + 180;
             this.final = map.Final;
             foreach (int fin in final)
             {
@@ -249,7 +249,7 @@ namespace MrBoom
                 }
             }
 
-            if (TimeLeft - ApocalypseSpeed * MaxApocalypse <= 0)
+            if (TimeLeft + ApocalypseSpeed * MaxApocalypse <= 0)
             {
                 Result = GameResult.Draw;
             }

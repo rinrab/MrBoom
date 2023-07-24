@@ -13,7 +13,8 @@ namespace MrBoom
         private int wait = -1;
         private int tick = 0;
         private int livesCount;
-        private int unplugin;
+        private int unplugin = 180;
+        private int freeze = 180;
 
         public Monster(Terrain map, Map.MonsterData monsterData, Assets.AssetImage[][] assets, Assets.AssetImage[] ghosts) : base(map)
         {
@@ -27,6 +28,13 @@ namespace MrBoom
         public override void Update()
         {
             tick++;
+
+            if (freeze > 0)
+            {
+                unplugin--;
+                freeze--;
+                return;
+            }
 
             bool isWalkable(int dx, int dy)
             {

@@ -139,12 +139,18 @@ namespace MrBoom
             int drawInStart = 60 * 30 - terrain.ApocalypseSpeed * (terrain.MaxApocalypse + 5);
             if (terrain.TimeLeft > 30 * 60)
             {
-                int min = (terrain.TimeLeft - 30 * 60) / 60 / 60;
-                int sec = (terrain.TimeLeft - 30 * 60) / 60 % 60;
+                int time = (terrain.TimeLeft - 30 * 60) / 60;
+                if (bgTick <= 180)
+                {
+                    time = (terrain.TimeLeft + bgTick - 181 - 30 * 60) / 60;
+                }
 
-                string time = min.ToString() + ":" + ((sec < 10) ? 0 + sec.ToString() : sec.ToString());
+                int min = time / 60;
+                int sec = time % 60;
+
+                string str = min.ToString() + ":" + ((sec < 10) ? 0 + sec.ToString() : sec.ToString());
                 int x = 270;
-                foreach (char c in time)
+                foreach (char c in str)
                 {
                     string alpha = "0123456789:";
                     int index = alpha.IndexOf(c);
@@ -176,6 +182,17 @@ namespace MrBoom
 
                 assets.DrawGameInNumbers[firstNumber].Draw(spriteBatch, x + 42, y + 15);
                 assets.DrawGameInNumbers[secondNumber].Draw(spriteBatch, x + 8 + 42, y + 15);
+            }
+
+            if (bgTick <= 180)
+            {
+                int number = (180 - bgTick) / 60 + 1;
+                Assets.AssetImage img = assets.BigDigits[number];
+                img.Draw(spriteBatch, 320 / 2 - img.Width / 2, 200 / 2 - img.Height / 2);
+                if (bgTick % 60 == 0)
+                {
+                    PlaySounds(Sound.Clock);
+                }
             }
         }
 

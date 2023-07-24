@@ -20,7 +20,8 @@ namespace MrBoom
         private int maxBombsCount;
         private bool IsHaveRollers;
         private int lifeCount;
-        private int unplugin;
+        private int unplugin = 180;
+        private int freeze = 180;
         private int reverse;
         private int autoBombPlacing;
         private int bombsPlacingDisabled;
@@ -86,13 +87,21 @@ namespace MrBoom
 
             this.rcDitonate = this.RcAllowed && this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
 
-            base.Update();
+            if (freeze > 0)
+            {
+                base.Update(false);
+                freeze--;
+            }
+            else
+            {
+                base.Update(true);
+            }
 
             int cellX = (this.x + 8) / 16;
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) && bombsPlacingDisabled == 0)
+            if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) && bombsPlacingDisabled == 0 && freeze == 0)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {

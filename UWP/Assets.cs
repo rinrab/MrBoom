@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -65,8 +66,11 @@ namespace MrBoom
             private Texture2D texture;
             private Rectangle rect;
 
-            public int Width { get { return rect.Width / scale; } }
-            public int Height { get { return rect.Height / scale; } }
+            public int Width { get => rect.Width / scale; }
+            public int Height { get => rect.Height / scale; }
+            public int X { get => rect.X / scale; }
+            public int Y { get => rect.Y / scale; }
+
             public Texture2D Texture { get => texture; }
 
             public AssetImage(Texture2D texture, int x, int y, int width, int height)
@@ -252,6 +256,26 @@ namespace MrBoom
                 return loadImageStripe(result, 0, 0, width, height, fireImages.Length + 1);
             }
 
+            AssetImage[][] monsterToGhost(AssetImage[][][] src)
+            {
+                var rv = new AssetImage[src.Length][];
+                for (int i = 0; i < src.Length; i++)
+                {
+                    AssetImage[] monster = new AssetImage[src[i].Length * src[i][0].Length];
+                    for (int j = 0; j < 4; j++)
+                    {
+                        for (int k = 0; k < src[i][j].Length; k++)
+                        {
+                            var item = src[i][j][k];
+                            var texture = changeColor(item.Texture, Color.White);
+                            monster[j * src[i][j].Length + k] = loadImage(texture, item.X, item.Y, item.Width, item.Height);
+                        }
+                    }
+                    rv[i] = monster;
+                }
+                return rv;
+            }
+
             var imgNeige1 = content.Load<Texture2D>("NEIGE1");
             var imgNeige2 = content.Load<Texture2D>("NEIGE2");
             var imgNeige3 = content.Load<Texture2D>("NEIGE3");
@@ -283,6 +307,42 @@ namespace MrBoom
 
             var imgSpriteWhite = changeColor(imgSprite, Color.White);
             var imgSprite3White = changeColor(imgSprite3, Color.White);
+
+            var monsters = new AssetImage[][][]
+                {
+                    loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
+                                loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
+                                loadImageStripe(imgSprite, 144, 144, 17, 18, 3, 7),
+                                loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7)
+                                    .Concat(loadImageStripe(imgSprite, 0, 163, 17, 18, 1, 7)).ToArray(),
+                                loadImageStripe(imgSprite, 24, 163, 17, 18, 8, 7)),
+
+                    loadMonster(loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
+                                loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
+                                loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
+                                loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
+                                loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1)
+                                .Concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)).ToArray()),
+
+                    loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
+                                loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
+
+                    loadMonster(new AssetImage[] { snail[0], snail[1], snail[0], snail[1] },
+                                new AssetImage[] { snail[4], snail[5], snail[4], snail[5] },
+                                new AssetImage[] { snail[2], snail[3], snail[2], snail[3] },
+                                new AssetImage[] { snail[6], snail[7], snail[6], snail[7] },
+                                new AssetImage[] { snail[8], snail[9], snail[10], snail[11] }),
+
+                    loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
+                                loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
+
+                    loadMonster(loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
+                                loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
+                                loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),
+                                loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1)
+                                    .Concat(loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)).ToArray(),
+                                loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
+                };
 
             return new Assets()
             {
@@ -447,41 +507,8 @@ namespace MrBoom
                 Fire = fire,
                 Players = loadPlayers(imgSprite, imgSprite3),
                 Pause = loadImageStripe(imgPause, 0, 0, 48, 64, 4, 0),
-                Monsters = new AssetImage[][][]
-                {
-                    loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
-                                loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
-                                loadImageStripe(imgSprite, 144, 144, 17, 18, 3, 7),
-                                loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7)
-                                    .Concat(loadImageStripe(imgSprite, 0, 163, 17, 18, 1, 7)).ToArray(),
-                                loadImageStripe(imgSprite, 24, 163, 17, 18, 8, 7)),
-
-                    loadMonster(loadImageStripe(imgMed3, 89, 56, 32, 32, 3, 1),
-                                loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
-                                loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
-                                loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
-                                loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1)
-                                .Concat(loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1)).ToArray()),
-
-                    loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
-                                loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
-
-                    loadMonster(new AssetImage[] { snail[0], snail[1], snail[0], snail[1] },
-                                new AssetImage[] { snail[4], snail[5], snail[4], snail[5] },
-                                new AssetImage[] { snail[2], snail[3], snail[2], snail[3] },
-                                new AssetImage[] { snail[6], snail[7], snail[6], snail[7] },
-                                new AssetImage[] { snail[8], snail[9], snail[10], snail[11] }),
-
-                    loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
-                                loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
-
-                    loadMonster(loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
-                                loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
-                                loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),
-                                loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1)
-                                    .Concat(loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)).ToArray(),
-                                loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
-                },
+                Monsters = monsters,
+                MonsterGhosts = monsterToGhost(monsters),
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),
                 Alpha = new AssetImage[][] {
@@ -502,27 +529,6 @@ namespace MrBoom
                     .Concat(loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)).ToArray(),
                 BoyGhost = loadImageStripe(imgSpriteWhite, 0, 0, 23, 23, 12, 1),
                 GirlGhost = loadImageStripe(imgSprite3White, 0, 0, 23, 25, 12, 1),
-                MonsterGhosts = new AssetImage[][]
-                {
-                    null,
-                    new AssetImage[]
-                    {
-                        monster1ghost[0], monster1ghost[1], monster1ghost[2],
-                        monster1ghost[3], monster1ghost[4], monster1ghost[5],
-                        monster1ghost[9], monster1ghost[10], monster1ghost[11],
-                        monster1ghost[6], monster1ghost[7], monster1ghost[8],
-                    },
-                    monster2ghost.Concat(monster2ghost.Concat(monster2ghost).Concat(monster2ghost)).ToArray(),
-                    new AssetImage[]
-                    {
-                        snailGhost[0], snailGhost[1], snailGhost[0], snailGhost[1],
-                        snailGhost[2], snailGhost[3], snailGhost[2], snailGhost[3],
-                        snailGhost[4], snailGhost[5], snailGhost[4], snailGhost[5],
-                        snailGhost[6], snailGhost[7], snailGhost[6], snailGhost[7]
-                    },
-                    null,
-                    loadImageStripe(imgGhosts, 0, 180, 23, 21, 12, 1),
-                },
                 Vic = new AssetImage[] {
                     loadImage(content.Load<Texture2D>("VIC1"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("VIC2"), 0, 0, 320, 200),

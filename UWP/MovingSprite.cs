@@ -148,6 +148,33 @@ namespace MrBoom
                     }
                 }
             }
+            else
+            {
+                if (this.Direction == Directions.Up)
+                {
+                    this.animateIndex = 3;
+                }
+                else if (this.Direction == Directions.Down)
+                {
+                    this.animateIndex = 0;
+                }
+                else if (this.Direction == Directions.Left)
+                {
+                    this.animateIndex = 2;
+                }
+                else if (this.Direction == Directions.Right)
+                {
+                    this.animateIndex = 1;
+                }
+                else
+                {
+                    this.frameIndex = 0;
+                }
+                if (Direction != Directions.None)
+                {
+                    frameIndex++;
+                }
+            }
         }
 
         void XAlign(int deltaY)

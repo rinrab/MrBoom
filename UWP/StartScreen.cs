@@ -14,7 +14,7 @@ namespace MrBoom
         private readonly List<IController> controllers;
         private readonly List<IController> unjoinedControllers;
         private readonly string helpText =
-            "welcome to mr.boom v0.1!!!   " +
+            "welcome to mr.boom v1.2!!!   " +
             "players can join using their drop bomb button   use enter to start game   " +
             "right keyboard controller: use arrows to move ctrl to drop bomb " +
             "and alt to triger it by radio control   " +
@@ -100,14 +100,6 @@ namespace MrBoom
             {
                 if (this.players.Count >= 1)
                 {
-                    //fade.fadeOut(() =>
-                    //{
-                    //    isDemo = false;
-                    //    music.next();
-                    //    map = newMap();
-                    //    startGame(this.playerList);
-                    //    results = new Results(this.playerList);
-                    //});
                     Next = Screen.Game;
                 }
             }

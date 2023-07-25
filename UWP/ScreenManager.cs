@@ -5,6 +5,7 @@ namespace MrBoom
     public static class ScreenManager
     {
         static IScreen currentScreen;
+        static bool screenChanged;
 
         public static void Update()
         {
@@ -12,6 +13,7 @@ namespace MrBoom
             {
                 currentScreen.Update();
             }
+            screenChanged = false;
         }
 
         public static void Draw(SpriteBatch ctx)
@@ -40,6 +42,12 @@ namespace MrBoom
         public static void SetScreen(IScreen screen)
         {
             currentScreen = screen;
+            screenChanged = true;
+        }
+
+        public static bool ScreenChanged
+        {
+            get => screenChanged;
         }
     }
 }

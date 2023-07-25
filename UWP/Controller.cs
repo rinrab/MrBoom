@@ -33,27 +33,50 @@ namespace MrBoom
 
             return false;
         }
+
+        public static void Reset(IEnumerable<IController> controllers)
+        {
+            foreach (IController controller in controllers)
+            {
+                controller.Reset();
+            }
+        }
     }
 
     public interface IController
     {
         bool IsKeyDown(PlayerKeys key);
 
+        void Reset();
         void Update();
     }
 
     public abstract class AbstractController : IController
     {
         private PlayerKeys state;
+        private PlayerKeys mask;
+
+        public AbstractController()
+        {
+        }
 
         public bool IsKeyDown(PlayerKeys key)
         {
             return state.HasFlag(key);
         }
 
+        public void Reset()
+        {
+            mask = ~GetState();
+        }
+
         public void Update()
         {
-            state = GetState();
+            var newState = GetState();
+
+            mask |= ~newState;
+
+            state = newState & mask;
         }
 
         protected abstract PlayerKeys GetState();

@@ -536,7 +536,7 @@ namespace MrBoom
                     loadImage(content.Load<Texture2D>("VIC4"), 0, 0, 320, 200),
                 },
                 Sky = loadImage(imgSprite2, 64, 16, 48, 44),
-                Splash = loadImage(content.Load<Texture2D>("MRFOND"), 0, 0, 320, 200),
+                Splash = loadImage(content.Load<Texture2D>("PIC"), 0, 0, 320, 200),
                 DrawGameIn = loadImage(imgSoucoupe, 96, 48, 78, 36),
                 DrawGameInNumbers = loadImageStripe(imgSoucoupe, 173, 32, 8, 7, 10)
             };

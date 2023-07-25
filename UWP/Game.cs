@@ -74,6 +74,11 @@ namespace MrBoom
         {
             foreach (IController controller in Controllers)
             {
+                if (ScreenManager.ScreenChanged)
+                {
+                    controller.Reset();
+                }
+
                 controller.Update();
             }
 

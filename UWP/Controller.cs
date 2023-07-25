@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace MrBoom
 {
+    [Flags]
     public enum PlayerKeys
     {
-        Up,
-        Down,
-        Left,
-        Right,
-        Bomb,
-        RcDitonate,
-        StartGame,
-        EndGame,
-        Continue
+        Up = 0x001,
+        Down = 0x002,
+        Left = 0x004,
+        Right = 0x008,
+        Bomb = 0x010,
+        RcDitonate = 0x020,
+        StartGame = 0x040,
+        EndGame = 0x080,
+        Continue = 0x100
     }
 
     public static class Controller
@@ -40,7 +42,24 @@ namespace MrBoom
         void Update();
     }
 
-    public class KeyboardController : IController
+    public abstract class AbstractController : IController
+    {
+        private PlayerKeys state;
+
+        public bool IsKeyDown(PlayerKeys key)
+        {
+            return state.HasFlag(key);
+        }
+
+        public void Update()
+        {
+            state = GetState();
+        }
+
+        protected abstract PlayerKeys GetState();
+    }
+
+    public class KeyboardController : AbstractController
     {
         readonly Keys KeyUp;
         readonly Keys KeyDown;
@@ -48,7 +67,6 @@ namespace MrBoom
         readonly Keys KeyRight;
         readonly Keys KeyBomb;
         readonly Keys KeyRcDitonate;
-        private KeyboardState keyboardState;
 
         public KeyboardController(Keys keyUp, Keys keyDown, Keys keyLeft,
             Keys keyRight, Keys keyBomb, Keys keyRcDitonate)
@@ -59,85 +77,70 @@ namespace MrBoom
             this.KeyRight = keyRight;
             this.KeyBomb = keyBomb;
             this.KeyRcDitonate = keyRcDitonate;
-            this.keyboardState = Keyboard.GetState();
         }
 
-        public void Update()
+        protected override PlayerKeys GetState()
         {
-            keyboardState = Keyboard.GetState();
-        }
+            PlayerKeys result = 0;
 
-        public bool IsKeyDown(PlayerKeys key)
-        {
-            switch (key)
-            {
-                case PlayerKeys.Up:
-                    return keyboardState.IsKeyDown(KeyUp);
-                case PlayerKeys.Down:
-                    return keyboardState.IsKeyDown(KeyDown);
-                case PlayerKeys.Left:
-                    return keyboardState.IsKeyDown(KeyLeft);
-                case PlayerKeys.Right:
-                    return keyboardState.IsKeyDown(KeyRight);
-                case PlayerKeys.Bomb:
-                    return keyboardState.IsKeyDown(KeyBomb);
-                case PlayerKeys.RcDitonate:
-                    return keyboardState.IsKeyDown(KeyRcDitonate);
-                case PlayerKeys.StartGame:
-                    return keyboardState.IsKeyDown(Keys.Enter);
-                case PlayerKeys.EndGame:
-                    return keyboardState.IsKeyDown(Keys.Escape);
-                case PlayerKeys.Continue:
-                    return keyboardState.GetPressedKeyCount() > 0;
-                default:
-                    return false;
-            }
+            var keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(KeyUp)) result |= PlayerKeys.Up;
+            if (keyboardState.IsKeyDown(KeyDown)) result |= PlayerKeys.Down;
+            if (keyboardState.IsKeyDown(KeyLeft)) result |= PlayerKeys.Left;
+            if (keyboardState.IsKeyDown(KeyRight)) result |= PlayerKeys.Right;
+            if (keyboardState.IsKeyDown(KeyBomb)) result |= PlayerKeys.Bomb;
+            if (keyboardState.IsKeyDown(KeyRcDitonate)) result |= PlayerKeys.RcDitonate;
+            if (keyboardState.IsKeyDown(Keys.Enter)) result |= PlayerKeys.StartGame;
+            if (keyboardState.IsKeyDown(Keys.Escape)) result |= PlayerKeys.EndGame;
+            if (keyboardState.GetPressedKeyCount() > 0) result |= PlayerKeys.Continue;
+
+            return result;
         }
     }
 
-    public class GamepadController : IController
+    public class GamepadController : AbstractController
     {
         private readonly PlayerIndex index;
-        private GamePadState state;
 
         readonly float deadZone = 0.5f;
 
         public GamepadController(PlayerIndex index)
         {
             this.index = index;
-            this.state = GamePad.GetState(index);
         }
 
-        public void Update()
+        protected override PlayerKeys GetState()
         {
-            state = GamePad.GetState(this.index);
-        }
+            PlayerKeys result = 0;
 
-        public bool IsKeyDown(PlayerKeys key)
-        {
-            switch (key)
-            {
-                case PlayerKeys.Up:
-                    return state.ThumbSticks.Left.Y > deadZone || state.IsButtonDown(Buttons.DPadUp);
-                case PlayerKeys.Down:
-                    return state.ThumbSticks.Left.Y < -deadZone || state.IsButtonDown(Buttons.DPadDown);
-                case PlayerKeys.Left:
-                    return state.ThumbSticks.Left.X < -deadZone || state.IsButtonDown(Buttons.DPadLeft);
-                case PlayerKeys.Right:
-                    return state.ThumbSticks.Left.X > deadZone || state.IsButtonDown(Buttons.DPadRight);
-                case PlayerKeys.Bomb:
-                    return state.IsButtonDown(Buttons.A);
-                case PlayerKeys.RcDitonate:
-                    return state.IsButtonDown(Buttons.B);
-                case PlayerKeys.StartGame:
-                    return state.IsButtonDown(Buttons.Start);
-                case PlayerKeys.EndGame:
-                    return false;
-                case PlayerKeys.Continue:
-                    return !state.IsButtonUp(Buttons.A | Buttons.B | Buttons.X | Buttons.Y);
-                default:
-                    return false;
-            }
+            var state = GamePad.GetState(this.index);
+
+            if (state.ThumbSticks.Left.Y > deadZone || state.IsButtonDown(Buttons.DPadUp))
+                result |= PlayerKeys.Up;
+
+            if (state.ThumbSticks.Left.Y < -deadZone || state.IsButtonDown(Buttons.DPadDown))
+                result |= PlayerKeys.Down;
+
+            if (state.ThumbSticks.Left.X < -deadZone || state.IsButtonDown(Buttons.DPadLeft))
+                result |= PlayerKeys.Left;
+
+            if (state.ThumbSticks.Left.X > deadZone || state.IsButtonDown(Buttons.DPadRight))
+                result |= PlayerKeys.Right;
+
+            if (state.IsButtonDown(Buttons.A))
+                result |= PlayerKeys.Bomb;
+
+            if (state.IsButtonDown(Buttons.B))
+                result |= PlayerKeys.RcDitonate;
+
+            if (state.IsButtonDown(Buttons.Start))
+                result |= PlayerKeys.StartGame;
+
+            if (!state.IsButtonUp(Buttons.A | Buttons.B | Buttons.X | Buttons.Y))
+                result |= PlayerKeys.Continue;
+
+            return result;
         }
     }
 }

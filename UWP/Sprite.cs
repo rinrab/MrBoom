@@ -25,10 +25,10 @@ namespace MrBoom
         private int autoBombPlacing;
         private int bombsPlacingDisabled;
 
-        public Sprite(Terrain map, Assets.PlayerAssets animations, Assets.ImageStripe ghosts) : base(map)
+        public Sprite(Terrain map, Assets.PlayerAssets animations) : base(map)
         {
             this.animations = animations;
-            this.ghosts = ghosts;
+            this.ghosts = animations.Ghost;
             this.animateIndex = 0;
             this.frameIndex = 0;
             this.speed = 1;

@@ -29,6 +29,7 @@ namespace MrBoom
         public class PlayerAssets
         {
             public ImageStripe[] Normal;
+            public ImageStripe Ghost;
         }
 
         public class ImageStripe
@@ -94,8 +95,6 @@ namespace MrBoom
         public ImageStripe Draw { get; private set; }
         public AssetImage Med { get; private set; }
         public ImageStripe Coin { get; private set; }
-        public ImageStripe BoyGhost { get; private set; }
-        public ImageStripe GirlGhost { get; private set; }
         public ImageStripe Vic { get; private set; }
         public AssetImage Sky { get; private set; }
         public AssetImage Splash { get; private set; }
@@ -170,7 +169,8 @@ namespace MrBoom
                 return texture;
             }
 
-            PlayerAssets[] loadPlayers(Texture2D imgSpriteBoys, Texture2D imgSpriteGirl)
+            PlayerAssets[] loadPlayers(Texture2D imgSpriteBoys, ImageStripe boyGhost,
+                                       Texture2D imgSpriteGirl, ImageStripe girlGhost)
             {
                 var result = new List<PlayerAssets>();
 
@@ -208,7 +208,8 @@ namespace MrBoom
 
                     result.Add(new PlayerAssets()
                     {
-                        Normal = player.ToArray()
+                        Normal = player.ToArray(),
+                        Ghost = boyGhost
                     });
 
                     player = new List<ImageStripe>();
@@ -229,7 +230,8 @@ namespace MrBoom
 
                     result.Add(new PlayerAssets()
                     {
-                        Normal = player.ToArray()
+                        Normal = player.ToArray(),
+                        Ghost = girlGhost
                     });
                 }
 
@@ -557,7 +559,8 @@ namespace MrBoom
                 BoomTopEnd = loadImageStripe(imgSprite2, 0 * 16, 46 + 5 * 16, 16, 16, 4),
                 BoomBottomEnd = loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
                 Fire = fire,
-                Players = loadPlayers(imgSprite, imgSprite3),
+                Players = loadPlayers(imgSprite, loadImageStripe(imgSpriteWhite, 0, 0, 23, 23, 12, 1),
+                                      imgSprite3, loadImageStripe(imgSprite3White, 0, 0, 23, 25, 12, 1)),
                 Pause = loadImageStripe(imgPause, 0, 0, 48, 64, 4, 0),
                 Monsters = monsters,
                 MonsterGhosts = monsterToGhost(monsters),
@@ -578,8 +581,6 @@ namespace MrBoom
                 Med = loadImage(content.Load<Texture2D>("MED"), 0, 0, 320, 200),
                 Coin = new ImageStripe(loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1),
                     loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)),
-                BoyGhost = loadImageStripe(imgSpriteWhite, 0, 0, 23, 23, 12, 1),
-                GirlGhost = loadImageStripe(imgSprite3White, 0, 0, 23, 25, 12, 1),
                 Vic = new ImageStripe(
                     loadImage(content.Load<Texture2D>("VIC1"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("VIC2"), 0, 0, 320, 200),

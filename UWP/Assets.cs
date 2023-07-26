@@ -32,9 +32,9 @@ namespace MrBoom
 
         public class ImageStripe
         {
-            private readonly AssetImage[] images;
+            private readonly Image[] images;
 
-            public ImageStripe(params AssetImage[] images)
+            public ImageStripe(params Image[] images)
             {
                 this.images = images;
             }
@@ -48,7 +48,7 @@ namespace MrBoom
                     len += stripe.Length;
                 }
 
-                List<AssetImage> images = new List<AssetImage>(len);
+                List<Image> images = new List<Image>(len);
 
                 foreach (ImageStripe stripe in stripes)
                 {
@@ -58,12 +58,12 @@ namespace MrBoom
                 this.images = images.ToArray();
             }
 
-            public ImageStripe(List<AssetImage> images)
+            public ImageStripe(List<Image> images)
             {
                 this.images = images.ToArray();
             }
 
-            public AssetImage this[int animateIndex]
+            public Image this[int animateIndex]
             {
                 get
                 {
@@ -87,26 +87,26 @@ namespace MrBoom
         public ImageStripe Fire { get; private set; }
         public PlayerAssets[] Players { get; private set; }
         public ImageStripe Pause { get; private set; }
-        public AssetImage Start { get; private set; }
+        public Image Start { get; private set; }
         public ImageStripe InsertCoin { get; private set; }
         public ImageStripe BigDigits { get; private set; }
         public ImageStripe Draw { get; private set; }
-        public AssetImage Med { get; private set; }
+        public Image Med { get; private set; }
         public ImageStripe Coin { get; private set; }
         public ImageStripe Vic { get; private set; }
-        public AssetImage Sky { get; private set; }
-        public AssetImage Splash { get; private set; }
+        public Image Sky { get; private set; }
+        public Image Splash { get; private set; }
         public ImageStripe[] PowerUps { get; private set; }
         public ImageStripe[][] Monsters { get; private set; }
         public ImageStripe[] MonsterGhosts { get; private set; }
-        public AssetImage DrawGameIn;
+        public Image DrawGameIn;
         public ImageStripe DrawGameInNumbers;
 
         public ImageStripe[] Alpha;
 
         public static int scale = 2;
 
-        public class AssetImage
+        public class Image
         {
             private Texture2D texture;
             private Rectangle rect;
@@ -118,7 +118,7 @@ namespace MrBoom
 
             public Texture2D Texture { get => texture; }
 
-            public AssetImage(Texture2D texture, int x, int y, int width, int height)
+            public Image(Texture2D texture, int x, int y, int width, int height)
             {
                 this.texture = texture;
                 rect = new Rectangle(x * scale, y * scale, width * scale, height * scale);
@@ -132,14 +132,14 @@ namespace MrBoom
 
         public static Assets Load(ContentManager content, GraphicsDevice graphics)
         {
-            AssetImage loadImage(Texture2D texture, int x, int y, int width, int height)
+            Image loadImage(Texture2D texture, int x, int y, int width, int height)
             {
-                return new AssetImage(texture, x, y, width, height);
+                return new Image(texture, x, y, width, height);
             }
 
             ImageStripe loadImageStripe(Texture2D texture, int x, int y, int width, int height, int count = 1, int gap = 0)
             {
-                AssetImage[] result = new AssetImage[count];
+                Image[] result = new Image[count];
 
                 for (int i = 0; i < count; i++)
                 {
@@ -192,7 +192,7 @@ namespace MrBoom
 
                     for (int x = 0; x < 5; x++)
                     {
-                        List<AssetImage> newImages = new List<AssetImage>();
+                        List<Image> newImages = new List<Image>();
 
                         foreach (var index in framesIndex[x])
                         {
@@ -214,7 +214,7 @@ namespace MrBoom
 
                     for (int x = 0; x < 5; x++)
                     {
-                        List<AssetImage> newImages = new List<AssetImage>();
+                        List<Image> newImages = new List<Image>();
 
                         foreach (var index in framesIndex[x])
                         {
@@ -240,15 +240,15 @@ namespace MrBoom
             {
                 return new ImageStripe[]
                 {
-                    new ImageStripe(new AssetImage[] { up[0], up[1], up[0], up[2] }),
-                    new ImageStripe(new AssetImage[] { left[0], left[1], left[0], left[2] }),
-                    new ImageStripe(new AssetImage[] { right[0], right[1], right[0], right[2] }),
-                    new ImageStripe(new AssetImage[] { down[0], down[1], down[0], down[2] }),
+                    new ImageStripe(new Image[] { up[0], up[1], up[0], up[2] }),
+                    new ImageStripe(new Image[] { left[0], left[1], left[0], left[2] }),
+                    new ImageStripe(new Image[] { right[0], right[1], right[0], right[2] }),
+                    new ImageStripe(new Image[] { down[0], down[1], down[0], down[2] }),
                     die
                 };
             }
 
-            ImageStripe loadBonus(AssetImage img, AssetImage background)
+            ImageStripe loadBonus(Image img, Image background)
             {
                 RenderTarget2D result = new RenderTarget2D(
                     graphics, background.Width * scale, background.Height * scale,
@@ -274,7 +274,7 @@ namespace MrBoom
                 return loadImageStripe(result, 0, 0, img.Width, img.Height, count);
             }
 
-            ImageStripe loadPermanentWall(ImageStripe fireImages, AssetImage wall)
+            ImageStripe loadPermanentWall(ImageStripe fireImages, Image wall)
             {
                 int width = Math.Max(fireImages[0].Width, wall.Width);
                 int height = Math.Max(fireImages[0].Height, wall.Height);
@@ -315,7 +315,7 @@ namespace MrBoom
                 var rv = new ImageStripe[src.Length];
                 for (int i = 0; i < src.Length; i++)
                 {
-                    AssetImage[] monster = new AssetImage[src[i].Length * src[i][0].Length];
+                    Image[] monster = new Image[src[i].Length * src[i][0].Length];
                     for (int j = 0; j < 4; j++)
                     {
                         for (int k = 0; k < src[i][j].Length; k++)

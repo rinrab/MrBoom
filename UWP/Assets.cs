@@ -28,7 +28,32 @@ namespace MrBoom
 
         public class PlayerAssets
         {
-            public AssetImage[][] DirectionImages;
+            public ImageStripe[] DirectionImages;
+        }
+
+        public class ImageStripe
+        {
+            private readonly AssetImage[] images;
+
+            public ImageStripe(AssetImage[] images)
+            {
+                this.images = images;
+            }
+
+            public ImageStripe(List<AssetImage> images)
+            {
+                this.images = images.ToArray();
+            }
+
+            public AssetImage this[int index]
+            {
+                get
+                {
+                    return images[index];
+                }
+            }
+
+            public int Length { get => images.Length; }
         }
 
         public SoundAssets Sounds { get; private set; }
@@ -147,7 +172,7 @@ namespace MrBoom
 
                 foreach (int spriteIndex in spriteIndexes)
                 {
-                    var player = new List<AssetImage[]>();
+                    var player = new List<ImageStripe>();
 
                     for (int x = 0; x < 5; x++)
                     {
@@ -160,7 +185,7 @@ namespace MrBoom
                             newImages.Add(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                         }
 
-                        player.Add(newImages.ToArray());
+                        player.Add(new ImageStripe(newImages));
                     }
 
                     result.Add(new PlayerAssets()
@@ -168,7 +193,7 @@ namespace MrBoom
                         DirectionImages = player.ToArray()
                     });
 
-                    player = new List<AssetImage[]>();
+                    player = new List<ImageStripe>();
 
                     for (int x = 0; x < 5; x++)
                     {
@@ -181,7 +206,7 @@ namespace MrBoom
                             newImages.Add(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
                         }
 
-                        player.Add(newImages.ToArray());
+                        player.Add(new ImageStripe(newImages.ToArray()));
                     }
 
                     result.Add(new PlayerAssets()

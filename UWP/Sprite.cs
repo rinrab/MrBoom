@@ -286,7 +286,7 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                Assets.AssetImage[] animation = this.animations.DirectionImages[this.animateIndex];
+                Assets.ImageStripe animation = this.animations.DirectionImages[this.animateIndex];
                 Assets.AssetImage img = animation[frameIndex / 20 % animation.Length];
 
                 int x = this.x + 8 + 8 - img.Width / 2;

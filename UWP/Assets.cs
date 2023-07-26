@@ -26,6 +26,11 @@ namespace MrBoom
             public Overlay[] Overlays;
         }
 
+        public class PlayerAssets
+        {
+            public AssetImage[][] DirectionImages;
+        }
+
         public SoundAssets Sounds { get; private set; }
         public Level[] levels { get; private set; }
         public AssetImage[] Bomb { get; private set; }
@@ -37,7 +42,7 @@ namespace MrBoom
         public AssetImage[] BoomTopEnd { get; private set; }
         public AssetImage[] BoomBottomEnd { get; private set; }
         public AssetImage[] Fire { get; private set; }
-        public AssetImage[][][] Players { get; private set; }
+        public PlayerAssets[] Players { get; private set; }
         public AssetImage[] Pause { get; private set; }
         public AssetImage Start { get; private set; }
         public AssetImage[] InsertCoin { get; private set; }
@@ -122,9 +127,9 @@ namespace MrBoom
                 return texture;
             }
 
-            AssetImage[][][] loadPlayers(Texture2D imgSpriteBoys, Texture2D imgSpriteGirl)
+            PlayerAssets[] loadPlayers(Texture2D imgSpriteBoys, Texture2D imgSpriteGirl)
             {
-                var result = new List<AssetImage[][]>();
+                var result = new List<PlayerAssets>();
 
                 int framesCount = 20;
                 var framesIndex = new int[][] {
@@ -158,7 +163,10 @@ namespace MrBoom
                         player.Add(newImages.ToArray());
                     }
 
-                    result.Add(player.ToArray());
+                    result.Add(new PlayerAssets()
+                    {
+                        DirectionImages = player.ToArray()
+                    });
 
                     player = new List<AssetImage[]>();
 
@@ -176,7 +184,10 @@ namespace MrBoom
                         player.Add(newImages.ToArray());
                     }
 
-                    result.Add(player.ToArray());
+                    result.Add(new PlayerAssets()
+                    {
+                        DirectionImages = player.ToArray()
+                    });
                 }
 
                 return result.ToArray();

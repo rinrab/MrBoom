@@ -12,7 +12,7 @@ namespace MrBoom
         public bool RcAllowed { get; private set; }
         public bool IsDie { get; private set; } = false;
 
-        private readonly Assets.AssetImage[][] animations;
+        private readonly Assets.PlayerAssets animations;
         private readonly Assets.AssetImage[] ghosts;
         private readonly Assets.AssetImage[] bombAssets;
 
@@ -26,7 +26,7 @@ namespace MrBoom
         private int autoBombPlacing;
         private int bombsPlacingDisabled;
 
-        public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] ghosts, Assets.AssetImage[] bombAssets) : base(map)
+        public Sprite(Terrain map, Assets.PlayerAssets animations, Assets.AssetImage[] ghosts, Assets.AssetImage[] bombAssets) : base(map)
         {
             this.animations = animations;
             this.ghosts = ghosts;
@@ -286,7 +286,7 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                Assets.AssetImage[] animation = this.animations[this.animateIndex];
+                Assets.AssetImage[] animation = this.animations.DirectionImages[this.animateIndex];
                 Assets.AssetImage img = animation[frameIndex / 20 % animation.Length];
 
                 int x = this.x + 8 + 8 - img.Width / 2;

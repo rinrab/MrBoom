@@ -391,7 +391,7 @@ namespace MrBoom
             int maxBoom = bombCell.maxBoom;
             bombCell.owner.BombsPlaced--;
 
-            void burn(int dx, int dy, ImageStripe image, ImageStripe imageEnd)
+            void burn(int dx, int dy, AnimatedImage image, AnimatedImage imageEnd)
             {
                 for (int i = 1; i <= maxBoom; i++)
                 {
@@ -546,7 +546,7 @@ namespace MrBoom
     public class Cell
     {
         public readonly TerrainType Type;
-        public Assets.ImageStripe Images;
+        public Assets.AnimatedImage Images;
         public int Index;
         public int animateDelay;
         public int bombTime;

@@ -9,15 +9,15 @@ namespace MrBoom
         public bool IsDie = false;
 
         private readonly Map.MonsterData monsterData;
-        private readonly ImageStripe[] assets;
-        private readonly ImageStripe ghosts;
+        private readonly AnimatedImage[] assets;
+        private readonly AnimatedImage ghosts;
         private int wait = -1;
         private int tick = 0;
         private int livesCount;
         private int unplugin = 180;
         private int freeze = 180;
 
-        public Monster(Terrain map, Map.MonsterData monsterData, ImageStripe[] assets, ImageStripe ghosts) : base(map)
+        public Monster(Terrain map, Map.MonsterData monsterData, AnimatedImage[] assets, AnimatedImage ghosts) : base(map)
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;
@@ -161,7 +161,7 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                Assets.ImageStripe animation = this.assets[this.animateIndex];
+                Assets.AnimatedImage animation = this.assets[this.animateIndex];
                 Assets.Image img = animation[frameIndex / 8 * monsterData.Slow];
                 //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
                 //{

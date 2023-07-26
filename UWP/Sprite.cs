@@ -13,7 +13,7 @@ namespace MrBoom
         public bool IsDie { get; private set; } = false;
 
         private readonly Assets.PlayerAssets animations;
-        private readonly Assets.ImageStripe ghosts;
+        private readonly Assets.AnimatedImage ghosts;
 
         private int maxBoom;
         private int maxBombsCount;
@@ -276,7 +276,7 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                Assets.ImageStripe animation = this.animations.Normal[this.animateIndex];
+                Assets.AnimatedImage animation = this.animations.Normal[this.animateIndex];
                 Assets.Image img = animation[frameIndex / 20];
 
                 int x = this.x + 8 + 8 - img.Width / 2;

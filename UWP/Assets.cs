@@ -12,45 +12,45 @@ namespace MrBoom
         {
             public class Overlay
             {
-                public ImageStripe Images;
+                public AnimatedImage Images;
                 public int AnimationDelay;
                 public int x;
                 public int y;
             }
 
-            public ImageStripe Backgrounds;
-            public ImageStripe Walls;
-            public ImageStripe PermanentWalls;
+            public AnimatedImage Backgrounds;
+            public AnimatedImage Walls;
+            public AnimatedImage PermanentWalls;
             public Overlay[] Overlays;
         }
 
         public class PlayerAssets
         {
-            public ImageStripe[] Normal;
-            public ImageStripe Ghost;
+            public AnimatedImage[] Normal;
+            public AnimatedImage Ghost;
         }
 
-        public class ImageStripe
+        public class AnimatedImage
         {
             private readonly Image[] images;
 
-            public ImageStripe(params Image[] images)
+            public AnimatedImage(params Image[] images)
             {
                 this.images = images;
             }
 
-            public ImageStripe(params ImageStripe[] stripes)
+            public AnimatedImage(params AnimatedImage[] stripes)
             {
                 int len = 0;
 
-                foreach(ImageStripe stripe in stripes)
+                foreach(AnimatedImage stripe in stripes)
                 {
                     len += stripe.Length;
                 }
 
                 List<Image> images = new List<Image>(len);
 
-                foreach (ImageStripe stripe in stripes)
+                foreach (AnimatedImage stripe in stripes)
                 {
                     images.AddRange(stripe.images);
                 }
@@ -58,7 +58,7 @@ namespace MrBoom
                 this.images = images.ToArray();
             }
 
-            public ImageStripe(List<Image> images)
+            public AnimatedImage(List<Image> images)
             {
                 this.images = images.ToArray();
             }
@@ -76,33 +76,33 @@ namespace MrBoom
 
         public SoundAssets Sounds { get; private set; }
         public Level[] levels { get; private set; }
-        public ImageStripe Bomb { get; private set; }
-        public ImageStripe BoomMid { get; private set; }
-        public ImageStripe BoomHor { get; private set; }
-        public ImageStripe BoomLeftEnd { get; private set; }
-        public ImageStripe BoomRightEnd { get; private set; }
-        public ImageStripe BoomVert { get; private set; }
-        public ImageStripe BoomTopEnd { get; private set; }
-        public ImageStripe BoomBottomEnd { get; private set; }
-        public ImageStripe Fire { get; private set; }
+        public AnimatedImage Bomb { get; private set; }
+        public AnimatedImage BoomMid { get; private set; }
+        public AnimatedImage BoomHor { get; private set; }
+        public AnimatedImage BoomLeftEnd { get; private set; }
+        public AnimatedImage BoomRightEnd { get; private set; }
+        public AnimatedImage BoomVert { get; private set; }
+        public AnimatedImage BoomTopEnd { get; private set; }
+        public AnimatedImage BoomBottomEnd { get; private set; }
+        public AnimatedImage Fire { get; private set; }
         public PlayerAssets[] Players { get; private set; }
-        public ImageStripe Pause { get; private set; }
+        public AnimatedImage Pause { get; private set; }
         public Image Start { get; private set; }
-        public ImageStripe InsertCoin { get; private set; }
-        public ImageStripe BigDigits { get; private set; }
-        public ImageStripe Draw { get; private set; }
+        public AnimatedImage InsertCoin { get; private set; }
+        public AnimatedImage BigDigits { get; private set; }
+        public AnimatedImage Draw { get; private set; }
         public Image Med { get; private set; }
-        public ImageStripe Coin { get; private set; }
-        public ImageStripe Vic { get; private set; }
+        public AnimatedImage Coin { get; private set; }
+        public AnimatedImage Vic { get; private set; }
         public Image Sky { get; private set; }
         public Image Splash { get; private set; }
-        public ImageStripe[] PowerUps { get; private set; }
-        public ImageStripe[][] Monsters { get; private set; }
-        public ImageStripe[] MonsterGhosts { get; private set; }
+        public AnimatedImage[] PowerUps { get; private set; }
+        public AnimatedImage[][] Monsters { get; private set; }
+        public AnimatedImage[] MonsterGhosts { get; private set; }
         public Image DrawGameIn;
-        public ImageStripe DrawGameInNumbers;
+        public AnimatedImage DrawGameInNumbers;
 
-        public ImageStripe[] Alpha;
+        public AnimatedImage[] Alpha;
 
         public static int scale = 2;
 
@@ -137,7 +137,7 @@ namespace MrBoom
                 return new Image(texture, x, y, width, height);
             }
 
-            ImageStripe loadImageStripe(Texture2D texture, int x, int y, int width, int height, int count = 1, int gap = 0)
+            AnimatedImage loadImageStripe(Texture2D texture, int x, int y, int width, int height, int count = 1, int gap = 0)
             {
                 Image[] result = new Image[count];
 
@@ -145,7 +145,7 @@ namespace MrBoom
                 {
                     result[i] = loadImage(texture, x + i * (width + gap), y, width, height);
                 }
-                return new ImageStripe(result);
+                return new AnimatedImage(result);
             }
 
             Texture2D changeColor(Texture2D src, Color color)
@@ -167,8 +167,8 @@ namespace MrBoom
                 return texture;
             }
 
-            PlayerAssets[] loadPlayers(Texture2D imgSpriteBoys, ImageStripe boyGhost,
-                                       Texture2D imgSpriteGirl, ImageStripe girlGhost)
+            PlayerAssets[] loadPlayers(Texture2D imgSpriteBoys, AnimatedImage boyGhost,
+                                       Texture2D imgSpriteGirl, AnimatedImage girlGhost)
             {
                 var result = new List<PlayerAssets>();
 
@@ -188,7 +188,7 @@ namespace MrBoom
 
                 foreach (int spriteIndex in spriteIndexes)
                 {
-                    var player = new List<ImageStripe>();
+                    var player = new List<AnimatedImage>();
 
                     for (int x = 0; x < 5; x++)
                     {
@@ -201,7 +201,7 @@ namespace MrBoom
                             newImages.Add(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                         }
 
-                        player.Add(new ImageStripe(newImages));
+                        player.Add(new AnimatedImage(newImages));
                     }
 
                     result.Add(new PlayerAssets()
@@ -210,7 +210,7 @@ namespace MrBoom
                         Ghost = boyGhost
                     });
 
-                    player = new List<ImageStripe>();
+                    player = new List<AnimatedImage>();
 
                     for (int x = 0; x < 5; x++)
                     {
@@ -223,7 +223,7 @@ namespace MrBoom
                             newImages.Add(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
                         }
 
-                        player.Add(new ImageStripe(newImages.ToArray()));
+                        player.Add(new AnimatedImage(newImages.ToArray()));
                     }
 
                     result.Add(new PlayerAssets()
@@ -236,19 +236,19 @@ namespace MrBoom
                 return result.ToArray();
             }
 
-            ImageStripe[] loadMonster(ImageStripe up, ImageStripe left, ImageStripe right, ImageStripe down, ImageStripe die)
+            AnimatedImage[] loadMonster(AnimatedImage up, AnimatedImage left, AnimatedImage right, AnimatedImage down, AnimatedImage die)
             {
-                return new ImageStripe[]
+                return new AnimatedImage[]
                 {
-                    new ImageStripe(new Image[] { up[0], up[1], up[0], up[2] }),
-                    new ImageStripe(new Image[] { left[0], left[1], left[0], left[2] }),
-                    new ImageStripe(new Image[] { right[0], right[1], right[0], right[2] }),
-                    new ImageStripe(new Image[] { down[0], down[1], down[0], down[2] }),
+                    new AnimatedImage(new Image[] { up[0], up[1], up[0], up[2] }),
+                    new AnimatedImage(new Image[] { left[0], left[1], left[0], left[2] }),
+                    new AnimatedImage(new Image[] { right[0], right[1], right[0], right[2] }),
+                    new AnimatedImage(new Image[] { down[0], down[1], down[0], down[2] }),
                     die
                 };
             }
 
-            ImageStripe loadBonus(Image img, Image background)
+            AnimatedImage loadBonus(Image img, Image background)
             {
                 RenderTarget2D result = new RenderTarget2D(
                     graphics, background.Width * scale, background.Height * scale,
@@ -274,7 +274,7 @@ namespace MrBoom
                 return loadImageStripe(result, 0, 0, img.Width, img.Height, count);
             }
 
-            ImageStripe loadPermanentWall(ImageStripe fireImages, Image wall)
+            AnimatedImage loadPermanentWall(AnimatedImage fireImages, Image wall)
             {
                 int width = Math.Max(fireImages[0].Width, wall.Width);
                 int height = Math.Max(fireImages[0].Height, wall.Height);
@@ -310,9 +310,9 @@ namespace MrBoom
                 return loadImageStripe(result, 0, 0, width, height, fireImages.Length + 1);
             }
 
-            ImageStripe[] monsterToGhost(ImageStripe[][] src)
+            AnimatedImage[] monsterToGhost(AnimatedImage[][] src)
             {
-                var rv = new ImageStripe[src.Length];
+                var rv = new AnimatedImage[src.Length];
                 for (int i = 0; i < src.Length; i++)
                 {
                     Image[] monster = new Image[src[i].Length * src[i][0].Length];
@@ -325,7 +325,7 @@ namespace MrBoom
                             monster[j * src[i][j].Length + k] = loadImage(texture, item.X, item.Y, item.Width, item.Height);
                         }
                     }
-                    rv[i] = new ImageStripe(monster);
+                    rv[i] = new AnimatedImage(monster);
                 }
 
                 return rv;
@@ -347,7 +347,7 @@ namespace MrBoom
             var imgBonus = content.Load<Texture2D>("BONUS");
 
             var monster1ghost = 
-                new ImageStripe(
+                new AnimatedImage(
                     loadImageStripe(imgGhosts, 0, 47, 32, 32, 6, 1),
                     loadImageStripe(imgGhosts, 0, 47 + 33, 32, 32, 6, 1));
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
@@ -355,10 +355,10 @@ namespace MrBoom
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
 
             var snail =
-                new ImageStripe(
+                new AnimatedImage(
                     loadImageStripe(imgFeuille, 41, 17, 38, 32, 6, 1),
                     loadImageStripe(imgFeuille, 41, 50, 38, 32, 6, 1));
-            var snailGhost = new ImageStripe(loadImageStripe(imgGhosts, 1, 114, 38, 32, 6, 1),
+            var snailGhost = new AnimatedImage(loadImageStripe(imgGhosts, 1, 114, 38, 32, 6, 1),
                      loadImageStripe(imgGhosts, 1, 147, 38, 32, 7, 1));
 
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
@@ -367,12 +367,12 @@ namespace MrBoom
             var imgSpriteWhite = changeColor(imgSprite, Color.White);
             var imgSprite3White = changeColor(imgSprite3, Color.White);
 
-            var monsters = new ImageStripe[][]
+            var monsters = new AnimatedImage[][]
                 {
                     loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
                                 loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
                                 loadImageStripe(imgSprite, 144, 144, 17, 18, 3, 7),
-                                new ImageStripe(loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7),
+                                new AnimatedImage(loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7),
                                     loadImageStripe(imgSprite, 0, 163, 17, 18, 1, 7)),
                                 loadImageStripe(imgSprite, 24, 163, 17, 18, 8, 7)),
 
@@ -380,17 +380,17 @@ namespace MrBoom
                                 loadImageStripe(imgMed3, 188, 56, 32, 32, 3, 1),
                                 loadImageStripe(imgMed3, 188, 89, 32, 32, 3, 1),
                                 loadImageStripe(imgMed3, 89, 89, 32, 32, 3, 1),
-                                new ImageStripe(loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1),
+                                new AnimatedImage(loadImageStripe(imgMed3, 89, 122, 32, 32, 4, 1),
                                 loadImageStripe(imgMed3, 89, 155, 32, 32, 3, 1))),
 
                     loadMonster(monster2walk, monster2walk, monster2walk, monster2walk,
                                 loadImageStripe(imgFeuille, 127, 128, 16, 19, 6, 0)),
 
-                    loadMonster(new ImageStripe(snail[0], snail[1], snail[0], snail[1]),
-                                new ImageStripe(snail[4], snail[5], snail[4], snail[5]),
-                                new ImageStripe(snail[2], snail[3], snail[2], snail[3]),
-                                new ImageStripe(snail[6], snail[7], snail[6], snail[7]),
-                                new ImageStripe(snail[8], snail[9], snail[10], snail[11])),
+                    loadMonster(new AnimatedImage(snail[0], snail[1], snail[0], snail[1]),
+                                new AnimatedImage(snail[4], snail[5], snail[4], snail[5]),
+                                new AnimatedImage(snail[2], snail[3], snail[2], snail[3]),
+                                new AnimatedImage(snail[6], snail[7], snail[6], snail[7]),
+                                new AnimatedImage(snail[8], snail[9], snail[10], snail[11])),
 
                     loadMonster(monster3walk, monster3walk, monster3walk, monster3walk,
                                 loadImageStripe(imgFeuille, 127, 148, 16, 19, 6, 1)),
@@ -398,7 +398,7 @@ namespace MrBoom
                     loadMonster(loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
                                 loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
                                 loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),
-                                new ImageStripe(loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1),
+                                new AnimatedImage(loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1),
                                     loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)),
                                 loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
                 };
@@ -407,7 +407,7 @@ namespace MrBoom
             {
                 Sounds = SoundAssets.Load(content),
                 Bomb = loadImageStripe(imgSprite2, 0 * 16, 1 * 16, 16, 16, 4),
-                PowerUps = new ImageStripe[] {
+                PowerUps = new AnimatedImage[] {
                     loadBonus(loadImage(imgSprite2, 8 * 16, 2 * 16, 16, 16), bonusBackground),
                     loadBonus(loadImage(imgSprite2, 8 * 16, 3 * 16, 16, 16), bonusBackground),
                     loadBonus(loadImage(imgSprite2, 9 * 16, 1 * 16, 16, 16), bonusBackground),
@@ -424,7 +424,7 @@ namespace MrBoom
                 {
                     new Level()
                     {
-                        Backgrounds = new ImageStripe(
+                        Backgrounds = new AnimatedImage(
                             loadImage(imgNeige1, 0, 0, 320, 200),
                             loadImage(imgNeige2, 0, 0, 320, 200),
                             loadImage(imgNeige3, 0, 0, 320, 200)
@@ -434,7 +434,7 @@ namespace MrBoom
                                 x = 232,
                                 y = 57,
                                 AnimationDelay = 1,
-                                Images = new ImageStripe(loadImage(imgMed3, 0, 77, 6 * 8, 44))
+                                Images = new AnimatedImage(loadImage(imgMed3, 0, 77, 6 * 8, 44))
                             },
                             new Level.Overlay() {
                                 x = 112,
@@ -448,7 +448,7 @@ namespace MrBoom
                     },
                     new Level()
                     {
-                        Backgrounds = new ImageStripe(
+                        Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("GAME1"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("GAME2"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("GAME3"), 0, 0, 320, 200)
@@ -458,7 +458,7 @@ namespace MrBoom
                     },
                     new Level()
                     {
-                        Backgrounds = new ImageStripe(
+                        Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("FOOT"), 0, 0, 320, 200)
                         ),
                         Overlays = new Level.Overlay[]
@@ -476,7 +476,7 @@ namespace MrBoom
                     },
                     new Level()
                     {
-                        Backgrounds = new ImageStripe(
+                        Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("NUAGE1"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("NUAGE2"), 0, 0, 320, 200)
                         ),
@@ -485,7 +485,7 @@ namespace MrBoom
                     },
                     new Level()
                     {
-                        Backgrounds = new ImageStripe(
+                        Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("FORET"), 0, 0, 320, 200)
                         ),
                         Overlays = new Level.Overlay[]
@@ -503,7 +503,7 @@ namespace MrBoom
                     },
                     new Level()
                     {
-                        Backgrounds = new ImageStripe(
+                        Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("SOCCER"), 0, 0, 320, 200)
                         ),
                         Walls = loadImageStripe(imgPause, 160, 112, 16, 16, 8),
@@ -511,7 +511,7 @@ namespace MrBoom
                     },
                     new Level()
                     {
-                        Backgrounds = new ImageStripe(
+                        Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("CRAYON"), 0, 0, 320, 200)
                         ),
                         Overlays = new Level.Overlay[]
@@ -543,7 +543,7 @@ namespace MrBoom
                     },
                     new Level()
                     {
-                        Backgrounds = new ImageStripe(
+                        Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("MICRO"), 0, 0, 320, 200)
                         ),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 1, 16, 16)),
@@ -564,7 +564,7 @@ namespace MrBoom
                 MonsterGhosts = monsterToGhost(monsters),
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),
-                Alpha = new ImageStripe[] {
+                Alpha = new AnimatedImage[] {
                     loadImageStripe(imgAlpha, 0, 0, 8, 6, 44),
                     loadImageStripe(imgAlpha, 0, 8, 8, 6, 44),
                     loadImageStripe(imgAlpha, 0, 16, 8, 6, 44),
@@ -573,13 +573,13 @@ namespace MrBoom
                     loadImageStripe(imgAlpha, 0, 40, 8, 6, 44),
                 },
                 BigDigits = loadImageStripe(imgFeuille, 80, 83, 15, 16, 11, 1),
-                Draw = new ImageStripe(
+                Draw = new AnimatedImage(
                     loadImage(content.Load<Texture2D>("DRAW1"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("DRAW2"), 0, 0, 320, 200)),
                 Med = loadImage(content.Load<Texture2D>("MED"), 0, 0, 320, 200),
-                Coin = new ImageStripe(loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1),
+                Coin = new AnimatedImage(loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1),
                     loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)),
-                Vic = new ImageStripe(
+                Vic = new AnimatedImage(
                     loadImage(content.Load<Texture2D>("VIC1"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("VIC2"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("VIC3"), 0, 0, 320, 200),

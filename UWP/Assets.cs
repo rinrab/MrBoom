@@ -31,7 +31,7 @@ namespace MrBoom
         }
 
         public SoundAssets Sounds { get; private set; }
-        public Level[] levels { get; private set; }
+        public Level[] Levels { get; private set; }
         public AnimatedImage Bomb { get; private set; }
         public AnimatedImage BoomMid { get; private set; }
         public AnimatedImage BoomHor { get; private set; }
@@ -344,7 +344,7 @@ namespace MrBoom
                     loadBonus(loadImage(imgSprite2, 9 * 16, 8 * 16, 16, 16), bonusBackground),
                     loadBonus(loadImage(imgSprite2, 9 * 16, 9 * 16, 16, 16), bonusBackground),
                 },
-                levels = new Level[]
+                Levels = new Level[]
                 {
                     new Level()
                     {

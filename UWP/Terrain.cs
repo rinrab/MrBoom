@@ -56,7 +56,7 @@ namespace MrBoom
 
             this.levelIndex = levelIndex;
             this.assets = assets;
-            this.levelAssets = assets.levels[levelIndex];
+            this.levelAssets = assets.Levels[levelIndex];
             this.map = Map.Maps[levelIndex];
             this.powerUpList = new List<PowerUpType>();
 

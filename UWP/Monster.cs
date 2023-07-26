@@ -9,7 +9,7 @@ namespace MrBoom
 
         private readonly Map.MonsterData monsterData;
         private readonly Assets.MonsterAssets assets;
-        private readonly AnimatedImage ghosts;
+        private readonly AnimatedImage[] ghosts;
         private int wait = -1;
         private int tick = 0;
         private int livesCount;
@@ -176,15 +176,7 @@ namespace MrBoom
                 }
                 else
                 {
-                    if (ghosts.Length / 4 == 2)
-                    {
-                        ghosts[animateIndex * 2 + frameIndex / 20 % 2].Draw(ctx, x, y);
-                    }
-                    else
-                    {
-                        int[] index = new int[] { 0, 1, 0, 2 };
-                        ghosts[animateIndex * 3 + index[frameIndex / 20 % 4]].Draw(ctx, x, y);
-                    }
+                    ghosts[animateIndex][frameIndex / 20 % 2].Draw(ctx, x, y);
                 }
             }
         }

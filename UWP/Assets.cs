@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Windows.Graphics.Display;
+using Windows.UI.Xaml.Controls.Maps;
 
 namespace MrBoom
 {
@@ -33,7 +35,7 @@ namespace MrBoom
         public class MonsterAssets
         {
             public AnimatedImage[] Normal;
-            public AnimatedImage Ghost;
+            public AnimatedImage[] Ghost;
         }
 
         public SoundAssets Sounds { get; private set; }
@@ -183,20 +185,24 @@ namespace MrBoom
                 return result.ToArray();
             }
 
-            AnimatedImage monsterToGhost(AnimatedImage[] normal)
+            AnimatedImage[] monsterToGhost(AnimatedImage[] normal)
             {
-                Image[] white = new Image[normal.Length * normal[0].Length];
-                for (int j = 0; j < 4; j++)
+                List<AnimatedImage> white = new List<AnimatedImage>(normal.Length);
+
+                for (int j = 0; j < normal.Length; j++)
                 {
+                    var stripe = new List<Image>(normal[j].Length);
                     for (int k = 0; k < normal[j].Length; k++)
                     {
                         var item = normal[j][k];
                         var texture = changeColor(item.Texture, Color.White);
-                        white[j * normal[j].Length + k] = loadImage(texture, item.X, item.Y, item.Width, item.Height);
+                        stripe.Add(loadImage(texture, item.X, item.Y, item.Width, item.Height));
                     }
+
+                    white.Add(new AnimatedImage(stripe));
                 }
 
-                return new AnimatedImage(white);
+                return white.ToArray();
             }
 
             MonsterAssets loadMonster(AnimatedImage up, AnimatedImage left, AnimatedImage right, AnimatedImage down, AnimatedImage die)

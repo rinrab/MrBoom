@@ -476,6 +476,20 @@ namespace MrBoom
             };
         }
 
+        public void PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, Sprite owner)
+        {
+            SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
+            {
+                Images = assets.Bomb,
+                Index = 0,
+                animateDelay = 12,
+                bombTime = 210,
+                maxBoom = maxBoom,
+                rcAllowed = rcAllowed,
+                owner = owner
+            });
+        }
+
         Cell GenerateGiven()
         {
             int rnd = Random.Next(int.MaxValue);

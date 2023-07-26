@@ -14,7 +14,6 @@ namespace MrBoom
 
         private readonly Assets.PlayerAssets animations;
         private readonly Assets.ImageStripe ghosts;
-        private readonly Assets.ImageStripe bombAssets;
 
         private int maxBoom;
         private int maxBombsCount;
@@ -26,11 +25,10 @@ namespace MrBoom
         private int autoBombPlacing;
         private int bombsPlacingDisabled;
 
-        public Sprite(Terrain map, Assets.PlayerAssets animations, Assets.ImageStripe ghosts, Assets.ImageStripe bombAssets) : base(map)
+        public Sprite(Terrain map, Assets.PlayerAssets animations, Assets.ImageStripe ghosts) : base(map)
         {
             this.animations = animations;
             this.ghosts = ghosts;
-            this.bombAssets = bombAssets;
             this.animateIndex = 0;
             this.frameIndex = 0;
             this.speed = 1;
@@ -105,16 +103,8 @@ namespace MrBoom
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {
-                    terrain.SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
-                    {
-                        Images = bombAssets,
-                        Index = 0,
-                        animateDelay = 12,
-                        bombTime = 210,
-                        maxBoom = this.maxBoom,
-                        rcAllowed = this.RcAllowed,
-                        owner = this
-                    });
+                    terrain.PutBomb(cellX, cellY, this.maxBoom, this.RcAllowed, this);
+
                     this.BombsPlaced++;
                     terrain.PlaySound(Sound.PoseBomb);
                 }

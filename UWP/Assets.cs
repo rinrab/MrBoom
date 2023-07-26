@@ -30,6 +30,11 @@ namespace MrBoom
             public AnimatedImage[] Ghost;
         }
 
+        public class MonsterAssets
+        {
+            public AnimatedImage[] Normal;
+        }
+
         public SoundAssets Sounds { get; private set; }
         public Level[] Levels { get; private set; }
         public AnimatedImage Bomb { get; private set; }
@@ -53,7 +58,7 @@ namespace MrBoom
         public Image Sky { get; private set; }
         public Image Splash { get; private set; }
         public AnimatedImage[] PowerUps { get; private set; }
-        public AnimatedImage[][] Monsters { get; private set; }
+        public MonsterAssets[] Monsters { get; private set; }
         public AnimatedImage[] MonsterGhosts { get; private set; }
         public Image DrawGameIn;
         public AnimatedImage DrawGameInNumbers;
@@ -178,15 +183,18 @@ namespace MrBoom
                 return result.ToArray();
             }
 
-            AnimatedImage[] loadMonster(AnimatedImage up, AnimatedImage left, AnimatedImage right, AnimatedImage down, AnimatedImage die)
+            MonsterAssets loadMonster(AnimatedImage up, AnimatedImage left, AnimatedImage right, AnimatedImage down, AnimatedImage die)
             {
-                return new AnimatedImage[]
+                return new MonsterAssets()
                 {
-                    new AnimatedImage(new Image[] { up[0], up[1], up[0], up[2] }),
-                    new AnimatedImage(new Image[] { left[0], left[1], left[0], left[2] }),
-                    new AnimatedImage(new Image[] { right[0], right[1], right[0], right[2] }),
-                    new AnimatedImage(new Image[] { down[0], down[1], down[0], down[2] }),
-                    die
+                    Normal = new AnimatedImage[]
+                    {
+                        new AnimatedImage(new Image[] { up[0], up[1], up[0], up[2] }),
+                        new AnimatedImage(new Image[] { left[0], left[1], left[0], left[2] }),
+                        new AnimatedImage(new Image[] { right[0], right[1], right[0], right[2] }),
+                        new AnimatedImage(new Image[] { down[0], down[1], down[0], down[2] }),
+                        die
+                    }
                 };
             }
 
@@ -252,19 +260,19 @@ namespace MrBoom
                 return loadImageStripe(result, 0, 0, width, height, fireImages.Length + 1);
             }
 
-            AnimatedImage[] monsterToGhost(AnimatedImage[][] src)
+            AnimatedImage[] monsterToGhost(MonsterAssets[] src)
             {
                 var rv = new AnimatedImage[src.Length];
                 for (int i = 0; i < src.Length; i++)
                 {
-                    Image[] monster = new Image[src[i].Length * src[i][0].Length];
+                    Image[] monster = new Image[src[i].Normal.Length * src[i].Normal[0].Length];
                     for (int j = 0; j < 4; j++)
                     {
-                        for (int k = 0; k < src[i][j].Length; k++)
+                        for (int k = 0; k < src[i].Normal[j].Length; k++)
                         {
-                            var item = src[i][j][k];
+                            var item = src[i].Normal[j][k];
                             var texture = changeColor(item.Texture, Color.White);
-                            monster[j * src[i][j].Length + k] = loadImage(texture, item.X, item.Y, item.Width, item.Height);
+                            monster[j * src[i].Normal[j].Length + k] = loadImage(texture, item.X, item.Y, item.Width, item.Height);
                         }
                     }
                     rv[i] = new AnimatedImage(monster);
@@ -298,7 +306,7 @@ namespace MrBoom
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
             var bonusBackground = loadImage(imgBonus, 0, 0, 160, 16);
 
-            var monsters = new AnimatedImage[][]
+            var monsters = new MonsterAssets[]
                 {
                     loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
                                 loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),

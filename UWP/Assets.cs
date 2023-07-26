@@ -273,25 +273,17 @@ namespace MrBoom
             var imgPause = content.Load<Texture2D>("PAUSE");
             var imgFeuille = content.Load<Texture2D>("FEUILLE");
             var imgAlpha = content.Load<Texture2D>("ALPHA");
-            var imgGhosts = content.Load<Texture2D>("GHOST");
             var imgCrayon2 = content.Load<Texture2D>("CRAYON2");
             var imgSoucoupe = content.Load<Texture2D>("SOUCOUPE");
             var imgBonus = content.Load<Texture2D>("BONUS");
 
-            var monster1ghost = 
-                new AnimatedImage(
-                    loadImageStripe(imgGhosts, 0, 47, 32, 32, 6, 1),
-                    loadImageStripe(imgGhosts, 0, 47 + 33, 32, 32, 6, 1));
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
-            var monster2ghost = loadImageStripe(imgGhosts, 195, 93, 16, 19, 3, 0);
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
 
             var snail =
                 new AnimatedImage(
                     loadImageStripe(imgFeuille, 41, 17, 38, 32, 6, 1),
                     loadImageStripe(imgFeuille, 41, 50, 38, 32, 6, 1));
-            var snailGhost = new AnimatedImage(loadImageStripe(imgGhosts, 1, 114, 38, 32, 6, 1),
-                     loadImageStripe(imgGhosts, 1, 147, 38, 32, 7, 1));
 
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
             var bonusBackground = loadImage(imgBonus, 0, 0, 160, 16);

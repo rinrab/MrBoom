@@ -5,9 +5,9 @@ namespace MrBoom
 {
     public class Image
     {
-        private Texture2D texture;
-        private Rectangle rect;
-        private int scale;
+        private readonly Texture2D texture;
+        private readonly Rectangle rect;
+        private readonly int scale;
 
         public int Width { get => rect.Width / scale; }
         public int Height { get => rect.Height / scale; }

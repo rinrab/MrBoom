@@ -26,7 +26,7 @@ namespace MrBoom
         {
             assets.Vic[tick / 5 % assets.Vic.Length].Draw(ctx, 0, 0);
 
-            Assets.AssetImage img = assets.Players[winner].DirectionImages[0][tick / 20 % assets.Players[winner].DirectionImages[0].Length];
+            Assets.AssetImage img = assets.Players[winner].DirectionImages[0][tick / 20];
             img.Draw(ctx, 320 / 2 - img.Width / 2, 80 - img.Height);
         }
 

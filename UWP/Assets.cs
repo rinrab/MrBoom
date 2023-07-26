@@ -45,11 +45,11 @@ namespace MrBoom
                 this.images = images.ToArray();
             }
 
-            public AssetImage this[int index]
+            public AssetImage this[int animateIndex]
             {
                 get
                 {
-                    return images[index];
+                    return images[animateIndex % images.Length];
                 }
             }
 

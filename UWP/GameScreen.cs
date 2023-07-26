@@ -114,11 +114,9 @@ namespace MrBoom
                 }
             }
 
-            List<MovingSprite> spritesToDraw = new List<MovingSprite>(terrain.Players);
-            foreach (var monster in terrain.Monsters)
-            {
-                spritesToDraw.Add(monster);
-            }
+            List<MovingSprite> spritesToDraw = new List<MovingSprite>(terrain.Players.Count + terrain.Monsters.Count);
+            spritesToDraw.AddRange(terrain.Players);
+            spritesToDraw.AddRange(terrain.Monsters);
 
             spritesToDraw.Sort((a, b) => a.y - b.y);
 

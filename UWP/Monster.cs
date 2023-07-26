@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.DXGI;
 
 namespace MrBoom
 {
@@ -10,7 +9,6 @@ namespace MrBoom
 
         private readonly Map.MonsterData monsterData;
         private readonly Assets.MonsterAssets assets;
-        private readonly AnimatedImage[] ghosts;
         private int wait = -1;
         private int tick = 0;
         private int livesCount;
@@ -23,7 +21,6 @@ namespace MrBoom
             this.livesCount = monsterData.LivesCount - 1;
             this.Direction = (Directions)Terrain.Random.Next(1, 5);
             this.assets = assets;
-            this.ghosts = assets.Ghost;
         }
 
         public override void Update()

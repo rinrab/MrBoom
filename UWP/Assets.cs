@@ -27,7 +27,7 @@ namespace MrBoom
         public class PlayerAssets
         {
             public AnimatedImage[] Normal;
-            public AnimatedImage Ghost;
+            public AnimatedImage[] Ghost;
         }
 
         public SoundAssets Sounds { get; private set; }
@@ -99,8 +99,7 @@ namespace MrBoom
                 return texture;
             }
 
-            PlayerAssets[] loadPlayers(Texture2D imgSpriteBoys, AnimatedImage boyGhost,
-                                       Texture2D imgSpriteGirl, AnimatedImage girlGhost)
+            PlayerAssets[] loadPlayers(Texture2D imgSpriteBoys, Texture2D imgSpriteGirl)
             {
                 var result = new List<PlayerAssets>();
 
@@ -118,50 +117,61 @@ namespace MrBoom
 
                 int[] spriteIndexes = new int[] { 0, 2, 3, 1 };
 
+                var imgSpriteBoysWhite = changeColor(imgSpriteBoys, Color.White);
+                var imgSpriteGirlWhite = changeColor(imgSpriteGirl, Color.White);
+
                 foreach (int spriteIndex in spriteIndexes)
                 {
-                    var player = new List<AnimatedImage>();
+                    var normal = new List<AnimatedImage>();
+                    var white = new List<AnimatedImage>();
 
                     for (int x = 0; x < 5; x++)
                     {
-                        List<Image> newImages = new List<Image>();
+                        List<Image> normalImages = new List<Image>();
+                        List<Image> whiteImages = new List<Image>();
 
                         foreach (var index in framesIndex[x])
                         {
                             var frameX = index + x * 3 + spriteIndex * framesCount;
 
-                            newImages.Add(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
+                            normalImages.Add(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
+                            whiteImages.Add(loadImage(imgSpriteBoysWhite, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                         }
 
-                        player.Add(new AnimatedImage(newImages));
+                        normal.Add(new AnimatedImage(normalImages));
+                        white.Add(new AnimatedImage(whiteImages));
                     }
 
                     result.Add(new PlayerAssets()
                     {
-                        Normal = player.ToArray(),
-                        Ghost = boyGhost
+                        Normal = normal.ToArray(),
+                        Ghost = white.ToArray()
                     });
 
-                    player = new List<AnimatedImage>();
+                    normal.Clear();
+                    white.Clear();
 
                     for (int x = 0; x < 5; x++)
                     {
-                        List<Image> newImages = new List<Image>();
+                        List<Image> normalImages = new List<Image>();
+                        List<Image> whiteImages = new List<Image>();
 
                         foreach (var index in framesIndex[x])
                         {
                             var frameX = index + x * 3 + spriteIndex * framesCount;
 
-                            newImages.Add(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
+                            normalImages.Add(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
+                            whiteImages.Add(loadImage(imgSpriteGirlWhite, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
                         }
 
-                        player.Add(new AnimatedImage(newImages.ToArray()));
+                        normal.Add(new AnimatedImage(normalImages));
+                        white.Add(new AnimatedImage(whiteImages));
                     }
 
                     result.Add(new PlayerAssets()
                     {
-                        Normal = player.ToArray(),
-                        Ghost = girlGhost
+                        Normal = normal.ToArray(),
+                        Ghost = white.ToArray()
                     });
                 }
 
@@ -287,9 +297,6 @@ namespace MrBoom
 
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
             var bonusBackground = loadImage(imgBonus, 0, 0, 160, 16);
-
-            var imgSpriteWhite = changeColor(imgSprite, Color.White);
-            var imgSprite3White = changeColor(imgSprite3, Color.White);
 
             var monsters = new AnimatedImage[][]
                 {
@@ -481,8 +488,7 @@ namespace MrBoom
                 BoomTopEnd = loadImageStripe(imgSprite2, 0 * 16, 46 + 5 * 16, 16, 16, 4),
                 BoomBottomEnd = loadImageStripe(imgSprite2, 0 * 16, 46 + 6 * 16, 16, 16, 4),
                 Fire = fire,
-                Players = loadPlayers(imgSprite, loadImageStripe(imgSpriteWhite, 0, 0, 23, 23, 12, 1),
-                                      imgSprite3, loadImageStripe(imgSprite3White, 0, 0, 23, 25, 12, 1)),
+                Players = loadPlayers(imgSprite, imgSprite3),
                 Pause = loadImageStripe(imgPause, 0, 0, 48, 64, 4, 0),
                 Monsters = monsters,
                 MonsterGhosts = monsterToGhost(monsters),

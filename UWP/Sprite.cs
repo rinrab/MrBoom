@@ -13,7 +13,6 @@ namespace MrBoom
         public bool IsDie { get; private set; } = false;
 
         private readonly Assets.PlayerAssets animations;
-        private readonly AnimatedImage ghosts;
 
         private int maxBoom;
         private int maxBombsCount;
@@ -28,7 +27,6 @@ namespace MrBoom
         public Sprite(Terrain map, Assets.PlayerAssets animations) : base(map)
         {
             this.animations = animations;
-            this.ghosts = animations.Ghost;
             this.animateIndex = 0;
             this.frameIndex = 0;
             this.speed = 1;
@@ -276,7 +274,16 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                AnimatedImage animation = this.animations.Normal[this.animateIndex];
+                AnimatedImage animation;
+                if (unplugin == 0 || unplugin % 30 < 15)
+                {
+                    animation = this.animations.Normal[this.animateIndex];
+                }
+                else
+                {     
+                    animation = this.animations.Ghost[this.animateIndex];
+                }
+
                 Image img = animation[frameIndex / 20];
 
                 int x = this.x + 8 + 8 - img.Width / 2;
@@ -289,16 +296,7 @@ namespace MrBoom
                     color = new Color(255, 0, 0);
                 }
 
-                int[] index = new int[] { 0, 1, 0, 2 };
-
-                if (unplugin == 0 || unplugin % 30 < 15)
-                {
-                    img.Draw(ctx, x, y, color);
-                }
-                else
-                {
-                    ghosts[animateIndex * 3 + index[frameIndex / 20 % 4]].Draw(ctx, x, y, color);
-                }
+                img.Draw(ctx, x, y, color);
             }
         }
     }

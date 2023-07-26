@@ -28,7 +28,7 @@ namespace MrBoom
 
         public class PlayerAssets
         {
-            public ImageStripe[] DirectionImages;
+            public ImageStripe[] Normal;
         }
 
         public class ImageStripe
@@ -189,7 +189,7 @@ namespace MrBoom
 
                     result.Add(new PlayerAssets()
                     {
-                        DirectionImages = player.ToArray()
+                        Normal = player.ToArray()
                     });
 
                     player = new List<ImageStripe>();
@@ -210,7 +210,7 @@ namespace MrBoom
 
                     result.Add(new PlayerAssets()
                     {
-                        DirectionImages = player.ToArray()
+                        Normal = player.ToArray()
                     });
                 }
 

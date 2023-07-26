@@ -280,7 +280,7 @@ namespace MrBoom
                     animation = this.animations.Normal[this.animateIndex];
                 }
                 else
-                {     
+                {
                     animation = this.animations.Ghost[this.animateIndex];
                 }
 

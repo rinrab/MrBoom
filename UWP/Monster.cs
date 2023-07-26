@@ -16,13 +16,13 @@ namespace MrBoom
         private int unplugin = 180;
         private int freeze = 180;
 
-        public Monster(Terrain map, Map.MonsterData monsterData, Assets.MonsterAssets assets, AnimatedImage ghosts) : base(map)
+        public Monster(Terrain map, Map.MonsterData monsterData, Assets.MonsterAssets assets) : base(map)
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;
             this.Direction = (Directions)Terrain.Random.Next(1, 5);
             this.assets = assets;
-            this.ghosts = ghosts;
+            this.ghosts = assets.Ghost;
         }
 
         public override void Update()

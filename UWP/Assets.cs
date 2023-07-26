@@ -33,6 +33,7 @@ namespace MrBoom
         public class MonsterAssets
         {
             public AnimatedImage[] Normal;
+            public AnimatedImage Ghost;
         }
 
         public SoundAssets Sounds { get; private set; }
@@ -59,7 +60,6 @@ namespace MrBoom
         public Image Splash { get; private set; }
         public AnimatedImage[] PowerUps { get; private set; }
         public MonsterAssets[] Monsters { get; private set; }
-        public AnimatedImage[] MonsterGhosts { get; private set; }
         public Image DrawGameIn;
         public AnimatedImage DrawGameInNumbers;
 
@@ -183,18 +183,37 @@ namespace MrBoom
                 return result.ToArray();
             }
 
+            AnimatedImage monsterToGhost(AnimatedImage[] normal)
+            {
+                Image[] white = new Image[normal.Length * normal[0].Length];
+                for (int j = 0; j < 4; j++)
+                {
+                    for (int k = 0; k < normal[j].Length; k++)
+                    {
+                        var item = normal[j][k];
+                        var texture = changeColor(item.Texture, Color.White);
+                        white[j * normal[j].Length + k] = loadImage(texture, item.X, item.Y, item.Width, item.Height);
+                    }
+                }
+
+                return new AnimatedImage(white);
+            }
+
             MonsterAssets loadMonster(AnimatedImage up, AnimatedImage left, AnimatedImage right, AnimatedImage down, AnimatedImage die)
             {
+                var normal = new AnimatedImage[]
+                {
+                    new AnimatedImage(new Image[] { up[0], up[1], up[0], up[2] }),
+                    new AnimatedImage(new Image[] { left[0], left[1], left[0], left[2] }),
+                    new AnimatedImage(new Image[] { right[0], right[1], right[0], right[2] }),
+                    new AnimatedImage(new Image[] { down[0], down[1], down[0], down[2] }),
+                    die
+                };
+
                 return new MonsterAssets()
                 {
-                    Normal = new AnimatedImage[]
-                    {
-                        new AnimatedImage(new Image[] { up[0], up[1], up[0], up[2] }),
-                        new AnimatedImage(new Image[] { left[0], left[1], left[0], left[2] }),
-                        new AnimatedImage(new Image[] { right[0], right[1], right[0], right[2] }),
-                        new AnimatedImage(new Image[] { down[0], down[1], down[0], down[2] }),
-                        die
-                    }
+                    Normal = normal,
+                    Ghost = monsterToGhost(normal)
                 };
             }
 
@@ -258,27 +277,6 @@ namespace MrBoom
                 graphics.SetRenderTarget(null);
 
                 return loadImageStripe(result, 0, 0, width, height, fireImages.Length + 1);
-            }
-
-            AnimatedImage[] monsterToGhost(MonsterAssets[] src)
-            {
-                var rv = new AnimatedImage[src.Length];
-                for (int i = 0; i < src.Length; i++)
-                {
-                    Image[] monster = new Image[src[i].Normal.Length * src[i].Normal[0].Length];
-                    for (int j = 0; j < 4; j++)
-                    {
-                        for (int k = 0; k < src[i].Normal[j].Length; k++)
-                        {
-                            var item = src[i].Normal[j][k];
-                            var texture = changeColor(item.Texture, Color.White);
-                            monster[j * src[i].Normal[j].Length + k] = loadImage(texture, item.X, item.Y, item.Width, item.Height);
-                        }
-                    }
-                    rv[i] = new AnimatedImage(monster);
-                }
-
-                return rv;
             }
 
             var imgNeige1 = content.Load<Texture2D>("NEIGE1");
@@ -501,7 +499,6 @@ namespace MrBoom
                 Players = loadPlayers(imgSprite, imgSprite3),
                 Pause = loadImageStripe(imgPause, 0, 0, 48, 64, 4, 0),
                 Monsters = monsters,
-                MonsterGhosts = monsterToGhost(monsters),
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),
                 Alpha = new AnimatedImage[] {

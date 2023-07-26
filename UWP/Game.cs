@@ -52,7 +52,7 @@ namespace MrBoom
             Players = new List<Player>();
             NextSong(3);
 
-            ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
+            ScreenManager.SetScreen(new SplashScreen(assets, Players, Controllers));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -146,7 +146,7 @@ namespace MrBoom
             base.Draw(gameTime);
         }
 
-        public static void DrawString(SpriteBatch ctx, int x, int y, string text, Assets.AssetImage[] images)
+        public static void DrawString(SpriteBatch ctx, int x, int y, string text, Assets.ImageStripe images)
         {
             string alpha = "abcdefghijklmnopqrstuvwxyz0123456789!.-:/()?";
 

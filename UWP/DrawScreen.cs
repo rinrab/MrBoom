@@ -21,7 +21,7 @@ namespace MrBoom
 
         public void Draw(SpriteBatch ctx)
         {
-            assets.Draw[tick / 30 % assets.Draw.Length].Draw(ctx, 0, 0);
+            assets.Draw[tick / 30].Draw(ctx, 0, 0);
         }
 
         public void Update()

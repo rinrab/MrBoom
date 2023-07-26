@@ -23,8 +23,7 @@ namespace MrBoom
 
             for (int i = 0; i < players.Count; i++)
             {
-                var ghosts = (i % 2) == 0 ? assets.BoyGhost : assets.GirlGhost;
-                Sprite sprite = new Sprite(terrain, assets.Players[i], ghosts, assets.Bomb)
+                Sprite sprite = new Sprite(terrain, assets.Players[i])
                 {
                     Controller = players[i].Controller
                 };
@@ -97,7 +96,7 @@ namespace MrBoom
             }
 
             var bgs = terrain.LevelAssets.Backgrounds;
-            bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
+            bgs[bgTick / 20].Draw(spriteBatch, 0, 0);
 
             for (int y = 0; y < terrain.Height; y++)
             {
@@ -114,11 +113,9 @@ namespace MrBoom
                 }
             }
 
-            List<MovingSprite> spritesToDraw = new List<MovingSprite>(terrain.Players);
-            foreach (var monster in terrain.Monsters)
-            {
-                spritesToDraw.Add(monster);
-            }
+            List<MovingSprite> spritesToDraw = new List<MovingSprite>(terrain.Players.Count + terrain.Monsters.Count);
+            spritesToDraw.AddRange(terrain.Players);
+            spritesToDraw.AddRange(terrain.Monsters);
 
             spritesToDraw.Sort((a, b) => a.y - b.y);
 
@@ -132,7 +129,7 @@ namespace MrBoom
             {
                 foreach (var overlay in overlays)
                 {
-                    overlay.Images[bgTick / overlay.AnimationDelay % overlay.Images.Length].Draw(spriteBatch, overlay.x, overlay.y);
+                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(spriteBatch, overlay.x, overlay.y);
                 }
             }
 

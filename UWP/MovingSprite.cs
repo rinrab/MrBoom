@@ -2,7 +2,7 @@
 
 namespace MrBoom
 {
-    public class MovingSprite
+    public abstract class MovingSprite
     {
         public int x;
         public int y;
@@ -217,9 +217,6 @@ namespace MrBoom
             Right,
         }
 
-        public virtual void Draw(SpriteBatch ctx)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void Draw(SpriteBatch ctx);
     }
 }

@@ -12,9 +12,8 @@ namespace MrBoom
         public bool RcAllowed { get; private set; }
         public bool IsDie { get; private set; } = false;
 
-        private readonly Assets.AssetImage[][] animations;
-        private readonly Assets.AssetImage[] ghosts;
-        private readonly Assets.AssetImage[] bombAssets;
+        private readonly Assets.PlayerAssets animations;
+        private readonly Assets.ImageStripe ghosts;
 
         private int maxBoom;
         private int maxBombsCount;
@@ -26,11 +25,10 @@ namespace MrBoom
         private int autoBombPlacing;
         private int bombsPlacingDisabled;
 
-        public Sprite(Terrain map, Assets.AssetImage[][] animations, Assets.AssetImage[] ghosts, Assets.AssetImage[] bombAssets) : base(map)
+        public Sprite(Terrain map, Assets.PlayerAssets animations) : base(map)
         {
             this.animations = animations;
-            this.ghosts = ghosts;
-            this.bombAssets = bombAssets;
+            this.ghosts = animations.Ghost;
             this.animateIndex = 0;
             this.frameIndex = 0;
             this.speed = 1;
@@ -105,16 +103,8 @@ namespace MrBoom
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {
-                    terrain.SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
-                    {
-                        Images = bombAssets,
-                        Index = 0,
-                        animateDelay = 12,
-                        bombTime = 210,
-                        maxBoom = this.maxBoom,
-                        rcAllowed = this.RcAllowed,
-                        owner = this
-                    });
+                    terrain.PutBomb(cellX, cellY, this.maxBoom, this.RcAllowed, this);
+
                     this.BombsPlaced++;
                     terrain.PlaySound(Sound.PoseBomb);
                 }
@@ -286,8 +276,8 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                Assets.AssetImage[] animation = this.animations[this.animateIndex];
-                Assets.AssetImage img = animation[frameIndex / 20 % animation.Length];
+                Assets.ImageStripe animation = this.animations.Normal[this.animateIndex];
+                Assets.AssetImage img = animation[frameIndex / 20];
 
                 int x = this.x + 8 + 8 - img.Width / 2;
                 int y = this.y + 16 - img.Height;

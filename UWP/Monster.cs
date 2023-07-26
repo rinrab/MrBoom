@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using static MrBoom.Assets;
 
 namespace MrBoom
 {
@@ -8,15 +9,15 @@ namespace MrBoom
         public bool IsDie = false;
 
         private readonly Map.MonsterData monsterData;
-        private readonly Assets.AssetImage[][] assets;
-        private readonly Assets.AssetImage[] ghosts;
+        private readonly ImageStripe[] assets;
+        private readonly ImageStripe ghosts;
         private int wait = -1;
         private int tick = 0;
         private int livesCount;
         private int unplugin = 180;
         private int freeze = 180;
 
-        public Monster(Terrain map, Map.MonsterData monsterData, Assets.AssetImage[][] assets, Assets.AssetImage[] ghosts) : base(map)
+        public Monster(Terrain map, Map.MonsterData monsterData, ImageStripe[] assets, ImageStripe ghosts) : base(map)
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;
@@ -160,8 +161,8 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                Assets.AssetImage[] animation = this.assets[this.animateIndex];
-                Assets.AssetImage img = animation[frameIndex / 8 * monsterData.Slow % animation.Length];
+                Assets.ImageStripe animation = this.assets[this.animateIndex];
+                Assets.AssetImage img = animation[frameIndex / 8 * monsterData.Slow];
                 //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
                 //{
                 //    img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];

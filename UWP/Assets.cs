@@ -311,7 +311,8 @@ namespace MrBoom
                     loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
                                 loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
                                 loadImageStripe(imgSprite, 144, 144, 17, 18, 3, 7),
-                                new AnimatedImage(loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7),
+                                new AnimatedImage(
+                                    loadImageStripe(imgSprite, 216, 144, 17, 18, 2, 7),
                                     loadImageStripe(imgSprite, 0, 163, 17, 18, 1, 7)),
                                 loadImageStripe(imgSprite, 24, 163, 17, 18, 8, 7)),
 
@@ -337,7 +338,8 @@ namespace MrBoom
                     loadMonster(loadImageStripe(imgPause, 0 * 24 * 3, 158, 23, 21, 3, 1),
                                 loadImageStripe(imgPause, 1 * 24 * 3, 158, 23, 21, 3, 1),
                                 loadImageStripe(imgPause, 2 * 24 * 3, 158, 23, 21, 3, 1),
-                                new AnimatedImage(loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1),
+                                new AnimatedImage(
+                                    loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1),
                                     loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)),
                                 loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
                 };

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.DXGI;
 
 namespace MrBoom
 {
@@ -160,7 +161,17 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                AnimatedImage animation = this.assets.Normal[this.animateIndex];
+                AnimatedImage animation;
+
+                if (unplugin == 0 || unplugin % 30 < 15)
+                {
+                    animation = this.assets.Normal[this.animateIndex];
+                }
+                else
+                {
+                    animation = this.assets.Ghost[this.animateIndex];
+                }
+
                 Image img = animation[frameIndex / 8 * monsterData.Slow];
                 //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
                 //{
@@ -170,14 +181,7 @@ namespace MrBoom
                 int x = this.x + 8 + 8 - img.Width / 2;
                 int y = this.y + 16 - img.Height;
 
-                if (unplugin == 0 || unplugin % 30 < 15)
-                {
-                    img.Draw(ctx, x, y);
-                }
-                else
-                {
-                    ghosts[animateIndex][frameIndex / 20 % 2].Draw(ctx, x, y);
-                }
+                img.Draw(ctx, x, y);
             }
         }
     }

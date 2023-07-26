@@ -31,13 +31,13 @@ namespace MrBoom
 
         public int Winner { get; private set; }
 
-        private byte[] final;
+        private readonly byte[] final;
         private int lastApocalypseSound = -1;
         private readonly Cell[] data;
         private int timeToEnd = -1;
         private int time;
-        private List<Spawn> spawns;
-        private List<PowerUpType> powerUpList;
+        private readonly List<Spawn> spawns;
+        private readonly List<PowerUpType> powerUpList;
         internal bool StartKick;
         private readonly Map map;
 

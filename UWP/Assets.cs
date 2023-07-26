@@ -82,7 +82,6 @@ namespace MrBoom
         public AssetImage Splash { get; private set; }
         public AssetImage[][] PowerUps { get; private set; }
         public AssetImage[][][] Monsters { get; private set; }
-        public AssetImage[] PlayerBoyGhosts { get; private set; }
         public AssetImage[][] MonsterGhosts { get; private set; }
         public AssetImage DrawGameIn;
         public AssetImage[] DrawGameInNumbers;

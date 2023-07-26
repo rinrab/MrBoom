@@ -13,8 +13,8 @@ namespace MrBoom
         public bool IsDie { get; private set; } = false;
 
         private readonly Assets.PlayerAssets animations;
-        private readonly Assets.AssetImage[] ghosts;
-        private readonly Assets.AssetImage[] bombAssets;
+        private readonly Assets.ImageStripe ghosts;
+        private readonly Assets.ImageStripe bombAssets;
 
         private int maxBoom;
         private int maxBombsCount;
@@ -26,7 +26,7 @@ namespace MrBoom
         private int autoBombPlacing;
         private int bombsPlacingDisabled;
 
-        public Sprite(Terrain map, Assets.PlayerAssets animations, Assets.AssetImage[] ghosts, Assets.AssetImage[] bombAssets) : base(map)
+        public Sprite(Terrain map, Assets.PlayerAssets animations, Assets.ImageStripe ghosts, Assets.ImageStripe bombAssets) : base(map)
         {
             this.animations = animations;
             this.ghosts = ghosts;

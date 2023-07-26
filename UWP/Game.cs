@@ -146,7 +146,7 @@ namespace MrBoom
             base.Draw(gameTime);
         }
 
-        public static void DrawString(SpriteBatch ctx, int x, int y, string text, Assets.AssetImage[] images)
+        public static void DrawString(SpriteBatch ctx, int x, int y, string text, Assets.ImageStripe images)
         {
             string alpha = "abcdefghijklmnopqrstuvwxyz0123456789!.-:/()?";
 

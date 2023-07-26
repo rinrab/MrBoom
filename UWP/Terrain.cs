@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static MrBoom.Assets;
 
 namespace MrBoom
 {
@@ -390,7 +391,7 @@ namespace MrBoom
             int maxBoom = bombCell.maxBoom;
             bombCell.owner.BombsPlaced--;
 
-            void burn(int dx, int dy, Assets.AssetImage[] image, Assets.AssetImage[] imageEnd)
+            void burn(int dx, int dy, ImageStripe image, ImageStripe imageEnd)
             {
                 for (int i = 1; i <= maxBoom; i++)
                 {
@@ -531,7 +532,7 @@ namespace MrBoom
     public class Cell
     {
         public readonly TerrainType Type;
-        public Assets.AssetImage[] Images;
+        public Assets.ImageStripe Images;
         public int Index;
         public int animateDelay;
         public int bombTime;

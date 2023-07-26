@@ -30,50 +30,6 @@ namespace MrBoom
             public AnimatedImage Ghost;
         }
 
-        public class AnimatedImage
-        {
-            private readonly Image[] images;
-
-            public AnimatedImage(params Image[] images)
-            {
-                this.images = images;
-            }
-
-            public AnimatedImage(params AnimatedImage[] stripes)
-            {
-                int len = 0;
-
-                foreach(AnimatedImage stripe in stripes)
-                {
-                    len += stripe.Length;
-                }
-
-                List<Image> images = new List<Image>(len);
-
-                foreach (AnimatedImage stripe in stripes)
-                {
-                    images.AddRange(stripe.images);
-                }
-
-                this.images = images.ToArray();
-            }
-
-            public AnimatedImage(List<Image> images)
-            {
-                this.images = images.ToArray();
-            }
-
-            public Image this[int animateIndex]
-            {
-                get
-                {
-                    return images[animateIndex % images.Length];
-                }
-            }
-
-            public int Length { get => images.Length; }
-        }
-
         public SoundAssets Sounds { get; private set; }
         public Level[] levels { get; private set; }
         public AnimatedImage Bomb { get; private set; }
@@ -106,35 +62,11 @@ namespace MrBoom
 
         public static int scale = 2;
 
-        public class Image
-        {
-            private Texture2D texture;
-            private Rectangle rect;
-
-            public int Width { get => rect.Width / scale; }
-            public int Height { get => rect.Height / scale; }
-            public int X { get => rect.X / scale; }
-            public int Y { get => rect.Y / scale; }
-
-            public Texture2D Texture { get => texture; }
-
-            public Image(Texture2D texture, int x, int y, int width, int height)
-            {
-                this.texture = texture;
-                rect = new Rectangle(x * scale, y * scale, width * scale, height * scale);
-            }
-
-            public void Draw(SpriteBatch ctx, int x, int y, Color? color = null)
-            {
-                ctx.Draw(texture, new Vector2(x * scale, y * scale), rect, (color == null) ? Color.White : (Color)color);
-            }
-        }
-
         public static Assets Load(ContentManager content, GraphicsDevice graphics)
         {
             Image loadImage(Texture2D texture, int x, int y, int width, int height)
             {
-                return new Image(texture, x, y, width, height);
+                return new Image(texture, x, y, width, height, scale);
             }
 
             AnimatedImage loadImageStripe(Texture2D texture, int x, int y, int width, int height, int count = 1, int gap = 0)

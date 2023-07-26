@@ -40,7 +40,7 @@ namespace MrBoom
                 for (int y = 0; y < 2; y++)
                 {
                     int index = y * 4 + x;
-                    Assets.AnimatedImage images = assets.Alpha[index / 2 + 2];
+                    AnimatedImage images = assets.Alpha[index / 2 + 2];
                     if (index < players.Count)
                     {
                         Player player = players[index];

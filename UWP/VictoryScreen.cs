@@ -26,7 +26,7 @@ namespace MrBoom
         {
             assets.Vic[tick / 5].Draw(ctx, 0, 0);
 
-            Assets.Image img = assets.Players[winner].Normal[0][tick / 20];
+            Image img = assets.Players[winner].Normal[0][tick / 20];
             img.Draw(ctx, 320 / 2 - img.Width / 2, 80 - img.Height);
         }
 

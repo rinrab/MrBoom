@@ -546,7 +546,7 @@ namespace MrBoom
     public class Cell
     {
         public readonly TerrainType Type;
-        public Assets.AnimatedImage Images;
+        public AnimatedImage Images;
         public int Index;
         public int animateDelay;
         public int bombTime;

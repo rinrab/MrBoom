@@ -96,6 +96,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimatedImage.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -107,6 +108,7 @@
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameScreen.cs" />
+    <Compile Include="Image.cs" />
     <Compile Include="IScreen.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Monster.cs" />

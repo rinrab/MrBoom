@@ -161,8 +161,8 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                Assets.AnimatedImage animation = this.assets[this.animateIndex];
-                Assets.Image img = animation[frameIndex / 8 * monsterData.Slow];
+                AnimatedImage animation = this.assets[this.animateIndex];
+                Image img = animation[frameIndex / 8 * monsterData.Slow];
                 //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
                 //{
                 //    img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];

@@ -184,7 +184,7 @@ namespace MrBoom
             if (bgTick <= 180)
             {
                 int number = (180 - bgTick) / 60 + 1;
-                Assets.Image img = assets.BigDigits[number];
+                Image img = assets.BigDigits[number];
                 img.Draw(spriteBatch, 320 / 2 - img.Width / 2, 200 / 2 - img.Height / 2);
                 if (bgTick % 60 == 0)
                 {

@@ -162,7 +162,7 @@ namespace MrBoom
             if (frameIndex != -1)
             {
                 Assets.ImageStripe animation = this.assets[this.animateIndex];
-                Assets.AssetImage img = animation[frameIndex / 8 * monsterData.Slow % animation.Length];
+                Assets.AssetImage img = animation[frameIndex / 8 * monsterData.Slow];
                 //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
                 //{
                 //    img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];

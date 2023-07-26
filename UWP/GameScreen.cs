@@ -97,7 +97,7 @@ namespace MrBoom
             }
 
             var bgs = terrain.LevelAssets.Backgrounds;
-            bgs[bgTick / 20 % bgs.Length].Draw(spriteBatch, 0, 0);
+            bgs[bgTick / 20].Draw(spriteBatch, 0, 0);
 
             for (int y = 0; y < terrain.Height; y++)
             {
@@ -132,7 +132,7 @@ namespace MrBoom
             {
                 foreach (var overlay in overlays)
                 {
-                    overlay.Images[bgTick / overlay.AnimationDelay % overlay.Images.Length].Draw(spriteBatch, overlay.x, overlay.y);
+                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(spriteBatch, overlay.x, overlay.y);
                 }
             }
 

@@ -170,10 +170,6 @@ namespace MrBoom
                 }
 
                 Image img = animation[frameIndex / 8 * monsterData.Slow];
-                //if (this.blinking % this.blinkingSpeed * 2 < this.blinkingSpeed)
-                //{
-                //    img = assets.boyGhost[this.animateIndex * 3 + frames[frameIndex % 4]];
-                //}
 
                 int x = this.x + 8 + 8 - img.Width / 2;
                 int y = this.y + 16 - img.Height;

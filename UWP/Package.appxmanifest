@@ -35,7 +35,7 @@
         DisplayName="MrBoom"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Mr.Boom is a modern implementation of the great DOS game mr.boom. Explode walls by bombs to get power ups and win your opponent. Play with 8 friends on one device. Controls"
+        Description="Explode walls by bombs to get power ups and win your opponent. This is a modern implementation of the great DOS game mr.boom. You can play with 8 friends on one device. Power ups can upgrade your bomb, lives, give to you radio control, and other good skills. Be careful with monsters they will kill if you&apos;ll go close. This game has 8 different levels."
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

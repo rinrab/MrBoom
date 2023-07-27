@@ -9,7 +9,6 @@ namespace MrBoom
 
         private readonly Map.MonsterData monsterData;
         private int wait = -1;
-        private int tick = 0;
         private int livesCount;
 
         public Monster(Terrain map, Map.MonsterData monsterData,
@@ -23,8 +22,6 @@ namespace MrBoom
 
         public override void Update()
         {
-            tick++;
-
             bool isWalkable(int dx, int dy)
             {
                 switch (terrain.GetCell((x + dx * 8 + 8 + dx) / 16, (y + dy * 8 + 8 + dy) / 16).Type)

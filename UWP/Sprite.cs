@@ -12,7 +12,7 @@ namespace MrBoom
         public bool RcAllowed { get; private set; }
         public bool IsDie { get; private set; } = false;
 
-        private readonly Assets.PlayerAssets animations;
+        private readonly Assets.MovingSpriteAssets animations;
 
         private int maxBoom;
         private int maxBombsCount;
@@ -24,7 +24,7 @@ namespace MrBoom
         private int autoBombPlacing;
         private int bombsPlacingDisabled;
 
-        public Sprite(Terrain map, Assets.PlayerAssets animations) : base(map)
+        public Sprite(Terrain map, Assets.MovingSpriteAssets animations) : base(map)
         {
             this.animations = animations;
             this.animateIndex = 0;

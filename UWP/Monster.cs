@@ -8,14 +8,14 @@ namespace MrBoom
         public bool IsDie = false;
 
         private readonly Map.MonsterData monsterData;
-        private readonly Assets.MonsterAssets assets;
+        private readonly Assets.MovingSpriteAssets assets;
         private int wait = -1;
         private int tick = 0;
         private int livesCount;
         private int unplugin = 180;
         private int freeze = 180;
 
-        public Monster(Terrain map, Map.MonsterData monsterData, Assets.MonsterAssets assets) : base(map)
+        public Monster(Terrain map, Map.MonsterData monsterData, Assets.MovingSpriteAssets assets) : base(map)
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;

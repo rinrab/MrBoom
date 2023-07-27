@@ -68,22 +68,14 @@ namespace MrBoom
 
             this.rcDitonate = this.RcAllowed && this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
 
-            if (freeze > 0)
-            {
-                base.Update(false);
-                freeze--;
-            }
-            else
-            {
-                base.Update(true);
-            }
+            base.Update(true);
 
             int cellX = (this.x + 8) / 16;
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
             if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) &&
-                bombsPlacingDisabled == 0 && freeze == 0)
+                bombsPlacingDisabled == 0)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {

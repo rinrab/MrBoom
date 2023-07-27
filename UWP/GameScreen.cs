@@ -137,10 +137,6 @@ namespace MrBoom
             if (terrain.TimeLeft > 30 * 60)
             {
                 int time = (terrain.TimeLeft - 30 * 60) / 60;
-                if (bgTick <= 180)
-                {
-                    time = (terrain.TimeLeft + bgTick - 181 - 30 * 60) / 60;
-                }
 
                 int min = time / 60;
                 int sec = time % 60;
@@ -179,17 +175,6 @@ namespace MrBoom
 
                 assets.DrawGameInNumbers[firstNumber].Draw(spriteBatch, x + 42, y + 15);
                 assets.DrawGameInNumbers[secondNumber].Draw(spriteBatch, x + 8 + 42, y + 15);
-            }
-
-            if (bgTick <= 180)
-            {
-                int number = (180 - bgTick) / 60 + 1;
-                Image img = assets.BigDigits[number];
-                img.Draw(spriteBatch, 320 / 2 - img.Width / 2, 200 / 2 - img.Height / 2);
-                if (bgTick % 60 == 0)
-                {
-                    PlaySounds(Sound.Clock);
-                }
             }
         }
 

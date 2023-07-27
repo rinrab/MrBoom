@@ -23,8 +23,7 @@ namespace MrBoom
 
         public int AnimateIndex { get; private set; }
 
-        public int unplugin = 180;
-        public int freeze = 180;
+        public int unplugin;
         public int autoBombPlacing;
         public int reverse;
         public int bombsPlacingDisabled;

@@ -24,13 +24,6 @@ namespace MrBoom
         {
             tick++;
 
-            if (freeze > 0)
-            {
-                unplugin--;
-                freeze--;
-                return;
-            }
-
             bool isWalkable(int dx, int dy)
             {
                 switch (terrain.GetCell((x + dx * 8 + 8 + dx) / 16, (y + dy * 8 + 8 + dy) / 16).Type)

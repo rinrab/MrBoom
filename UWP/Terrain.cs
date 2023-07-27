@@ -70,7 +70,7 @@ namespace MrBoom
             this.Width = map.Data[0].Length;
             this.Height = map.Data.Length;
             this.spawns = new List<Spawn>();
-            this.TimeLeft = (map.Time + 31) * 60 + 180;
+            this.TimeLeft = (map.Time + 31) * 60;
             this.final = map.Final;
             foreach (int fin in final)
             {

@@ -31,11 +31,6 @@ namespace MrBoom
 
         public virtual void Update()
         {
-            Update(true);
-        }
-
-        public virtual void Update(bool move)
-        {
             {
                 Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
 

@@ -68,7 +68,7 @@ namespace MrBoom
 
             this.rcDitonate = this.RcAllowed && this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
 
-            base.Update(true);
+            base.Update();
 
             int cellX = (this.x + 8) / 16;
             int cellY = (this.y + 8) / 16;

@@ -16,6 +16,7 @@ namespace MrBoom
             Assets.MovingSpriteAssets animations) : base(map, animations)
         {
             this.monsterData = monsterData;
+            Slow = monsterData.Slow;
             this.livesCount = monsterData.LivesCount - 1;
             this.Direction = (Directions)Terrain.Random.Next(1, 5);
         }
@@ -130,7 +131,7 @@ namespace MrBoom
                         wait--;
                     }
                 }
-                base.Update(tick % monsterData.Slow == 0);
+                base.Update();
             }
             else
             {

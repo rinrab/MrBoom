@@ -14,6 +14,7 @@ namespace MrBoom
         public Directions Direction;
         public int frameIndex;
         public int animateIndex;
+        public int Slow = 1;
 
         public MovingSprite(Terrain map, Assets.MovingSpriteAssets animations)
         {
@@ -126,7 +127,7 @@ namespace MrBoom
                 this.frameIndex += 1;
             }
 
-            if (move)
+            if (frameIndex % Slow == 0)
             {
                 for (int i = 0; i < this.speed; i++)
                 {

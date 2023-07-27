@@ -97,7 +97,8 @@ namespace MrBoom
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) && bombsPlacingDisabled == 0 && freeze == 0)
+            if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) &&
+                bombsPlacingDisabled == 0 && freeze == 0)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {

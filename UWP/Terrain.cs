@@ -312,6 +312,7 @@ namespace MrBoom
                             else if (next.Type == TerrainType.Bomb && ((cell.DeltaX != 0 && next.DeltaX != 0) || (cell.DeltaY != 0 && next.DeltaY != 0)))
                             {
                                 ditonateBomb(x, y);
+                                continue;
                             }
                             else if (next.Type != TerrainType.Free)
                             {
@@ -336,6 +337,7 @@ namespace MrBoom
                             else
                             {
                                 ditonateBomb(x, y);
+                                continue;
                             }
                         }
 

@@ -8,25 +8,17 @@ namespace MrBoom
         public IController Controller;
         public int BombsPlaced;
         public bool rcDitonate = false;
-        
+
         public bool RcAllowed { get; private set; }
         public bool IsDie { get; private set; } = false;
-
-        private readonly Assets.MovingSpriteAssets animations;
 
         private int maxBoom;
         private int maxBombsCount;
         private bool IsHaveRollers;
         private int lifeCount;
-        private int unplugin = 180;
-        private int freeze = 180;
-        private int reverse;
-        private int autoBombPlacing;
-        private int bombsPlacingDisabled;
 
-        public Sprite(Terrain map, Assets.MovingSpriteAssets animations) : base(map)
+        public Sprite(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations)
         {
-            this.animations = animations;
             this.animateIndex = 0;
             this.frameIndex = 0;
             this.speed = 1;
@@ -42,14 +34,7 @@ namespace MrBoom
             if (this.IsDie)
             {
                 this.animateIndex = 4;
-                if (this.frameIndex < 7 * 20 && this.frameIndex != -1)
-                {
-                    this.frameIndex += 4;
-                }
-                else
-                {
-                    this.frameIndex = -1;
-                }
+                this.frameIndex += 4;
                 return;
             }
 
@@ -268,36 +253,6 @@ namespace MrBoom
             if (unplugin != 0)
             {
                 unplugin--;
-            }
-        }
-
-        public override void Draw(SpriteBatch ctx)
-        {
-            if (frameIndex != -1)
-            {
-                AnimatedImage animation;
-                if (unplugin == 0 || unplugin % 30 < 15)
-                {
-                    animation = this.animations.Normal[this.animateIndex];
-                }
-                else
-                {
-                    animation = this.animations.Ghost[this.animateIndex];
-                }
-
-                Image img = animation[frameIndex / 20];
-
-                int x = this.x + 8 + 8 - img.Width / 2;
-                int y = this.y + 16 - img.Height;
-
-                Color color = Color.White;
-
-                if (autoBombPlacing % 30 > 15 || reverse % 30 > 15 || bombsPlacingDisabled % 30 > 15)
-                {
-                    color = new Color(255, 0, 0);
-                }
-
-                img.Draw(ctx, x, y, color);
             }
         }
     }

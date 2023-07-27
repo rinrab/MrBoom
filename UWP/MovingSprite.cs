@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
 {
@@ -9,16 +10,24 @@ namespace MrBoom
         public int speed = 1;
         public bool isHaveKick;
         public Terrain terrain;
+        private readonly Assets.MovingSpriteAssets animations;
         public Directions Direction;
         public int frameIndex;
         public int animateIndex;
 
-        public MovingSprite(Terrain map)
+        public MovingSprite(Terrain map, Assets.MovingSpriteAssets animations)
         {
             this.terrain = map;
+            this.animations = animations;
         }
 
         public int AnimateIndex { get; private set; }
+
+        public int unplugin = 180;
+        public int freeze = 180;
+        public int autoBombPlacing;
+        public int reverse;
+        public int bombsPlacingDisabled;
 
         public virtual void Update()
         {
@@ -217,6 +226,35 @@ namespace MrBoom
             Right,
         }
 
-        public abstract void Draw(SpriteBatch ctx);
+        public void Draw(SpriteBatch ctx)
+        {
+            if (frameIndex != -1)
+            {
+                AnimatedImage animation;
+                if (unplugin == 0 || unplugin % 30 < 15)
+                {
+                    animation = this.animations.Normal[this.animateIndex];
+                }
+                else
+                {
+                    animation = this.animations.Ghost[animateIndex];
+                }
+
+                Image img = animation[frameIndex / 20];
+
+                int x = this.x + 8 + 8 - img.Width / 2;
+                int y = this.y + 16 - img.Height;
+
+                Color color = Color.White;
+
+                if (autoBombPlacing % 30 > 15 || reverse % 30 > 15 || bombsPlacingDisabled % 30 > 15)
+                {
+                    color = new Color(255, 0, 0);
+                }
+
+                if (animateIndex != 4 || frameIndex / 20 < animations.Normal[4].Length)
+                img.Draw(ctx, x, y, color);
+            }
+        }
     }
 }

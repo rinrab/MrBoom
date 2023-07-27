@@ -8,19 +8,16 @@ namespace MrBoom
         public bool IsDie = false;
 
         private readonly Map.MonsterData monsterData;
-        private readonly Assets.MovingSpriteAssets assets;
         private int wait = -1;
         private int tick = 0;
         private int livesCount;
-        private int unplugin = 180;
-        private int freeze = 180;
 
-        public Monster(Terrain map, Map.MonsterData monsterData, Assets.MovingSpriteAssets assets) : base(map)
+        public Monster(Terrain map, Map.MonsterData monsterData,
+            Assets.MovingSpriteAssets animations) : base(map, animations)
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;
             this.Direction = (Directions)Terrain.Random.Next(1, 5);
-            this.assets = assets;
         }
 
         public override void Update()
@@ -65,9 +62,9 @@ namespace MrBoom
                 var cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
                 if (cell.Type == TerrainType.Fire && unplugin == 0)
                 {
+                    terrain.PlaySound(Sound.Ai);
                     if (livesCount > 0)
                     {
-                        terrain.PlaySound(Sound.Ai);
                         livesCount--;
                         this.unplugin = 165;
                     }
@@ -75,6 +72,7 @@ namespace MrBoom
                     {
                         IsDie = true;
                         frameIndex = 0;
+                        animateIndex = 4;
                         terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
@@ -82,6 +80,7 @@ namespace MrBoom
                 {
                     IsDie = true;
                     frameIndex = 0;
+                    animateIndex = 4;
                     terrain.PlaySound(Sound.Ai);
                 }
                 else
@@ -142,39 +141,7 @@ namespace MrBoom
             }
             else
             {
-                if (frameIndex != -1 && (frameIndex + 1) / 8 + 1 < assets.Normal[4].Length)
-                {
-                    animateIndex = 4;
-                    frameIndex++;
-                }
-                else
-                {
-                    frameIndex = -1;
-                }
-            }
-        }
-
-        public override void Draw(SpriteBatch ctx)
-        {
-            if (frameIndex != -1)
-            {
-                AnimatedImage animation;
-
-                if (unplugin == 0 || unplugin % 30 < 15)
-                {
-                    animation = this.assets.Normal[this.animateIndex];
-                }
-                else
-                {
-                    animation = this.assets.Ghost[this.animateIndex];
-                }
-
-                Image img = animation[frameIndex / 8 * monsterData.Slow];
-
-                int x = this.x + 8 + 8 - img.Width / 2;
-                int y = this.y + 16 - img.Height;
-
-                img.Draw(ctx, x, y);
+                frameIndex += 4;
             }
         }
     }

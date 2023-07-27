@@ -23,7 +23,7 @@ namespace MrBoom
         public void Update()
         {
             tick++;
-            if (tick > 300)
+            if (tick > 2 * 60)
             {
                 ScreenManager.SetScreen(new StartScreen(assets, players, controllers));
             }

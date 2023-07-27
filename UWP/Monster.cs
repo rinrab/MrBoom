@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.ComponentModel.Design;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
@@ -67,7 +68,7 @@ namespace MrBoom
                         terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
-                else if (cell.Type == TerrainType.Apocalypse)
+                if (cell.Type == TerrainType.Apocalypse)
                 {
                     IsDie = true;
                     frameIndex = 0;
@@ -133,6 +134,7 @@ namespace MrBoom
             else
             {
                 frameIndex += 4;
+                animateIndex = 4;
             }
         }
     }

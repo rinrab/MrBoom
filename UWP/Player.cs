@@ -10,7 +10,6 @@
 
         private int maxBoom;
         private int maxBombsCount;
-        private bool IsHaveRollers;
         private int lifeCount;
 
         public Player(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations)

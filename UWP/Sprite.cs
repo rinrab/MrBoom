@@ -16,6 +16,7 @@ namespace MrBoom
         public int animateIndex;
         public int Slow = 1;
         public bool IsDie = false;
+        public bool IsHaveRollers;
 
         public Sprite(Terrain map, Assets.MovingSpriteAssets animations)
         {
@@ -41,6 +42,10 @@ namespace MrBoom
                 return;
             }
 
+            if (IsHaveRollers)
+            {
+                speed = 3;
+            }
             if (fastSkull > 0)
             {
                 speed = 5;

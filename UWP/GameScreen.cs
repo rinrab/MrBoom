@@ -9,6 +9,8 @@ namespace MrBoom
         private readonly Assets assets;
         private readonly Game game;
         private int bgTick = 0;
+        private bool isPause = false;
+        private int pauseTick = 0;
 
         public Screen Next { get; private set; }
 
@@ -35,6 +37,18 @@ namespace MrBoom
 
         public void Update()
         {
+            if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Pause))
+            {
+                isPause = !isPause;
+                Controller.Reset(game.Controllers);
+            }
+
+            if (isPause)
+            {
+                pauseTick++;
+                return;
+            }
+
             bgTick++;
 
             terrain.Update();
@@ -175,6 +189,12 @@ namespace MrBoom
 
                 assets.DrawGameInNumbers[firstNumber].Draw(ctx, x + 42, y + 15);
                 assets.DrawGameInNumbers[secondNumber].Draw(ctx, x + 8 + 42, y + 15);
+            }
+
+            if (isPause)
+            {
+                var img = assets.Pause[pauseTick / 20 % 4];
+                img.Draw(ctx, 320 / 2 - img.Width / 2, 200 / 2 - img.Height / 2);
             }
 
             int ox = 20;

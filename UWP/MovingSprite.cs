@@ -28,7 +28,7 @@ namespace MrBoom
         public int autoBombPlacing;
         public int reverse;
         public int bombsPlacingDisabled;
-        public int fastSkull = 9999;
+        public int fastSkull;
         public int slowSkull;
 
         public virtual void Update()

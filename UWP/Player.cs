@@ -1,6 +1,6 @@
 ﻿namespace MrBoom
 {
-    public class Player : MovingSprite
+    public class Player : Sprite
     {
         public IController Controller;
         public int BombsPlaced;
@@ -38,9 +38,9 @@
             speed = 1;
             Slow = 1;
 
-            this.Direction = MovingSprite.Directions.Right;
+            this.Direction = Sprite.Directions.Right;
 
-            this.Direction = MovingSprite.Directions.None;
+            this.Direction = Sprite.Directions.None;
             if (this.Controller.IsKeyDown(PlayerKeys.Up))
             {
                 this.Direction = Directions.Up;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 namespace MrBoom
 {
-    public class Monster : MovingSprite
+    public class Monster : Sprite
     {
         public bool IsDie = false;
 

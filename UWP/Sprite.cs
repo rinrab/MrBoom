@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
 {
-    public abstract class MovingSprite
+    public abstract class Sprite
     {
         public int x;
         public int y;
@@ -16,7 +16,7 @@ namespace MrBoom
         public int animateIndex;
         public int Slow = 1;
 
-        public MovingSprite(Terrain map, Assets.MovingSpriteAssets animations)
+        public Sprite(Terrain map, Assets.MovingSpriteAssets animations)
         {
             this.terrain = map;
             this.animations = animations;

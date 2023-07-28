@@ -10,10 +10,10 @@ namespace MrBoom
         private int tick = 0;
 
         private readonly Assets assets;
-        private readonly List<Player> players;
+        private readonly List<PlayerState> players;
         private readonly List<IController> controllers;
 
-        public SplashScreen(Assets assets, List<Player> players, List<IController> controllers)
+        public SplashScreen(Assets assets, List<PlayerState> players, List<IController> controllers)
         {
             this.assets = assets;
             this.players = players;
@@ -23,7 +23,7 @@ namespace MrBoom
         public void Update()
         {
             tick++;
-            if (tick > 2 * 60)
+            if (tick > 300)
             {
                 ScreenManager.SetScreen(new StartScreen(assets, players, controllers));
             }

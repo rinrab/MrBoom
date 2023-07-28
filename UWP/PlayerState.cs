@@ -1,12 +1,12 @@
 ﻿namespace MrBoom
 {
-    public class Player
+    public class PlayerState
     {
         public IController Controller;
         public string Name;
         public int VictoryCount;
 
-        public Player(IController controller)
+        public PlayerState(IController controller)
         {
             Controller = controller;
         }

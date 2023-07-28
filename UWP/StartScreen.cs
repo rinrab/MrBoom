@@ -10,7 +10,7 @@ namespace MrBoom
         private int tick = 0;
 
         private readonly Assets assets;
-        private readonly List<Player> players;
+        private readonly List<PlayerState> players;
         private readonly List<IController> controllers;
         private readonly List<IController> unjoinedControllers;
         private readonly string helpText =
@@ -23,7 +23,7 @@ namespace MrBoom
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
 
-        public StartScreen(Assets assets, List<Player> players, List<IController> controllers)
+        public StartScreen(Assets assets, List<PlayerState> players, List<IController> controllers)
         {
             this.assets = assets;
             this.players = players;
@@ -35,19 +35,6 @@ namespace MrBoom
         {
             assets.Start.Draw(ctx, 0, 0);
 
-            int ox = 10;
-            int oy = 10;
-
-            assets.Controls[0].Draw(ctx, ox, oy);
-            Game.DrawString(ctx, ox + 20, oy + 4, "or", assets.Alpha[1]);
-            assets.Controls[1].Draw(ctx, ox + 40, oy);
-            Game.DrawString(ctx, ox + 70, oy + 4, "join", assets.Alpha[1]);
-            
-            assets.Controls[2].Draw(ctx, 320 - ox - 115, oy);
-            Game.DrawString(ctx, 320 - ox - 96, oy + 4, "or", assets.Alpha[1]);
-            assets.Controls[3].Draw(ctx, 320 - ox - 76, oy - 8);
-            Game.DrawString(ctx, 320 - ox - 40, oy + 4, "start", assets.Alpha[1]);
-
             for (int x = 0; x < 4; x++)
             {
                 for (int y = 0; y < 2; y++)
@@ -56,7 +43,7 @@ namespace MrBoom
                     AnimatedImage images = assets.Alpha[index / 2 + 2];
                     if (index < players.Count)
                     {
-                        Player player = players[index];
+                        PlayerState player = players[index];
 
                         Game.DrawString(ctx, 13 + x * 80, 78 + y * 70, "name ?", images);
                         Game.DrawString(ctx, 21 + x * 80, 88 + y * 70, player.Name, images);
@@ -97,7 +84,7 @@ namespace MrBoom
                         "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus"
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
-                    this.players.Add(new Player(controller) { Name = name });
+                    this.players.Add(new PlayerState(controller) { Name = name });
                     assets.Sounds.Addplayer.Play();
 
                     toRemove.Add(controller);

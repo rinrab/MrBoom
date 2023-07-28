@@ -9,7 +9,7 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
-        public List<Player> Players;
+        public List<PlayerState> Players;
         public Assets assets;
         public List<IController> Controllers;
 
@@ -49,7 +49,7 @@ namespace MrBoom
             assets = Assets.Load(Content, GraphicsDevice);
             MediaPlayer.IsRepeating = true;
 
-            Players = new List<Player>();
+            Players = new List<PlayerState>();
             NextSong(3);
 
             ScreenManager.SetScreen(new SplashScreen(assets, Players, Controllers));
@@ -104,7 +104,7 @@ namespace MrBoom
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {
-                    Players = new List<Player>();
+                    Players = new List<PlayerState>();
                     NextSong(3);
                     ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
                 }

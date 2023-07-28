@@ -8,14 +8,14 @@ namespace MrBoom
     {
         public Screen Next { get; private set; }
 
-        private readonly Player[] players;
+        private readonly PlayerState[] players;
         private readonly int winner;
         private readonly List<IController> controllers;
         private readonly Assets assets;
 
         private int tick;
 
-        public ResultScreen(Player[] players, int winner, Assets assets, List<IController> controllers)
+        public ResultScreen(PlayerState[] players, int winner, Assets assets, List<IController> controllers)
         {
             this.players = players;
             this.winner = winner;

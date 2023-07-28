@@ -9,12 +9,12 @@ namespace MrBoom
 
         private int tick;
 
-        private readonly Player[] players;
+        private readonly PlayerState[] players;
         private readonly int winner;
         private readonly Assets assets;
         private readonly List<IController> controllers;
 
-        public VictoryScreen(Player[] players, int winner, Assets assets, List<IController> controllers)
+        public VictoryScreen(PlayerState[] players, int winner, Assets assets, List<IController> controllers)
         {
             this.players = players;
             this.winner = winner;
@@ -35,7 +35,7 @@ namespace MrBoom
             tick++;
             if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
-                foreach (Player player in players)
+                foreach (PlayerState player in players)
                 {
                     player.VictoryCount = 0;
                 }

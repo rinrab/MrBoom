@@ -14,7 +14,7 @@ namespace MrBoom
 
         public Screen Next { get; private set; }
 
-        public GameScreen(List<Player> players, Assets assets, Game game)
+        public GameScreen(List<PlayerState> players, Assets assets, Game game)
         {
             this.assets = assets;
             this.game = game;
@@ -57,14 +57,14 @@ namespace MrBoom
 
             if (terrain.Result == GameResult.Victory)
             {
-                Player[] players = game.Players.ToArray();
+                PlayerState[] players = game.Players.ToArray();
 
                 int winner = -1;
                 var winnerSprite = terrain.Players[terrain.Winner];
 
                 for (int i = 0; i < players.Length; i++)
                 {
-                    Player player = players[i];
+                    PlayerState player = players[i];
                     if (winnerSprite.Controller == player.Controller)
                     {
                         player.VictoryCount++;
@@ -90,7 +90,7 @@ namespace MrBoom
 
             if (endGame)
             {
-                game.Players = new List<Player>();
+                game.Players = new List<PlayerState>();
                 game.NextSong(3);
                 ScreenManager.SetScreen(new StartScreen(assets, game.Players, game.Controllers));
             }

@@ -8,25 +8,17 @@ namespace MrBoom
         public IController Controller;
         public int BombsPlaced;
         public bool rcDitonate = false;
-        
+
         public bool RcAllowed { get; private set; }
         public bool IsDie { get; private set; } = false;
-
-        private readonly Assets.PlayerAssets animations;
 
         private int maxBoom;
         private int maxBombsCount;
         private bool IsHaveRollers;
         private int lifeCount;
-        private int unplugin = 180;
-        private int freeze = 180;
-        private int reverse;
-        private int autoBombPlacing;
-        private int bombsPlacingDisabled;
 
-        public Sprite(Terrain map, Assets.PlayerAssets animations) : base(map)
+        public Sprite(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations)
         {
-            this.animations = animations;
             this.animateIndex = 0;
             this.frameIndex = 0;
             this.speed = 1;
@@ -42,16 +34,12 @@ namespace MrBoom
             if (this.IsDie)
             {
                 this.animateIndex = 4;
-                if (this.frameIndex < 7 * 20 && this.frameIndex != -1)
-                {
-                    this.frameIndex += 4;
-                }
-                else
-                {
-                    this.frameIndex = -1;
-                }
+                this.frameIndex += 4;
                 return;
             }
+
+            speed = 1;
+            Slow = 1;
 
             this.Direction = MovingSprite.Directions.Right;
 
@@ -83,21 +71,14 @@ namespace MrBoom
 
             this.rcDitonate = this.RcAllowed && this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
 
-            if (freeze > 0)
-            {
-                base.Update(false);
-                freeze--;
-            }
-            else
-            {
-                base.Update(true);
-            }
+            base.Update();
 
             int cellX = (this.x + 8) / 16;
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) && bombsPlacingDisabled == 0 && freeze == 0)
+            if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) &&
+                bombsPlacingDisabled == 0)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {
@@ -106,19 +87,6 @@ namespace MrBoom
                     this.BombsPlaced++;
                     terrain.PlaySound(Sound.PoseBomb);
                 }
-            }
-
-            if (autoBombPlacing > 0)
-            {
-                autoBombPlacing--;
-            }
-            if (bombsPlacingDisabled > 0)
-            {
-                bombsPlacingDisabled--;
-            }
-            if (reverse > 0)
-            {
-                reverse--;
             }
 
             if (cell.Type == TerrainType.PowerUp)
@@ -149,7 +117,6 @@ namespace MrBoom
                 {
                     if (!this.IsHaveRollers)
                     {
-                        this.speed = 2;
                         this.IsHaveRollers = true;
                     }
                     else
@@ -191,16 +158,25 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Clock)
                 {
-                    terrain.TimeLeft += 60 * 60;
-                    terrain.PlaySound(Sound.Clock);
+                    if (terrain.TimeLeft > 31 * 60 + terrain.MaxApocalypse * terrain.ApocalypseSpeed)
+                    {
+                        terrain.TimeLeft += 60 * 60;
+                        terrain.PlaySound(Sound.Clock);
+                    }
+                    else
+                    {
+                        doFire = true;
+                    }
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
                     reverse = 0;
                     bombsPlacingDisabled = 0;
                     autoBombPlacing = 0;
+                    slowSkull = 0;
+                    fastSkull = 0;
 
-                    int rnd = Terrain.Random.Next(3);
+                    int rnd = Terrain.Random.Next(5);
                     if (rnd == 0)
                     {
                         reverse = 600;
@@ -212,6 +188,14 @@ namespace MrBoom
                     else if (rnd == 2)
                     {
                         autoBombPlacing = 600;
+                    }
+                    else if (rnd == 3)
+                    {
+                        slowSkull = 600;
+                    }
+                    else if (rnd == 4)
+                    {
+                        fastSkull = 600;
                     }
                 }
 
@@ -267,36 +251,6 @@ namespace MrBoom
             if (unplugin != 0)
             {
                 unplugin--;
-            }
-        }
-
-        public override void Draw(SpriteBatch ctx)
-        {
-            if (frameIndex != -1)
-            {
-                AnimatedImage animation;
-                if (unplugin == 0 || unplugin % 30 < 15)
-                {
-                    animation = this.animations.Normal[this.animateIndex];
-                }
-                else
-                {
-                    animation = this.animations.Ghost[this.animateIndex];
-                }
-
-                Image img = animation[frameIndex / 20];
-
-                int x = this.x + 8 + 8 - img.Width / 2;
-                int y = this.y + 16 - img.Height;
-
-                Color color = Color.White;
-
-                if (autoBombPlacing % 30 > 15 || reverse % 30 > 15 || bombsPlacingDisabled % 30 > 15)
-                {
-                    color = new Color(255, 0, 0);
-                }
-
-                img.Draw(ctx, x, y, color);
             }
         }
     }

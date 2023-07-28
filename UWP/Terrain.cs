@@ -70,7 +70,7 @@ namespace MrBoom
             this.Width = map.Data[0].Length;
             this.Height = map.Data.Length;
             this.spawns = new List<Spawn>();
-            this.TimeLeft = (map.Time + 31) * 60 + 180;
+            this.TimeLeft = (map.Time + 31) * 60;
             this.final = map.Final;
             foreach (int fin in final)
             {
@@ -303,13 +303,18 @@ namespace MrBoom
                         }
                         if (cell.OffsetX == 0 && cell.OffsetY == 0)
                         {
-                            var next = this.GetCell(x + cell.DeltaX / 2, y + cell.DeltaY / 2).Type;
-                            if (next == TerrainType.Rubber)
+                            var next = this.GetCell(x + cell.DeltaX / 2, y + cell.DeltaY / 2);
+                            if (next.Type == TerrainType.Rubber)
                             {
                                 cell.DeltaX = -cell.DeltaX;
                                 cell.DeltaY = -cell.DeltaY;
                             }
-                            else if (next != TerrainType.Free)
+                            else if (next.Type == TerrainType.Bomb && ((cell.DeltaX != 0 && next.DeltaX != 0) || (cell.DeltaY != 0 && next.DeltaY != 0)))
+                            {
+                                ditonateBomb(x, y);
+                                continue;
+                            }
+                            else if (next.Type != TerrainType.Free)
                             {
                                 cell.DeltaY = 0;
                                 cell.DeltaX = 0;
@@ -319,15 +324,25 @@ namespace MrBoom
                         int newX = (x * 16 + cell.OffsetX + cell.DeltaX + 8) / 16;
                         int newY = (y * 16 + cell.OffsetY + cell.DeltaY + 8) / 16;
 
+                        if (newX != x || newY != y)
+                        {
+                            if (GetCell(newX, newY).Type == TerrainType.Free)
+                            {
+                                SetCell(x, y, new Cell(TerrainType.Free));
+                                SetCell(newX, newY, cell);
+
+                                cell.OffsetX += (x - newX) * 16;
+                                cell.OffsetY += (y - newY) * 16;
+                            }
+                            else
+                            {
+                                ditonateBomb(x, y);
+                                continue;
+                            }
+                        }
+
                         cell.OffsetX += cell.DeltaX;
                         cell.OffsetY += cell.DeltaY;
-
-                        this.SetCell(x, y, new Cell(TerrainType.Free));
-
-                        this.SetCell(newX, newY, cell);
-
-                        cell.OffsetX += (x - newX) * 16;
-                        cell.OffsetY += (y - newY) * 16;
                     }
                 }
             }

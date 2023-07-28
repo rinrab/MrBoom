@@ -24,16 +24,16 @@ namespace MrBoom
             public Overlay[] Overlays;
         }
 
-        public class PlayerAssets
+        public class MovingSpriteAssets
         {
-            public AnimatedImage[] Normal;
-            public AnimatedImage[] Ghost;
-        }
+            public readonly AnimatedImage[] Normal;
+            public readonly AnimatedImage[] Ghost;
 
-        public class MonsterAssets
-        {
-            public AnimatedImage[] Normal;
-            public AnimatedImage[] Ghost;
+            public MovingSpriteAssets(AnimatedImage[] normal, AnimatedImage[] ghost)
+            {
+                Normal = normal;
+                Ghost = ghost;
+            }
         }
 
         public SoundAssets Sounds { get; private set; }
@@ -47,7 +47,7 @@ namespace MrBoom
         public AnimatedImage BoomTopEnd { get; private set; }
         public AnimatedImage BoomBottomEnd { get; private set; }
         public AnimatedImage Fire { get; private set; }
-        public PlayerAssets[] Players { get; private set; }
+        public MovingSpriteAssets[] Players { get; private set; }
         public AnimatedImage Pause { get; private set; }
         public Image Start { get; private set; }
         public AnimatedImage InsertCoin { get; private set; }
@@ -59,7 +59,9 @@ namespace MrBoom
         public Image Sky { get; private set; }
         public Image Splash { get; private set; }
         public AnimatedImage[] PowerUps { get; private set; }
-        public MonsterAssets[] Monsters { get; private set; }
+        public MovingSpriteAssets[] Monsters { get; private set; }
+        public Image[] Controls { get; private set; }
+
         public Image DrawGameIn;
         public AnimatedImage DrawGameInNumbers;
 
@@ -104,9 +106,9 @@ namespace MrBoom
                 return texture;
             }
 
-            PlayerAssets[] loadPlayers(Texture2D imgSpriteBoys, Texture2D imgSpriteGirl)
+            MovingSpriteAssets[] loadPlayers(Texture2D imgSpriteBoys, Texture2D imgSpriteGirl)
             {
-                var result = new List<PlayerAssets>();
+                var result = new List<MovingSpriteAssets>();
 
                 int framesCount = 20;
                 var framesIndex = new int[][] {
@@ -147,11 +149,7 @@ namespace MrBoom
                         white.Add(new AnimatedImage(whiteImages));
                     }
 
-                    result.Add(new PlayerAssets()
-                    {
-                        Normal = normal.ToArray(),
-                        Ghost = white.ToArray()
-                    });
+                    result.Add(new MovingSpriteAssets(normal.ToArray(), white.ToArray()));
 
                     normal.Clear();
                     white.Clear();
@@ -173,11 +171,7 @@ namespace MrBoom
                         white.Add(new AnimatedImage(whiteImages));
                     }
 
-                    result.Add(new PlayerAssets()
-                    {
-                        Normal = normal.ToArray(),
-                        Ghost = white.ToArray()
-                    });
+                    result.Add(new MovingSpriteAssets(normal.ToArray(), white.ToArray()));
                 }
 
                 return result.ToArray();
@@ -203,7 +197,7 @@ namespace MrBoom
                 return white.ToArray();
             }
 
-            MonsterAssets loadMonster(AnimatedImage up, AnimatedImage left, AnimatedImage right, AnimatedImage down, AnimatedImage die)
+            MovingSpriteAssets loadMonster(AnimatedImage up, AnimatedImage left, AnimatedImage right, AnimatedImage down, AnimatedImage die)
             {
                 var normal = new AnimatedImage[]
                 {
@@ -214,11 +208,7 @@ namespace MrBoom
                     die
                 };
 
-                return new MonsterAssets()
-                {
-                    Normal = normal,
-                    Ghost = monsterToGhost(normal)
-                };
+                return new MovingSpriteAssets(normal, monsterToGhost(normal));
             }
 
             AnimatedImage loadBonus(Image img, Image background)
@@ -296,7 +286,8 @@ namespace MrBoom
             var imgCrayon2 = content.Load<Texture2D>("CRAYON2");
             var imgSoucoupe = content.Load<Texture2D>("SOUCOUPE");
             var imgBonus = content.Load<Texture2D>("BONUS");
-
+            var imgControls = content.Load<Texture2D>("CONTROLS");
+        
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
 
@@ -308,7 +299,7 @@ namespace MrBoom
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
             var bonusBackground = loadImage(imgBonus, 0, 0, 160, 16);
 
-            var monsters = new MonsterAssets[]
+            var monsters = new MovingSpriteAssets[]
                 {
                     loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
                                 loadImageStripe(imgSprite, 72, 144, 17, 18, 3, 7),
@@ -528,7 +519,20 @@ namespace MrBoom
                 Sky = loadImage(imgSprite2, 64, 16, 48, 44),
                 Splash = loadImage(content.Load<Texture2D>("PIC"), 0, 0, 320, 200),
                 DrawGameIn = loadImage(imgSoucoupe, 96, 48, 78, 36),
-                DrawGameInNumbers = loadImageStripe(imgSoucoupe, 173, 32, 8, 7, 10)
+                DrawGameInNumbers = loadImageStripe(imgSoucoupe, 173, 32, 8, 7, 10),
+                Controls = new Image[]
+                {
+                    loadImage(imgControls, 65, 1, 14, 14),
+                    loadImage(imgControls, 273, 97, 25, 14),
+                    loadImage(imgControls, 81, 305, 14, 14),
+                    loadImage(imgControls, 513, 161, 30, 30),
+                    loadImage(imgControls, 81, 1, 14, 14),
+                    loadImage(imgControls, 273, 81, 21, 14),
+                    loadImage(imgControls, 497, 97, 14, 14),
+                    loadImage(imgControls, 497 + 15, 97, 14, 14),
+                    loadImage(imgControls, 497 + 15 * 2 + 1, 97, 14, 14),
+                    loadImage(imgSprite2, 143, 80, 16, 16),
+                }
             };
         }
     }

@@ -16,7 +16,8 @@ namespace MrBoom
         RcDitonate = 0x020,
         StartGame = 0x040,
         EndGame = 0x080,
-        Continue = 0x100
+        Continue = 0x100,
+        Pause = 0x200
     }
 
     public static class Controller
@@ -117,6 +118,7 @@ namespace MrBoom
             if (keyboardState.IsKeyDown(Keys.Enter)) result |= PlayerKeys.StartGame;
             if (keyboardState.IsKeyDown(Keys.Escape)) result |= PlayerKeys.EndGame;
             if (keyboardState.GetPressedKeyCount() > 0) result |= PlayerKeys.Continue;
+            if (keyboardState.IsKeyDown(Keys.P)) result |= PlayerKeys.Pause;
 
             return result;
         }
@@ -158,7 +160,10 @@ namespace MrBoom
                 result |= PlayerKeys.RcDitonate;
 
             if (state.IsButtonDown(Buttons.Start))
+            {
                 result |= PlayerKeys.StartGame;
+                result |= PlayerKeys.Pause;
+            }
 
             if (!state.IsButtonUp(Buttons.A | Buttons.B | Buttons.X | Buttons.Y))
                 result |= PlayerKeys.Continue;

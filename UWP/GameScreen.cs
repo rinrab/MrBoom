@@ -181,15 +181,6 @@ namespace MrBoom
             int ox = 20;
             int oy = 2;
 
-            Color color = Color.White * 0.5f;
-            assets.Controls[6].Draw(ctx, ox + 4, 200 - oy - 14, color);
-            const int count = 8;
-            for (int i = 0; i < count; i++)
-            {
-                assets.Controls[7].Draw(ctx, ox + i * 14 + 14 + 4, 200 - oy - 14, color);
-            }
-            assets.Controls[8].Draw(ctx, ox + count * 14 + 14 + 4, 200 - oy - 14, color);
-
             assets.Controls[0].Draw(ctx, ox, 200 - oy - 14);
             Game.DrawString(ctx, ox + 20, 200 - oy - 14 + 4, "or", assets.Alpha[1]);
             assets.Controls[1].Draw(ctx, ox + 40, 200 - oy - 14);
@@ -199,6 +190,7 @@ namespace MrBoom
             Game.DrawString(ctx, ox + 20, oy + 4, "or", assets.Alpha[1]);
             assets.Controls[5].Draw(ctx, ox + 40, oy);
             Game.DrawString(ctx, ox + 70, oy + 4, "trigger bomb with", assets.Alpha[1]);
+            assets.Controls[9].Draw(ctx, ox + 205, oy - 1);
         }
 
         private void PlaySounds(Sound soundsToPlay)

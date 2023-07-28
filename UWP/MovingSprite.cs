@@ -28,6 +28,8 @@ namespace MrBoom
         public int autoBombPlacing;
         public int reverse;
         public int bombsPlacingDisabled;
+        public int fastSkull;
+        public int slowSkull;
 
         public virtual void Update()
         {
@@ -242,7 +244,8 @@ namespace MrBoom
 
                 Color color = Color.White;
 
-                if (autoBombPlacing % 30 > 15 || reverse % 30 > 15 || bombsPlacingDisabled % 30 > 15)
+                if (autoBombPlacing % 30 > 15 || reverse % 30 > 15 || bombsPlacingDisabled % 30 > 15 ||
+                    slowSkull % 30 > 15 || fastSkull % 30 > 15)
                 {
                     color = new Color(255, 0, 0);
                 }

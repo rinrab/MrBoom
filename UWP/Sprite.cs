@@ -38,6 +38,21 @@ namespace MrBoom
                 return;
             }
 
+            speed = 1;
+            if (IsHaveRollers)
+            {
+                speed = 3;
+            }
+            if (fastSkull > 0)
+            {
+                speed = 5;
+            }
+            if (slowSkull > 0)
+            {
+                speed = 1;
+                Slow = 3;
+            }
+
             this.Direction = MovingSprite.Directions.Right;
 
             this.Direction = MovingSprite.Directions.None;
@@ -98,6 +113,14 @@ namespace MrBoom
             {
                 reverse--;
             }
+            if (slowSkull > 0)
+            {
+                slowSkull--;
+            }
+            if (fastSkull > 0)
+            {
+                fastSkull--;
+            }
 
             if (cell.Type == TerrainType.PowerUp)
             {
@@ -127,7 +150,6 @@ namespace MrBoom
                 {
                     if (!this.IsHaveRollers)
                     {
-                        this.speed = 2;
                         this.IsHaveRollers = true;
                     }
                     else
@@ -177,8 +199,10 @@ namespace MrBoom
                     reverse = 0;
                     bombsPlacingDisabled = 0;
                     autoBombPlacing = 0;
+                    slowSkull = 0;
+                    fastSkull = 0;
 
-                    int rnd = Terrain.Random.Next(3);
+                    int rnd = Terrain.Random.Next(5);
                     if (rnd == 0)
                     {
                         reverse = 600;
@@ -190,6 +214,14 @@ namespace MrBoom
                     else if (rnd == 2)
                     {
                         autoBombPlacing = 600;
+                    }
+                    else if (rnd == 3)
+                    {
+                        slowSkull = 600;
+                    }
+                    else if (rnd == 4)
+                    {
+                        fastSkull = 600;
                     }
                 }
 

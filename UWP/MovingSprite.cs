@@ -282,7 +282,7 @@ namespace MrBoom
                 }
 
                 if (animateIndex != 4 || frameIndex / 20 < animations.Normal[4].Length)
-                img.Draw(ctx, x, y, color);
+                    img.Draw(ctx, x, y, color);
             }
         }
     }

@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace MrBoom
+﻿namespace MrBoom
 {
     public class Sprite : MovingSprite
     {

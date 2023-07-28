@@ -287,7 +287,7 @@ namespace MrBoom
             var imgSoucoupe = content.Load<Texture2D>("SOUCOUPE");
             var imgBonus = content.Load<Texture2D>("BONUS");
             var imgControls = content.Load<Texture2D>("CONTROLS");
-        
+
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
 

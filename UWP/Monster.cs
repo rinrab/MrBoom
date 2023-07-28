@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Design;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 namespace MrBoom
 {
     public class Monster : MovingSprite

@@ -528,6 +528,11 @@ namespace MrBoom
                     loadImage(imgControls, 273, 97, 25, 14),
                     loadImage(imgControls, 81, 305, 14, 14),
                     loadImage(imgControls, 513, 161, 30, 30),
+                    loadImage(imgControls, 81, 1, 14, 14),
+                    loadImage(imgControls, 273, 81, 21, 14),
+                    loadImage(imgControls, 497, 97, 14, 14),
+                    loadImage(imgControls, 497 + 15, 97, 14, 14),
+                    loadImage(imgControls, 497 + 15 * 2 + 1, 97, 14, 14),
                 }
             };
         }

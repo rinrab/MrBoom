@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
@@ -82,7 +83,7 @@ namespace MrBoom
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch ctx)
         {
             if (terrain.levelIndex == 3)
             {
@@ -90,13 +91,13 @@ namespace MrBoom
                 {
                     for (int x = 0; x < 8; x++)
                     {
-                        assets.Sky.Draw(spriteBatch, 48 * 8 - (bgTick / 2 + x * 48 + y * 24) % (48 * 8) - 48, y * 44);
+                        assets.Sky.Draw(ctx, 48 * 8 - (bgTick / 2 + x * 48 + y * 24) % (48 * 8) - 48, y * 44);
                     }
                 }
             }
 
             var bgs = terrain.LevelAssets.Backgrounds;
-            bgs[bgTick / 20].Draw(spriteBatch, 0, 0);
+            bgs[bgTick / 20].Draw(ctx, 0, 0);
 
             for (int y = 0; y < terrain.Height; y++)
             {
@@ -108,7 +109,7 @@ namespace MrBoom
                         int index = (cell.Index == -1) ? 0 : cell.Index;
                         var image = cell.Images[index];
 
-                        image.Draw(spriteBatch, x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX, y * 16 + 16 - image.Height + cell.OffsetY);
+                        image.Draw(ctx, x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX, y * 16 + 16 - image.Height + cell.OffsetY);
                     }
                 }
             }
@@ -121,7 +122,7 @@ namespace MrBoom
 
             foreach (MovingSprite sprite in spritesToDraw)
             {
-                sprite.Draw(spriteBatch);
+                sprite.Draw(ctx);
             }
 
             var overlays = terrain.LevelAssets.Overlays;
@@ -129,7 +130,7 @@ namespace MrBoom
             {
                 foreach (var overlay in overlays)
                 {
-                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(spriteBatch, overlay.x, overlay.y);
+                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
                 }
             }
 
@@ -147,7 +148,7 @@ namespace MrBoom
                 {
                     string alpha = "0123456789:";
                     int index = alpha.IndexOf(c);
-                    assets.BigDigits[index].Draw(spriteBatch, x, 182);
+                    assets.BigDigits[index].Draw(ctx, x, 182);
                     if (index == 10)
                     {
                         x += 9;
@@ -167,15 +168,37 @@ namespace MrBoom
                     y = drawInStart - terrain.TimeLeft - assets.DrawGameIn.Height;
                 }
 
-                assets.DrawGameIn.Draw(spriteBatch, x, y);
+                assets.DrawGameIn.Draw(ctx, x, y);
 
                 int timeLeft = (terrain.TimeLeft + terrain.ApocalypseSpeed * terrain.MaxApocalypse) / 60;
                 int firstNumber = timeLeft / 10;
                 int secondNumber = timeLeft % 10;
 
-                assets.DrawGameInNumbers[firstNumber].Draw(spriteBatch, x + 42, y + 15);
-                assets.DrawGameInNumbers[secondNumber].Draw(spriteBatch, x + 8 + 42, y + 15);
+                assets.DrawGameInNumbers[firstNumber].Draw(ctx, x + 42, y + 15);
+                assets.DrawGameInNumbers[secondNumber].Draw(ctx, x + 8 + 42, y + 15);
             }
+
+            int ox = 20;
+            int oy = 2;
+
+            Color color = Color.White * 0.5f;
+            assets.Controls[6].Draw(ctx, ox + 4, 200 - oy - 14, color);
+            const int count = 8;
+            for (int i = 0; i < count; i++)
+            {
+                assets.Controls[7].Draw(ctx, ox + i * 14 + 14 + 4, 200 - oy - 14, color);
+            }
+            assets.Controls[8].Draw(ctx, ox + count * 14 + 14 + 4, 200 - oy - 14, color);
+
+            assets.Controls[0].Draw(ctx, ox, 200 - oy - 14);
+            Game.DrawString(ctx, ox + 20, 200 - oy - 14 + 4, "or", assets.Alpha[1]);
+            assets.Controls[1].Draw(ctx, ox + 40, 200 - oy - 14);
+            Game.DrawString(ctx, ox + 70, 200 - oy - 14 + 4, "drop bomb", assets.Alpha[1]);
+
+            assets.Controls[4].Draw(ctx, ox, oy);
+            Game.DrawString(ctx, ox + 20, oy + 4, "or", assets.Alpha[1]);
+            assets.Controls[5].Draw(ctx, ox + 40, oy);
+            Game.DrawString(ctx, ox + 70, oy + 4, "trigger bomb with", assets.Alpha[1]);
         }
 
         private void PlaySounds(Sound soundsToPlay)

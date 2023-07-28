@@ -25,7 +25,7 @@ namespace MrBoom
 
             for (int i = 0; i < players.Count; i++)
             {
-                Sprite sprite = new Sprite(terrain, assets.Players[i])
+                Player sprite = new Player(terrain, assets.Players[i])
                 {
                     Controller = players[i].Controller
                 };

@@ -9,7 +9,7 @@ namespace MrBoom
 
         public readonly int Width;
         public readonly int Height;
-        public List<Sprite> Players;
+        public List<Player> Players;
         public Assets assets;
         public List<Monster> Monsters;
         public int TimeLeft;
@@ -79,7 +79,7 @@ namespace MrBoom
                     MaxApocalypse = Math.Max(fin, MaxApocalypse);
                 }
             }
-            this.Players = new List<Sprite>();
+            this.Players = new List<Player>();
 
             this.StartMaxBombsCount = map.StartMaxBombsCount;
             this.StartMaxFire = map.StartMaxFire;
@@ -137,7 +137,7 @@ namespace MrBoom
             }
         }
 
-        public void LocateSprite(Sprite sprite, int index = -1)
+        public void LocateSprite(Player sprite, int index = -1)
         {
             var spawn = this.spawns[this.generateSpawn(index)];
             sprite.x = spawn.x * 16;
@@ -173,7 +173,7 @@ namespace MrBoom
             }
 
             int playersCount = 0;
-            foreach (Sprite player in this.Players)
+            foreach (Player player in this.Players)
             {
                 if (!player.IsDie)
                 {
@@ -347,7 +347,7 @@ namespace MrBoom
                 }
             }
 
-            foreach (Sprite player in this.Players)
+            foreach (Player player in this.Players)
             {
                 player.Update();
             }
@@ -490,7 +490,7 @@ namespace MrBoom
             };
         }
 
-        public void PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, Sprite owner)
+        public void PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, Player owner)
         {
             SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
             {
@@ -566,7 +566,7 @@ namespace MrBoom
         public int bombTime;
         public int maxBoom;
         public bool rcAllowed;
-        public Sprite owner;
+        public Player owner;
         public Cell Next;
         public PowerUpType PowerUpType;
         public int OffsetX;

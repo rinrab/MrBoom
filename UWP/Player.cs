@@ -1,6 +1,6 @@
 ﻿namespace MrBoom
 {
-    public class Sprite : MovingSprite
+    public class Player : MovingSprite
     {
         public IController Controller;
         public int BombsPlaced;
@@ -14,7 +14,7 @@
         private bool IsHaveRollers;
         private int lifeCount;
 
-        public Sprite(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations)
+        public Player(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations)
         {
             this.animateIndex = 0;
             this.frameIndex = 0;

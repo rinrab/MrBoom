@@ -158,8 +158,15 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Clock)
                 {
-                    terrain.TimeLeft += 60 * 60;
-                    terrain.PlaySound(Sound.Clock);
+                    if (terrain.TimeLeft > 31 * 60 + terrain.MaxApocalypse * terrain.ApocalypseSpeed)
+                    {
+                        terrain.TimeLeft += 60 * 60;
+                        terrain.PlaySound(Sound.Clock);
+                    }
+                    else
+                    {
+                        doFire = true;
+                    }
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {

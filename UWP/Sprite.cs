@@ -15,6 +15,7 @@ namespace MrBoom
         public int frameIndex;
         public int animateIndex;
         public int Slow = 1;
+        public bool IsDie = false;
 
         public Sprite(Terrain map, Assets.MovingSpriteAssets animations)
         {

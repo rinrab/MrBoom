@@ -7,7 +7,6 @@
         public bool rcDitonate = false;
 
         public bool RcAllowed { get; private set; }
-        public bool IsDie { get; private set; } = false;
 
         private int maxBoom;
         private int maxBombsCount;

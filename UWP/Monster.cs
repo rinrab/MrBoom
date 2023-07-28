@@ -3,8 +3,6 @@ namespace MrBoom
 {
     public class Monster : Sprite
     {
-        public bool IsDie = false;
-
         private readonly Map.MonsterData monsterData;
         private int wait = -1;
         private int livesCount;

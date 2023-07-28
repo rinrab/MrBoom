@@ -39,19 +39,7 @@ namespace MrBoom
             }
 
             speed = 1;
-            if (IsHaveRollers)
-            {
-                speed = 3;
-            }
-            if (fastSkull > 0)
-            {
-                speed = 5;
-            }
-            if (slowSkull > 0)
-            {
-                speed = 1;
-                Slow = 3;
-            }
+            Slow = 1;
 
             this.Direction = MovingSprite.Directions.Right;
 
@@ -99,27 +87,6 @@ namespace MrBoom
                     this.BombsPlaced++;
                     terrain.PlaySound(Sound.PoseBomb);
                 }
-            }
-
-            if (autoBombPlacing > 0)
-            {
-                autoBombPlacing--;
-            }
-            if (bombsPlacingDisabled > 0)
-            {
-                bombsPlacingDisabled--;
-            }
-            if (reverse > 0)
-            {
-                reverse--;
-            }
-            if (slowSkull > 0)
-            {
-                slowSkull--;
-            }
-            if (fastSkull > 0)
-            {
-                fastSkull--;
             }
 
             if (cell.Type == TerrainType.PowerUp)

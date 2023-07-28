@@ -21,6 +21,9 @@ namespace MrBoom
 
         public override void Update()
         {
+            speed = 1;
+            Slow = monsterData.Slow;
+
             bool isWalkable(int dx, int dy)
             {
                 switch (terrain.GetCell((x + dx * 8 + 8 + dx) / 16, (y + dy * 8 + 8 + dy) / 16).Type)

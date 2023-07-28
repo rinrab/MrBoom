@@ -28,11 +28,42 @@ namespace MrBoom
         public int autoBombPlacing;
         public int reverse;
         public int bombsPlacingDisabled;
-        public int fastSkull;
+        public int fastSkull = 9999;
         public int slowSkull;
 
         public virtual void Update()
         {
+            if (fastSkull > 0)
+            {
+                speed = 5;
+            }
+            if (slowSkull > 0)
+            {
+                speed = 1;
+                Slow = 3;
+            }
+
+            if (autoBombPlacing > 0)
+            {
+                autoBombPlacing--;
+            }
+            if (bombsPlacingDisabled > 0)
+            {
+                bombsPlacingDisabled--;
+            }
+            if (reverse > 0)
+            {
+                reverse--;
+            }
+            if (slowSkull > 0)
+            {
+                slowSkull--;
+            }
+            if (fastSkull > 0)
+            {
+                fastSkull--;
+            }
+
             {
                 Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
 

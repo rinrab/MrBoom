@@ -62,7 +62,6 @@ namespace MrBoom
                     {
                         IsDie = true;
                         frameIndex = 0;
-                        animateIndex = 4;
                         terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
@@ -70,7 +69,6 @@ namespace MrBoom
                 {
                     IsDie = true;
                     frameIndex = 0;
-                    animateIndex = 4;
                     terrain.PlaySound(Sound.Ai);
                 }
                 else
@@ -127,13 +125,8 @@ namespace MrBoom
                         wait--;
                     }
                 }
-                base.Update();
             }
-            else
-            {
-                frameIndex += 4;
-                animateIndex = 4;
-            }
+            base.Update();
         }
     }
 }

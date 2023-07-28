@@ -27,19 +27,15 @@
 
         public override void Update()
         {
-            if (this.IsDie)
+            if (IsDie)
             {
-                this.animateIndex = 4;
-                this.frameIndex += 4;
+                base.Update();
                 return;
             }
-
             speed = 1;
             Slow = 1;
 
-            this.Direction = Sprite.Directions.Right;
-
-            this.Direction = Sprite.Directions.None;
+            this.Direction = Directions.None;
             if (this.Controller.IsKeyDown(PlayerKeys.Up))
             {
                 this.Direction = Directions.Up;

@@ -34,6 +34,13 @@ namespace MrBoom
 
         public virtual void Update()
         {
+            if (IsDie)
+            {
+                frameIndex += 4;
+                animateIndex = 4;
+                return;
+            }
+
             if (fastSkull > 0)
             {
                 speed = 5;

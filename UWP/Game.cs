@@ -52,7 +52,7 @@ namespace MrBoom
             Players = new List<PlayerState>();
             NextSong(3);
 
-            ScreenManager.SetScreen(new SplashScreen(assets, Players, Controllers));
+            ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);

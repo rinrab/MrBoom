@@ -9,7 +9,7 @@
   <Identity
     Name="63142Rinrab.MrBoom"
     Publisher="CN=05BF73FB-EFD5-4E9C-BD8A-6043B1AE686B"
-    Version="1.2.1.0" />
+    Version="1.0.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="9cc55b72-4607-4b1b-8843-41a2c59b4b58" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

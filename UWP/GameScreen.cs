@@ -196,20 +196,6 @@ namespace MrBoom
                 var img = assets.Pause[pauseTick / 20 % 4];
                 img.Draw(ctx, 320 / 2 - img.Width / 2, 200 / 2 - img.Height / 2);
             }
-
-            int ox = 20;
-            int oy = 2;
-
-            assets.Controls[0].Draw(ctx, ox, 200 - oy - 14);
-            Game.DrawString(ctx, ox + 20, 200 - oy - 14 + 4, "or", assets.Alpha[1]);
-            assets.Controls[1].Draw(ctx, ox + 40, 200 - oy - 14);
-            Game.DrawString(ctx, ox + 70, 200 - oy - 14 + 4, "drop bomb", assets.Alpha[1]);
-
-            assets.Controls[4].Draw(ctx, ox, oy);
-            Game.DrawString(ctx, ox + 20, oy + 4, "or", assets.Alpha[1]);
-            assets.Controls[5].Draw(ctx, ox + 40, oy);
-            Game.DrawString(ctx, ox + 70, oy + 4, "trigger bomb with", assets.Alpha[1]);
-            assets.Controls[9].Draw(ctx, ox + 205, oy - 1);
         }
 
         private void PlaySounds(Sound soundsToPlay)

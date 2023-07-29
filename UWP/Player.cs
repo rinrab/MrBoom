@@ -49,7 +49,7 @@
                 this.Direction = Directions.Down;
             }
 
-            if (reverse > 0)
+            if (SkullType == SkullType.Reverse)
             {
                 if (Direction == Directions.Up) Direction = Directions.Down;
                 else if (Direction == Directions.Down) Direction = Directions.Up;
@@ -66,8 +66,8 @@
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if ((this.Controller.IsKeyDown(PlayerKeys.Bomb) || autoBombPlacing > 0) &&
-                bombsPlacingDisabled == 0)
+            if ((Controller.IsKeyDown(PlayerKeys.Bomb) || SkullType == SkullType.AutoBomb) &&
+                SkullType != SkullType.BombsDisable)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {
@@ -159,33 +159,8 @@
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
-                    reverse = 0;
-                    bombsPlacingDisabled = 0;
-                    autoBombPlacing = 0;
-                    slowSkull = 0;
-                    fastSkull = 0;
-
-                    int rnd = Terrain.Random.Next(5);
-                    if (rnd == 0)
-                    {
-                        reverse = 600;
-                    }
-                    else if (rnd == 1)
-                    {
-                        bombsPlacingDisabled = 600;
-                    }
-                    else if (rnd == 2)
-                    {
-                        autoBombPlacing = 600;
-                    }
-                    else if (rnd == 3)
-                    {
-                        slowSkull = 600;
-                    }
-                    else if (rnd == 4)
-                    {
-                        fastSkull = 600;
-                    }
+                    skullIndex = 600;
+                    SkullType = (SkullType)Terrain.Random.Next(5);
                 }
 
                 if (doFire)

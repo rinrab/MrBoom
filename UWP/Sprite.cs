@@ -26,11 +26,8 @@ namespace MrBoom
         public int AnimateIndex { get; private set; }
 
         public int unplugin;
-        public int autoBombPlacing;
-        public int reverse;
-        public int bombsPlacingDisabled;
-        public int fastSkull;
-        public int slowSkull;
+        public int skullIndex;
+        public SkullType SkullType;
 
         public virtual void Update()
         {
@@ -45,35 +42,23 @@ namespace MrBoom
             {
                 speed = 3;
             }
-            if (fastSkull > 0)
+            if (SkullType == SkullType.Fast)
             {
                 speed = 5;
             }
-            if (slowSkull > 0)
+            if (SkullType == SkullType.Slow)
             {
                 speed = 1;
                 Slow = 3;
             }
 
-            if (autoBombPlacing > 0)
+            if (skullIndex > 0)
             {
-                autoBombPlacing--;
+                skullIndex--;
             }
-            if (bombsPlacingDisabled > 0)
+            else
             {
-                bombsPlacingDisabled--;
-            }
-            if (reverse > 0)
-            {
-                reverse--;
-            }
-            if (slowSkull > 0)
-            {
-                slowSkull--;
-            }
-            if (fastSkull > 0)
-            {
-                fastSkull--;
+                SkullType = SkullType.None;
             }
 
             {
@@ -287,14 +272,15 @@ namespace MrBoom
 
                 Color color = Color.White;
 
-                if (autoBombPlacing % 30 > 15 || reverse % 30 > 15 || bombsPlacingDisabled % 30 > 15 ||
-                    slowSkull % 30 > 15 || fastSkull % 30 > 15)
+                if (skullIndex % 30 > 15)
                 {
                     color = new Color(255, 0, 0);
                 }
 
                 if (animateIndex != 4 || frameIndex / 20 < animations.Normal[4].Length)
+                {
                     img.Draw(ctx, x, y, color);
+                }
             }
         }
     }

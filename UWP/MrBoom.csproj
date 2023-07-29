@@ -112,6 +112,7 @@
     <Compile Include="IScreen.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Monster.cs" />
+    <Compile Include="SkullType.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="ResultScreen.cs" />

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+
 namespace MrBoom
 {
     public class Monster : Sprite
@@ -11,15 +12,13 @@ namespace MrBoom
             Assets.MovingSpriteAssets animations) : base(map, animations)
         {
             this.monsterData = monsterData;
-            Slow = monsterData.Slow;
             this.livesCount = monsterData.LivesCount - 1;
             this.Direction = (Directions)Terrain.Random.Next(1, 5);
         }
 
         public override void Update()
         {
-            speed = 1;
-            Slow = monsterData.Slow;
+            speed = monsterData.Speed;
 
             bool isWalkable(int dx, int dy)
             {

@@ -16,7 +16,7 @@
 
         public class MonsterData
         {
-            public int Slow;
+            public int Speed;
             public int WaitAfterTurn { get; }
             public int Type { get; }
             public int LivesCount { get; }
@@ -27,7 +27,7 @@
                 Type = type;
                 LivesCount = livesCount;
 
-                Slow = 1;
+                Speed = 3;
             }
         }
 
@@ -208,9 +208,9 @@
                     new MonsterData(0, 30, 1),
                     new MonsterData(1, 30, 3),
                     new MonsterData(1, 30, 3),
-                    new MonsterData(2, 60, 1) { Slow = 2 },
-                    new MonsterData(3, 90, 3) { Slow = 3 },
-                    new MonsterData(3, 90, 3) { Slow = 3 },
+                    new MonsterData(2, 60, 1) { Speed = 2 },
+                    new MonsterData(3, 90, 3) { Speed = 1 },
+                    new MonsterData(3, 90, 3) { Speed = 1 },
                 },
                 Final = new byte[]
                 {
@@ -262,7 +262,7 @@
                 },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(3, 90, 3) { Slow = 3 },
+                    new MonsterData(3, 90, 3) { Speed = 1 },
                 },
                 Final = DefaultFinal
             },
@@ -301,7 +301,7 @@
                 Monsters = new MonsterData[]
                 {
                     new MonsterData(1, 30, 3),
-                    new MonsterData(3, 90, 3) { Slow = 3 },
+                    new MonsterData(3, 90, 3) { Speed = 1 },
                 },
                 Final = DefaultFinal
             },

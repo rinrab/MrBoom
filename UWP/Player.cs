@@ -28,8 +28,7 @@
                 base.Update();
                 return;
             }
-            speed = 1;
-            Slow = 1;
+            speed = 3;
 
             this.Direction = Directions.None;
             if (this.Controller.IsKeyDown(PlayerKeys.Up))

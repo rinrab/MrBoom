@@ -7,13 +7,12 @@ namespace MrBoom
     {
         public int x;
         public int y;
-        public int speed = 1;
+        public int speed;
         public Terrain terrain;
         private readonly Assets.MovingSpriteAssets animations;
         public Directions Direction;
         public int frameIndex;
         public int animateIndex;
-        public int Slow = 1;
         public bool IsDie = false;
         public Feature Features;
 
@@ -40,7 +39,7 @@ namespace MrBoom
 
             if (Features.HasFlag(Feature.RollerSkates))
             {
-                speed = 3;
+                speed = 4;
             }
             if (SkullType == SkullType.Fast)
             {
@@ -49,7 +48,6 @@ namespace MrBoom
             if (SkullType == SkullType.Slow)
             {
                 speed = 1;
-                Slow = 3;
             }
 
             if (skullIndex > 0)
@@ -108,8 +106,6 @@ namespace MrBoom
                 {
                     this.XAlign(delta);
                 }
-
-                this.frameIndex += 1;
             }
             void moveX(int delta)
             {
@@ -148,66 +144,51 @@ namespace MrBoom
                 {
                     this.YAlign(delta);
                 }
-
-                this.frameIndex += 1;
             }
 
-            if (frameIndex % Slow == 0)
-            {
-                for (int i = 0; i < this.speed; i++)
-                {
-                    if (this.Direction == Directions.Up)
-                    {
-                        this.animateIndex = 3;
-                        moveY(-1);
-                    }
-                    else if (this.Direction == Directions.Down)
-                    {
-                        this.animateIndex = 0;
-                        moveY(1);
-                    }
-                    else if (this.Direction == Directions.Left)
-                    {
-                        moveX(-1);
-                        this.animateIndex = 2;
-                    }
-                    else if (this.Direction == Directions.Right)
-                    {
-                        moveX(1);
-                        this.animateIndex = 1;
-                    }
-                    else
-                    {
-                        this.frameIndex = 0;
-                    }
-                }
-            }
-            else
+            int move = 0;
+            if (speed == 1)
+                move = (frameIndex % 3 == 0) ? 1 : 0;
+            else if (speed == 2)
+                move = (frameIndex % 2 == 0) ? 1 : 0;
+            else if (speed == 3)
+                move = 1;
+            else if (speed == 4)
+                move = 3;
+            else if (speed == 5)
+                move = 5;
+
+            for (int i = 0; i < move; i++)
             {
                 if (this.Direction == Directions.Up)
                 {
                     this.animateIndex = 3;
+                    moveY(-1);
                 }
                 else if (this.Direction == Directions.Down)
                 {
                     this.animateIndex = 0;
+                    moveY(1);
                 }
                 else if (this.Direction == Directions.Left)
                 {
+                    moveX(-1);
                     this.animateIndex = 2;
                 }
                 else if (this.Direction == Directions.Right)
                 {
+                    moveX(1);
                     this.animateIndex = 1;
                 }
-                else
-                {
-                    this.frameIndex = 0;
-                }
-                if (Direction != Directions.None)
-                {
-                    frameIndex++;
-                }
+            }
+
+            if (Direction == Directions.None)
+            {
+                frameIndex = 0;
+            }
+            else
+            {
+                frameIndex++;
             }
         }
 

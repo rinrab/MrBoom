@@ -35,6 +35,19 @@ namespace MrBoom
         {
             assets.Start.Draw(ctx, 0, 0);
 
+            int ox = 10;
+            int oy = 10;
+
+            assets.Controls[0].Draw(ctx, ox, oy);
+            Game.DrawString(ctx, ox + 20, oy + 4, "or", assets.Alpha[1]);
+            assets.Controls[1].Draw(ctx, ox + 40, oy);
+            Game.DrawString(ctx, ox + 70, oy + 4, "join", assets.Alpha[1]);
+
+            assets.Controls[2].Draw(ctx, 320 - ox - 115, oy);
+            Game.DrawString(ctx, 320 - ox - 96, oy + 4, "or", assets.Alpha[1]);
+            assets.Controls[3].Draw(ctx, 320 - ox - 76, oy - 8);
+            Game.DrawString(ctx, 320 - ox - 40, oy + 4, "start", assets.Alpha[1]);
+
             for (int x = 0; x < 4; x++)
             {
                 for (int y = 0; y < 2; y++)

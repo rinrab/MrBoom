@@ -38,8 +38,9 @@ namespace MrBoom
         private int time;
         private readonly List<Spawn> spawns;
         private readonly List<PowerUpType> powerUpList;
-        internal bool StartKick;
         private readonly Map map;
+
+        public Feature StartFeatures { get; }
 
         private readonly Assets.Level levelAssets;
 
@@ -58,6 +59,7 @@ namespace MrBoom
             this.assets = assets;
             this.levelAssets = assets.Levels[levelIndex];
             this.map = Map.Maps[levelIndex];
+            this.StartFeatures = Map.Maps[levelIndex].StartFeatures;
             this.powerUpList = new List<PowerUpType>();
 
             foreach (var bonus in map.PowerUps)
@@ -83,7 +85,6 @@ namespace MrBoom
 
             this.StartMaxBombsCount = map.StartMaxBombsCount;
             this.StartMaxFire = map.StartMaxFire;
-            StartKick = map.StartKick;
 
             data = new Cell[this.Width * this.Height];
             for (int y = 0; y < this.Height; y++)
@@ -291,7 +292,8 @@ namespace MrBoom
 
                     if (cell.Type == TerrainType.Bomb)
                     {
-                        if (!cell.rcAllowed || !cell.owner.RcAllowed || cell.owner.IsDie)
+                        if (!cell.rcAllowed || !cell.owner.Features.HasFlag(
+                            Feature.RemoteControl) || cell.owner.IsDie)
                         {
                             cell.bombTime--;
                         }
@@ -397,6 +399,11 @@ namespace MrBoom
                 default:
                     return true;
             }
+        }
+
+        public void RcDitonate(Player player)
+        {
+
         }
 
         public void ditonateBomb(int bombX, int bombY)
@@ -594,6 +601,15 @@ namespace MrBoom
         RollerSkate,
         Clock,
         MultiBomb,
+    }
+
+    [Flags]
+    public enum Feature
+    {
+        MultiBomb = 0x01,
+        RemoteControl = 0x02,
+        Kick = 0x04,
+        RollerSkates = 0x08,
     }
 
     public enum GameResult

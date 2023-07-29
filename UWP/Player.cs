@@ -6,8 +6,6 @@
         public int BombsPlaced;
         public bool rcDitonate = false;
 
-        public bool RcAllowed { get; private set; }
-
         private int maxBoom;
         private int maxBombsCount;
         private int lifeCount;
@@ -18,8 +16,7 @@
             this.frameIndex = 0;
             this.speed = 1;
             this.BombsPlaced = 0;
-            this.RcAllowed = false;
-            this.isHaveKick = map.StartKick;
+            Features = map.StartFeatures;
             this.maxBoom = map.StartMaxFire;
             this.maxBombsCount = map.StartMaxBombsCount;
         }
@@ -60,7 +57,8 @@
                 else if (Direction == Directions.Right) Direction = Directions.Left;
             }
 
-            this.rcDitonate = this.RcAllowed && this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
+            this.rcDitonate = Features.HasFlag(Feature.RemoteControl) &&
+                this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
 
             base.Update();
 
@@ -73,7 +71,7 @@
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {
-                    terrain.PutBomb(cellX, cellY, this.maxBoom, this.RcAllowed, this);
+                    terrain.PutBomb(cellX, cellY, this.maxBoom, Features.HasFlag(Feature.RemoteControl), this);
 
                     this.BombsPlaced++;
                     terrain.PlaySound(Sound.PoseBomb);
@@ -95,9 +93,9 @@
                 }
                 else if (powerUpType == PowerUpType.RemoteControl)
                 {
-                    if (!this.RcAllowed)
+                    if (!Features.HasFlag(Feature.RemoteControl))
                     {
-                        this.RcAllowed = true;
+                        Features |= Feature.RemoteControl;
                     }
                     else
                     {
@@ -106,9 +104,9 @@
                 }
                 else if (powerUpType == PowerUpType.RollerSkate)
                 {
-                    if (!this.IsHaveRollers)
+                    if (!Features.HasFlag(Feature.RollerSkates))
                     {
-                        this.IsHaveRollers = true;
+                        Features |= Feature.RollerSkates;
                     }
                     else
                     {
@@ -117,13 +115,13 @@
                 }
                 else if (powerUpType == PowerUpType.Kick)
                 {
-                    if (this.isHaveKick)
+                    if (Features.HasFlag(Feature.Kick))
                     {
                         doFire = true;
                     }
                     else
                     {
-                        this.isHaveKick = true;
+                        Features |= Feature.Kick;
                     }
                 }
                 else if (powerUpType == PowerUpType.Life)

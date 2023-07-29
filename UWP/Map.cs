@@ -38,7 +38,7 @@
         public byte[] Final;
         public int StartMaxFire = 1;
         public int StartMaxBombsCount = 1;
-        public bool StartKick;
+        public Feature StartFeatures = 0;
 
         public static byte[] DefaultFinal = new byte[]
         {
@@ -284,7 +284,7 @@
                     "#-----------------#",
                     "###################",
                 },
-                StartKick = true,
+                StartFeatures = Feature.Kick,
                 Time = 90,
                 PowerUps = new PowerUpData[]
                 {
@@ -323,7 +323,7 @@
                     "#* ------------- *#",
                     "###################",
                 },
-                StartKick = true,
+                StartFeatures = Feature.Kick,
                 Time = 120,
                 PowerUps = new PowerUpData[]
                 {
@@ -375,7 +375,7 @@
                     "%*               *%",
                     "#%%%%%%%%%%%%%%%%%#",
                 },
-                StartKick = true,
+                StartFeatures = Feature.Kick,
                 StartMaxFire = 8,
                 StartMaxBombsCount = 8,
                 Time = 30,

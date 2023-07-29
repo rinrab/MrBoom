@@ -8,7 +8,6 @@ namespace MrBoom
         public int x;
         public int y;
         public int speed = 1;
-        public bool isHaveKick;
         public Terrain terrain;
         private readonly Assets.MovingSpriteAssets animations;
         public Directions Direction;
@@ -16,7 +15,7 @@ namespace MrBoom
         public int animateIndex;
         public int Slow = 1;
         public bool IsDie = false;
-        public bool IsHaveRollers;
+        public Feature Features;
 
         public Sprite(Terrain map, Assets.MovingSpriteAssets animations)
         {
@@ -42,7 +41,7 @@ namespace MrBoom
                 return;
             }
 
-            if (IsHaveRollers)
+            if (Features.HasFlag(Feature.RollerSkates))
             {
                 speed = 3;
             }
@@ -110,7 +109,7 @@ namespace MrBoom
                         Cell newCell = terrain.GetCell(cellX, newY);
                         if (newCell.Type == TerrainType.Bomb)
                         {
-                            if (this.isHaveKick)
+                            if (Features.HasFlag(Feature.Kick))
                             {
                                 if (newCell.DeltaX == 0)
                                 {
@@ -150,7 +149,7 @@ namespace MrBoom
                         Cell newCell = terrain.GetCell(newX, cellY);
                         if (newCell.Type == TerrainType.Bomb)
                         {
-                            if (this.isHaveKick)
+                            if (Features.HasFlag(Feature.Kick))
                             {
                                 if (newCell.DeltaY == 0)
                                 {

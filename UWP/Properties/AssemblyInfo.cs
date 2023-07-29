@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Mr.Boom")]
-[assembly: AssemblyDescription("Mr.Boom is a modern implementation of the great DOS game mr.boom. Explode walls by bombs to get power ups and win your opponent. Play with 8 friends on one device. Controls")]
+[assembly: AssemblyTitle("Project2")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Rinrab")]
-[assembly: AssemblyProduct("Mr.Boom")]
-[assembly: AssemblyCopyright("Copyright ©  2023")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Project2")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

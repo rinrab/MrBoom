@@ -1,0 +1,15 @@
+﻿root = true
+
+[*]
+indent_style = space
+insert_final_newline = true
+charset = utf-8-bom
+
+[*.html,*.xaml,*.xml]
+indent_size = 2
+
+[*.{cs,csx}]
+indent_size = 4
+
+# Organize usings
+dotnet_sort_system_directives_first = true

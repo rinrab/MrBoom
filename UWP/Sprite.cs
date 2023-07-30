@@ -59,14 +59,12 @@ namespace MrBoom
                 SkullType = SkullType.None;
             }
 
-            {
-                Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
+            Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
 
-                if (cell.Type == TerrainType.Bomb && cell.OffsetX == 0 && cell.OffsetY == 0)
-                {
-                    cell.DeltaX = 0;
-                    cell.DeltaY = 0;
-                }
+            if (cell.Type == TerrainType.Bomb && cell.OffsetX == 0 && cell.OffsetY == 0)
+            {
+                cell.DeltaX = 0;
+                cell.DeltaY = 0;
             }
 
             void moveY(int delta)
@@ -76,7 +74,6 @@ namespace MrBoom
                     int newY = (delta < 0) ? (this.y + delta) / 16 : this.y / 16 + 1;
                     int cellX = (this.x + 8) / 16;
                     int cellY = (this.y + 8) / 16;
-                    Cell cell = terrain.GetCell(cellX, cellY);
 
                     if (terrain.isWalkable(cellX, newY))
                     {
@@ -114,7 +111,6 @@ namespace MrBoom
                     int newX = (delta < 0) ? (this.x + delta) / 16 : this.x / 16 + 1;
                     int cellX = (this.x + 8) / 16;
                     int cellY = (this.y + 8) / 16;
-                    Cell cell = terrain.GetCell(cellX, cellY);
 
                     if (terrain.isWalkable(newX, cellY))
                     {

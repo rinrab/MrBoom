@@ -73,10 +73,10 @@ namespace MrBoom
             {
                 if (this.x % 16 == 0)
                 {
-                    var newY = (delta < 0) ? (this.y + delta) / 16 : this.y / 16 + 1;
-                    var cellX = (this.x + 8) / 16;
-                    var cellY = (this.y + 8) / 16;
-                    var cell = terrain.GetCell(cellX, cellY);
+                    int newY = (delta < 0) ? (this.y + delta) / 16 : this.y / 16 + 1;
+                    int cellX = (this.x + 8) / 16;
+                    int cellY = (this.y + 8) / 16;
+                    Cell cell = terrain.GetCell(cellX, cellY);
 
                     if (terrain.isWalkable(cellX, newY))
                     {
@@ -111,10 +111,10 @@ namespace MrBoom
             {
                 if (this.y % 16 == 0)
                 {
-                    var newX = (delta < 0) ? (this.x + delta) / 16 : this.x / 16 + 1;
-                    var cellX = (this.x + 8) / 16;
-                    var cellY = (this.y + 8) / 16;
-                    var cell = terrain.GetCell(cellX, cellY);
+                    int newX = (delta < 0) ? (this.x + delta) / 16 : this.x / 16 + 1;
+                    int cellX = (this.x + 8) / 16;
+                    int cellY = (this.y + 8) / 16;
+                    Cell cell = terrain.GetCell(cellX, cellY);
 
                     if (terrain.isWalkable(newX, cellY))
                     {

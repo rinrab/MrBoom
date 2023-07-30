@@ -35,7 +35,7 @@
         DisplayName="MrBoom"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Explode walls by bombs, get power ups and win your opponent. You can play with 8 friends on one device. Power ups can upgrade your bomb, lives, give you radio control, and other good skills. Beware monsters they will kill, if you get too close. This game has 8 different levels."
+        Description="Experience classic Bomberman-style gameplay on modern platforms. Use explosives to destroy walls, acquire power-ups and win!"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

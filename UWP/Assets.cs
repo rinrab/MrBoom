@@ -22,6 +22,7 @@ namespace MrBoom
             public AnimatedImage Walls;
             public AnimatedImage PermanentWalls;
             public Overlay[] Overlays;
+            public Image MovingBackground;
         }
 
         public class MovingSpriteAssets
@@ -414,6 +415,7 @@ namespace MrBoom
                             loadImage(content.Load<Texture2D>("NUAGE1"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("NUAGE2"), 0, 0, 320, 200)
                         ),
+                        MovingBackground = loadImage(imgSprite2, 64, 16, 48, 44),
                         Walls = loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
                     },
@@ -516,7 +518,6 @@ namespace MrBoom
                     loadImage(content.Load<Texture2D>("VIC2"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("VIC3"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("VIC4"), 0, 0, 320, 200)),
-                Sky = loadImage(imgSprite2, 64, 16, 48, 44),
                 Splash = loadImage(content.Load<Texture2D>("PIC"), 0, 0, 320, 200),
                 DrawGameIn = loadImage(imgSoucoupe, 96, 48, 78, 36),
                 DrawGameInNumbers = loadImageStripe(imgSoucoupe, 173, 32, 8, 7, 10),

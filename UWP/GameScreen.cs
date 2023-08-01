@@ -98,13 +98,17 @@ namespace MrBoom
 
         public void Draw(SpriteBatch ctx)
         {
-            if (terrain.levelIndex == 3)
+            if (terrain.LevelAssets.MovingBackground != null)
             {
+                Image img = terrain.LevelAssets.MovingBackground;
+                int xCount = 320 / img.Width + 2;
+
                 for (int y = 0; y < 5; y++)
                 {
                     for (int x = 0; x < 8; x++)
                     {
-                        assets.Sky.Draw(ctx, 48 * 8 - (bgTick / 2 + x * 48 + y * 24) % (48 * 8) - 48, y * 44);
+                        img.Draw(ctx, img.Width * xCount - (bgTick / 2 + x * img.Width +
+                            y * img.Height / 2) % (img.Width * xCount) - img.Width, y * img.Height);
                     }
                 }
             }

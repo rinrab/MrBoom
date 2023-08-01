@@ -49,6 +49,7 @@ namespace MrBoom
         public Sound Draw;
         public Sound Clock;
         public Sound TimeEnd;
+        public Sound Skull;
         public Music[] Musics;
 
         public static SoundAssets Load(ContentManager content)
@@ -77,6 +78,7 @@ namespace MrBoom
                 Draw = loadSound("draw"),
                 Clock = loadSound("clock"),
                 TimeEnd = loadSound("time_end"),
+                Skull = loadSound("skull"),
                 Musics = new Music[]
                 {
                     loadMusic("anar11"),
@@ -107,5 +109,6 @@ namespace MrBoom
         Draw = 2 << 9,
         Clock = 2 << 10,
         TimeEnd = 2 << 11,
+        Skull = 2 << 12
     }
 }

@@ -1,4 +1,4 @@
-﻿
+
 #----------------------------- Global Properties ----------------------------#
 
 /outputDir:bin/$(Platform)
@@ -697,6 +697,12 @@
 /processorParam:Quality=Best
 /build:../../www/sound/sac.wav;sound/sac.wav
 
+#begin ../../www/sound/skull.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/skull.wav;sound/skull.wav
+
 #begin ../../www/sound/time_end.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -720,3 +726,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:CONTROLS.png
+

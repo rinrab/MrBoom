@@ -158,6 +158,7 @@
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
+                    terrain.PlaySound(Sound.Skull);
                     skullIndex = 600;
                     SkullType = (SkullType)Terrain.Random.Next(5);
                 }

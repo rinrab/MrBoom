@@ -13,7 +13,6 @@ namespace MrBoom
         public Assets assets;
         public List<Monster> Monsters;
         public int TimeLeft;
-        public int levelIndex;
         public Sound SoundsToPlay;
         public GameResult Result = GameResult.None;
         public int StartMaxFire;
@@ -55,7 +54,6 @@ namespace MrBoom
         {
             Monsters = new List<Monster>();
 
-            this.levelIndex = levelIndex;
             this.assets = assets;
             this.levelAssets = assets.Levels[levelIndex];
             this.map = Map.Maps[levelIndex];

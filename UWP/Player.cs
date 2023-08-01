@@ -194,6 +194,8 @@
                 if (lifeCount > 0)
                 {
                     lifeCount--;
+                    Features = 0;
+                    terrain.PlaySound(Sound.Oioi);
                     this.unplugin = 165;
                 }
                 else

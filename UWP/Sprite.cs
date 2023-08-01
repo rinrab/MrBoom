@@ -150,9 +150,9 @@ namespace MrBoom
             else if (speed == 3)
                 move = 1;
             else if (speed == 4)
-                move = 3;
+                move = 2;
             else if (speed == 5)
-                move = 5;
+                move = 4;
 
             for (int i = 0; i < move; i++)
             {

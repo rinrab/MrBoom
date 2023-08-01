@@ -298,7 +298,7 @@ namespace MrBoom
                             cell.bombTime--;
                         }
 
-                        if (cell.bombTime == 0 | (cell.owner.rcDitonate && cell.rcAllowed))
+                        if (cell.bombTime == 0 || (cell.owner.rcDitonate && cell.rcAllowed))
                         {
                             this.ditonateBomb(x, y);
                             continue;

@@ -75,7 +75,7 @@ namespace MrBoom
                     int cellX = (this.x + 8) / 16;
                     int cellY = (this.y + 8) / 16;
 
-                    if (terrain.isWalkable(cellX, newY))
+                    if (terrain.IsWalkable(cellX, newY))
                     {
                         this.y += delta;
                     }
@@ -112,7 +112,7 @@ namespace MrBoom
                     int cellX = (this.x + 8) / 16;
                     int cellY = (this.y + 8) / 16;
 
-                    if (terrain.isWalkable(newX, cellY))
+                    if (terrain.IsWalkable(newX, cellY))
                     {
                         this.x += delta;
                     }
@@ -190,13 +190,13 @@ namespace MrBoom
 
         void XAlign(int deltaY)
         {
-            if (terrain.isWalkable((this.x - 1) / 16, (this.y + 8) / 16 + deltaY))
+            if (terrain.IsWalkable((this.x - 1) / 16, (this.y + 8) / 16 + deltaY))
             {
                 this.x -= 1;
 
                 this.AnimateIndex = 2;
             }
-            else if (terrain.isWalkable((this.x + 16) / 16, (this.y + 8) / 16 + deltaY))
+            else if (terrain.IsWalkable((this.x + 16) / 16, (this.y + 8) / 16 + deltaY))
             {
                 this.x += 1;
 
@@ -206,12 +206,12 @@ namespace MrBoom
 
         void YAlign(int deltaX)
         {
-            if (terrain.isWalkable((this.x + 8) / 16 + deltaX, (this.y - 1) / 16))
+            if (terrain.IsWalkable((this.x + 8) / 16 + deltaX, (this.y - 1) / 16))
             {
                 this.y -= 1;
                 this.AnimateIndex = 3;
             }
-            else if (terrain.isWalkable((this.x + 8) / 16 + deltaX, (this.y + 16) / 16))
+            else if (terrain.IsWalkable((this.x + 8) / 16 + deltaX, (this.y + 16) / 16))
             {
                 this.y += 1;
 

@@ -377,7 +377,7 @@ namespace MrBoom
             this.data[y * this.Width + x] = cell;
         }
 
-        public bool isWalkable(int x, int y)
+        public bool IsWalkable(int x, int y)
         {
             Cell cell = this.GetCell(x, y);
 

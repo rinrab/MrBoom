@@ -132,7 +132,8 @@ namespace MrBoom
             float width = GraphicsDevice.PresentationParameters.Bounds.Width;
             float scale = Math.Min(height / renderTarget.Height, width / renderTarget.Width);
             Matrix matrix = Matrix.CreateScale(scale);
-            matrix.Translation = new Vector3((width - renderTarget.Width * scale) / 2, (height - renderTarget.Height * scale) / 2, 0);
+            matrix.Translation = new Vector3((width - renderTarget.Width * scale) / 2,
+                (height - renderTarget.Height * scale) / 2, 0);
 
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,

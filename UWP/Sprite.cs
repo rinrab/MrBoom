@@ -16,9 +16,9 @@ namespace MrBoom
         public bool IsDie = false;
         public Feature Features;
 
-        public Sprite(Terrain map, Assets.MovingSpriteAssets animations)
+        public Sprite(Terrain terrain, Assets.MovingSpriteAssets animations)
         {
-            this.terrain = map;
+            this.terrain = terrain;
             this.animations = animations;
         }
 

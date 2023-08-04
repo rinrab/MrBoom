@@ -9,9 +9,7 @@ namespace MrBoom
 
         public readonly int Width;
         public readonly int Height;
-        public List<Player> Players;
         public Assets assets;
-        public List<Monster> Monsters;
         public int TimeLeft;
         public Sound SoundsToPlay;
         public GameResult Result = GameResult.None;
@@ -38,6 +36,8 @@ namespace MrBoom
         private readonly List<Spawn> spawns;
         private readonly List<PowerUpType> powerUpList;
         private readonly Map map;
+        private readonly List<Player> players;
+        private readonly List<Monster> monsters;
 
         public Feature StartFeatures { get; }
 
@@ -52,7 +52,7 @@ namespace MrBoom
 
         public Terrain(int levelIndex, Assets assets)
         {
-            Monsters = new List<Monster>();
+            monsters = new List<Monster>();
 
             this.assets = assets;
             this.levelAssets = assets.Levels[levelIndex];
@@ -79,7 +79,7 @@ namespace MrBoom
                     MaxApocalypse = Math.Max(fin, MaxApocalypse);
                 }
             }
-            this.Players = new List<Player>();
+            this.players = new List<Player>();
 
             this.StartMaxBombsCount = map.StartMaxBombsCount;
             this.StartMaxFire = map.StartMaxFire;
@@ -142,12 +142,12 @@ namespace MrBoom
             sprite.x = spawn.x * 16;
             sprite.y = spawn.y * 16;
 
-            this.Players.Add(sprite);
+            this.players.Add(sprite);
         }
 
         public void InitializeMonsters()
         {
-            int count = this.spawns.Count - this.Players.Count;
+            int count = this.spawns.Count - this.players.Count;
 
             for (int i = 0; i < count; i++)
             {
@@ -156,7 +156,7 @@ namespace MrBoom
                 int spawn = generateSpawn();
                 monster.x = spawns[spawn].x * 16;
                 monster.y = spawns[spawn].y * 16;
-                this.Monsters.Add(monster);
+                this.monsters.Add(monster);
             }
         }
 
@@ -172,7 +172,7 @@ namespace MrBoom
             }
 
             int playersCount = 0;
-            foreach (Player player in this.Players)
+            foreach (Player player in this.players)
             {
                 if (!player.IsDie)
                 {
@@ -233,11 +233,11 @@ namespace MrBoom
             {
                 if (playersCount == 1)
                 {
-                    for (int i = 0; i < Players.Count; i++)
+                    for (int i = 0; i < players.Count; i++)
                     {
-                        if (!Players[i].IsDie)
+                        if (!players[i].IsDie)
                         {
-                            Winner = Players[i];
+                            Winner = players[i];
                         }
                     }
                     Result = GameResult.Victory;
@@ -253,7 +253,7 @@ namespace MrBoom
                 Result = GameResult.Draw;
             }
 
-            if (playersCount == 1 && Players.Count > 1 && this.timeToEnd == -1)
+            if (playersCount == 1 && players.Count > 1 && this.timeToEnd == -1)
             {
                 this.timeToEnd = 60 * 3;
             }
@@ -347,12 +347,12 @@ namespace MrBoom
                 }
             }
 
-            foreach (Player player in this.Players)
+            foreach (Player player in this.players)
             {
                 player.Update();
             }
 
-            foreach (Monster monster in this.Monsters)
+            foreach (Monster monster in this.monsters)
             {
                 monster.Update();
             }
@@ -550,7 +550,7 @@ namespace MrBoom
 
         public bool IsTouchingMonster(int cellX, int cellY)
         {
-            foreach (Monster m in Monsters)
+            foreach (Monster m in monsters)
             {
                 if (!m.IsDie && (m.x + 8) / 16 == cellX && (m.y + 8) / 16 == cellY)
                 {
@@ -559,6 +559,16 @@ namespace MrBoom
             }
 
             return false;
+        }
+
+        public List<Sprite> GetSprites()
+        {
+            List<Sprite> sprites = new List<Sprite>(players.Count + monsters.Count);
+
+            sprites.AddRange(players);
+            sprites.AddRange(monsters);
+
+            return sprites;
         }
     }
 

@@ -131,9 +131,7 @@ namespace MrBoom
                 }
             }
 
-            List<Sprite> spritesToDraw = new List<Sprite>(terrain.Players.Count + terrain.Monsters.Count);
-            spritesToDraw.AddRange(terrain.Players);
-            spritesToDraw.AddRange(terrain.Monsters);
+            List<Sprite> spritesToDraw = terrain.GetSprites();
 
             spritesToDraw.Sort((a, b) => a.y - b.y);
 

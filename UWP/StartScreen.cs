@@ -13,6 +13,7 @@ namespace MrBoom
         private readonly List<PlayerState> players;
         private readonly List<IController> controllers;
         private readonly List<IController> unjoinedControllers;
+        private readonly List<IController> joinedControllers;
         private readonly string helpText =
             "welcome to mr.boom v1.2!!!   " +
             "players can join using their drop bomb button   use enter to start game   " +
@@ -29,6 +30,7 @@ namespace MrBoom
             this.players = players;
             this.controllers = controllers;
             this.unjoinedControllers = new List<IController>(controllers);
+            this.joinedControllers = new List<IController>();
         }
 
         public void Draw(SpriteBatch ctx)
@@ -106,10 +108,14 @@ namespace MrBoom
 
             foreach (IController controller in toRemove)
             {
+                controller.Reset();
+                controller.Update();
                 unjoinedControllers.Remove(controller);
+                joinedControllers.Add(controller);
             }
 
-            if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame))
+            if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame) ||
+                Controller.IsKeyDown(joinedControllers, PlayerKeys.Bomb))
             {
                 if (this.players.Count >= 1)
                 {

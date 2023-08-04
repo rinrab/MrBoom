@@ -561,14 +561,17 @@ namespace MrBoom
             return false;
         }
 
-        public List<Sprite> GetSprites()
+        public IEnumerable<Sprite> GetSprites()
         {
-            List<Sprite> sprites = new List<Sprite>(players.Count + monsters.Count);
+            foreach (Sprite sprite in players)
+            {
+                yield return sprite;
+            }
 
-            sprites.AddRange(players);
-            sprites.AddRange(monsters);
-
-            return sprites;
+            foreach (Sprite sprite in monsters)
+            {
+                yield return sprite;
+            }
         }
     }
 

@@ -131,7 +131,7 @@ namespace MrBoom
                 }
             }
 
-            List<Sprite> spritesToDraw = terrain.GetSprites();
+            List<Sprite> spritesToDraw = new List<Sprite>(terrain.GetSprites());
 
             spritesToDraw.Sort((a, b) => a.y - b.y);
 

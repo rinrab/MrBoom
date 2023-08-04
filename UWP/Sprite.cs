@@ -26,8 +26,9 @@ namespace MrBoom
         public int AnimateIndex { get; private set; }
 
         public int unplugin;
-        public int skullTimer;
         public SkullType SkullType;
+
+        private int skullTimer;
 
         public virtual void Update()
         {

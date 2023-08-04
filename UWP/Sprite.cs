@@ -25,7 +25,7 @@ namespace MrBoom
         public int AnimateIndex { get; private set; }
 
         public int unplugin;
-        public int skullIndex;
+        public int skullTimer;
         public SkullType SkullType;
 
         public virtual void Update()
@@ -50,9 +50,9 @@ namespace MrBoom
                 speed = 1;
             }
 
-            if (skullIndex > 0)
+            if (skullTimer > 0)
             {
-                skullIndex--;
+                skullTimer--;
             }
             else
             {
@@ -249,7 +249,7 @@ namespace MrBoom
 
                 Color color = Color.White;
 
-                if (skullIndex % 30 > 15)
+                if (skullTimer % 30 > 15)
                 {
                     color = new Color(255, 0, 0);
                 }

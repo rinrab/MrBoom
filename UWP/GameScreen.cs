@@ -60,7 +60,7 @@ namespace MrBoom
                 PlayerState[] players = game.Players.ToArray();
 
                 int winner = -1;
-                var winnerSprite = terrain.Players[terrain.Winner];
+                var winnerSprite = terrain.Winner;
 
                 for (int i = 0; i < players.Length; i++)
                 {

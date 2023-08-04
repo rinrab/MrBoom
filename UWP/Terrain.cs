@@ -28,7 +28,7 @@ namespace MrBoom
             }
         }
 
-        public int Winner { get; private set; }
+        public Player Winner { get; private set; }
 
         private readonly byte[] final;
         private int lastApocalypseSound = -1;
@@ -237,7 +237,7 @@ namespace MrBoom
                     {
                         if (!Players[i].IsDie)
                         {
-                            Winner = i;
+                            Winner = Players[i];
                         }
                     }
                     Result = GameResult.Victory;

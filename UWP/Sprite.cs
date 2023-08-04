@@ -5,6 +5,9 @@ namespace MrBoom
 {
     public abstract class Sprite
     {
+        public int CellX { get => (x + 8) / 16; }
+        public int CellY { get => (y + 8) / 16; }
+
         public int x;
         public int y;
         public int speed;

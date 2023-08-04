@@ -351,6 +351,20 @@ namespace MrBoom
             {
                 sprite.Update();
             }
+
+            foreach (Sprite sprite1 in GetSprites())
+            {
+                foreach (Sprite sprite2 in GetSprites())
+                {
+                    if (sprite1.CellX == sprite2.CellX &&
+                        sprite1.CellY == sprite2.CellY &&
+                        sprite1.SkullType != SkullType.None &&
+                        sprite2.SkullType == SkullType.None)
+                    {
+                        sprite2.SetSkull(sprite1.SkullType);
+                    }
+                }
+            }
         }
 
         public Cell GetCell(int x, int y)

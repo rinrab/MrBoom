@@ -547,6 +547,19 @@ namespace MrBoom
         {
             SoundsToPlay |= sound;
         }
+
+        public bool IsTouchingMonster(int cellX, int cellY)
+        {
+            foreach (Monster m in Monsters)
+            {
+                if (!m.IsDie && (m.x + 8) / 16 == cellX && (m.y + 8) / 16 == cellY)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     public enum TerrainType

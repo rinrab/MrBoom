@@ -179,14 +179,7 @@
                 }
             }
 
-            bool isTouchingMonster = false;
-            foreach (Monster m in terrain.Monsters)
-            {
-                if (!m.IsDie && (m.x + 8) / 16 == (x + 8) / 16 && (m.y + 8) / 16 == (y + 8) / 16)
-                {
-                    isTouchingMonster = true;
-                }
-            }
+            bool isTouchingMonster = terrain.IsTouchingMonster((x + 8) / 16, (y + 8) / 16);
 
             if ((cell.Type == TerrainType.Fire || isTouchingMonster) && unplugin == 0)
             {

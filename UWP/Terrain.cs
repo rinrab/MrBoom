@@ -347,14 +347,9 @@ namespace MrBoom
                 }
             }
 
-            foreach (Player player in this.players)
+            foreach (Sprite sprite in GetSprites())
             {
-                player.Update();
-            }
-
-            foreach (Monster monster in this.monsters)
-            {
-                monster.Update();
+                sprite.Update();
             }
         }
 

@@ -158,9 +158,7 @@
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
-                    terrain.PlaySound(Sound.Skull);
-                    skullTimer = 600;
-                    SkullType = (SkullType)Terrain.Random.Next(5);
+                    SetSkull((SkullType)Terrain.Random.Next(5));
                 }
 
                 if (doFire)

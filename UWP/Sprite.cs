@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
@@ -259,6 +260,14 @@ namespace MrBoom
                     img.Draw(ctx, x, y, color);
                 }
             }
+        }
+
+        public void SetSkull(SkullType skullType)
+        {
+            terrain.PlaySound(Sound.Skull);
+
+            skullTimer = 600;
+            SkullType = skullType;
         }
     }
 }

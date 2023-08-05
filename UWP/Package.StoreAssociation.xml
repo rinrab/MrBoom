@@ -361,12 +361,13 @@
     <Language Code="zu-za" InMinimumRequirementSet="true" />
   </SupportedLocales>
   <ProductReservedInfo>
-    <MainPackageIdentityName>63142Rinrab.MrBoom</MainPackageIdentityName>
+    <MainPackageIdentityName>63142Rinrab.960628C3DD29</MainPackageIdentityName>
     <ReservedNames>
-      <ReservedName>MrBoom</ReservedName>
-      <ReservedName>Mr.Boom</ReservedName>
+      <ReservedName>Mr. Bomber</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
-  <AccountPackageIdentityNames />
-  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9N286MW2WHD5" />
+  <AccountPackageIdentityNames>
+    <MainPackageIdentityName>63142Rinrab.MrBoom</MainPackageIdentityName>
+  </AccountPackageIdentityNames>
+  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9P4GKX2DCHTK" />
 </StoreAssociation>

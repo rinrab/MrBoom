@@ -11,7 +11,6 @@ namespace MrBoom
 
         public int x;
         public int y;
-        public int speed;
         public Terrain terrain;
         public Directions Direction;
         public int frameIndex;
@@ -23,11 +22,13 @@ namespace MrBoom
 
         private int skullTimer;
         private readonly Assets.MovingSpriteAssets animations;
+        private readonly int DefaultSpeed;
 
-        public Sprite(Terrain terrain, Assets.MovingSpriteAssets assets)
+        public Sprite(Terrain terrain, Assets.MovingSpriteAssets assets, int speed)
         {
             this.terrain = terrain;
             this.animations = assets;
+            this.DefaultSpeed = speed;
         }
 
         public virtual void Update()
@@ -39,6 +40,7 @@ namespace MrBoom
                 return;
             }
 
+            int speed = DefaultSpeed;
             if (Features.HasFlag(Feature.RollerSkates))
             {
                 speed = 4;

@@ -9,7 +9,7 @@ namespace MrBoom
         private int livesCount;
 
         public Monster(Terrain map, Map.MonsterData monsterData,
-            Assets.MovingSpriteAssets animations) : base(map, animations)
+            Assets.MovingSpriteAssets animations) : base(map, animations, monsterData.Speed)
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;
@@ -18,8 +18,6 @@ namespace MrBoom
 
         public override void Update()
         {
-            speed = monsterData.Speed;
-
             bool isWalkable(int dx, int dy)
             {
                 switch (terrain.GetCell((x + dx * 8 + 8 + dx) / 16, (y + dy * 8 + 8 + dy) / 16).Type)

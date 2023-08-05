@@ -10,11 +10,10 @@
         private int maxBombsCount;
         private int lifeCount;
 
-        public Player(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations)
+        public Player(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations, 3)
         {
             this.animateIndex = 0;
             this.frameIndex = 0;
-            this.speed = 1;
             this.BombsPlaced = 0;
             Features = map.StartFeatures;
             this.maxBoom = map.StartMaxFire;
@@ -28,7 +27,6 @@
                 base.Update();
                 return;
             }
-            speed = 3;
 
             this.Direction = Directions.None;
             if (this.Controller.IsKeyDown(PlayerKeys.Up))

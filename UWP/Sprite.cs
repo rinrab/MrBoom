@@ -7,30 +7,28 @@ namespace MrBoom
     {
         public int CellX { get => (x + 8) / 16; }
         public int CellY { get => (y + 8) / 16; }
+        public int AnimateIndex { get; private set; }
 
         public int x;
         public int y;
         public int speed;
         public Terrain terrain;
-        private readonly Assets.MovingSpriteAssets animations;
         public Directions Direction;
         public int frameIndex;
         public int animateIndex;
         public bool IsDie = false;
         public Feature Features;
+        public int unplugin;
+        public SkullType SkullType;
+
+        private int skullTimer;
+        private readonly Assets.MovingSpriteAssets animations;
 
         public Sprite(Terrain terrain, Assets.MovingSpriteAssets animations)
         {
             this.terrain = terrain;
             this.animations = animations;
         }
-
-        public int AnimateIndex { get; private set; }
-
-        public int unplugin;
-        public SkullType SkullType;
-
-        private int skullTimer;
 
         public virtual void Update()
         {

@@ -37,6 +37,8 @@ namespace MrBoom
             {
                 frameIndex += 4;
                 animateIndex = 4;
+                skullTimer = 0;
+                SkullType = SkullType.None;
                 return;
             }
 

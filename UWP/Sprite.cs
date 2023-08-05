@@ -59,7 +59,7 @@ namespace MrBoom
                 speed = 1;
             }
 
-            if (skullTimer < 0)
+            if (skullTimer > 0)
             {
                 skullTimer--;
             }
@@ -250,7 +250,7 @@ namespace MrBoom
                 }
                 if (skullTimer > 0 && blinking % 30 > 15)
                 {
-                    color = new Color(255, 0, 0);
+                    animation = animations.Red[animateIndex];
                 }
 
                 Image img = animation[frameIndex / 20];

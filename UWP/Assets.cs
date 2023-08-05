@@ -29,11 +29,13 @@ namespace MrBoom
         {
             public readonly AnimatedImage[] Normal;
             public readonly AnimatedImage[] Ghost;
+            public readonly AnimatedImage[] Red;
 
-            public MovingSpriteAssets(AnimatedImage[] normal, AnimatedImage[] ghost)
+            public MovingSpriteAssets(AnimatedImage[] normal, AnimatedImage[] ghost, AnimatedImage[] red)
             {
                 Normal = normal;
                 Ghost = ghost;
+                Red = red;
             }
         }
 
@@ -127,16 +129,20 @@ namespace MrBoom
 
                 var imgSpriteBoysWhite = changeColor(imgSpriteBoys, Color.White);
                 var imgSpriteGirlWhite = changeColor(imgSpriteGirl, Color.White);
+                var imgSpriteBoysRed = changeColor(imgSpriteBoys, Color.Red);
+                var imgSpriteGirlRed = changeColor(imgSpriteGirl, Color.Red);
 
                 foreach (int spriteIndex in spriteIndexes)
                 {
                     var normal = new List<AnimatedImage>();
                     var white = new List<AnimatedImage>();
+                    var red = new List<AnimatedImage>();
 
                     for (int x = 0; x < 5; x++)
                     {
                         List<Image> normalImages = new List<Image>();
                         List<Image> whiteImages = new List<Image>();
+                        List<Image> redImages = new List<Image>();
 
                         foreach (var index in framesIndex[x])
                         {
@@ -144,21 +150,25 @@ namespace MrBoom
 
                             normalImages.Add(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                             whiteImages.Add(loadImage(imgSpriteBoysWhite, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
+                            redImages.Add(loadImage(imgSpriteBoysRed, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                         }
 
                         normal.Add(new AnimatedImage(normalImages));
                         white.Add(new AnimatedImage(whiteImages));
+                        red.Add(new AnimatedImage(redImages));
                     }
 
-                    result.Add(new MovingSpriteAssets(normal.ToArray(), white.ToArray()));
+                    result.Add(new MovingSpriteAssets(normal.ToArray(), white.ToArray(), red.ToArray()));
 
                     normal.Clear();
                     white.Clear();
+                    red.Clear();
 
                     for (int x = 0; x < 5; x++)
                     {
                         List<Image> normalImages = new List<Image>();
                         List<Image> whiteImages = new List<Image>();
+                        List<Image> redImages = new List<Image>();
 
                         foreach (var index in framesIndex[x])
                         {
@@ -166,13 +176,15 @@ namespace MrBoom
 
                             normalImages.Add(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
                             whiteImages.Add(loadImage(imgSpriteGirlWhite, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
+                            redImages.Add(loadImage(imgSpriteGirlRed, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
                         }
 
                         normal.Add(new AnimatedImage(normalImages));
                         white.Add(new AnimatedImage(whiteImages));
+                        red.Add(new AnimatedImage(redImages));
                     }
 
-                    result.Add(new MovingSpriteAssets(normal.ToArray(), white.ToArray()));
+                    result.Add(new MovingSpriteAssets(normal.ToArray(), white.ToArray(), red.ToArray()));
                 }
 
                 return result.ToArray();
@@ -198,6 +210,26 @@ namespace MrBoom
                 return white.ToArray();
             }
 
+            AnimatedImage[] monsterToRed(AnimatedImage[] normal)
+            {
+                List<AnimatedImage> white = new List<AnimatedImage>(normal.Length);
+
+                for (int j = 0; j < normal.Length; j++)
+                {
+                    var stripe = new List<Image>(normal[j].Length);
+                    for (int k = 0; k < normal[j].Length; k++)
+                    {
+                        var item = normal[j][k];
+                        var texture = changeColor(item.Texture, Color.Red);
+                        stripe.Add(loadImage(texture, item.X, item.Y, item.Width, item.Height));
+                    }
+
+                    white.Add(new AnimatedImage(stripe));
+                }
+
+                return white.ToArray();
+            }
+
             MovingSpriteAssets loadMonster(AnimatedImage up, AnimatedImage left, AnimatedImage right, AnimatedImage down, AnimatedImage die)
             {
                 var normal = new AnimatedImage[]
@@ -209,7 +241,7 @@ namespace MrBoom
                     die
                 };
 
-                return new MovingSpriteAssets(normal, monsterToGhost(normal));
+                return new MovingSpriteAssets(normal, monsterToGhost(normal), monsterToRed(normal));
             }
 
             AnimatedImage loadBonus(Image img, Image background)

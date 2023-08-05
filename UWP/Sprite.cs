@@ -24,10 +24,10 @@ namespace MrBoom
         private int skullTimer;
         private readonly Assets.MovingSpriteAssets animations;
 
-        public Sprite(Terrain terrain, Assets.MovingSpriteAssets animations)
+        public Sprite(Terrain terrain, Assets.MovingSpriteAssets assets)
         {
             this.terrain = terrain;
-            this.animations = animations;
+            this.animations = assets;
         }
 
         public virtual void Update()

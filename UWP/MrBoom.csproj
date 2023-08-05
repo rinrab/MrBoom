@@ -110,6 +110,7 @@
     <Compile Include="GameScreen.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="IScreen.cs" />
+    <Compile Include="ISprite.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="SkullType.cs" />

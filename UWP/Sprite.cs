@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
 {
-    public abstract class Sprite
+    public abstract class Sprite : ISprite
     {
         public int CellX { get => (x + 8) / 16; }
         public int CellY { get => (y + 8) / 16; }

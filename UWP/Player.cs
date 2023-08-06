@@ -4,7 +4,7 @@ namespace MrBoom
 {
     public class Player : Sprite
     {
-        public IController Controller;
+        public readonly IController Controller;
         public int BombsPlaced;
         public bool rcDitonate = false;
 
@@ -12,7 +12,7 @@ namespace MrBoom
         private int maxBombsCount;
         private int lifeCount;
 
-        public Player(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations, 3)
+        public Player(Terrain map, Assets.MovingSpriteAssets animations, IController controller) : base(map, animations, 3)
         {
             this.animateIndex = 0;
             this.frameIndex = 0;
@@ -20,6 +20,7 @@ namespace MrBoom
             Features = map.StartFeatures;
             this.maxBoom = map.StartMaxFire;
             this.maxBombsCount = map.StartMaxBombsCount;
+            this.Controller = controller;
         }
 
         public override void Update()

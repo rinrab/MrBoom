@@ -138,10 +138,7 @@ namespace MrBoom
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller)
         {
-            Player sprite = new Player(this, movingSpriteAssets)
-            {
-                Controller = controller
-            };
+            Player sprite = new Player(this, movingSpriteAssets, controller);
 
             var spawn = this.spawns[this.generateSpawn()];
             sprite.x = spawn.x * 16;

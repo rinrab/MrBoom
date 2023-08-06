@@ -18,7 +18,7 @@ namespace MrBoom
         public bool IsDie = false;
         public Feature Features;
         public int unplugin;
-        public SkullType Skull;
+        public SkullType? Skull;
 
         private int skullTimer;
         private readonly Assets.MovingSpriteAssets animations;
@@ -38,7 +38,7 @@ namespace MrBoom
                 frameIndex += 4;
                 animateIndex = 4;
                 skullTimer = 0;
-                Skull = SkullType.None;
+                Skull = null;
                 return;
             }
 
@@ -62,7 +62,7 @@ namespace MrBoom
             }
             else
             {
-                Skull = SkullType.None;
+                Skull = null;
             }
 
             Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);

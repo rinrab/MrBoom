@@ -156,7 +156,7 @@
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
-                    SetSkull((SkullType)Terrain.Random.Next(5));
+                    SetSkull((SkullType)Terrain.Random.Next(4));
                 }
 
                 if (doFire)

@@ -358,10 +358,10 @@ namespace MrBoom
                 {
                     if (sprite1.CellX == sprite2.CellX &&
                         sprite1.CellY == sprite2.CellY &&
-                        sprite1.SkullType != SkullType.None &&
-                        sprite2.SkullType == SkullType.None)
+                        sprite1.Skull != SkullType.None &&
+                        sprite2.Skull == SkullType.None)
                     {
-                        sprite2.SetSkull(sprite1.SkullType);
+                        sprite2.SetSkull(sprite1.Skull);
                     }
                 }
             }

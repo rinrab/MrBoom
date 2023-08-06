@@ -18,7 +18,7 @@ namespace MrBoom
         public bool IsDie = false;
         public Feature Features;
         public int unplugin;
-        public SkullType SkullType;
+        public SkullType Skull;
 
         private int skullTimer;
         private readonly Assets.MovingSpriteAssets animations;
@@ -38,7 +38,7 @@ namespace MrBoom
                 frameIndex += 4;
                 animateIndex = 4;
                 skullTimer = 0;
-                SkullType = SkullType.None;
+                Skull = SkullType.None;
                 return;
             }
 
@@ -47,11 +47,11 @@ namespace MrBoom
             {
                 speed = 4;
             }
-            if (SkullType == SkullType.Fast)
+            if (Skull == SkullType.Fast)
             {
                 speed = 5;
             }
-            if (SkullType == SkullType.Slow)
+            if (Skull == SkullType.Slow)
             {
                 speed = 1;
             }
@@ -62,7 +62,7 @@ namespace MrBoom
             }
             else
             {
-                SkullType = SkullType.None;
+                Skull = SkullType.None;
             }
 
             Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
@@ -272,7 +272,7 @@ namespace MrBoom
             terrain.PlaySound(Sound.Skull);
 
             skullTimer = 600;
-            SkullType = skullType;
+            Skull = skullType;
         }
     }
 }

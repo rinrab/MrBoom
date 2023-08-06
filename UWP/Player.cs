@@ -46,7 +46,7 @@
                 this.Direction = Directions.Down;
             }
 
-            if (SkullType == SkullType.Reverse)
+            if (Skull == SkullType.Reverse)
             {
                 if (Direction == Directions.Up) Direction = Directions.Down;
                 else if (Direction == Directions.Down) Direction = Directions.Up;
@@ -63,8 +63,8 @@
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if ((Controller.IsKeyDown(PlayerKeys.Bomb) || SkullType == SkullType.AutoBomb) &&
-                SkullType != SkullType.BombsDisable)
+            if ((Controller.IsKeyDown(PlayerKeys.Bomb) || Skull == SkullType.AutoBomb) &&
+                Skull != SkullType.BombsDisable)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {

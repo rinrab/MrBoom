@@ -18,7 +18,7 @@ namespace MrBoom
         public bool IsDie = false;
         public Feature Features;
         public int unplugin;
-        public SkullType? Skull;
+        public SkullType? Skull { get; private set; }
 
         private int skullTimer;
         private readonly Assets.MovingSpriteAssets animations;

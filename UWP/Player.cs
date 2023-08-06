@@ -1,4 +1,6 @@
-﻿namespace MrBoom
+﻿using System;
+
+namespace MrBoom
 {
     public class Player : Sprite
     {
@@ -156,7 +158,8 @@
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
-                    SetSkull((SkullType)Terrain.Random.Next(4));
+                    Array values = Enum.GetValues(typeof(SkullType));
+                    SetSkull((SkullType)values.GetValue(Terrain.Random.Next(values.Length)));
                 }
 
                 if (doFire)

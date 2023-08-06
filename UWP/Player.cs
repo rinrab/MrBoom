@@ -205,11 +205,6 @@ namespace MrBoom
                 this.frameIndex = 0;
                 terrain.PlaySound(Sound.PlayerDie);
             }
-
-            if (unplugin != 0)
-            {
-                unplugin--;
-            }
         }
     }
 }

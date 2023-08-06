@@ -66,6 +66,11 @@ namespace MrBoom
                 Skull = null;
             }
 
+            if (unplugin > 0)
+            {
+                unplugin--;
+            }
+
             Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
 
             if (cell.Type == TerrainType.Bomb && cell.OffsetX == 0 && cell.OffsetY == 0)

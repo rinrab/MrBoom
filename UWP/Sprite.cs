@@ -5,6 +5,15 @@ namespace MrBoom
 {
     public abstract class Sprite : ISprite
     {
+        public enum Directions
+        {
+            None,
+            Up,
+            Down,
+            Left,
+            Right,
+        }
+
         public int CellX { get => (x + 8) / 16; }
         public int CellY { get => (y + 8) / 16; }
         public int AnimateIndex { get; private set; }
@@ -229,15 +238,6 @@ namespace MrBoom
 
                 this.AnimateIndex = 0;
             }
-        }
-
-        public enum Directions
-        {
-            None,
-            Up,
-            Down,
-            Left,
-            Right,
         }
 
         public void Draw(SpriteBatch ctx)

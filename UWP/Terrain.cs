@@ -136,9 +136,14 @@ namespace MrBoom
             }
         }
 
-        public void LocateSprite(Player sprite, int index = -1)
+        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller)
         {
-            var spawn = this.spawns[this.generateSpawn(index)];
+            Player sprite = new Player(this, movingSpriteAssets)
+            {
+                Controller = controller
+            };
+
+            var spawn = this.spawns[this.generateSpawn()];
             sprite.x = spawn.x * 16;
             sprite.y = spawn.y * 16;
 

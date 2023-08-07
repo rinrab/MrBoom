@@ -2,25 +2,23 @@
 
 namespace MrBoom
 {
-    public class Player : Sprite
+    public abstract class AbstarctPlayer : Sprite
     {
-        public readonly IController Controller;
         public int BombsPlaced;
         public bool rcDitonate = false;
+
+        protected bool rcDitonateButton;
+        protected bool dropBombButton;
 
         private int maxBoom;
         private int maxBombsCount;
         private int lifeCount;
 
-        public Player(Terrain map, Assets.MovingSpriteAssets animations, IController controller, int maxBoom, int maxBombs) : base(map, animations, 3)
+        public AbstarctPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs) : base(map, animations, 3)
         {
-            this.animateIndex = 0;
-            this.frameIndex = 0;
-            this.BombsPlaced = 0;
             Features = map.StartFeatures;
             this.maxBoom = maxBoom;
             this.maxBombsCount = maxBombs;
-            this.Controller = controller;
         }
 
         public override void Update()
@@ -29,24 +27,6 @@ namespace MrBoom
             {
                 base.Update();
                 return;
-            }
-
-            this.Direction = Directions.None;
-            if (this.Controller.IsKeyDown(PlayerKeys.Up))
-            {
-                this.Direction = Directions.Up;
-            }
-            else if (this.Controller.IsKeyDown(PlayerKeys.Left))
-            {
-                this.Direction = Directions.Left;
-            }
-            else if (this.Controller.IsKeyDown(PlayerKeys.Right))
-            {
-                this.Direction = Directions.Right;
-            }
-            else if (this.Controller.IsKeyDown(PlayerKeys.Down))
-            {
-                this.Direction = Directions.Down;
             }
 
             if (Skull == SkullType.Reverse)
@@ -58,7 +38,7 @@ namespace MrBoom
             }
 
             this.rcDitonate = Features.HasFlag(Feature.RemoteControl) &&
-                this.Controller.IsKeyDown(PlayerKeys.RcDitonate);
+                rcDitonateButton;
 
             base.Update();
 
@@ -66,8 +46,7 @@ namespace MrBoom
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if ((Controller.IsKeyDown(PlayerKeys.Bomb) || Skull == SkullType.AutoBomb) &&
-                Skull != SkullType.BombsDisable)
+            if ((dropBombButton || Skull == SkullType.AutoBomb) && Skull != SkullType.BombsDisable)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {

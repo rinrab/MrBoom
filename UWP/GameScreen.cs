@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.WIC;
 
 namespace MrBoom
 {
@@ -54,19 +55,9 @@ namespace MrBoom
             if (terrain.Result == GameResult.Victory)
             {
                 PlayerState[] players = game.Players.ToArray();
+                int winner = terrain.Winner;
 
-                int winner = -1;
-                var winnerSprite = terrain.Winner;
-
-                for (int i = 0; i < players.Length; i++)
-                {
-                    PlayerState player = players[i];
-                    if (winnerSprite.Controller == player.Controller)
-                    {
-                        player.VictoryCount++;
-                        winner = i;
-                    }
-                }
+                players[winner].VictoryCount++;
 
                 ScreenManager.SetScreen(new ResultScreen(players, winner, assets, game.Controllers));
             }

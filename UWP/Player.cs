@@ -1,8 +1,10 @@
-﻿namespace MrBoom
+﻿using System;
+
+namespace MrBoom
 {
     public class Player : Sprite
     {
-        public IController Controller;
+        public readonly IController Controller;
         public int BombsPlaced;
         public bool rcDitonate = false;
 
@@ -10,14 +12,15 @@
         private int maxBombsCount;
         private int lifeCount;
 
-        public Player(Terrain map, Assets.MovingSpriteAssets animations) : base(map, animations, 3)
+        public Player(Terrain map, Assets.MovingSpriteAssets animations, IController controller, int maxBoom, int maxBombs) : base(map, animations, 3)
         {
             this.animateIndex = 0;
             this.frameIndex = 0;
             this.BombsPlaced = 0;
             Features = map.StartFeatures;
-            this.maxBoom = map.StartMaxFire;
-            this.maxBombsCount = map.StartMaxBombsCount;
+            this.maxBoom = maxBoom;
+            this.maxBombsCount = maxBombs;
+            this.Controller = controller;
         }
 
         public override void Update()
@@ -46,7 +49,7 @@
                 this.Direction = Directions.Down;
             }
 
-            if (SkullType == SkullType.Reverse)
+            if (Skull == SkullType.Reverse)
             {
                 if (Direction == Directions.Up) Direction = Directions.Down;
                 else if (Direction == Directions.Down) Direction = Directions.Up;
@@ -63,8 +66,8 @@
             int cellY = (this.y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
-            if ((Controller.IsKeyDown(PlayerKeys.Bomb) || SkullType == SkullType.AutoBomb) &&
-                SkullType != SkullType.BombsDisable)
+            if ((Controller.IsKeyDown(PlayerKeys.Bomb) || Skull == SkullType.AutoBomb) &&
+                Skull != SkullType.BombsDisable)
             {
                 if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
                 {
@@ -156,7 +159,8 @@
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
-                    SetSkull((SkullType)Terrain.Random.Next(5));
+                    Array values = Enum.GetValues(typeof(SkullType));
+                    SetSkull((SkullType)values.GetValue(Terrain.Random.Next(values.Length)));
                 }
 
                 if (doFire)
@@ -201,11 +205,6 @@
                 this.IsDie = true;
                 this.frameIndex = 0;
                 terrain.PlaySound(Sound.PlayerDie);
-            }
-
-            if (unplugin != 0)
-            {
-                unplugin--;
             }
         }
     }

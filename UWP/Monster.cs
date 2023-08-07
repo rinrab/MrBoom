@@ -41,11 +41,6 @@ namespace MrBoom
 
             if (!IsDie)
             {
-                if (unplugin != 0)
-                {
-                    unplugin--;
-                }
-
                 var cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
                 if (cell.Type == TerrainType.Fire && unplugin == 0)
                 {

@@ -2,7 +2,6 @@
 {
     public enum SkullType
     {
-        None,
         AutoBomb,
         BombsDisable,
         Reverse,

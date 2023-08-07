@@ -5,6 +5,15 @@ namespace MrBoom
 {
     public abstract class Sprite : ISprite
     {
+        public enum Directions
+        {
+            None,
+            Up,
+            Down,
+            Left,
+            Right,
+        }
+
         public int CellX { get => (x + 8) / 16; }
         public int CellY { get => (y + 8) / 16; }
         public int AnimateIndex { get; private set; }
@@ -17,8 +26,9 @@ namespace MrBoom
         public int animateIndex;
         public bool IsDie = false;
         public Feature Features;
-        public int unplugin;
-        public SkullType SkullType;
+        public SkullType? Skull { get; private set; }
+
+        protected int unplugin;
 
         private int blinking = 0;
         private int skullTimer;
@@ -39,7 +49,7 @@ namespace MrBoom
                 frameIndex += 4;
                 animateIndex = 4;
                 skullTimer = 0;
-                SkullType = SkullType.None;
+                Skull = null;
                 return;
             }
 
@@ -50,11 +60,11 @@ namespace MrBoom
             {
                 speed = 4;
             }
-            if (SkullType == SkullType.Fast)
+            if (Skull == SkullType.Fast)
             {
                 speed = 5;
             }
-            if (SkullType == SkullType.Slow)
+            if (Skull == SkullType.Slow)
             {
                 speed = 1;
             }
@@ -65,7 +75,12 @@ namespace MrBoom
             }
             else
             {
-                SkullType = SkullType.None;
+                Skull = null;
+            }
+
+            if (unplugin > 0)
+            {
+                unplugin--;
             }
 
             Cell cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
@@ -228,15 +243,6 @@ namespace MrBoom
             }
         }
 
-        public enum Directions
-        {
-            None,
-            Up,
-            Down,
-            Left,
-            Right,
-        }
-
         public void Draw(SpriteBatch ctx)
         {
             if (frameIndex != -1)
@@ -270,7 +276,7 @@ namespace MrBoom
             terrain.PlaySound(Sound.Skull);
 
             skullTimer = 600;
-            SkullType = skullType;
+            Skull = skullType;
         }
     }
 }

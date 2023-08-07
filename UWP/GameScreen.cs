@@ -25,11 +25,7 @@ namespace MrBoom
 
             for (int i = 0; i < players.Count; i++)
             {
-                Player sprite = new Player(terrain, assets.Players[i])
-                {
-                    Controller = players[i].Controller
-                };
-                terrain.LocateSprite(sprite);
+                terrain.AddPlayer(assets.Players[i], players[i].Controller);
             }
 
             terrain.InitializeMonsters();

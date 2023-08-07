@@ -13,8 +13,6 @@ namespace MrBoom
         public int TimeLeft;
         public Sound SoundsToPlay;
         public GameResult Result = GameResult.None;
-        public int StartMaxFire;
-        public int StartMaxBombsCount;
         public int ApocalypseSpeed = 2;
         public int MaxApocalypse;
 
@@ -38,6 +36,8 @@ namespace MrBoom
         private readonly Map map;
         private readonly List<Player> players;
         private readonly List<Monster> monsters;
+        private readonly int startMaxFire;
+        private readonly int startMaxBombsCount;
 
         public Feature StartFeatures { get; }
 
@@ -81,8 +81,8 @@ namespace MrBoom
             }
             this.players = new List<Player>();
 
-            this.StartMaxBombsCount = map.StartMaxBombsCount;
-            this.StartMaxFire = map.StartMaxFire;
+            this.startMaxBombsCount = map.StartMaxBombsCount;
+            this.startMaxFire = map.StartMaxFire;
 
             data = new Cell[this.Width * this.Height];
             for (int y = 0; y < this.Height; y++)
@@ -136,9 +136,11 @@ namespace MrBoom
             }
         }
 
-        public void LocateSprite(Player sprite, int index = -1)
+        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller)
         {
-            var spawn = this.spawns[this.generateSpawn(index)];
+            Player sprite = new Player(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount);
+
+            var spawn = this.spawns[this.generateSpawn()];
             sprite.x = spawn.x * 16;
             sprite.y = spawn.y * 16;
 
@@ -358,10 +360,10 @@ namespace MrBoom
                 {
                     if (sprite1.CellX == sprite2.CellX &&
                         sprite1.CellY == sprite2.CellY &&
-                        sprite1.SkullType != SkullType.None &&
-                        sprite2.SkullType == SkullType.None)
+                        sprite1.Skull.HasValue &&
+                        !sprite2.Skull.HasValue)
                     {
-                        sprite2.SetSkull(sprite1.SkullType);
+                        sprite2.SetSkull(sprite1.Skull.Value);
                     }
                 }
             }

@@ -24,10 +24,12 @@ namespace MrBoom
 
             game.NextSong();
 
-            for (int i = 0; i < players.Count; i++)
+            int i = 0;
+            for (; i < players.Count; i++)
             {
                 terrain.AddPlayer(assets.Players[i], players[i].Controller);
             }
+            terrain.AddBot(assets.Players[i]);
 
             terrain.InitializeMonsters();
         }

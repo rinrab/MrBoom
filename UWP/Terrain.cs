@@ -147,6 +147,17 @@ namespace MrBoom
             this.players.Add(sprite);
         }
 
+        public void AddBot(Assets.MovingSpriteAssets movingSpriteAssets)
+        {
+            AbstarctPlayer sprite = new Bot(this, movingSpriteAssets, startMaxFire, startMaxBombsCount);
+
+            var spawn = this.spawns[this.generateSpawn()];
+            sprite.x = spawn.x * 16;
+            sprite.y = spawn.y * 16;
+
+            this.players.Add(sprite);
+        }
+
         public void InitializeMonsters()
         {
             int count = this.spawns.Count - this.players.Count;

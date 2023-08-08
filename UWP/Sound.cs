@@ -9,7 +9,7 @@ namespace MrBoom
     {
         public class Sound
         {
-            private SoundEffect sound;
+            private readonly SoundEffect sound;
 
             public Sound(SoundEffect sound)
             {
@@ -24,7 +24,7 @@ namespace MrBoom
 
         public class Music
         {
-            private Song song;
+            private readonly Song song;
 
             public Music(Song song)
             {

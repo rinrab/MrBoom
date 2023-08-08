@@ -10,7 +10,6 @@ namespace MrBoom
         private readonly Game game;
         private int bgTick = 0;
         private bool isPause = false;
-        private int pauseTick = 0;
         private PauseWindow pauseWindow;
 
         public Screen Next { get; private set; }

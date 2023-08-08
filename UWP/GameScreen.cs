@@ -8,6 +8,7 @@ namespace MrBoom
         private readonly Terrain terrain;
         private readonly Assets assets;
         private readonly Game game;
+
         private int bgTick = 0;
         private bool isPause = false;
         private PauseWindow pauseWindow;

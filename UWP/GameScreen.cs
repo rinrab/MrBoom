@@ -11,6 +11,7 @@ namespace MrBoom
         private int bgTick = 0;
         private bool isPause = false;
         private int pauseTick = 0;
+        private PauseWindow pauseWindow;
 
         public Screen Next { get; private set; }
 
@@ -35,13 +36,22 @@ namespace MrBoom
         {
             if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Pause))
             {
-                isPause = !isPause;
+                if (isPause)
+                {
+                    isPause = false;
+                }
+                else
+                {
+                    pauseWindow = new PauseWindow(assets);
+                    isPause = true;
+                }
+
                 Controller.Reset(game.Controllers);
             }
 
             if (isPause)
             {
-                pauseTick++;
+                pauseWindow.Update();
                 return;
             }
 
@@ -191,8 +201,7 @@ namespace MrBoom
 
             if (isPause)
             {
-                var img = assets.Pause[pauseTick / 20 % 4];
-                img.Draw(ctx, 320 / 2 - img.Width / 2, 200 / 2 - img.Height / 2);
+                pauseWindow.Draw(ctx);
             }
         }
 

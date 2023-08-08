@@ -113,6 +113,7 @@
     <Compile Include="ISprite.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Monster.cs" />
+    <Compile Include="PauseWindow.cs" />
     <Compile Include="SkullType.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="PlayerState.cs" />

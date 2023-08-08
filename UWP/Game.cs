@@ -19,12 +19,15 @@ namespace MrBoom
 
         public Game()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = false;
-            graphics.ToggleFullScreen();
+            graphics = new GraphicsDeviceManager(this)
+            {
+                IsFullScreen = true
+            };
 
             IsFixedTimeStep = true;
+            IsMouseVisible = false;
+
+            Content.RootDirectory = "Content";
 
             Controllers = new List<IController>()
             {
@@ -39,13 +42,6 @@ namespace MrBoom
 
         protected override void Initialize()
         {
-#if DEBUG
-            graphics.IsFullScreen = false;
-#else
-            graphics.IsFullScreen = true;
-#endif
-            graphics.ApplyChanges();
-
             assets = Assets.Load(Content, GraphicsDevice);
             MediaPlayer.IsRepeating = true;
 

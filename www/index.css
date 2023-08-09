@@ -113,6 +113,10 @@ footer {
     text-align: center;
 }
 
+footer * {
+    color: #6c757d;
+}
+
 .footer-container {
     max-width: var(--width);
     display: flex;

@@ -30,6 +30,7 @@ namespace MrBoom
 
         protected int unplugin;
 
+        private int blinking = 0;
         private int skullTimer;
         private readonly Assets.MovingSpriteAssets animations;
         private readonly int DefaultSpeed;
@@ -51,6 +52,8 @@ namespace MrBoom
                 Skull = null;
                 return;
             }
+
+            blinking++;
 
             int speed = DefaultSpeed;
             if (Features.HasFlag(Feature.RollerSkates))
@@ -244,27 +247,22 @@ namespace MrBoom
         {
             if (frameIndex != -1)
             {
-                AnimatedImage animation;
-                if (unplugin == 0 || unplugin % 30 < 15)
+                Color color = Color.White;
+                
+                AnimatedImage animation = animations.Normal[animateIndex];
+                if (unplugin > 0 && blinking % 30 < 15)
                 {
-                    animation = this.animations.Normal[this.animateIndex];
+                    animation = animations.Ghost[animateIndex];
                 }
-                else
+                if (skullTimer > 0 && blinking % 30 > 15)
                 {
-                    animation = this.animations.Ghost[animateIndex];
+                    animation = animations.Red[animateIndex];
                 }
 
                 Image img = animation[frameIndex / 20];
 
                 int x = this.x + 8 + 8 - img.Width / 2;
                 int y = this.y + 16 - img.Height;
-
-                Color color = Color.White;
-
-                if (skullTimer % 30 > 15)
-                {
-                    color = new Color(255, 0, 0);
-                }
 
                 if (animateIndex != 4 || frameIndex / 20 < animations.Normal[4].Length)
                 {

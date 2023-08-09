@@ -1,14 +1,10 @@
 .container {
     display: flex;
+    flex-direction: column;
     flex-grow: 1;
     margin-left: auto;
     margin-right: auto;
     max-width: 800px;
-}
-
-.content {
-    width: 100%;
-    flex: 0 0 auto;
 }
 
 .col {
@@ -102,6 +98,8 @@ ms-store-badge::part(img),
 
 .launch-container {
     display: flex;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 footer {

@@ -33,9 +33,9 @@ body {
     border-top-right-radius: 0 !important;
 }
 
-    .btn-start:hover {
-        box-shadow: rgba(64, 64, 64, .7) 15px 15px 10px;
-    }
+.btn-start:hover {
+    box-shadow: rgba(64, 64, 64, .7) 15px 15px 10px;
+}
 
 .btn {
     color: var(--foreground-color);
@@ -49,12 +49,12 @@ body {
     padding: 0.25rem 1rem 0.25rem 1rem;
 }
 
-    .btn:hover {
-        color: var(--background-color);
-        border-color: var(--foreground-color);
-        background: var(--foreground-color);
-        cursor: pointer;
-    }
+.btn:hover {
+    color: var(--background-color);
+    border-color: var(--foreground-color);
+    background: var(--foreground-color);
+    cursor: pointer;
+}
 
 #start-menu {
     z-index: 2000;
@@ -68,13 +68,15 @@ body {
     font-size: var(--fs);
 }
 
-    #start-menu:hover {
-        opacity: 1!important;
-        box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
-    }
+#start-menu:hover {
+    opacity: 1 !important;
+    box-shadow: rgb(151, 151, 151, 0.70) 27px -17px 10px;
+}
 
 @keyframes start_menu-begin {
-    0%,80% {
+
+    0%,
+    80% {
         opacity: 1;
     }
 
@@ -84,11 +86,13 @@ body {
 }
 
 
-body[state="game"] #start-menu, body[state="game"] #start-menu * {
+body[state="game"] #start-menu,
+body[state="game"] #start-menu * {
     display: none;
 }
 
-.blur, .blur * {
+.blur,
+.blur * {
     filter: blur(4px);
 }
 
@@ -99,23 +103,25 @@ body[state="game"] #start-menu, body[state="game"] #start-menu * {
     display: flex;
 }
 
-    .help > div p {
-        padding: 0 2rem 0 2rem;
-    }
+.help>div p {
+    padding: 0 2rem 0 2rem;
+}
 
-    .help strong {
-        padding: 0 1rem 0 1rem;
-        display: block;
-        width: 100%;
-        text-align: left;
-    }
+.help strong {
+    padding: 0 1rem 0 1rem;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
 
-    .help > div:not(:first-child) {
-        border-left: 1px solid black;
-    }
+.help>div:not(:first-child) {
+    border-left: 1px solid black;
+}
 
 @keyframes insert-coin-animate {
-    0%, 100% {
+
+    0%,
+    100% {
         height: 30%;
     }
 
@@ -135,12 +141,11 @@ body[state="game"] #start-menu, body[state="game"] #start-menu * {
     box-shadow: rgba(255, 255, 255, 1) 0 0 0;
 }
 
-    #insert-coin:hover {
-        box-shadow: #ffffffbb -20px 20px 20px;
-        animation-play-state: paused;
-    }
+#insert-coin:hover {
+    box-shadow: #ffffffbb -20px 20px 20px;
+    animation-play-state: paused;
+}
 
 body[state="game"] #insert-coin {
     display: none;
 }
-

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.WIC;
 
 namespace MrBoom
 {

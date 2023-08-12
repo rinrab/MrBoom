@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Timofei Zhakov. All rights reserved.
+
+using System;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;

@@ -1,4 +1,6 @@
-﻿namespace MrBoom
+﻿// Copyright (c) Timofei Zhakov. All rights reserved.
+
+namespace MrBoom
 {
     public enum Screen
     {

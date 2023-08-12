@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml;
+﻿// Copyright (c) Timofei Zhakov. All rights reserved.
+
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace MrBoom

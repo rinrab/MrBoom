@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Copyright (c) Timofei Zhakov. All rights reserved.
+
+using Microsoft.Xna.Framework;
 
 namespace MrBoom
 {

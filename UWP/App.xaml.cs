@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Timofei Zhakov. All rights reserved.
+
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;

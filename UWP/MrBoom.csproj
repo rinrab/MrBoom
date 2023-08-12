@@ -121,7 +121,6 @@
     <Compile Include="ResultScreen.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Sound.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="StartScreen.cs" />

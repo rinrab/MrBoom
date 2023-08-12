@@ -2,7 +2,7 @@
 
 namespace MrBoom
 {
-    public abstract class AbstarctPlayer : Sprite
+    public abstract class AbstractPlayer : Sprite
     {
         public int BombsPlaced;
         public bool rcDitonate = false;
@@ -14,7 +14,7 @@ namespace MrBoom
         private int maxBombsCount;
         private int lifeCount;
 
-        public AbstarctPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs) : base(map, animations, 3)
+        public AbstractPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs) : base(map, animations, 3)
         {
             Features = map.StartFeatures;
             this.maxBoom = maxBoom;

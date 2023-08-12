@@ -36,7 +36,7 @@ namespace MrBoom
         private readonly List<Spawn> spawns;
         private readonly List<PowerUpType> powerUpList;
         private readonly Map map;
-        private readonly List<AbstarctPlayer> players;
+        private readonly List<AbstractPlayer> players;
         private readonly List<Monster> monsters;
         private readonly int startMaxFire;
         private readonly int startMaxBombsCount;
@@ -81,7 +81,7 @@ namespace MrBoom
                     MaxApocalypse = Math.Max(fin, MaxApocalypse);
                 }
             }
-            this.players = new List<AbstarctPlayer>();
+            this.players = new List<AbstractPlayer>();
 
             this.startMaxBombsCount = map.StartMaxBombsCount;
             this.startMaxFire = map.StartMaxFire;
@@ -140,7 +140,7 @@ namespace MrBoom
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller)
         {
-            AbstarctPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount);
+            AbstractPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount);
 
             var spawn = this.spawns[this.generateSpawn()];
             sprite.x = spawn.x * 16;
@@ -176,7 +176,7 @@ namespace MrBoom
             }
 
             int playersCount = 0;
-            foreach (AbstarctPlayer player in this.players)
+            foreach (AbstractPlayer player in this.players)
             {
                 if (!player.IsDie)
                 {
@@ -412,7 +412,7 @@ namespace MrBoom
             }
         }
 
-        public void RcDitonate(AbstarctPlayer player)
+        public void RcDitonate(AbstractPlayer player)
         {
 
         }
@@ -508,7 +508,7 @@ namespace MrBoom
             };
         }
 
-        public void PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, AbstarctPlayer owner)
+        public void PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, AbstractPlayer owner)
         {
             SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
             {
@@ -610,7 +610,7 @@ namespace MrBoom
         public int bombTime;
         public int maxBoom;
         public bool rcAllowed;
-        public AbstarctPlayer owner;
+        public AbstractPlayer owner;
         public Cell Next;
         public PowerUpType PowerUpType;
         public int OffsetX;

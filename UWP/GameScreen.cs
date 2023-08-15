@@ -36,27 +36,17 @@ namespace MrBoom
 
         public void Update()
         {
-            if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
-            {
-                if (isPause)
-                {
-                    isPause = false;
-                }
-                else
-                {
-                    pauseWindow = new Menu(new string[] { "RESUME", "NEW GAME", "QUIT GAME" }, assets, game.Controllers);
-                    Controller.Reset(game.Controllers);
-                    isPause = true;
-                }
-
-                Controller.Reset(game.Controllers);
-            }
-
             bgTick++;
 
             if (isPause)
             {
                 pauseWindow.Update();
+
+                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
+                {
+                    isPause = false;
+                    Controller.Reset(game.Controllers);
+                }
 
                 if (pauseWindow.Action == 0)
                 {
@@ -72,26 +62,33 @@ namespace MrBoom
                 {
                     game.Exit();
                 }
-
-                return;
             }
-
-            terrain.Update();
-
-            PlaySounds(terrain.SoundsToPlay);
-
-            if (terrain.Result == GameResult.Victory)
+            else
             {
-                PlayerState[] players = game.Players.ToArray();
-                int winner = terrain.Winner;
+                terrain.Update();
 
-                players[winner].VictoryCount++;
+                PlaySounds(terrain.SoundsToPlay);
 
-                ScreenManager.SetScreen(new ResultScreen(players, winner, assets, game.Controllers));
-            }
-            else if (terrain.Result == GameResult.Draw)
-            {
-                ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
+                if (terrain.Result == GameResult.Victory)
+                {
+                    PlayerState[] players = game.Players.ToArray();
+                    int winner = terrain.Winner;
+
+                    players[winner].VictoryCount++;
+
+                    ScreenManager.SetScreen(new ResultScreen(players, winner, assets, game.Controllers));
+                }
+                else if (terrain.Result == GameResult.Draw)
+                {
+                    ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
+                }
+
+                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
+                {
+                    pauseWindow = new Menu(new string[] { "RESUME", "NEW GAME", "QUIT GAME" }, assets, game.Controllers);
+                    Controller.Reset(game.Controllers);
+                    isPause = true;
+                }
             }
         }
 

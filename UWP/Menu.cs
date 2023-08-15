@@ -77,7 +77,7 @@ namespace MrBoom
 
             for (int i = 0; i < items.Length; i++)
             {
-                ctx.DrawString(assets.MenuFont, items[i], new Vector2(x, y) * scale, Color.Blue);
+                ctx.DrawString(assets.MenuFont, items[i], new Vector2(x, y) * scale, Color.White);
                 if (select == i)
                 {
                     assets.Bomb[bombTick / 16].Draw(ctx, x - assets.Bomb[0].Width - bombOffset / 2,

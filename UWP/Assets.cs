@@ -68,6 +68,7 @@ namespace MrBoom
         public Image[] Controls { get; private set; }
         public Image PauseHelp { get; private set; }
         public Image GameHelp { get; private set; }
+        public Texture2D BlackPixel { get; private set; }
 
         public Image DrawGameIn;
         public AnimatedImage DrawGameInNumbers;
@@ -338,6 +339,9 @@ namespace MrBoom
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
             var bonusBackground = loadImage(imgBonus, 0, 0, 160, 16);
 
+            var blackPixel = new Texture2D(graphics, 1, 1);
+            blackPixel.SetData(new Color[] { Color.Black });
+
             var monsters = new MovingSpriteAssets[]
                 {
                     loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
@@ -568,7 +572,8 @@ namespace MrBoom
                 },
                 PauseHelp = loadImage(imgHelp, 79, 155, 162, 45),
                 GameHelp = loadImage(imgHelp, 0, 0, 121, 20),
-                MenuFont = content.Load<SpriteFont>(@"font\Menu")
+                MenuFont = content.Load<SpriteFont>(@"font\Menu"),
+                BlackPixel = blackPixel
             };
         }
     }

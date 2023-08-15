@@ -52,6 +52,8 @@ namespace MrBoom
                 Controller.Reset(game.Controllers);
             }
 
+            bgTick++;
+
             if (isPause)
             {
                 pauseWindow.Update();
@@ -69,8 +71,6 @@ namespace MrBoom
 
                 return;
             }
-
-            bgTick++;
 
             terrain.Update();
 

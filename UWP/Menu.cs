@@ -59,7 +59,7 @@ namespace MrBoom
             ctx.Draw(assets.BlackPixel, new Rectangle(0, 0, 640, 400), new Rectangle(0, 0, 1, 1), Color.White * 0.7f);
 
             const int scale = 2;
-            const int bombOffset = 6;
+            const int bombOffset = 8;
 
             int maxWidth = 0;
             int maxHeight = 0;
@@ -72,7 +72,7 @@ namespace MrBoom
                 maxHeight = Math.Max(maxHeight, (int)size.Y);
             }
 
-            int x = (320 - maxWidth + assets.Bomb[bombTick / 15].Width + bombOffset) / 2;
+            int x = (320 - maxWidth) / 2;
             int y = (200 - maxHeight * items.Length) / 2;
 
             for (int i = 0; i < items.Length; i++)

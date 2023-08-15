@@ -42,7 +42,8 @@ namespace MrBoom
             {
                 pauseWindow.Update();
 
-                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
+                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu) ||
+                    Controller.IsKeyDown(game.Controllers, PlayerKeys.Back))
                 {
                     isPause = false;
                     Controller.Reset(game.Controllers);

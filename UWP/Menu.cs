@@ -51,6 +51,11 @@ namespace MrBoom
                 assets.Sounds.Bang.Play();
                 Controller.Reset(controllers);
             }
+            if (Controller.IsKeyDown(controllers, PlayerKeys.Back))
+            {
+                Action = -2;
+            }
+
             bombTick++;
         }
 

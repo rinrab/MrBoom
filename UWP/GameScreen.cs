@@ -13,7 +13,7 @@ namespace MrBoom
 
         private int bgTick = 0;
         private bool isPause = false;
-        private PauseWindow pauseWindow;
+        private Menu pauseWindow;
 
         public Screen Next { get; private set; }
 
@@ -36,7 +36,7 @@ namespace MrBoom
 
         public void Update()
         {
-            if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Pause))
+            if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
             {
                 if (isPause)
                 {
@@ -44,7 +44,8 @@ namespace MrBoom
                 }
                 else
                 {
-                    pauseWindow = new PauseWindow(assets);
+                    pauseWindow = new Menu(new string[] { "RESUME", "QUIT GAME" }, assets, game.Controllers);
+                    Controller.Reset(game.Controllers);
                     isPause = true;
                 }
 
@@ -54,6 +55,18 @@ namespace MrBoom
             if (isPause)
             {
                 pauseWindow.Update();
+
+                if (pauseWindow.Action == 0)
+                {
+                    isPause = false;
+                }
+                else if (pauseWindow.Action == 1)
+                {
+                    game.Players = new List<PlayerState>();
+                    game.NextSong(3);
+                    ScreenManager.SetScreen(new StartScreen(assets, game.Players, game.Controllers));
+                }
+
                 return;
             }
 
@@ -75,22 +88,6 @@ namespace MrBoom
             else if (terrain.Result == GameResult.Draw)
             {
                 ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
-            }
-
-            bool endGame = false;
-            foreach (var controller in game.Controllers)
-            {
-                if (controller.IsKeyDown(PlayerKeys.EndGame))
-                {
-                    endGame = true;
-                }
-            }
-
-            if (endGame)
-            {
-                game.Players = new List<PlayerState>();
-                game.NextSong(3);
-                ScreenManager.SetScreen(new StartScreen(assets, game.Players, game.Controllers));
             }
         }
 

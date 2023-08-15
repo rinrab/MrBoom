@@ -114,6 +114,7 @@
     <Compile Include="IScreen.cs" />
     <Compile Include="ISprite.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="PauseWindow.cs" />
     <Compile Include="SkullType.cs" />

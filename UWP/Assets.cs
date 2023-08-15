@@ -73,6 +73,7 @@ namespace MrBoom
         public AnimatedImage DrawGameInNumbers;
 
         public AnimatedImage[] Alpha;
+        public SpriteFont MenuFont;
 
         public static int scale = 2;
 
@@ -567,6 +568,7 @@ namespace MrBoom
                 },
                 PauseHelp = loadImage(imgHelp, 79, 155, 162, 45),
                 GameHelp = loadImage(imgHelp, 0, 0, 121, 20),
+                MenuFont = content.Load<SpriteFont>(@"font\Menu")
             };
         }
     }

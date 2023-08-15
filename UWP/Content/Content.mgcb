@@ -1,4 +1,4 @@
-
+﻿
 #----------------------------- Global Properties ----------------------------#
 
 /outputDir:bin/$(Platform)
@@ -726,6 +726,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:CONTROLS.png
+
+#begin font/Menu.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font/Menu.spritefont;font/Menu.spritefont
 
 #begin HELP.png
 /importer:TextureImporter

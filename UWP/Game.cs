@@ -135,7 +135,6 @@ namespace MrBoom
 
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,
-                samplerState: SamplerState.PointWrap,
                 transformMatrix: matrix);
 
             spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.White);

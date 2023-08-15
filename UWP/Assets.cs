@@ -326,7 +326,6 @@ namespace MrBoom
             var imgSoucoupe = content.Load<Texture2D>("SOUCOUPE");
             var imgBonus = content.Load<Texture2D>("BONUS");
             var imgControls = content.Load<Texture2D>("CONTROLS");
-            var imgHelp = content.Load<Texture2D>("HELP");
 
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
@@ -570,8 +569,6 @@ namespace MrBoom
                     loadImage(imgControls, 81, 305, 14, 14),
                     loadImage(imgControls, 513, 161, 30, 30)
                 },
-                PauseHelp = loadImage(imgHelp, 79, 155, 162, 45),
-                GameHelp = loadImage(imgHelp, 0, 0, 121, 20),
                 MenuFont = content.Load<SpriteFont>(@"font\Menu"),
                 BlackPixel = blackPixel
             };

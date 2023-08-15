@@ -188,8 +188,6 @@ namespace MrBoom
                 assets.DrawGameInNumbers[secondNumber].Draw(ctx, x + 8 + 42, y + 15);
             }
 
-            assets.GameHelp.Draw(ctx, 0, 0);
-
             if (isPause)
             {
                 pauseWindow.Draw(ctx);

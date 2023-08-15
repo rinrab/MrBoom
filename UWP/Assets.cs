@@ -564,7 +564,7 @@ namespace MrBoom
                 DrawGameInNumbers = loadImageStripe(imgSoucoupe, 173, 32, 8, 7, 10),
                 Controls = new Image[]
                 {
-                    loadImage(imgControls, 65, 1, 14, 14),
+                    loadImage(content.Load<Texture2D>("UI_A"), 0, 0, 32, 32),
                     loadImage(imgControls, 273, 97, 25, 14),
                     loadImage(imgControls, 81, 305, 14, 14),
                     loadImage(imgControls, 513, 161, 30, 30)

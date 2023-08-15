@@ -56,9 +56,7 @@ namespace MrBoom
 
         public void Draw(SpriteBatch ctx)
         {
-            Color color = Color.White * 0.5f;
-            ctx.Draw(assets.BlackPixel, Vector2.Zero, new Rectangle(0, 0, 1, 1),
-                     color, 0, Vector2.Zero, new Vector2(640, 400), SpriteEffects.None, 1);
+            ctx.Draw(assets.BlackPixel, new Rectangle(0, 0, 640, 400), new Rectangle(0, 0, 1, 1), Color.White * 0.5f);
 
             const int scale = 2;
             const int bombOffset = 6;

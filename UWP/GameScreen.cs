@@ -44,7 +44,7 @@ namespace MrBoom
                 }
                 else
                 {
-                    pauseWindow = new Menu(new string[] { "RESUME", "QUIT GAME" }, assets, game.Controllers);
+                    pauseWindow = new Menu(new string[] { "RESUME", "NEW GAME", "QUIT GAME" }, assets, game.Controllers);
                     Controller.Reset(game.Controllers);
                     isPause = true;
                 }
@@ -67,6 +67,10 @@ namespace MrBoom
                     game.Players = new List<PlayerState>();
                     game.NextSong(3);
                     ScreenManager.SetScreen(new StartScreen(assets, game.Players, game.Controllers));
+                }
+                else if (pauseWindow.Action == 2)
+                {
+                    game.Exit();
                 }
 
                 return;

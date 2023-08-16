@@ -113,7 +113,8 @@ namespace MrBoom
                     string[] names = new string[]
                     {
                         "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
-                        "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus"
+                        "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus",
+                        "cpp", "sus", "god", "guy", "bob", "jim", "mrb", "max"
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
                     this.players.Add(new PlayerState(controller) { Name = name });

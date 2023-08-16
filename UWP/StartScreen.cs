@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
@@ -25,6 +27,7 @@ namespace MrBoom
             "and right alt to triger it by radio control   " +
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
+        private int startTick = -1;
 
         public StartScreen(Assets assets, List<PlayerState> players, List<IController> controllers)
         {
@@ -84,6 +87,18 @@ namespace MrBoom
             }
 
             Game.DrawString(ctx, 320 - tick % (helpText.Length * 8 + 320), 192, helpText, assets.Alpha[1]);
+
+            if (startTick >= 0)
+            {
+                double scale = Math.Abs(Math.Sin((double)startTick / 15)) * 0.75 + 1;
+
+                double width = assets.StartButton.Width * scale;
+                double height = assets.StartButton.Height * scale;
+
+                var rect = new Rectangle(640 - (int)width, 0, (int)width, (int)height);
+
+                ctx.Draw(assets.StartButton, rect, Color.White);
+            }
         }
 
         public void Update()
@@ -123,6 +138,18 @@ namespace MrBoom
                 {
                     Next = Screen.Game;
                 }
+            }
+
+            if (startTick == -1)
+            {
+                if (players.Count >= 1)
+                {
+                    startTick = 0;
+                }
+            }
+            else
+            {
+                startTick++;
             }
         }
     }

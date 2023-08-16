@@ -365,7 +365,10 @@ namespace MrBoom
                         sprite1.Skull.HasValue &&
                         !sprite2.Skull.HasValue)
                     {
-                        sprite2.SetSkull(sprite1.Skull.Value);
+                        if (!sprite1.IsDie && !sprite2.IsDie)
+                        {
+                            sprite2.SetSkull(sprite1.Skull.Value);
+                        }
                     }
                 }
             }

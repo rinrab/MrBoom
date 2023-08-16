@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +15,8 @@ namespace MrBoom
         public List<PlayerState> Players;
         public Assets assets;
         public List<IController> Controllers;
+        public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
+        public readonly UnrepeatableRandom SoundRandom = new UnrepeatableRandom();
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -162,7 +165,7 @@ namespace MrBoom
         {
             if (index == -1)
             {
-                index = Terrain.Random.Next(assets.Sounds.Musics.Length);
+                index = SoundRandom.Next(assets.Sounds.Musics.Length);
             }
             assets.Sounds.Musics[index].Play();
         }

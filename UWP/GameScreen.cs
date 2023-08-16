@@ -22,7 +22,7 @@ namespace MrBoom
             this.assets = assets;
             this.game = game;
 
-            terrain = new Terrain(Terrain.Random.Next(Map.Maps.Length), assets);
+            terrain = new Terrain(game.LevelRandom.Next(Map.Maps.Length), assets);
 
             game.NextSong();
 

@@ -135,6 +135,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\CONTROLS.png" />
+    <Content Include="Content\START.png" />
+    <Content Include="Content\UI_A.png" />
     <Content Include="Properties\Default.rd.xml" />
     <None Include="Content\font\Menu.spritefont" />
     <None Include="Package.StoreAssociation.xml" />

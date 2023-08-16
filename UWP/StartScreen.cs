@@ -99,6 +99,13 @@ namespace MrBoom
 
                 ctx.Draw(assets.StartButton, rect, Color.White);
             }
+            if (startTick >= 600)
+            {
+                string text = "press a or enter";
+                text = text.Substring(0, Math.Min((startTick - 600) / 6, text.Length));
+
+                Game.DrawString(ctx, (320 - text.Length * 8) / 2, 36, text, assets.Alpha[1]);
+            }
         }
 
         public void Update()

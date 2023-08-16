@@ -36,6 +36,8 @@ namespace MrBoom
             this.controllers = controllers;
             this.unjoinedControllers = new List<IController>(controllers);
             this.joinedControllers = new List<IController>();
+
+            players.Clear();
         }
 
         public void Draw(SpriteBatch ctx)

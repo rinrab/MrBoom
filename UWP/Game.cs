@@ -100,7 +100,6 @@ namespace MrBoom
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {
-                    Players = new List<PlayerState>();
                     NextSong(3);
                     ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
                 }

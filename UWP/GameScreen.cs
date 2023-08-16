@@ -55,7 +55,6 @@ namespace MrBoom
                 }
                 else if (pauseWindow.Action == 1)
                 {
-                    game.Players = new List<PlayerState>();
                     game.NextSong(3);
                     ScreenManager.SetScreen(new StartScreen(assets, game.Players, game.Controllers));
                 }

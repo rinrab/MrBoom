@@ -61,11 +61,6 @@ namespace MrBoom
             base.Initialize();
         }
 
-        public void StartGame()
-        {
-            ScreenManager.SetScreen(new GameScreen(Players, assets, this));
-        }
-
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -101,7 +96,7 @@ namespace MrBoom
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
-                    StartGame();
+                    ScreenManager.SetScreen(new GameScreen(Players, assets, this));
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {

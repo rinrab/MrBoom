@@ -92,10 +92,10 @@ namespace MrBoom
             {
                 double scale = Math.Abs(Math.Sin((double)startTick / 15)) * 0.75 + 1;
 
-                double width = assets.StartButton.Width * scale;
-                double height = assets.StartButton.Height * scale;
+                int width = (int)(assets.StartButton.Width * scale);
+                int height = (int)(assets.StartButton.Height * scale);
 
-                var rect = new Rectangle(640 - (int)width, 0, (int)width, (int)height);
+                Rectangle rect = new Rectangle(640 - 100 - width / 2, (98 - height) / 2, width, height);
 
                 ctx.Draw(assets.StartButton, rect, Color.White);
             }

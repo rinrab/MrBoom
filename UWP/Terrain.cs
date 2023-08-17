@@ -210,6 +210,10 @@ namespace MrBoom
                             else if (final[i] == index)
                             {
                                 var cell = GetCell(i % Width, i / Width);
+                                if (cell.Type == TerrainType.Bomb)
+                                {
+                                    cell.owner.BombsPlaced--;
+                                }
                                 if (cell.Type != TerrainType.PermanentWall)
                                 {
                                     SetCell(i % Width, i / Width, new Cell(TerrainType.Apocalypse)

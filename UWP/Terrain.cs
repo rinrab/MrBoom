@@ -230,6 +230,19 @@ namespace MrBoom
                 }
             }
 
+            if (map.BombApocalypse && TimeLeft < 30 * 60 - ApocalypseSpeed * MaxApocalypse)
+            {
+                if (TimeLeft % 16 == 0)
+                {
+                    int rndX = Random.Next(2);
+                    int x = (rndX == 0) ? 1 : Width - 2;
+                    int y = (Random.Next(0, Height / 2)) * 2 + 1;
+
+                    PutBomb(x, y, 4, false, null);
+                    GetCell(x, y).DeltaX = (rndX == 0) ? 2 : -2;
+                }
+            }
+
             if (this.timeToEnd == 0)
             {
                 if (playersCount == 1)
@@ -297,7 +310,7 @@ namespace MrBoom
                             cell.bombTime--;
                         }
 
-                        if (cell.bombTime == 0 || (cell.owner.rcDitonate && cell.rcAllowed))
+                        if (cell.bombTime == 0 || (cell.owner != null && cell.owner.rcDitonate && cell.rcAllowed))
                         {
                             this.ditonateBomb(x, y);
                             continue;
@@ -421,7 +434,11 @@ namespace MrBoom
         {
             Cell bombCell = this.GetCell(bombX, bombY); ;
             int maxBoom = bombCell.maxBoom;
-            bombCell.owner.BombsPlaced--;
+
+            if (bombCell.owner != null)
+            {
+                bombCell.owner.BombsPlaced--;
+            }
 
             void burn(int dx, int dy, AnimatedImage image, AnimatedImage imageEnd)
             {

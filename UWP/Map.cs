@@ -43,6 +43,7 @@ namespace MrBoom
         public int StartMaxBombsCount = 1;
         public Feature StartFeatures = 0;
         public int Song = -1;
+        public bool BombApocalypse = false;
 
         public static byte[] DefaultFinal = new byte[]
         {
@@ -330,6 +331,7 @@ namespace MrBoom
                 },
                 StartFeatures = Feature.Kick,
                 Time = 120,
+                BombApocalypse = true,
                 PowerUps = new PowerUpData[]
                 {
                     new PowerUpData(PowerUpType.ExtraBomb, 10),

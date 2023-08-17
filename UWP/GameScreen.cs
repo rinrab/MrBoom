@@ -25,7 +25,7 @@ namespace MrBoom
 #if true
             int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
 #else
-            int levelIndex = 7;
+            int levelIndex = 4;
 #endif
             terrain = new Terrain(levelIndex, assets);
 

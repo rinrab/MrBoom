@@ -85,18 +85,6 @@
 /processorParam:TextureFormat=Color
 /build:../../www/Gfx2x/DRAW2.PNG;DRAW2.PNG
 
-#begin ../../www/Gfx2x/FEUILLE_OVERLAY.PNG
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/FEUILLE_OVERLAY.PNG;FEUILLE_OVERLAY.PNG
-
 #begin ../../www/Gfx2x/FEUILLE.PNG
 /importer:TextureImporter
 /processor:TextureProcessor

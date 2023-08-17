@@ -474,11 +474,24 @@ namespace MrBoom
                         {
                             new Level.Overlay()
                             {
-                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE_OVERLAY"), 0, 0, 320, 200),
-                                x = 0,
-                                y = 0,
-                                AnimationDelay = 1
-                            }
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE"), 0, 0, 320, 15),
+                                x = 0, y = 0, AnimationDelay = 1
+                            },
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE"), 0, 16, 31, 149),
+                                x = 0, y = 16, AnimationDelay = 1
+                            },
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE"), 320 - 31, 16, 31, 149),
+                                x = 320 - 31, y = 16, AnimationDelay = 1
+                            },
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE"), 0, 166, 320, 34),
+                                x = 0, y = 166, AnimationDelay = 1
+                            },
                         },
                         Walls = loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),

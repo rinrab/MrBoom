@@ -22,7 +22,12 @@ namespace MrBoom
             this.assets = assets;
             this.game = game;
 
-            terrain = new Terrain(game.LevelRandom.Next(Map.Maps.Length), assets);
+#if true
+            int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
+#else
+            int levelIndex = 7;
+#endif
+            terrain = new Terrain(levelIndex, assets);
 
             game.NextSong();
 

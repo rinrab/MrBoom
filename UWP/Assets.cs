@@ -330,6 +330,7 @@ namespace MrBoom
 
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
+            var monster6walk = loadImageStripe(imgFeuille, 80, 100, 26, 27, 2, 1);
 
             var snail =
                 new AnimatedImage(
@@ -377,7 +378,10 @@ namespace MrBoom
                                 new AnimatedImage(
                                     loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1),
                                     loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)),
-                                loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
+                                loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1)),
+
+                    loadMonster(monster6walk, monster6walk, monster6walk, monster6walk,
+                                loadImageStripe(imgFeuille, 134, 100, 26, 27, 4, 1))
                 };
 
             return new Assets()

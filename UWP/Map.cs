@@ -22,6 +22,7 @@ namespace MrBoom
             public int WaitAfterTurn { get; }
             public int Type { get; }
             public int LivesCount { get; }
+            public bool IsSlowStart;
 
             public MonsterData(int type, int waitAfterTurn, int livesCount)
             {
@@ -384,7 +385,7 @@ namespace MrBoom
                 PowerUps = new PowerUpData[] { },
                 Monsters = new MonsterData[]
                 {
-                    new MonsterData(1, 30, 3),
+                    new MonsterData(6, 0, 3) { IsSlowStart = true },
                 },
                 Final = new byte[]
                 {

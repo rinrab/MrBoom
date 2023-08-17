@@ -18,14 +18,7 @@ namespace MrBoom
         public int ApocalypseSpeed = 2;
         public int MaxApocalypse;
 
-        public Assets.Level LevelAssets
-        {
-            get
-            {
-                return levelAssets;
-            }
-        }
-
+        public Assets.Level LevelAssets => levelAssets;
         public int Winner { get; private set; }
 
         private readonly byte[] final;

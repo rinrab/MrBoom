@@ -22,7 +22,7 @@ namespace MrBoom
             this.assets = assets;
             this.game = game;
 
-#if false
+#if true
             int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
 #else
             int levelIndex = 0;

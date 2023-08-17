@@ -42,6 +42,7 @@ namespace MrBoom
         public int StartMaxFire = 1;
         public int StartMaxBombsCount = 1;
         public Feature StartFeatures = 0;
+        public int Song = -1;
 
         public static byte[] DefaultFinal = new byte[]
         {
@@ -251,6 +252,7 @@ namespace MrBoom
                     "###################",
                 },
                 Time = 120,
+                Song = 5,
                 PowerUps = new PowerUpData[]
                 {
                     new PowerUpData(PowerUpType.ExtraBomb, 10),
@@ -383,6 +385,7 @@ namespace MrBoom
                 StartMaxBombsCount = 8,
                 Time = 30,
                 PowerUps = new PowerUpData[] { },
+                Song = 2,
                 Monsters = new MonsterData[]
                 {
                     new MonsterData(6, 0, 3) { IsSlowStart = true },

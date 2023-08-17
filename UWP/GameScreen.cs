@@ -29,7 +29,7 @@ namespace MrBoom
 #endif
             terrain = new Terrain(levelIndex, assets);
 
-            game.NextSong();
+            game.NextSong(Map.Maps[levelIndex].Song);
 
             for (int i = 0; i < players.Count; i++)
             {

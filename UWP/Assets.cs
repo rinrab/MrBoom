@@ -18,6 +18,18 @@ namespace MrBoom
                 public int AnimationDelay;
                 public int x;
                 public int y;
+
+                public Overlay()
+                {
+                }
+
+                public Overlay(int x, int y, AnimatedImage images, int animationDelay)
+                {
+                    this.x = x;
+                    this.y = y;
+                    Images = images;
+                    AnimationDelay = animationDelay;
+                }
             }
 
             public AnimatedImage Backgrounds;
@@ -25,6 +37,7 @@ namespace MrBoom
             public AnimatedImage PermanentWalls;
             public Overlay[] Overlays;
             public Image MovingBackground;
+            public Overlay[] BackgroundSprites;
         }
 
         public class MovingSpriteAssets
@@ -343,6 +356,47 @@ namespace MrBoom
             var blackPixel = new Texture2D(graphics, 1, 1);
             blackPixel.SetData(new Color[] { Color.Black });
 
+            var pa = new AnimatedImage(
+                loadImageStripe(imgMed3, 69, 23, 16, 16, 9),
+                loadImageStripe(imgMed3, 69, 40, 16, 16, 4),
+                loadImageStripe(imgMed3, 133, 44, 16, 12, 2)
+                );
+
+            var penguinUp = new AnimatedImage(
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[2], pa[0], pa[3],
+                pa[4], pa[5], pa[6], pa[7], pa[8]
+            );
+
+            var penguinLeft = new AnimatedImage(
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9],
+                pa[7], pa[8], pa[4], pa[5], pa[6]
+            );
+
+            var penguinDown = new AnimatedImage(
+                pa[13], pa[14],
+                pa[13], pa[14],
+                pa[13], pa[14],
+                pa[13], pa[14],
+                pa[13], pa[14],
+                pa[13],
+                pa[6], pa[7], pa[8], pa[4], pa[5]
+            );
+
+
             var monsters = new MovingSpriteAssets[]
                 {
                     loadMonster(loadImageStripe(imgSprite, 0, 144, 17, 18, 3, 7),
@@ -410,6 +464,21 @@ namespace MrBoom
                             loadImage(imgNeige2, 0, 0, 320, 200),
                             loadImage(imgNeige3, 0, 0, 320, 200)
                         ),
+                        BackgroundSprites = new Level.Overlay[]
+                        {
+                            new Level.Overlay(9 + 0 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(9 + 1 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(9 + 2 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(114, 1, penguinUp, 16),
+                            new Level.Overlay(162, 1, penguinUp, 16),
+                            new Level.Overlay(194, 1, penguinUp, 16),
+                            new Level.Overlay(258, 1, penguinUp, 16),
+                            new Level.Overlay(1, 33, penguinLeft, 16),
+                            new Level.Overlay(1, 50, penguinLeft, 16),
+                            new Level.Overlay(1, 104, penguinLeft, 16),
+                            new Level.Overlay(1, 151, penguinLeft, 16),
+                            new Level.Overlay(1, 168, penguinLeft, 16),
+                        },
                         Overlays = new Level.Overlay[] {
                             new Level.Overlay() {
                                 x = 232,
@@ -423,6 +492,10 @@ namespace MrBoom
                                 AnimationDelay = 20,
                                 Images = loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
                             },
+                            new Level.Overlay(50,  200 - 12, penguinDown, 16),
+                            new Level.Overlay(67,  200 - 12, penguinDown, 16),
+                            new Level.Overlay(117, 200 - 12, penguinDown, 16),
+                            new Level.Overlay(202, 200 - 12, penguinDown, 16),
                         },
                         Walls = loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),

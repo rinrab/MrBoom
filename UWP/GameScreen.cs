@@ -22,10 +22,10 @@ namespace MrBoom
             this.assets = assets;
             this.game = game;
 
-#if true
+#if false
             int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
 #else
-            int levelIndex = 4;
+            int levelIndex = 0;
 #endif
             terrain = new Terrain(levelIndex, assets);
 
@@ -116,6 +116,14 @@ namespace MrBoom
 
             var bgs = terrain.LevelAssets.Backgrounds;
             bgs[bgTick / 20].Draw(ctx, 0, 0);
+            var bgSprites = terrain.LevelAssets.BackgroundSprites;
+            if (bgSprites != null)
+            {
+                foreach (var overlay in bgSprites)
+                {
+                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
+                }
+            }
 
             for (int y = 0; y < terrain.Height; y++)
             {

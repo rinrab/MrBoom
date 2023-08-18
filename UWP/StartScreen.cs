@@ -30,6 +30,7 @@ namespace MrBoom
         private int startTick = -1;
         private int teamMode = 0;
         private int playersCount;
+        private List<PlayerState> players;
 
         public StartScreen(Assets assets, List<Team> teams, List<IController> controllers)
         {
@@ -38,6 +39,7 @@ namespace MrBoom
             this.controllers = controllers;
             this.unjoinedControllers = new List<IController>(controllers);
             this.joinedControllers = new List<IController>();
+            players = new List<PlayerState>();
             teamMode = Team.Mode;
 
             teams.Clear();
@@ -64,14 +66,13 @@ namespace MrBoom
             //assets.Controls[3].Draw(ctx, 320 - ox - 76, oy - 8);
             //Game.DrawString(ctx, 320 - ox - 40, oy + 4, "start", assets.Alpha[1]);
 
-            var players = Team.GetPlayers(teams);
             for (int x = 0; x < 4; x++)
             {
                 for (int y = 0; y < 2; y++)
                 {
                     int index = y * 4 + x;
                     AnimatedImage images = assets.Alpha[index / 2 + 2];
-                    if (index < teams.Count)
+                    if (index < players.Count)
                     {
                         PlayerState player = players[index];
 
@@ -135,18 +136,7 @@ namespace MrBoom
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
 
-                    var team = new Team()
-                    {
-                        Players = new List<PlayerState>()
-                        {
-                            new PlayerState(controller, playersCount)
-                            {
-                                Name = name
-                            }
-                        }
-                    };
-
-                    this.teams.Add(team);
+                    players.Add(new PlayerState(controller, playersCount) { Name = name });
                     playersCount++;
                     assets.Sounds.Addplayer.Play();
 
@@ -165,9 +155,32 @@ namespace MrBoom
             if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame) ||
                 Controller.IsKeyDown(joinedControllers, PlayerKeys.Bomb))
             {
-                if (this.teams.Count >= 1)
+                if (players.Count >= 1)
                 {
                     Team.Mode = teamMode;
+
+                    teams.Clear();
+                    if (teamMode == 0)
+                    {
+                        foreach (PlayerState player in players)
+                        {
+                            teams.Add(new Team { Players = new List<PlayerState> { player } });
+                        }
+                    }
+                    if (teamMode == 1)
+                    {
+                        for (int i = 0; i < players.Count; i += 2)
+                        {
+                            var newPlayers = new List<PlayerState> { players[i] };
+                            if (i + 1 < players.Count)
+                            {
+                                newPlayers.Add(players[i + 1]);
+                            }
+
+                            teams.Add(new Team { Players = newPlayers });
+                        }
+                    }
+
                     Next = Screen.Game;
                 }
             }

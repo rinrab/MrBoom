@@ -15,6 +15,7 @@ namespace MrBoom
         private readonly Team[] teams;
         private readonly int winner;
         private readonly List<IController> controllers;
+        private readonly int teamMode;
         private readonly Assets assets;
 
         private int tick;
@@ -25,13 +26,20 @@ namespace MrBoom
             this.winner = winner;
             this.assets = assets;
             this.controllers = controllers;
-
+            this.teamMode = teamMode;
             assets.Sounds.Victory.Play();
         }
 
         public void Draw(SpriteBatch ctx)
         {
-            assets.Med.Draw(ctx, 0, 0);
+            if (teamMode == 0)
+            {
+                assets.Med.Draw(ctx, 0, 0);
+            }
+            else if (teamMode == 1)
+            {
+                assets.MedC.Draw(ctx, 0, 0);
+            }
 
             void drawCoins(int x, int y, int teamIndex)
             {
@@ -68,14 +76,24 @@ namespace MrBoom
                 }
             }
 
-            drawCoins(0 * 161 + 44, 0 * 42 + 27, 0);
-            drawCoins(0 * 161 + 44, 1 * 42 + 27, 1);
-            drawCoins(1 * 161 + 44, 0 * 42 + 27, 2);
-            drawCoins(1 * 161 + 44, 1 * 42 + 27, 3);
-            drawCoins(0 * 161 + 44, 2 * 42 + 27, 4);
-            drawCoins(0 * 161 + 44, 3 * 42 + 27, 5);
-            drawCoins(1 * 161 + 44, 2 * 42 + 27, 6);
-            drawCoins(1 * 161 + 44, 3 * 42 + 27, 7);
+            if (teamMode == 0)
+            {
+                drawCoins(0 * 161 + 44, 0 * 42 + 27, 0);
+                drawCoins(0 * 161 + 44, 1 * 42 + 27, 1);
+                drawCoins(1 * 161 + 44, 0 * 42 + 27, 2);
+                drawCoins(1 * 161 + 44, 1 * 42 + 27, 3);
+                drawCoins(0 * 161 + 44, 2 * 42 + 27, 4);
+                drawCoins(0 * 161 + 44, 3 * 42 + 27, 5);
+                drawCoins(1 * 161 + 44, 2 * 42 + 27, 6);
+                drawCoins(1 * 161 + 44, 3 * 42 + 27, 7);
+            }
+            else if (teamMode == 1)
+            {
+                drawCoins(0 * 161 + 44, 0 * 64 + 53, 0);
+                drawCoins(0 * 161 + 44, 1 * 64 + 53, 1);
+                drawCoins(1 * 161 + 44, 0 * 64 + 53, 2);
+                drawCoins(1 * 161 + 44, 1 * 64 + 53, 3);
+            }
         }
 
         public void Update()

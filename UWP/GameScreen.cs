@@ -10,17 +10,18 @@ namespace MrBoom
         private readonly Terrain terrain;
         private readonly Assets assets;
         private readonly Game game;
-
+        private readonly int teamMode;
         private int bgTick = 0;
         private bool isPause = false;
         private Menu pauseWindow;
 
         public Screen Next { get; private set; }
 
-        public GameScreen(List<PlayerState> players, Assets assets, Game game)
+        public GameScreen(List<PlayerState> players, Assets assets, Game game, int teamMode)
         {
             this.assets = assets;
             this.game = game;
+            this.teamMode = teamMode;
 
 #if true
             int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
@@ -81,7 +82,7 @@ namespace MrBoom
 
                     players[winner].VictoryCount++;
 
-                    ScreenManager.SetScreen(new ResultScreen(players, winner, assets, game.Controllers));
+                    ScreenManager.SetScreen(new ResultScreen(players, winner, assets, game.Controllers, teamMode));
                 }
                 else if (terrain.Result == GameResult.Draw)
                 {

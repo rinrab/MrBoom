@@ -28,6 +28,7 @@ namespace MrBoom
             "gamepad controller: use d-pad arrows to move a button to drop bomb " +
             "b button to triger it by radio control";
         private int startTick = -1;
+        private int teamMode = 0;
 
         public StartScreen(Assets assets, List<PlayerState> players, List<IController> controllers)
         {
@@ -36,6 +37,7 @@ namespace MrBoom
             this.controllers = controllers;
             this.unjoinedControllers = new List<IController>(controllers);
             this.joinedControllers = new List<IController>();
+            teamMode = Game.TeamMode;
 
             players.Clear();
         }
@@ -51,6 +53,10 @@ namespace MrBoom
             Game.DrawString(ctx, ox + 20, oy + 5, "or", assets.Alpha[1]);
             assets.Controls[1].Draw(ctx, ox + 40, oy + 1);
             Game.DrawString(ctx, ox + 70, oy + 5, "join", assets.Alpha[1]);
+
+            Game.DrawString(ctx, 160 - 4 * 4 - 3, 115, "team", assets.Alpha[1]);
+            string[] teamTexts = new string[] { "1x1", "color", "gender" };
+            Game.DrawString(ctx, 160 - teamTexts[teamMode].Length * 4 - 3, 123, teamTexts[teamMode], assets.Alpha[1]);
 
             //assets.Controls[2].Draw(ctx, 320 - ox - 115, oy);
             //Game.DrawString(ctx, 320 - ox - 96, oy + 4, "or", assets.Alpha[1]);
@@ -146,8 +152,28 @@ namespace MrBoom
             {
                 if (this.players.Count >= 1)
                 {
+                    Game.TeamMode = teamMode;
                     Next = Screen.Game;
                 }
+            }
+
+            if (Controller.IsKeyDown(controllers, PlayerKeys.Left))
+            {
+                teamMode--;
+                if (teamMode < 0)
+                {
+                    teamMode = 2;
+                }
+                Controller.Reset(controllers);
+            }
+            if (Controller.IsKeyDown(controllers, PlayerKeys.Right))
+            {
+                teamMode++;
+                if (teamMode > 2)
+                {
+                    teamMode = 0;
+                }
+                Controller.Reset(controllers);
             }
 
             if (startTick == -1)

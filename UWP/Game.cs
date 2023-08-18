@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,6 +11,8 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
+        public static int TeamMode;
+        
         public List<PlayerState> Players;
         public Assets assets;
         public List<IController> Controllers;
@@ -96,7 +97,7 @@ namespace MrBoom
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
-                    ScreenManager.SetScreen(new GameScreen(Players, assets, this));
+                    ScreenManager.SetScreen(new GameScreen(Players, assets, this, TeamMode));
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {

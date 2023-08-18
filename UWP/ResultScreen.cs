@@ -17,7 +17,7 @@ namespace MrBoom
 
         private int tick;
 
-        public ResultScreen(PlayerState[] players, int winner, Assets assets, List<IController> controllers)
+        public ResultScreen(PlayerState[] players, int winner, Assets assets, List<IController> controllers, int teamMode)
         {
             this.players = players;
             this.winner = winner;

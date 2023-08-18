@@ -73,6 +73,8 @@ namespace MrBoom
         public AnimatedImage BigDigits { get; private set; }
         public AnimatedImage Draw { get; private set; }
         public Image Med { get; private set; }
+        public Image MedC { get; private set; }
+        public Image MedG { get; private set; }
         public AnimatedImage Coin { get; private set; }
         public AnimatedImage Vic { get; private set; }
         public Image Sky { get; private set; }
@@ -683,6 +685,8 @@ namespace MrBoom
                     loadImage(content.Load<Texture2D>("DRAW1"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("DRAW2"), 0, 0, 320, 200)),
                 Med = loadImage(content.Load<Texture2D>("MED"), 0, 0, 320, 200),
+                MedC = loadImage(content.Load<Texture2D>("MEDC"), 0, 0, 320, 200),
+                MedG = loadImage(content.Load<Texture2D>("MEDG"), 0, 0, 320, 200),
                 Coin = new AnimatedImage(loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1),
                     loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)),
                 Vic = new AnimatedImage(
@@ -698,7 +702,9 @@ namespace MrBoom
                     loadImage(content.Load<Texture2D>("UI_A"), 0, 0, 32, 32),
                     loadImage(imgControls, 273, 97, 25, 14),
                     loadImage(imgControls, 81, 305, 14, 14),
-                    loadImage(imgControls, 513, 161, 30, 30)
+                    loadImage(imgControls, 513, 161, 30, 30),
+                    loadImage(imgControls, 193, 353, 14, 14),
+                    loadImage(imgControls, 161, 353, 14, 14),
                 },
                 MenuFont = content.Load<SpriteFont>(@"font\Menu"),
                 BlackPixel = blackPixel,

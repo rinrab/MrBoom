@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -339,6 +340,7 @@ namespace MrBoom
             var imgCrayon2 = content.Load<Texture2D>("CRAYON2");
             var imgSoucoupe = content.Load<Texture2D>("SOUCOUPE");
             var imgBonus = content.Load<Texture2D>("BONUS");
+            var imgFootanim = content.Load<Texture2D>("FOOTANIM");
             var imgControls = content.Load<Texture2D>("CONTROLS");
 
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
@@ -396,6 +398,21 @@ namespace MrBoom
                 pa[6], pa[7], pa[8], pa[4], pa[5]
             );
 
+            var footanim1 = loadImageStripe(imgFootanim, 24, 24, 23, 23, 12, 1);
+            var footanim2 = loadImageStripe(imgFootanim, 0, 48, 23, 23, 8, 1);
+
+            var footanimAssets = new AnimatedImage(
+                loadImageStripe(imgFootanim, 0, 72, 48, 32, 6, 1),
+                loadImageStripe(imgFootanim, 0, 105, 48, 32, 6, 1),
+                loadImageStripe(imgFootanim, 0, 138, 48, 32, 6, 1)
+            );
+
+            var footanimGirls1 = new AnimatedImage(
+                footanimAssets[0], footanimAssets[1], footanimAssets[2], footanimAssets[3], footanimAssets[4],
+                footanimAssets[5], footanimAssets[4], footanimAssets[3], footanimAssets[2], footanimAssets[1]
+            );
+            
+            var footanimGirls2 = new AnimatedImage(footanimAssets[4], footanimAssets[5]);
 
             var monsters = new MovingSpriteAssets[]
                 {
@@ -574,6 +591,29 @@ namespace MrBoom
                         Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("SOCCER"), 0, 0, 320, 200)
                         ),
+                        BackgroundSprites = new Level.Overlay[]
+                        {
+                            new Level.Overlay(0, 140, new AnimatedImage(
+                                new AnimatedImage(Enumerable.Repeat(loadImage(imgFootanim, 0, 0, 23, 23), 16).ToList()),
+                                loadImageStripe(imgFootanim, 0, 0, 23, 23, 5, 1)), 10),
+                            new Level.Overlay(299, 24, new AnimatedImage(
+                                new AnimatedImage(Enumerable.Repeat(loadImage(imgFootanim, 120, 0, 23, 23), 24).ToList()),
+                                loadImageStripe(imgFootanim, 120, 0, 23, 23, 5, 1)), 10),
+
+                            new Level.Overlay(2, 0, new AnimatedImage(footanim1[0], footanim1[1], footanim1[0], footanim1[2]), 16),
+                            new Level.Overlay(320 - 2 - 23, 0, new AnimatedImage(footanim1[5], footanim1[6], footanim1[5], footanim1[7]), 16),
+                            new Level.Overlay(0, 200 - 23 - 10, new AnimatedImage(footanim1[11], footanim2[1], footanim2[0], footanim2[1]), 16),
+                            new Level.Overlay(320 - 2 - 23, 200 - 23 - 40, new AnimatedImage(footanim2[3], footanim2[4], footanim2[3], footanim2[5]), 16),
+                        },
+                        Overlays = new Level.Overlay[]
+                        {
+                            new Level.Overlay(20, 200 - 32, footanimGirls1, 12),
+
+                            new Level.Overlay(100, 200 - 32, footanimGirls2, 12),
+                            new Level.Overlay(150, 200 - 32, footanimGirls2, 12),
+
+                            new Level.Overlay(320 - 48 - 48, 200 - 32, footanimGirls1, 12),
+                        },
                         Walls = loadImageStripe(imgPause, 160, 112, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
                     },

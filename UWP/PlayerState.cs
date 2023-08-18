@@ -9,10 +9,12 @@ namespace MrBoom
         public IController Controller;
         public string Name;
         public int VictoryCount;
+        public int Index;
 
-        public PlayerState(IController controller)
+        public PlayerState(IController controller, int index)
         {
             Controller = controller;
+            Index = index;
         }
     }
 

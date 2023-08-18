@@ -12,13 +12,12 @@ namespace MrBoom
         private int tick;
 
         private readonly PlayerState[] players;
-        private readonly int winner;
+        private readonly Team winner;
         private readonly Assets assets;
         private readonly List<IController> controllers;
 
-        public VictoryScreen(PlayerState[] players, int winner, Assets assets, List<IController> controllers)
+        public VictoryScreen(Team winner, Assets assets, List<IController> controllers)
         {
-            this.players = players;
             this.winner = winner;
             this.assets = assets;
             this.controllers = controllers;
@@ -28,7 +27,7 @@ namespace MrBoom
         {
             assets.Vic[tick / 5].Draw(ctx, 0, 0);
 
-            Image img = assets.Players[winner].Normal[0][tick / 20];
+            Image img = assets.Players[winner.Players[0].Index].Normal[0][tick / 20];
             img.Draw(ctx, 320 / 2 - img.Width / 2, 80 - img.Height);
         }
 

@@ -78,12 +78,11 @@ namespace MrBoom
 
                 if (terrain.Result == GameResult.Victory)
                 {
-                    PlayerState[] players = Team.GetPlayers(game.Teams);
                     int winner = terrain.Winner;
 
-                    players[winner].VictoryCount++;
+                    game.Teams[winner].VictoryCount++;
 
-                    ScreenManager.SetScreen(new ResultScreen(players, winner, assets, game.Controllers, teamMode));
+                    ScreenManager.SetScreen(new ResultScreen(game.Teams.ToArray(), winner, assets, game.Controllers, teamMode));
                 }
                 else if (terrain.Result == GameResult.Draw)
                 {

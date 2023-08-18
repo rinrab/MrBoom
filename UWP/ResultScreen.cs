@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Windows.UI.Xaml.Documents;
 
 namespace MrBoom
 {
@@ -10,16 +12,16 @@ namespace MrBoom
     {
         public Screen Next { get; private set; }
 
-        private readonly PlayerState[] players;
+        private readonly Team[] teams;
         private readonly int winner;
         private readonly List<IController> controllers;
         private readonly Assets assets;
 
         private int tick;
 
-        public ResultScreen(PlayerState[] players, int winner, Assets assets, List<IController> controllers, int teamMode)
+        public ResultScreen(Team[] teams, int winner, Assets assets, List<IController> controllers, int teamMode)
         {
-            this.players = players;
+            this.teams = teams;
             this.winner = winner;
             this.assets = assets;
             this.controllers = controllers;
@@ -31,59 +33,58 @@ namespace MrBoom
         {
             assets.Med.Draw(ctx, 0, 0);
 
-            Point[] positions = new Point[] {
-                new Point(0, 0),
-                new Point(0, 1),
-                new Point(1, 0),
-                new Point(1, 1),
-                new Point(0, 3),
-                new Point(0, 4),
-                new Point(1, 3),
-                new Point(1, 4),
-            };
-
-            for (int i = 0; i < players.Length; i++)
+            void drawCoins(int x, int y, int teamIndex)
             {
-                for (int j = 0; j < players[i].VictoryCount; j++)
+                if (teamIndex < teams.Length)
                 {
-                    int index = (tick / (8 + j)) % assets.Coin.Length;
-                    if (i == this.winner && j == players[i].VictoryCount - 1)
+                    Team team = teams[teamIndex];
+
+                    for (int j = 0; j < team.VictoryCount; j++)
                     {
-                        if (tick % 60 < 30)
+                        int index = tick / (8 + j) % assets.Coin.Length;
+
+                        if (teamIndex == winner && j == team.VictoryCount - 1)
                         {
-                            index = 0;
+                            if (tick % 60 < 30)
+                            {
+                                index = 0;
+                            }
+                            else
+                            {
+                                index = -1;
+                            }
                         }
-                        else
+
+                        if (index != -1)
                         {
-                            index = -1;
+                            assets.Coin[index].Draw(ctx, x + j * 23, y);
                         }
                     }
 
-                    if (index != -1)
+                    for (int i = 0; i < team.Names.Length; i++)
                     {
-                        assets.Coin[index].Draw(ctx, positions[i].X * 161 + 44 + j * 23, positions[i].Y * 42 + 27);
+                        Game.DrawString(ctx, x - 34, y + 26 - 10 + i * 8, team.Names[i], assets.Alpha[teamIndex + 2]);
                     }
                 }
             }
 
-
-            for (int i = 0; i < positions.Length; i++)
-            {
-                if (i < players.Length)
-                {
-                    Game.DrawString(ctx, positions[i].X * 161 + 10, positions[i].Y * 42 + 44,
-                        players[i].Name, assets.Alpha[i / 2 + 2]);
-                }
-            }
+            drawCoins(0 * 161 + 44, 0 * 42 + 27, 0);
+            drawCoins(0 * 161 + 44, 1 * 42 + 27, 1);
+            drawCoins(1 * 161 + 44, 0 * 42 + 27, 2);
+            drawCoins(1 * 161 + 44, 1 * 42 + 27, 3);
+            drawCoins(0 * 161 + 44, 2 * 42 + 27, 4);
+            drawCoins(0 * 161 + 44, 3 * 42 + 27, 5);
+            drawCoins(1 * 161 + 44, 2 * 42 + 27, 6);
+            drawCoins(1 * 161 + 44, 3 * 42 + 27, 7);
         }
 
         public void Update()
         {
             if (this.tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
-                if (players[winner].VictoryCount >= 5)
+                if (teams[winner].VictoryCount >= 5)
                 {
-                    ScreenManager.SetScreen(new VictoryScreen(players, winner, assets, controllers));
+                    ScreenManager.SetScreen(new VictoryScreen(teams[winner], assets, controllers));
                 }
                 else
                 {

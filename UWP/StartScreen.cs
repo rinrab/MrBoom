@@ -29,6 +29,7 @@ namespace MrBoom
             "b button to triger it by radio control";
         private int startTick = -1;
         private int teamMode = 0;
+        private int playersCount;
 
         public StartScreen(Assets assets, List<Team> teams, List<IController> controllers)
         {
@@ -138,7 +139,7 @@ namespace MrBoom
                     {
                         Players = new List<PlayerState>()
                         {
-                            new PlayerState(controller)
+                            new PlayerState(controller, playersCount)
                             {
                                 Name = name
                             }
@@ -146,6 +147,7 @@ namespace MrBoom
                     };
 
                     this.teams.Add(team);
+                    playersCount++;
                     assets.Sounds.Addplayer.Play();
 
                     toRemove.Add(controller);

@@ -36,10 +36,6 @@ namespace MrBoom
             tick++;
             if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
-                foreach (PlayerState player in players)
-                {
-                    player.VictoryCount = 0;
-                }
                 Next = Screen.StartMenu;
             }
         }

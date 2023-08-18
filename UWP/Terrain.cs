@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using SharpDX.XAPO.Fx;
 
 namespace MrBoom
 {
@@ -168,15 +169,6 @@ namespace MrBoom
                 this.timeToEnd--;
             }
 
-            int playersCount = 0;
-            foreach (AbstractPlayer player in this.players)
-            {
-                if (!player.IsDie)
-                {
-                    playersCount++;
-                }
-            }
-
             if (TimeLeft < 30 * 60 - 1)
             {
                 if (TimeLeft % ApocalypseSpeed == 0)
@@ -243,15 +235,60 @@ namespace MrBoom
                 }
             }
 
-            if (this.timeToEnd == 0)
+            int playersCount = 0;
+            foreach (AbstractPlayer player in this.players)
             {
-                if (playersCount == 1)
+                if (!player.IsDie)
+                {
+                    playersCount++;
+                }
+            }
+
+            if (timeToEnd == -1)
+            {
+                if (Team.Mode == 0)
+                {
+                    if ((playersCount == 1 && players.Count > 1) ||
+                        (playersCount == 0 && this.timeToEnd == -1))
+                    {
+                        this.timeToEnd = 60 * 3;
+                    }
+                }
+                else if (Team.Mode == 1)
+                {
+                    List<int> live = new List<int>();
+                    for (int i = 0; i < players.Count; i++)
+                    {
+                        if (!players[i].IsDie)
+                        {
+                            live.Add(i / 2);
+                        }
+                    }
+
+                    if (live.Count == 0 || live.Count == 1 ||
+                       (live.Count == 2 && live[0] == live[1]))
+                    {
+                        timeToEnd = 60 * 3;
+                    }
+                }
+            }
+
+            if (timeToEnd == 0)
+            {
+                if (playersCount >= 1)
                 {
                     for (int i = 0; i < players.Count; i++)
                     {
                         if (!players[i].IsDie)
                         {
-                            Winner = i;
+                            if (Team.Mode == 0)
+                            {
+                                Winner = i;
+                            }
+                            else if (Team.Mode == 1)
+                            {
+                                Winner = i / 2;
+                            }
                         }
                     }
                     Result = GameResult.Victory;
@@ -266,16 +303,6 @@ namespace MrBoom
             {
                 Result = GameResult.Draw;
             }
-
-            if (playersCount == 1 && players.Count > 1 && this.timeToEnd == -1)
-            {
-                this.timeToEnd = 60 * 3;
-            }
-            if (playersCount == 0 && this.timeToEnd == -1)
-            {
-                this.timeToEnd = 60 * 3;
-            }
-
 
             for (int y = 0; y < this.Height; y++)
             {

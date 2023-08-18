@@ -14,7 +14,7 @@ namespace MrBoom
         private int tick = 0;
 
         private readonly Assets assets;
-        private readonly List<PlayerState> players;
+        private readonly List<Team> teams;
         private readonly List<IController> controllers;
         private readonly List<IController> unjoinedControllers;
         private readonly List<IController> joinedControllers;
@@ -30,16 +30,16 @@ namespace MrBoom
         private int startTick = -1;
         private int teamMode = 0;
 
-        public StartScreen(Assets assets, List<PlayerState> players, List<IController> controllers)
+        public StartScreen(Assets assets, List<Team> teams, List<IController> controllers)
         {
             this.assets = assets;
-            this.players = players;
+            this.teams = teams;
             this.controllers = controllers;
             this.unjoinedControllers = new List<IController>(controllers);
             this.joinedControllers = new List<IController>();
-            teamMode = Game.TeamMode;
+            teamMode = Team.Mode;
 
-            players.Clear();
+            teams.Clear();
         }
 
         public void Draw(SpriteBatch ctx)
@@ -63,13 +63,14 @@ namespace MrBoom
             //assets.Controls[3].Draw(ctx, 320 - ox - 76, oy - 8);
             //Game.DrawString(ctx, 320 - ox - 40, oy + 4, "start", assets.Alpha[1]);
 
+            var players = Team.GetPlayers(teams);
             for (int x = 0; x < 4; x++)
             {
                 for (int y = 0; y < 2; y++)
                 {
                     int index = y * 4 + x;
                     AnimatedImage images = assets.Alpha[index / 2 + 2];
-                    if (index < players.Count)
+                    if (index < teams.Count)
                     {
                         PlayerState player = players[index];
 
@@ -132,7 +133,19 @@ namespace MrBoom
                         "cpp", "sus", "god", "guy", "bob", "jim", "mrb", "max"
                     };
                     string name = names[Terrain.Random.Next(names.Length)];
-                    this.players.Add(new PlayerState(controller) { Name = name });
+
+                    var team = new Team()
+                    {
+                        Players = new List<PlayerState>()
+                        {
+                            new PlayerState(controller)
+                            {
+                                Name = name
+                            }
+                        }
+                    };
+
+                    this.teams.Add(team);
                     assets.Sounds.Addplayer.Play();
 
                     toRemove.Add(controller);
@@ -150,9 +163,9 @@ namespace MrBoom
             if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame) ||
                 Controller.IsKeyDown(joinedControllers, PlayerKeys.Bomb))
             {
-                if (this.players.Count >= 1)
+                if (this.teams.Count >= 1)
                 {
-                    Game.TeamMode = teamMode;
+                    Team.Mode = teamMode;
                     Next = Screen.Game;
                 }
             }
@@ -178,7 +191,7 @@ namespace MrBoom
 
             if (startTick == -1)
             {
-                if (players.Count >= 1)
+                if (teams.Count >= 1)
                 {
                     startTick = 0;
                 }

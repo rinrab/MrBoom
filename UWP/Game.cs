@@ -11,9 +11,7 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
-        public static int TeamMode;
-        
-        public List<PlayerState> Players;
+        public List<Team> Teams;
         public Assets assets;
         public List<IController> Controllers;
         public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
@@ -51,10 +49,10 @@ namespace MrBoom
             assets = Assets.Load(Content, GraphicsDevice);
             MediaPlayer.IsRepeating = true;
 
-            Players = new List<PlayerState>();
+            Teams = new List<Team>();
             NextSong(3);
 
-            ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
+            ScreenManager.SetScreen(new StartScreen(assets, Teams, Controllers));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -97,12 +95,12 @@ namespace MrBoom
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
-                    ScreenManager.SetScreen(new GameScreen(Players, assets, this, TeamMode));
+                    ScreenManager.SetScreen(new GameScreen(Teams, assets, this, Team.Mode));
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {
                     NextSong(3);
-                    ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
+                    ScreenManager.SetScreen(new StartScreen(assets, Teams, Controllers));
                 }
                 else
                 {

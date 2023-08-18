@@ -90,8 +90,8 @@ namespace MrBoom
             else if (teamMode == 1)
             {
                 drawCoins(0 * 161 + 44, 0 * 64 + 53, 0);
-                drawCoins(0 * 161 + 44, 1 * 64 + 53, 1);
-                drawCoins(1 * 161 + 44, 0 * 64 + 53, 2);
+                drawCoins(1 * 161 + 44, 0 * 64 + 53, 1);
+                drawCoins(0 * 161 + 44, 1 * 64 + 53, 2);
                 drawCoins(1 * 161 + 44, 1 * 64 + 53, 3);
             }
         }

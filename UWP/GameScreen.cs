@@ -99,7 +99,7 @@ namespace MrBoom
                         new TextMenuItem("QUIT")
                     };
 
-                    pauseWindow = new Menu(options, assets, game.Controllers);
+                    pauseWindow = new Menu(options, assets, game.Controllers, -1);
                     Controller.Reset(game.Controllers);
                     isPause = true;
                 }

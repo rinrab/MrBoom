@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Windows.UI.Xaml;
 
 namespace MrBoom
 {
@@ -31,6 +32,7 @@ namespace MrBoom
         private int teamMode = 0;
         private int playersCount;
         private List<PlayerState> players;
+        private Menu menu;
 
         public StartScreen(Assets assets, List<Team> teams, List<IController> controllers)
         {
@@ -56,10 +58,6 @@ namespace MrBoom
             Game.DrawString(ctx, ox + 20, oy + 5, "or", assets.Alpha[1]);
             assets.Controls[1].Draw(ctx, ox + 40, oy + 1);
             Game.DrawString(ctx, ox + 70, oy + 5, "join", assets.Alpha[1]);
-
-            Game.DrawString(ctx, 160 - 4 * 4 - 3, 115, "team", assets.Alpha[1]);
-            string[] teamTexts = new string[] { "1x1", "color", "gender" };
-            Game.DrawString(ctx, 160 - teamTexts[teamMode].Length * 4 - 3, 123, teamTexts[teamMode], assets.Alpha[1]);
 
             //assets.Controls[2].Draw(ctx, 320 - ox - 115, oy);
             //Game.DrawString(ctx, 320 - ox - 96, oy + 4, "or", assets.Alpha[1]);
@@ -117,117 +115,165 @@ namespace MrBoom
 
                 Game.DrawString(ctx, (320 - text.Length * 8) / 2, 36, text, assets.Alpha[1]);
             }
+
+            if (menu != null)
+            {
+                menu.Draw(ctx);
+            }
         }
 
         public void Update()
         {
             tick++;
 
-            List<IController> toRemove = new List<IController>();
-            foreach (IController controller in unjoinedControllers)
+            if (menu == null)
             {
-                if (controller.IsKeyDown(PlayerKeys.Bomb))
+                List<IController> toRemove = new List<IController>();
+                foreach (IController controller in unjoinedControllers)
                 {
-                    string[] names = new string[]
+                    if (controller.IsKeyDown(PlayerKeys.Bomb))
                     {
-                        "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
-                        "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus",
-                        "cpp", "sus", "god", "guy", "bob", "jim", "mrb", "max"
+                        string[] names = new string[]
+                        {
+                            "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
+                            "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus",
+                            "cpp", "sus", "god", "guy", "bob", "jim", "mrb", "max"
+                        };
+                        string name = names[Terrain.Random.Next(names.Length)];
+
+                        players.Add(new PlayerState(controller, playersCount) { Name = name });
+                        playersCount++;
+                        assets.Sounds.Addplayer.Play();
+
+                        toRemove.Add(controller);
+                    }
+                }
+
+                foreach (IController controller in toRemove)
+                {
+                    controller.Reset();
+                    controller.Update();
+                    unjoinedControllers.Remove(controller);
+                    joinedControllers.Add(controller);
+                }
+
+                if (Controller.IsKeyDown(controllers, PlayerKeys.Menu))
+                {
+                    var options = new IMenuItem[] {
+                        new TextMenuItem("START"),
+                        new SelectMenuItem("TEAM", new string[] { "OFF", "COLOR", "SEX" })
+                        {
+                            SelectionIndex = teamMode
+                        },
+                        new TextMenuItem("QUIT")
                     };
-                    string name = names[Terrain.Random.Next(names.Length)];
 
-                    players.Add(new PlayerState(controller, playersCount) { Name = name });
-                    playersCount++;
-                    assets.Sounds.Addplayer.Play();
-
-                    toRemove.Add(controller);
+                    menu = new Menu(options, assets, controllers, 160);
+                    Controller.Reset(controllers);
                 }
-            }
 
-            foreach (IController controller in toRemove)
-            {
-                controller.Reset();
-                controller.Update();
-                unjoinedControllers.Remove(controller);
-                joinedControllers.Add(controller);
-            }
-
-            if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame) ||
-                Controller.IsKeyDown(joinedControllers, PlayerKeys.Bomb))
-            {
-                if (players.Count >= 1)
+                if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame) ||
+                    Controller.IsKeyDown(joinedControllers, PlayerKeys.Bomb))
                 {
-                    Team.Mode = teamMode;
+                    Start();
+                }
 
-                    teams.Clear();
-                    if (teamMode == 0)
+                if (Controller.IsKeyDown(controllers, PlayerKeys.Left))
+                {
+                    teamMode--;
+                    if (teamMode < 0)
                     {
-                        foreach (PlayerState player in players)
-                        {
-                            teams.Add(new Team { Players = new List<PlayerState> { player } });
-                        }
+                        teamMode = 2;
                     }
-                    if (teamMode == 1)
+                    Controller.Reset(controllers);
+                }
+                if (Controller.IsKeyDown(controllers, PlayerKeys.Right))
+                {
+                    teamMode++;
+                    if (teamMode > 2)
                     {
-                        for (int i = 0; i < players.Count; i += 2)
-                        {
-                            var newPlayers = new List<PlayerState> { players[i] };
-                            if (i + 1 < players.Count)
-                            {
-                                newPlayers.Add(players[i + 1]);
-                            }
-
-                            teams.Add(new Team { Players = newPlayers });
-                        }
+                        teamMode = 0;
                     }
-                    if (teamMode == 2)
+                    Controller.Reset(controllers);
+                }
+
+                if (startTick == -1)
+                {
+                    if (teams.Count >= 1)
                     {
-                        teams.Add(new Team { Players = new List<PlayerState>() });
-                        teams.Add(new Team { Players = new List<PlayerState>() });
-
-                        for (int i = 0; i < players.Count; i += 2)
-                        {
-                            teams[0].Players.Add(players[i]);
-                            if (i + 1 < players.Count)
-                            {
-                                teams[1].Players.Add(players[i + 1]);
-                            }
-                        }
+                        startTick = 0;
                     }
-
-                    Next = Screen.Game;
                 }
-            }
-
-            if (Controller.IsKeyDown(controllers, PlayerKeys.Left))
-            {
-                teamMode--;
-                if (teamMode < 0)
+                else
                 {
-                    teamMode = 2;
-                }
-                Controller.Reset(controllers);
-            }
-            if (Controller.IsKeyDown(controllers, PlayerKeys.Right))
-            {
-                teamMode++;
-                if (teamMode > 2)
-                {
-                    teamMode = 0;
-                }
-                Controller.Reset(controllers);
-            }
-
-            if (startTick == -1)
-            {
-                if (teams.Count >= 1)
-                {
-                    startTick = 0;
+                    startTick++;
                 }
             }
             else
             {
-                startTick++;
+                menu.Update();
+
+                teamMode = ((SelectMenuItem)menu.Items[1]).SelectionIndex;
+
+                if (menu.Action == -2)
+                {
+                    menu = null;
+                    Controller.Reset(controllers);
+                }
+                else if (menu.Action == 0)
+                {
+                    Start();
+                }
+                else if (menu.Action == 2)
+                {
+                    Application.Current.Exit();
+                }
+            }
+        }
+
+        private void Start()
+        {
+            if (players.Count >= 1)
+            {
+                Team.Mode = teamMode;
+
+                teams.Clear();
+                if (teamMode == 0)
+                {
+                    foreach (PlayerState player in players)
+                    {
+                        teams.Add(new Team { Players = new List<PlayerState> { player } });
+                    }
+                }
+                if (teamMode == 1)
+                {
+                    for (int i = 0; i < players.Count; i += 2)
+                    {
+                        var newPlayers = new List<PlayerState> { players[i] };
+                        if (i + 1 < players.Count)
+                        {
+                            newPlayers.Add(players[i + 1]);
+                        }
+
+                        teams.Add(new Team { Players = newPlayers });
+                    }
+                }
+                if (teamMode == 2)
+                {
+                    teams.Add(new Team { Players = new List<PlayerState>() });
+                    teams.Add(new Team { Players = new List<PlayerState>() });
+
+                    for (int i = 0; i < players.Count; i += 2)
+                    {
+                        teams[0].Players.Add(players[i]);
+                        if (i + 1 < players.Count)
+                        {
+                            teams[1].Players.Add(players[i + 1]);
+                        }
+                    }
+                }
+
+                Next = Screen.Game;
             }
         }
     }

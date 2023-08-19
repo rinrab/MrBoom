@@ -10,20 +10,21 @@ namespace MrBoom
     public class Menu
     {
         public int Action { get; private set; }
+        public readonly IMenuItem[] Items;
 
-        private readonly IMenuItem[] items;
         private readonly Assets assets;
         private readonly IEnumerable<IController> controllers;
-
+        private readonly int width;
         private int select;
         private int bombTick;
 
-        public Menu(IMenuItem[] items, Assets assets, IEnumerable<IController> controllers)
+        public Menu(IMenuItem[] items, Assets assets, IEnumerable<IController> controllers, int width)
         {
-            this.items = items;
+            Items = items;
             this.assets = assets;
             this.controllers = controllers;
             Action = -1;
+            this.width = width;
         }
 
         public void Update()
@@ -31,14 +32,14 @@ namespace MrBoom
             if (Controller.IsKeyDown(controllers, PlayerKeys.Up))
             {
                 if (select > 0) select--;
-                else select = items.Length - 1;
+                else select = Items.Length - 1;
 
                 Controller.Reset(controllers);
                 assets.Sounds.PoseBomb.Play();
             }
             if (Controller.IsKeyDown(controllers, PlayerKeys.Down))
             {
-                if (select < items.Length - 1) select++;
+                if (select < Items.Length - 1) select++;
                 else select = 0;
 
                 Controller.Reset(controllers);
@@ -47,7 +48,7 @@ namespace MrBoom
             if (Controller.IsKeyDown(controllers, PlayerKeys.Bomb) ||
                 Controller.IsKeyDown(controllers, PlayerKeys.StartGame))
             {
-                if (items[select].OnEnter())
+                if (Items[select].OnEnter())
                 {
                     Action = select;
                 }
@@ -56,7 +57,7 @@ namespace MrBoom
             }
             if (Controller.IsKeyDown(controllers, PlayerKeys.Left))
             {
-                if (items[select].OnLeft())
+                if (Items[select].OnLeft())
                 {
                     assets.Sounds.PoseBomb.Play();
                 }
@@ -64,7 +65,7 @@ namespace MrBoom
             }
             if (Controller.IsKeyDown(controllers, PlayerKeys.Right))
             {
-                if (items[select].OnRight())
+                if (Items[select].OnRight())
                 {
                     assets.Sounds.PoseBomb.Play();
                 }
@@ -85,10 +86,10 @@ namespace MrBoom
             const int scale = 2;
             const int bombOffset = 8;
 
-            int maxWidth = 0;
+            int maxWidth = width;
             int maxHeight = 0;
 
-            foreach (var item in items)
+            foreach (var item in Items)
             {
                 Vector2 size = assets.MenuFont.MeasureString(item.Text) / scale;
 
@@ -97,11 +98,11 @@ namespace MrBoom
             }
 
             int x = (320 - maxWidth) / 2;
-            int y = (200 - maxHeight * items.Length) / 2;
+            int y = (200 - maxHeight * Items.Length) / 2;
 
-            for (int i = 0; i < items.Length; i++)
+            for (int i = 0; i < Items.Length; i++)
             {
-                ctx.DrawString(assets.MenuFont, items[i].Text, new Vector2(x, y) * scale, Color.White);
+                ctx.DrawString(assets.MenuFont, Items[i].Text, new Vector2(x, y) * scale, Color.White);
                 if (select == i)
                 {
                     assets.Bomb[bombTick / 16].Draw(ctx, x - assets.Bomb[0].Width - bombOffset / 2,

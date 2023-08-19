@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
+
 namespace MrBoom
 {
     public interface IMenuItem
@@ -40,32 +42,39 @@ namespace MrBoom
     {
         private readonly string header;
         private readonly string[] options;
-        public int selectionIndex;
+        private readonly int maxCount;
+        private string currentOption => options[SelectionIndex];
 
-        public string Text => $"{header} {options[selectionIndex]}";
+        public int SelectionIndex;
+        public string Text => string.Format("{0}: {1}", header, currentOption);
 
         public SelectMenuItem(string header, string[] options)
         {
             this.header = header;
             this.options = options;
+
+            foreach (string option in options)
+            {
+                maxCount = Math.Max(option.Length, maxCount);
+            }
         }
 
         public bool OnLeft()
         {
-            selectionIndex--;
-            if (selectionIndex < 0)
+            SelectionIndex--;
+            if (SelectionIndex < 0)
             {
-                selectionIndex = options.Length - 1;
+                SelectionIndex = options.Length - 1;
             }
             return true;
         }
 
         public bool OnRight()
         {
-            selectionIndex++;
-            if (selectionIndex >= options.Length)
+            SelectionIndex++;
+            if (SelectionIndex >= options.Length)
             {
-                selectionIndex = 0;
+                SelectionIndex = 0;
             }
             return true;
         }

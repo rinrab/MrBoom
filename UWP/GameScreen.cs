@@ -93,7 +93,13 @@ namespace MrBoom
 
                 if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
                 {
-                    pauseWindow = new Menu(new string[] { "RESUME", "MAIN MENU", "QUIT" }, assets, game.Controllers);
+                    var options = new IMenuItem[] {
+                        new TextMenuItem("RESUME"),
+                        new TextMenuItem("MAIN MENU"),
+                        new TextMenuItem("QUIT")
+                    };
+
+                    pauseWindow = new Menu(options, assets, game.Controllers);
                     Controller.Reset(game.Controllers);
                     isPause = true;
                 }

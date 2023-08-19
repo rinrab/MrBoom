@@ -7,18 +7,93 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
 {
+    public interface IMenuItem
+    {
+        string Text { get; }
+
+        bool OnLeft();
+        bool OnRight();
+        bool OnEnter();
+    }
+
+    public class TextMenuItem : IMenuItem
+    {
+        public string Text { get; }
+
+        public TextMenuItem(string text)
+        {
+            Text = text;
+        }
+
+        public bool OnLeft()
+        {
+            return false;
+        }
+
+        public bool OnRight()
+        {
+            return false;
+        }
+
+        public bool OnEnter()
+        {
+            return true;
+        }
+    }
+
+    public class SelectMenuItem : IMenuItem
+    {
+        private readonly string header;
+        private readonly string[] options;
+        public int selectionIndex;
+
+        public string Text => $"{header} {options[selectionIndex]}";
+
+        public SelectMenuItem(string header, string[] options)
+        {
+            this.header = header;
+            this.options = options;
+        }
+
+        public bool OnLeft()
+        {
+            selectionIndex--;
+            if (selectionIndex < 0)
+            {
+                selectionIndex = options.Length - 1;
+            }
+            return true;
+        }
+
+        public bool OnRight()
+        {
+            selectionIndex++;
+            if (selectionIndex >= options.Length)
+            {
+                selectionIndex = 0;
+            }
+            return true;
+        }
+
+        public bool OnEnter()
+        {
+            OnRight();
+            return false;
+        }
+    }
+
     public class Menu
     {
         public int Action { get; private set; }
 
-        private readonly string[] items;
+        private readonly IMenuItem[] items;
         private readonly Assets assets;
         private readonly IEnumerable<IController> controllers;
 
         private int select;
         private int bombTick;
 
-        public Menu(string[] items, Assets assets, IEnumerable<IController> controllers)
+        public Menu(IMenuItem[] items, Assets assets, IEnumerable<IController> controllers)
         {
             this.items = items;
             this.assets = assets;
@@ -47,8 +122,27 @@ namespace MrBoom
             if (Controller.IsKeyDown(controllers, PlayerKeys.Bomb) ||
                 Controller.IsKeyDown(controllers, PlayerKeys.StartGame))
             {
-                Action = select;
+                if (items[select].OnEnter())
+                {
+                    Action = select;
+                }
                 assets.Sounds.Bang.Play();
+                Controller.Reset(controllers);
+            }
+            if (Controller.IsKeyDown(controllers, PlayerKeys.Left))
+            {
+                if (items[select].OnLeft())
+                {
+                    assets.Sounds.PoseBomb.Play();
+                }
+                Controller.Reset(controllers);
+            }
+            if (Controller.IsKeyDown(controllers, PlayerKeys.Right))
+            {
+                if (items[select].OnRight())
+                {
+                    assets.Sounds.PoseBomb.Play();
+                }
                 Controller.Reset(controllers);
             }
             if (Controller.IsKeyDown(controllers, PlayerKeys.Back))
@@ -71,7 +165,7 @@ namespace MrBoom
 
             foreach (var item in items)
             {
-                Vector2 size = assets.MenuFont.MeasureString(item) / scale;
+                Vector2 size = assets.MenuFont.MeasureString(item.Text) / scale;
 
                 maxWidth = Math.Max(maxWidth, (int)size.X);
                 maxHeight = Math.Max(maxHeight, (int)size.Y);
@@ -82,7 +176,7 @@ namespace MrBoom
 
             for (int i = 0; i < items.Length; i++)
             {
-                ctx.DrawString(assets.MenuFont, items[i], new Vector2(x, y) * scale, Color.White);
+                ctx.DrawString(assets.MenuFont, items[i].Text, new Vector2(x, y) * scale, Color.White);
                 if (select == i)
                 {
                     assets.Bomb[bombTick / 16].Draw(ctx, x - assets.Bomb[0].Width - bombOffset / 2,

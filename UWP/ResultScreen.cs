@@ -1,10 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Windows.UI.Xaml.Documents;
 
 namespace MrBoom
 {

@@ -79,7 +79,7 @@ namespace MrBoom
                         int ty = (teamMode == 2) ? y : y + 26 - 10;
                         int color = 0;
                         if (teamMode == 0) color = teamIndex / 2 + 2;
-                        if (teamMode == 1) color = teamIndex;
+                        if (teamMode == 1) color = teamIndex + 2;
                         if (teamMode == 2) color = (teamIndex == 0) ? 4 : 3;
 
                         Game.DrawString(ctx, tx, ty + i * 8, team.Names[i], assets.Alpha[color]);

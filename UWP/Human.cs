@@ -7,8 +7,8 @@ namespace MrBoom
         public readonly IController Controller;
 
         public Human(Terrain map, Assets.MovingSpriteAssets animations,
-            IController controller, int maxBoom, int maxBombs) :
-            base(map, animations, maxBoom, maxBombs)
+            IController controller, int maxBoom, int maxBombs, int team) :
+            base(map, animations, maxBoom, maxBombs, team)
         {
             Controller = controller;
         }

@@ -32,10 +32,12 @@ namespace MrBoom
 
             game.NextSong(Map.Maps[levelIndex].Song);
 
-            PlayerState[] players = Team.GetPlayers(teams);
-            for (int i = 0; i < players.Length; i++)
+            for (int i = 0; i < teams.Count; i++)
             {
-                terrain.AddPlayer(assets.Players[i], players[i].Controller);
+                for (int j = 0; j < teams[i].Players.Count; j++)
+                {
+                    terrain.AddPlayer(assets.Players[teams[i].Players[j].Index], teams[i].Players[j].Controller, i);
+                }
             }
 
             terrain.InitializeMonsters();

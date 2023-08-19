@@ -180,6 +180,20 @@ namespace MrBoom
                             teams.Add(new Team { Players = newPlayers });
                         }
                     }
+                    if (teamMode == 2)
+                    {
+                        teams.Add(new Team { Players = new List<PlayerState>() });
+                        teams.Add(new Team { Players = new List<PlayerState>() });
+
+                        for (int i = 0; i < players.Count; i += 2)
+                        {
+                            teams[0].Players.Add(players[i]);
+                            if (i + 1 < players.Count)
+                            {
+                                teams[1].Players.Add(players[i + 1]);
+                            }
+                        }
+                    }
 
                     Next = Screen.Game;
                 }

@@ -40,6 +40,10 @@ namespace MrBoom
             {
                 assets.MedC.Draw(ctx, 0, 0);
             }
+            else if (teamMode == 2)
+            {
+                assets.MedG.Draw(ctx, 0, 0);
+            }
 
             void drawCoins(int x, int y, int teamIndex)
             {
@@ -71,7 +75,14 @@ namespace MrBoom
 
                     for (int i = 0; i < team.Names.Length; i++)
                     {
-                        Game.DrawString(ctx, x - 34, y + 26 - 10 + i * 8, team.Names[i], assets.Alpha[teamIndex + 2]);
+                        int tx = (teamMode == 2) ? x - 42 : x - 34;
+                        int ty = (teamMode == 2) ? y : y + 26 - 10;
+                        int color = 0;
+                        if (teamMode == 0) color = teamIndex / 2 + 2;
+                        if (teamMode == 1) color = teamIndex;
+                        if (teamMode == 2) color = (teamIndex == 0) ? 4 : 3;
+
+                        Game.DrawString(ctx, tx, ty + i * 8, team.Names[i], assets.Alpha[color]);
                     }
                 }
             }
@@ -93,6 +104,11 @@ namespace MrBoom
                 drawCoins(1 * 161 + 44, 0 * 64 + 53, 1);
                 drawCoins(0 * 161 + 44, 1 * 64 + 53, 2);
                 drawCoins(1 * 161 + 44, 1 * 64 + 53, 3);
+            }
+            else if (teamMode == 2)
+            {
+                drawCoins(126, 0 * 68 + 60, 0);
+                drawCoins(126, 1 * 68 + 60, 1);
             }
         }
 

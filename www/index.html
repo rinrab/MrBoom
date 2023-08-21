@@ -10,6 +10,31 @@
 </head>
 
 <body>
+  <style>
+    html[lang] [lang] {
+      display: none;
+    }
+
+    html[lang="en"] [lang="en"] {
+      display: unset;
+    }
+
+    html[lang="ru"] [lang="ru"] {
+      display: unset;
+    }
+  </style>
+  <script>
+    for (var lang of navigator.languages) {
+      if (lang.match(/^en.*$/i)) {
+        document.documentElement.lang = "en";
+        break;
+      } else if (lang.match(/^ru.*$/i)) {
+        document.documentElement.lang = "ru";
+        break;
+      }
+    }
+  </script>
+
   <a href="https://github.com/rinrab/MrBoom" class="github-corner" aria-label="View source on GitHub">
     <svg width="80" height="80" viewBox="0 0 250 250"
       style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
@@ -25,8 +50,14 @@
   <div class="container">
     <h1 style="text-align: center;">Mr. Bomber</h1>
     <p style="font-size: 1.3rem;">
-      Experience classic Bomberman-style gameplay on modern platforms. Use explosives to destroy walls, acquire
-      power-ups and win!
+      <span lang="en">
+        Experience classic Bomberman-style gameplay on modern platforms. Use explosives to destroy walls, acquire
+        power-ups and win!
+      </span>
+      <span lang="ru">
+        Попробуйте классический геймплей в стиле Bomberman на современных платформах. Используйте бомбу, чтобы
+        взрывать стены, выбивайте бонусы и побеждайте!
+      </span>
     </p>
     <div style="display: flex;">
       <img src="screenshots/640x400/1.png" />
@@ -34,19 +65,44 @@
       <img src="screenshots/640x400/2.png" />
     </div>
     <p>
-      Engage with up to 8 friends on a single device. Various power ups upgrade your bombs and let you control them
-      remotely, add extra lives and there are also several other perks to spice up the gameplay. Beware of NPC
-      monsters, and maintain a safe distance!
+      <span lang="en">
+        Engage with up to 8 friends on a single device. Various power ups upgrade your bombs and let you control them
+        remotely, add extra lives and there are also several other perks to spice up the gameplay. Beware of NPC
+        monsters, and maintain a safe distance!
+      </span>
+      <span lang="ru">
+        Играйти с 8 друзьями на одном устройстве. Улучшайте ваши бомбы с помощью различных бонусов,
+        которые позволяют вам взрывать их удаленно, а также много других привилегий, чтобы оживить 
+        игровой процесс. Остерегайтесь NPC монстров, которые могут вас убить!
+      </span>
     </p>
 
     <dt>Game Features:</dt>
     <ul>
-      <li>Bomberman-style gameplay</li>
-      <li>Classic DOS look and feel</li>
-      <li>PvP with up to 8 players</li>
-      <li>8 different levels</li>
-      <li>Same-device multiplayer</li>
-      <li>Full controller and keyboard support</li>
+      <li>
+        <span lang="en">Bomberman-style gameplay</span>
+        <span lang="ru">Игра в стиле Bomberman</span>
+      </li>
+      <li>
+        <span lang="en">Classic DOS look and feel</span>
+        <span lang="ru">Класическая ретро игра</span>
+      </li>
+      <li>
+        <span lang="en">PvP with up to 8 players</span>
+        <span lang="ru">PvP до 8 игроков</span>
+      </li>
+      <li>
+        <span lang="en">8 different levels</span>
+        <span lang="ru">8 различных уровней</span>
+      </li>
+      <li>
+        <span lang="en">Same-device multiplayer</span>
+        <span lang="ru">Многопользовательская игра на одном устройстве</span>
+      </li>
+      <li>
+        <span lang="en">Full controller and keyboard support</span>
+        <span lang="ru">Полная поддержка джойстика и клавиатуры</span>
+      </li>
     </ul>
     <!-- Controls:
       - First player: Right Ctrl to drop bomb, right shift to remote control, arrows to move

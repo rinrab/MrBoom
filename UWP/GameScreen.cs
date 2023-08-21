@@ -10,25 +10,34 @@ namespace MrBoom
         private readonly Terrain terrain;
         private readonly Assets assets;
         private readonly Game game;
-
+        private readonly int teamMode;
         private int bgTick = 0;
         private bool isPause = false;
-        private PauseWindow pauseWindow;
+        private Menu pauseWindow;
 
         public Screen Next { get; private set; }
 
-        public GameScreen(List<PlayerState> players, Assets assets, Game game)
+        public GameScreen(List<Team> teams, Assets assets, Game game, int teamMode)
         {
             this.assets = assets;
             this.game = game;
+            this.teamMode = teamMode;
 
-            terrain = new Terrain(Terrain.Random.Next(Map.Maps.Length), assets);
+#if true
+            int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
+#else
+            int levelIndex = 0;
+#endif
+            terrain = new Terrain(levelIndex, assets);
 
-            game.NextSong();
+            game.NextSong(Map.Maps[levelIndex].Song);
 
-            for (int i = 0; i < players.Count; i++)
+            for (int i = 0; i < teams.Count; i++)
             {
-                terrain.AddPlayer(assets.Players[i], players[i].Controller);
+                for (int j = 0; j < teams[i].Players.Count; j++)
+                {
+                    terrain.AddPlayer(assets.Players[teams[i].Players[j].Index], teams[i].Players[j].Controller, i);
+                }
             }
 
             terrain.InitializeMonsters();
@@ -36,61 +45,64 @@ namespace MrBoom
 
         public void Update()
         {
-            if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Pause))
-            {
-                if (isPause)
-                {
-                    isPause = false;
-                }
-                else
-                {
-                    pauseWindow = new PauseWindow(assets);
-                    isPause = true;
-                }
-
-                Controller.Reset(game.Controllers);
-            }
+            bgTick++;
 
             if (isPause)
             {
                 pauseWindow.Update();
-                return;
-            }
 
-            bgTick++;
-
-            terrain.Update();
-
-            PlaySounds(terrain.SoundsToPlay);
-
-            if (terrain.Result == GameResult.Victory)
-            {
-                PlayerState[] players = game.Players.ToArray();
-                int winner = terrain.Winner;
-
-                players[winner].VictoryCount++;
-
-                ScreenManager.SetScreen(new ResultScreen(players, winner, assets, game.Controllers));
-            }
-            else if (terrain.Result == GameResult.Draw)
-            {
-                ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
-            }
-
-            bool endGame = false;
-            foreach (var controller in game.Controllers)
-            {
-                if (controller.IsKeyDown(PlayerKeys.EndGame))
+                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu) ||
+                    Controller.IsKeyDown(game.Controllers, PlayerKeys.Back))
                 {
-                    endGame = true;
+                    isPause = false;
+                    Controller.Reset(game.Controllers);
+                }
+
+                if (pauseWindow.Action == 0)
+                {
+                    isPause = false;
+                }
+                else if (pauseWindow.Action == 1)
+                {
+                    game.NextSong(3);
+                    ScreenManager.SetScreen(new StartScreen(assets, game.Teams, game.Controllers));
+                }
+                else if (pauseWindow.Action == 2)
+                {
+                    game.Exit();
                 }
             }
-
-            if (endGame)
+            else
             {
-                game.Players = new List<PlayerState>();
-                game.NextSong(3);
-                ScreenManager.SetScreen(new StartScreen(assets, game.Players, game.Controllers));
+                terrain.Update();
+
+                PlaySounds(terrain.SoundsToPlay);
+
+                if (terrain.Result == GameResult.Victory)
+                {
+                    int winner = terrain.Winner;
+
+                    game.Teams[winner].VictoryCount++;
+
+                    ScreenManager.SetScreen(new ResultScreen(game.Teams.ToArray(), winner, assets, game.Controllers, teamMode));
+                }
+                else if (terrain.Result == GameResult.Draw)
+                {
+                    ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
+                }
+
+                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
+                {
+                    var options = new IMenuItem[] {
+                        new TextMenuItem("RESUME"),
+                        new TextMenuItem("MAIN MENU"),
+                        new TextMenuItem("QUIT")
+                    };
+
+                    pauseWindow = new Menu(options, assets, game.Controllers, -1);
+                    Controller.Reset(game.Controllers);
+                    isPause = true;
+                }
             }
         }
 
@@ -113,6 +125,14 @@ namespace MrBoom
 
             var bgs = terrain.LevelAssets.Backgrounds;
             bgs[bgTick / 20].Draw(ctx, 0, 0);
+            var bgSprites = terrain.LevelAssets.BackgroundSprites;
+            if (bgSprites != null)
+            {
+                foreach (var overlay in bgSprites)
+                {
+                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
+                }
+            }
 
             for (int y = 0; y < terrain.Height; y++)
             {
@@ -190,8 +210,6 @@ namespace MrBoom
                 assets.DrawGameInNumbers[firstNumber].Draw(ctx, x + 42, y + 15);
                 assets.DrawGameInNumbers[secondNumber].Draw(ctx, x + 8 + 42, y + 15);
             }
-
-            assets.GameHelp.Draw(ctx, 0, 0);
 
             if (isPause)
             {

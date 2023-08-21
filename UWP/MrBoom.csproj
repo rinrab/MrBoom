@@ -114,6 +114,8 @@
     <Compile Include="IScreen.cs" />
     <Compile Include="ISprite.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="MenuItem.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="PauseWindow.cs" />
     <Compile Include="SkullType.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Screen.cs" />
     <Compile Include="StartScreen.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="UnrepeatableRandom.cs" />
     <Compile Include="VictoryScreen.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -134,7 +137,11 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\CONTROLS.png" />
+    <Content Include="Content\START.png" />
+    <Content Include="Content\UI_A.png" />
     <Content Include="Properties\Default.rd.xml" />
+    <None Include="Content\font\Menu.spritefont" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />

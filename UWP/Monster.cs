@@ -15,7 +15,16 @@ namespace MrBoom
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;
-            this.Direction = (Directions)Terrain.Random.Next(1, 5);
+
+            if (monsterData.IsSlowStart)
+            {
+                wait = 120;
+                unplugin = 120;
+            }
+            else
+            {
+                this.Direction = (Directions)Terrain.Random.Next(1, 5);
+            }
         }
 
         public override void Update()

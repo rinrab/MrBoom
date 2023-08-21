@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using SharpDX.XAPO.Fx;
 
 namespace MrBoom
 {
@@ -18,14 +19,7 @@ namespace MrBoom
         public int ApocalypseSpeed = 2;
         public int MaxApocalypse;
 
-        public Assets.Level LevelAssets
-        {
-            get
-            {
-                return levelAssets;
-            }
-        }
-
+        public Assets.Level LevelAssets => levelAssets;
         public int Winner { get; private set; }
 
         private readonly byte[] final;
@@ -138,9 +132,9 @@ namespace MrBoom
             }
         }
 
-        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller)
+        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
         {
-            AbstractPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount);
+            AbstractPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount, team);
 
             var spawn = this.spawns[this.generateSpawn()];
             sprite.x = spawn.x * 16;
@@ -175,15 +169,6 @@ namespace MrBoom
                 this.timeToEnd--;
             }
 
-            int playersCount = 0;
-            foreach (AbstractPlayer player in this.players)
-            {
-                if (!player.IsDie)
-                {
-                    playersCount++;
-                }
-            }
-
             if (TimeLeft < 30 * 60 - 1)
             {
                 if (TimeLeft % ApocalypseSpeed == 0)
@@ -210,6 +195,10 @@ namespace MrBoom
                             else if (final[i] == index)
                             {
                                 var cell = GetCell(i % Width, i / Width);
+                                if (cell.Type == TerrainType.Bomb)
+                                {
+                                    cell.owner.BombsPlaced--;
+                                }
                                 if (cell.Type != TerrainType.PermanentWall)
                                 {
                                     SetCell(i % Width, i / Width, new Cell(TerrainType.Apocalypse)
@@ -233,15 +222,58 @@ namespace MrBoom
                 }
             }
 
-            if (this.timeToEnd == 0)
+            if (map.BombApocalypse && TimeLeft < 30 * 60 - ApocalypseSpeed * MaxApocalypse)
             {
-                if (playersCount == 1)
+                if (TimeLeft % 16 == 0)
+                {
+                    int rndX = Random.Next(2);
+                    int x = (rndX == 0) ? 1 : Width - 2;
+                    int y = (Random.Next(0, Height / 2)) * 2 + 1;
+
+                    PutBomb(x, y, 4, false, null);
+                    GetCell(x, y).DeltaX = (rndX == 0) ? 2 : -2;
+                }
+            }
+
+            int playersCount = 0;
+            foreach (AbstractPlayer player in this.players)
+            {
+                if (!player.IsDie)
+                {
+                    playersCount++;
+                }
+            }
+
+            if (timeToEnd == -1)
+            {
+                List<int> live = new List<int>();
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (!players[i].IsDie)
+                    {
+                        live.Add(players[i].Team);
+                    }
+                }
+
+                if (live.Count == 0 ||
+                    live.Count == 1 ||
+                   (live.Count == 2 && live[0] == live[1]) ||
+                   (live.Count == 3 && live[0] == live[1] && live[1] == live[2]) ||
+                   (live.Count == 4 && live[0] == live[1] && live[1] == live[2] && live[2] == live[3]))
+                {
+                    timeToEnd = 60 * 3;
+                }
+            }
+
+            if (timeToEnd == 0)
+            {
+                if (playersCount >= 1)
                 {
                     for (int i = 0; i < players.Count; i++)
                     {
                         if (!players[i].IsDie)
                         {
-                            Winner = i;
+                            Winner = players[i].Team;
                         }
                     }
                     Result = GameResult.Victory;
@@ -256,16 +288,6 @@ namespace MrBoom
             {
                 Result = GameResult.Draw;
             }
-
-            if (playersCount == 1 && players.Count > 1 && this.timeToEnd == -1)
-            {
-                this.timeToEnd = 60 * 3;
-            }
-            if (playersCount == 0 && this.timeToEnd == -1)
-            {
-                this.timeToEnd = 60 * 3;
-            }
-
 
             for (int y = 0; y < this.Height; y++)
             {
@@ -300,7 +322,7 @@ namespace MrBoom
                             cell.bombTime--;
                         }
 
-                        if (cell.bombTime == 0 || (cell.owner.rcDitonate && cell.rcAllowed))
+                        if (cell.bombTime == 0 || (cell.owner != null && cell.owner.rcDitonate && cell.rcAllowed))
                         {
                             this.ditonateBomb(x, y);
                             continue;
@@ -365,7 +387,10 @@ namespace MrBoom
                         sprite1.Skull.HasValue &&
                         !sprite2.Skull.HasValue)
                     {
-                        sprite2.SetSkull(sprite1.Skull.Value);
+                        if (!sprite1.IsDie && !sprite2.IsDie)
+                        {
+                            sprite2.SetSkull(sprite1.Skull.Value);
+                        }
                     }
                 }
             }
@@ -421,7 +446,11 @@ namespace MrBoom
         {
             Cell bombCell = this.GetCell(bombX, bombY); ;
             int maxBoom = bombCell.maxBoom;
-            bombCell.owner.BombsPlaced--;
+
+            if (bombCell.owner != null)
+            {
+                bombCell.owner.BombsPlaced--;
+            }
 
             void burn(int dx, int dy, AnimatedImage image, AnimatedImage imageEnd)
             {

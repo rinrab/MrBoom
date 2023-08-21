@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,18 @@ namespace MrBoom
                 public int AnimationDelay;
                 public int x;
                 public int y;
+
+                public Overlay()
+                {
+                }
+
+                public Overlay(int x, int y, AnimatedImage images, int animationDelay)
+                {
+                    this.x = x;
+                    this.y = y;
+                    Images = images;
+                    AnimationDelay = animationDelay;
+                }
             }
 
             public AnimatedImage Backgrounds;
@@ -25,6 +38,7 @@ namespace MrBoom
             public AnimatedImage PermanentWalls;
             public Overlay[] Overlays;
             public Image MovingBackground;
+            public Overlay[] BackgroundSprites;
         }
 
         public class MovingSpriteAssets
@@ -59,6 +73,8 @@ namespace MrBoom
         public AnimatedImage BigDigits { get; private set; }
         public AnimatedImage Draw { get; private set; }
         public Image Med { get; private set; }
+        public Image MedC { get; private set; }
+        public Image MedG { get; private set; }
         public AnimatedImage Coin { get; private set; }
         public AnimatedImage Vic { get; private set; }
         public Image Sky { get; private set; }
@@ -68,11 +84,14 @@ namespace MrBoom
         public Image[] Controls { get; private set; }
         public Image PauseHelp { get; private set; }
         public Image GameHelp { get; private set; }
+        public Texture2D BlackPixel { get; private set; }
+        public Texture2D StartButton { get; private set; }
 
         public Image DrawGameIn;
         public AnimatedImage DrawGameInNumbers;
 
         public AnimatedImage[] Alpha;
+        public SpriteFont MenuFont;
 
         public static int scale = 2;
 
@@ -323,11 +342,12 @@ namespace MrBoom
             var imgCrayon2 = content.Load<Texture2D>("CRAYON2");
             var imgSoucoupe = content.Load<Texture2D>("SOUCOUPE");
             var imgBonus = content.Load<Texture2D>("BONUS");
+            var imgFootanim = content.Load<Texture2D>("FOOTANIM");
             var imgControls = content.Load<Texture2D>("CONTROLS");
-            var imgHelp = content.Load<Texture2D>("HELP");
 
             var monster2walk = loadImageStripe(imgFeuille, 79, 128, 16, 19, 3, 0);
             var monster3walk = loadImageStripe(imgFeuille, 42, 148, 16, 18, 5, 1);
+            var monster6walk = loadImageStripe(imgFeuille, 80, 100, 26, 27, 2, 1);
 
             var snail =
                 new AnimatedImage(
@@ -336,6 +356,65 @@ namespace MrBoom
 
             var fire = loadImageStripe(imgSprite2, 0, 172, 26, 27, 7, 6);
             var bonusBackground = loadImage(imgBonus, 0, 0, 160, 16);
+
+            var blackPixel = new Texture2D(graphics, 1, 1);
+            blackPixel.SetData(new Color[] { Color.Black });
+
+            var pa = new AnimatedImage(
+                loadImageStripe(imgMed3, 69, 23, 16, 16, 9),
+                loadImageStripe(imgMed3, 69, 40, 16, 16, 4),
+                loadImageStripe(imgMed3, 133, 44, 16, 12, 2)
+                );
+
+            var penguinUp = new AnimatedImage(
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[0], pa[1],
+                pa[2], pa[0], pa[3],
+                pa[4], pa[5], pa[6], pa[7], pa[8]
+            );
+
+            var penguinLeft = new AnimatedImage(
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9], pa[10],
+                pa[9],
+                pa[7], pa[8], pa[4], pa[5], pa[6]
+            );
+
+            var penguinDown = new AnimatedImage(
+                pa[13], pa[14],
+                pa[13], pa[14],
+                pa[13], pa[14],
+                pa[13], pa[14],
+                pa[13], pa[14],
+                pa[13],
+                pa[6], pa[7], pa[8], pa[4], pa[5]
+            );
+
+            var footanim1 = loadImageStripe(imgFootanim, 24, 24, 23, 23, 12, 1);
+            var footanim2 = loadImageStripe(imgFootanim, 0, 48, 23, 23, 8, 1);
+
+            var footanimAssets = new AnimatedImage(
+                loadImageStripe(imgFootanim, 0, 72, 48, 32, 6, 1),
+                loadImageStripe(imgFootanim, 0, 105, 48, 32, 6, 1),
+                loadImageStripe(imgFootanim, 0, 138, 48, 32, 6, 1)
+            );
+
+            var footanimGirls1 = new AnimatedImage(
+                footanimAssets[0], footanimAssets[1], footanimAssets[2], footanimAssets[3], footanimAssets[4],
+                footanimAssets[5], footanimAssets[4], footanimAssets[3], footanimAssets[2], footanimAssets[1]
+            );
+            
+            var footanimGirls2 = new AnimatedImage(footanimAssets[4], footanimAssets[5]);
 
             var monsters = new MovingSpriteAssets[]
                 {
@@ -372,7 +451,10 @@ namespace MrBoom
                                 new AnimatedImage(
                                     loadImageStripe(imgPause, 3 * 24 * 3, 158, 23, 21, 2, 1),
                                     loadImageStripe(imgPause, 0, 179, 23, 21, 1, 1)),
-                                loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1))
+                                loadImageStripe(imgPause, 24, 179, 23, 21, 8, 1)),
+
+                    loadMonster(monster6walk, monster6walk, monster6walk, monster6walk,
+                                loadImageStripe(imgFeuille, 134, 100, 26, 27, 4, 1))
                 };
 
             return new Assets()
@@ -401,6 +483,21 @@ namespace MrBoom
                             loadImage(imgNeige2, 0, 0, 320, 200),
                             loadImage(imgNeige3, 0, 0, 320, 200)
                         ),
+                        BackgroundSprites = new Level.Overlay[]
+                        {
+                            new Level.Overlay(9 + 0 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(9 + 1 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(9 + 2 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(114, 1, penguinUp, 16),
+                            new Level.Overlay(162, 1, penguinUp, 16),
+                            new Level.Overlay(194, 1, penguinUp, 16),
+                            new Level.Overlay(258, 1, penguinUp, 16),
+                            new Level.Overlay(1, 33, penguinLeft, 16),
+                            new Level.Overlay(1, 50, penguinLeft, 16),
+                            new Level.Overlay(1, 104, penguinLeft, 16),
+                            new Level.Overlay(1, 151, penguinLeft, 16),
+                            new Level.Overlay(1, 168, penguinLeft, 16),
+                        },
                         Overlays = new Level.Overlay[] {
                             new Level.Overlay() {
                                 x = 232,
@@ -414,6 +511,10 @@ namespace MrBoom
                                 AnimationDelay = 20,
                                 Images = loadImageStripe(imgMed3, 0, 17 * 8, 32, 49, 2, 1),
                             },
+                            new Level.Overlay(50,  200 - 12, penguinDown, 16),
+                            new Level.Overlay(67,  200 - 12, penguinDown, 16),
+                            new Level.Overlay(117, 200 - 12, penguinDown, 16),
+                            new Level.Overlay(202, 200 - 12, penguinDown, 16),
                         },
                         Walls = loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
@@ -465,11 +566,24 @@ namespace MrBoom
                         {
                             new Level.Overlay()
                             {
-                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE_OVERLAY"), 0, 0, 320, 200),
-                                x = 0,
-                                y = 0,
-                                AnimationDelay = 1
-                            }
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE"), 0, 0, 320, 15),
+                                x = 0, y = 0, AnimationDelay = 1
+                            },
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE"), 0, 16, 31, 149),
+                                x = 0, y = 16, AnimationDelay = 1
+                            },
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE"), 320 - 31, 16, 31, 149),
+                                x = 320 - 31, y = 16, AnimationDelay = 1
+                            },
+                            new Level.Overlay()
+                            {
+                                Images = loadImageStripe(content.Load<Texture2D>("FEUILLE"), 0, 166, 320, 34),
+                                x = 0, y = 166, AnimationDelay = 1
+                            },
                         },
                         Walls = loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
@@ -479,6 +593,29 @@ namespace MrBoom
                         Backgrounds = new AnimatedImage(
                             loadImage(content.Load<Texture2D>("SOCCER"), 0, 0, 320, 200)
                         ),
+                        BackgroundSprites = new Level.Overlay[]
+                        {
+                            new Level.Overlay(0, 140, new AnimatedImage(
+                                new AnimatedImage(Enumerable.Repeat(loadImage(imgFootanim, 0, 0, 23, 23), 16).ToList()),
+                                loadImageStripe(imgFootanim, 0, 0, 23, 23, 5, 1)), 10),
+                            new Level.Overlay(299, 24, new AnimatedImage(
+                                new AnimatedImage(Enumerable.Repeat(loadImage(imgFootanim, 120, 0, 23, 23), 24).ToList()),
+                                loadImageStripe(imgFootanim, 120, 0, 23, 23, 5, 1)), 10),
+
+                            new Level.Overlay(2, 0, new AnimatedImage(footanim1[0], footanim1[1], footanim1[0], footanim1[2]), 16),
+                            new Level.Overlay(320 - 2 - 23, 0, new AnimatedImage(footanim1[5], footanim1[6], footanim1[5], footanim1[7]), 16),
+                            new Level.Overlay(0, 200 - 23 - 10, new AnimatedImage(footanim1[11], footanim2[1], footanim2[0], footanim2[1]), 16),
+                            new Level.Overlay(320 - 2 - 23, 200 - 23 - 40, new AnimatedImage(footanim2[3], footanim2[4], footanim2[3], footanim2[5]), 16),
+                        },
+                        Overlays = new Level.Overlay[]
+                        {
+                            new Level.Overlay(20, 200 - 32, footanimGirls1, 12),
+
+                            new Level.Overlay(100, 200 - 32, footanimGirls2, 12),
+                            new Level.Overlay(150, 200 - 32, footanimGirls2, 12),
+
+                            new Level.Overlay(320 - 48 - 48, 200 - 32, footanimGirls1, 12),
+                        },
                         Walls = loadImageStripe(imgPause, 160, 112, 16, 16, 8),
                         PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
                     },
@@ -548,6 +685,8 @@ namespace MrBoom
                     loadImage(content.Load<Texture2D>("DRAW1"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("DRAW2"), 0, 0, 320, 200)),
                 Med = loadImage(content.Load<Texture2D>("MED"), 0, 0, 320, 200),
+                MedC = loadImage(content.Load<Texture2D>("MEDC"), 0, 0, 320, 200),
+                MedG = loadImage(content.Load<Texture2D>("MEDG"), 0, 0, 320, 200),
                 Coin = new AnimatedImage(loadImageStripe(imgMed3, 0, 0, 22, 22, 13, 1),
                     loadImageStripe(imgMed3, 0, 23, 22, 22, 3, 1)),
                 Vic = new AnimatedImage(
@@ -560,13 +699,16 @@ namespace MrBoom
                 DrawGameInNumbers = loadImageStripe(imgSoucoupe, 173, 32, 8, 7, 10),
                 Controls = new Image[]
                 {
-                    loadImage(imgControls, 65, 1, 14, 14),
+                    loadImage(content.Load<Texture2D>("UI_A"), 0, 0, 32, 32),
                     loadImage(imgControls, 273, 97, 25, 14),
                     loadImage(imgControls, 81, 305, 14, 14),
-                    loadImage(imgControls, 513, 161, 30, 30)
+                    loadImage(imgControls, 513, 161, 30, 30),
+                    loadImage(imgControls, 193, 353, 14, 14),
+                    loadImage(imgControls, 161, 353, 14, 14),
                 },
-                PauseHelp = loadImage(imgHelp, 79, 155, 162, 45),
-                GameHelp = loadImage(imgHelp, 0, 0, 121, 20),
+                MenuFont = content.Load<SpriteFont>(@"font\Menu"),
+                BlackPixel = blackPixel,
+                StartButton = content.Load<Texture2D>("START"),
             };
         }
     }

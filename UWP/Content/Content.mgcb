@@ -85,18 +85,6 @@
 /processorParam:TextureFormat=Color
 /build:../../www/Gfx2x/DRAW2.PNG;DRAW2.PNG
 
-#begin ../../www/Gfx2x/FEUILLE_OVERLAY.PNG
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/FEUILLE_OVERLAY.PNG;FEUILLE_OVERLAY.PNG
-
 #begin ../../www/Gfx2x/FEUILLE.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -727,7 +715,14 @@
 /processorParam:TextureFormat=Color
 /build:CONTROLS.png
 
-#begin HELP.png
+#begin font/Menu.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font/Menu.spritefont
+
+#begin START.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -737,5 +732,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:HELP.png
+/build:START.png
+
+#begin UI_A.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_A.png
 

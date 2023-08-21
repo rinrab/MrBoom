@@ -11,9 +11,11 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
-        public List<PlayerState> Players;
+        public List<Team> Teams;
         public Assets assets;
         public List<IController> Controllers;
+        public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
+        public readonly UnrepeatableRandom SoundRandom = new UnrepeatableRandom();
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -47,20 +49,15 @@ namespace MrBoom
             assets = Assets.Load(Content, GraphicsDevice);
             MediaPlayer.IsRepeating = true;
 
-            Players = new List<PlayerState>();
+            Teams = new List<Team>();
             NextSong(3);
 
-            ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
+            ScreenManager.SetScreen(new StartScreen(assets, Teams, Controllers));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
 
             base.Initialize();
-        }
-
-        public void StartGame()
-        {
-            ScreenManager.SetScreen(new GameScreen(Players, assets, this));
         }
 
         protected override void LoadContent()
@@ -98,13 +95,12 @@ namespace MrBoom
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
-                    StartGame();
+                    ScreenManager.SetScreen(new GameScreen(Teams, assets, this, Team.Mode));
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {
-                    Players = new List<PlayerState>();
                     NextSong(3);
-                    ScreenManager.SetScreen(new StartScreen(assets, Players, Controllers));
+                    ScreenManager.SetScreen(new StartScreen(assets, Teams, Controllers));
                 }
                 else
                 {
@@ -135,7 +131,6 @@ namespace MrBoom
 
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,
-                samplerState: SamplerState.PointWrap,
                 transformMatrix: matrix);
 
             spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.White);
@@ -163,7 +158,7 @@ namespace MrBoom
         {
             if (index == -1)
             {
-                index = Terrain.Random.Next(assets.Sounds.Musics.Length);
+                index = SoundRandom.Next(assets.Sounds.Musics.Length);
             }
             assets.Sounds.Musics[index].Play();
         }

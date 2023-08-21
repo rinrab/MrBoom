@@ -9,16 +9,18 @@ namespace MrBoom
 
         protected bool rcDitonateButton;
         protected bool dropBombButton;
-
+        public int Team;
         private int maxBoom;
         private int maxBombsCount;
         private int lifeCount;
+        private int maxBombs;
 
-        public AbstractPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs) : base(map, animations, 3)
+        public AbstractPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs, int team) : base(map, animations, 3)
         {
             Features = map.StartFeatures;
             this.maxBoom = maxBoom;
             this.maxBombsCount = maxBombs;
+            Team = team;
         }
 
         public override void Update()

@@ -82,6 +82,11 @@ h1 {
     font-size: calc(1.375rem + 1.5vw);
 }
 
+img {
+    width: 50%;
+    min-width: 300px;
+}
+
 dl,
 ol,
 ul {

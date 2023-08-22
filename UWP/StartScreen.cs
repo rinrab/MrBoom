@@ -99,7 +99,7 @@ namespace MrBoom
 
             if (startTick >= 0)
             {
-                double scale = Math.Abs(Math.Sin((double)startTick / 15)) * 0.75 + 1;
+                double scale = Math.Abs(Math.Sin((double)startTick / 15)) * 0.5 + 1;
 
                 int width = (int)(assets.StartButton.Width * scale);
                 int height = (int)(assets.StartButton.Height * scale);

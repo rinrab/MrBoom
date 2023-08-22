@@ -246,22 +246,25 @@ namespace MrBoom
 
             if (timeToEnd == -1)
             {
-                List<int> live = new List<int>();
-                for (int i = 0; i < players.Count; i++)
+                if ((Team.Mode != 0 && players.Count != 1) || playersCount == 0)
                 {
-                    if (!players[i].IsDie)
+                    List<int> live = new List<int>();
+                    for (int i = 0; i < players.Count; i++)
                     {
-                        live.Add(players[i].Team);
+                        if (!players[i].IsDie)
+                        {
+                            live.Add(players[i].Team);
+                        }
                     }
-                }
 
-                if (live.Count == 0 ||
-                    live.Count == 1 ||
-                   (live.Count == 2 && live[0] == live[1]) ||
-                   (live.Count == 3 && live[0] == live[1] && live[1] == live[2]) ||
-                   (live.Count == 4 && live[0] == live[1] && live[1] == live[2] && live[2] == live[3]))
-                {
-                    timeToEnd = 60 * 3;
+                    if (live.Count == 0 ||
+                        live.Count == 1 ||
+                       (live.Count == 2 && live[0] == live[1]) ||
+                       (live.Count == 3 && live[0] == live[1] && live[1] == live[2]) ||
+                       (live.Count == 4 && live[0] == live[1] && live[1] == live[2] && live[2] == live[3]))
+                    {
+                        timeToEnd = 60 * 3;
+                    }
                 }
             }
 

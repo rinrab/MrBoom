@@ -178,25 +178,6 @@ namespace MrBoom
                     Start();
                 }
 
-                if (Controller.IsKeyDown(controllers, PlayerKeys.Left))
-                {
-                    teamMode--;
-                    if (teamMode < 0)
-                    {
-                        teamMode = 2;
-                    }
-                    Controller.Reset(controllers);
-                }
-                if (Controller.IsKeyDown(controllers, PlayerKeys.Right))
-                {
-                    teamMode++;
-                    if (teamMode > 2)
-                    {
-                        teamMode = 0;
-                    }
-                    Controller.Reset(controllers);
-                }
-
                 if (startTick == -1)
                 {
                     if (teams.Count >= 1)

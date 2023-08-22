@@ -19,20 +19,26 @@
       display: unset;
     }
 
+    html[lang="fr"] [lang="fr"] {
+      display: unset;
+    }
+
     html[lang="ru"] [lang="ru"] {
       display: unset;
     }
   </style>
   <script>
-    for (var lang of navigator.languages) {
-      if (lang.match(/^en.*$/i)) {
-        document.documentElement.lang = "en";
-        break;
-      } else if (lang.match(/^ru.*$/i)) {
-        document.documentElement.lang = "ru";
-        break;
+    (function() {
+      var langs = ["en", "fr", "ru"];
+      for (var lang of navigator.languages) {
+        for (var l of langs) {
+          if (lang.match(l)) {
+            document.documentElement.lang = l;
+            return;
+          }
+        }
       }
-    }
+    }());
   </script>
 
   <a href="https://github.com/rinrab/MrBoom" class="github-corner" aria-label="View source on GitHub">
@@ -54,6 +60,10 @@
         Experience classic Bomberman-style gameplay on modern platforms. Use explosives to destroy walls, acquire
         power-ups and win!
       </span>
+      <span lang="fr">
+        Découvrez un gameplay classique de style Bomberman sur des plateformes modernes. Utilisez la bombe pour
+        faire exploser les murs, assommez les bonus et gagnez !
+      </span>
       <span lang="ru">
         Попробуйте классический геймплей в стиле Bomberman на современных платформах. Используйте бомбу, чтобы
         взрывать стены, выбивайте бонусы и побеждайте!
@@ -70,37 +80,52 @@
         remotely, add extra lives and there are also several other perks to spice up the gameplay. Beware of NPC
         monsters, and maintain a safe distance!
       </span>
+      <span lang="fr">
+        Jouez avec 8 amis sur un même appareil. Améliorez vos bombes grâce à divers bonus qui vous permettent
+        de les faire exploser à distance, ainsi que de nombreux autres privilèges pour pimenter le jeu.
+        Méfiez-vous des monstres non-joueurs qui peuvent vous tuer !
+      </span>
       <span lang="ru">
         Играйти с 8 друзьями на одном устройстве. Улучшайте ваши бомбы с помощью различных бонусов,
-        которые позволяют вам взрывать их удаленно, а также много других привилегий, чтобы оживить 
+        которые позволяют вам взрывать их удаленно, а также много других привилегий, чтобы оживить
         игровой процесс. Остерегайтесь NPC монстров, которые могут вас убить!
       </span>
     </p>
 
-    <dt>Game Features:</dt>
+    <dt>
+      <span lang="en">Game Features:</span>
+      <span lang="fr">Fonctionnalités du jeu:</span>
+      <span lang="ru">Особенности игры</span>
+    </dt>
     <ul>
       <li>
         <span lang="en">Bomberman-style gameplay</span>
+        <span lang="fr">Jeu de style Bomberman</span>
         <span lang="ru">Игра в стиле Bomberman</span>
       </li>
       <li>
         <span lang="en">Classic DOS look and feel</span>
+        <span lang="fr">Apparence et convivialité DOS classiques</span>
         <span lang="ru">Класическая ретро игра</span>
       </li>
       <li>
         <span lang="en">PvP with up to 8 players</span>
+        <span lang="fr">PvP jusqu'à 8 joueurs</span>
         <span lang="ru">PvP до 8 игроков</span>
       </li>
       <li>
         <span lang="en">8 different levels</span>
+        <span lang="fr">8 niveaux différents</span>
         <span lang="ru">8 различных уровней</span>
       </li>
       <li>
         <span lang="en">Same-device multiplayer</span>
+        <span lang="fr">Jeu multijoueur sur un seul appareil</span>
         <span lang="ru">Многопользовательская игра на одном устройстве</span>
       </li>
       <li>
         <span lang="en">Full controller and keyboard support</span>
+        <span lang="fr">Prise en charge complète du joystick et du clavier</span>
         <span lang="ru">Полная поддержка джойстика и клавиатуры</span>
       </li>
     </ul>

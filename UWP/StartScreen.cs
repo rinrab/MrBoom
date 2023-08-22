@@ -25,9 +25,9 @@ namespace MrBoom
             $"v{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}" +
             $".{Package.Current.Id.Version.Build}!!!   " +
             "players can join using their drop bomb button second press or enter will start game   " +
-            "gamepad controller: d-pad or left stick - move a button - drop bomb b button radio control" +
-            "right keyboard: arrows - move ctrl - drop bomb shift - radio control" +
-            "left keyboard: wsad - move ctrl - drop bomb shift - radio control";
+            "gamepad controller: d-pad or left stick - move  a button - drop bomb  b button radio control   " +
+            "right keyboard: arrows - move  ctrl - drop  bomb  shift - radio control   " +
+            "left keyboard: wsad - move  ctrl - drop  bomb  shift - radio control   ";
 
         private int startTick = -1;
         private int teamMode = 0;

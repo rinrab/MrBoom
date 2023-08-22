@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 
 namespace MrBoom
@@ -20,7 +21,9 @@ namespace MrBoom
         private readonly List<IController> unjoinedControllers;
         private readonly List<IController> joinedControllers;
         private readonly string helpText =
-            "welcome to mr.boom v1.2!!!   " +
+            "welcome to mr.boom " +
+            $"v{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}" +
+            $".{Package.Current.Id.Version.Build}!!!   " +
             "players can join using their drop bomb button   use enter to start game   " +
             "right keyboard controller: use arrows to move ctrl to drop bomb " +
             "and alt to triger it by radio control   " +

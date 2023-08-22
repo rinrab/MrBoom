@@ -213,6 +213,11 @@ namespace MrBoom
         {
             if (players.Count >= 1)
             {
+                if (players.Count == 1 && teamMode != 0)
+                {
+                    teamMode = 0;
+                }
+
                 Team.Mode = teamMode;
 
                 teams.Clear();

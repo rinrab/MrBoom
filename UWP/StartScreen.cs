@@ -225,15 +225,35 @@ namespace MrBoom
                 }
                 if (teamMode == 1)
                 {
-                    for (int i = 0; i < players.Count; i += 2)
+                    if (players.Count == 2)
                     {
-                        var newPlayers = new List<PlayerState> { players[i] };
-                        if (i + 1 < players.Count)
+                        teams.Add(new Team
                         {
-                            newPlayers.Add(players[i + 1]);
-                        }
+                            Players = new List<PlayerState>()
+                            {
+                                new PlayerState(players[0].Controller, 0) { Name = players[0].Name }
+                            }
+                        });
+                        teams.Add(new Team
+                        {
+                            Players = new List<PlayerState>()
+                            {
+                                new PlayerState(players[1].Controller, 2) { Name = players[1].Name }
+                            }
+                        });
+                    }
+                    else
+                    {
+                        for (int i = 0; i < players.Count; i += 2)
+                        {
+                            var newPlayers = new List<PlayerState> { players[i] };
+                            if (i + 1 < players.Count)
+                            {
+                                newPlayers.Add(players[i + 1]);
+                            }
 
-                        teams.Add(new Team { Players = newPlayers });
+                            teams.Add(new Team { Players = newPlayers });
+                        }
                     }
                 }
                 if (teamMode == 2)

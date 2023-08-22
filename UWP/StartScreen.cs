@@ -21,16 +21,14 @@ namespace MrBoom
         private readonly List<IController> unjoinedControllers;
         private readonly List<IController> joinedControllers;
         private readonly string helpText =
-            "welcome to mr.boom " +
+            "welcome to mr.bomber " +
             $"v{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}" +
             $".{Package.Current.Id.Version.Build}!!!   " +
-            "players can join using their drop bomb button   use enter to start game   " +
-            "right keyboard controller: use arrows to move ctrl to drop bomb " +
-            "and alt to triger it by radio control   " +
-            "left keyboard controller: use wasd to move rigth ctrl to drop bomb " +
-            "and right alt to triger it by radio control   " +
-            "gamepad controller: use d-pad arrows to move a button to drop bomb " +
-            "b button to triger it by radio control";
+            "players can join using their drop bomb button second press or enter will start game   " +
+            "gamepad controller: d-pad or left stick - move a button - drop bomb b button radio control" +
+            "right keyboard: arrows - move ctrl - drop bomb shift - radio control" +
+            "left keyboard: wsad - move ctrl - drop bomb shift - radio control";
+
         private int startTick = -1;
         private int teamMode = 0;
         private int playersCount;

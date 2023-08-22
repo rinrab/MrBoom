@@ -104,7 +104,7 @@ namespace MrBoom
                 int width = (int)(assets.StartButton.Width * scale);
                 int height = (int)(assets.StartButton.Height * scale);
 
-                Rectangle rect = new Rectangle(640 - 100 - width / 2, (98 - height) / 2, width, height);
+                Rectangle rect = new Rectangle(300 - width / 2, 38 - height / 2, width, height);
 
                 ctx.Draw(assets.StartButton, rect, Color.White);
             }
@@ -113,7 +113,7 @@ namespace MrBoom
                 string text = "press a or enter";
                 text = text.Substring(0, Math.Min((startTick - 600) / 6, text.Length));
 
-                Game.DrawString(ctx, (320 - text.Length * 8) / 2, 36, text, assets.Alpha[1]);
+                Game.DrawString(ctx, (300 - text.Length * 8) / 2, 36, text, assets.Alpha[1]);
             }
 
             menu?.Draw(ctx);

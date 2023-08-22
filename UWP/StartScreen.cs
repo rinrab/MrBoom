@@ -116,10 +116,7 @@ namespace MrBoom
                 Game.DrawString(ctx, (320 - text.Length * 8) / 2, 36, text, assets.Alpha[1]);
             }
 
-            if (menu != null)
-            {
-                menu.Draw(ctx);
-            }
+            menu?.Draw(ctx);
         }
 
         public void Update()

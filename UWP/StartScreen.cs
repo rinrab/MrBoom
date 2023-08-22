@@ -177,7 +177,7 @@ namespace MrBoom
 
                 if (startTick == -1)
                 {
-                    if (teams.Count >= 1)
+                    if (players.Count >= 1)
                     {
                         startTick = 0;
                     }

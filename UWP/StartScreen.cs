@@ -32,7 +32,7 @@ namespace MrBoom
         private int startTick = -1;
         private int teamMode = 0;
         private int playersCount;
-        private List<PlayerState> players;
+        private readonly List<PlayerState> players;
         private Menu menu;
 
         public StartScreen(Assets assets, List<Team> teams, List<IController> controllers)

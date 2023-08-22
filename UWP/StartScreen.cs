@@ -59,6 +59,10 @@ namespace MrBoom
             assets.Controls[1].Draw(ctx, ox + 40, oy + 1);
             Game.DrawString(ctx, ox + 70, oy + 5, "join", assets.Alpha[1]);
 
+            string[] teamModes = new string[] { "off", "color", "sex" };
+            Game.DrawString(ctx, 320 - ox - 15 * 8, oy + 5,
+                            "team mode: " + teamModes[teamMode], assets.Alpha[1]);
+
             for (int x = 0; x < 4; x++)
             {
                 for (int y = 0; y < 2; y++)

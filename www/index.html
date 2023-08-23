@@ -70,9 +70,9 @@
       </span>
     </p>
     <div style="display: flex;">
-      <img src="screenshots/640x400/1.png" />
-      <img src="screenshots/640x400/2.png" />
-      <img src="screenshots/640x400/3.png" />
+      <img class="zoomable" src="screenshots/640x400/1.png" />
+      <img class="zoomable" src="screenshots/640x400/2.png" />
+      <img class="zoomable" src="screenshots/640x400/3.png" />
     </div>
     <p>
       <span lang="en">
@@ -210,7 +210,7 @@
   </div>
 
   <script>
-    var images = document.querySelectorAll("img");
+    var images = document.querySelectorAll(".zoomable");
     var fade = document.querySelector(".fade");
     var modal = document.querySelector(".modal");
     var modalContent = document.querySelector("#modal-content");

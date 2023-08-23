@@ -83,8 +83,7 @@ h1 {
 }
 
 img {
-    width: 50%;
-    min-width: 300px;
+    width: calc(100% / 3);
 }
 
 dl,

@@ -28,7 +28,7 @@
     }
   </style>
   <script>
-    (function() {
+    (function () {
       var langs = ["en", "fr", "ru"];
       for (var lang of navigator.languages) {
         for (var l of langs) {
@@ -202,6 +202,60 @@
       <p><a href="privacy-policy">Privacy policy</a></p>
     </div>
   </footer>
+
+  <div class="fade"></div>
+  <div class="modal">
+    <div id="modal-content" style="margin: auto"></div>
+    <button id="close" title="Close"></button>
+  </div>
+
+  <script>
+    var images = document.querySelectorAll("img");
+    var fade = document.querySelector(".fade");
+    var modal = document.querySelector(".modal");
+    var modalContent = document.querySelector("#modal-content");
+
+    for (var img of images) {
+      img.addEventListener("click", (e) => {
+        fade.classList.add("show");
+        fade.style.opacity = "50%";
+
+        setTimeout(() => {
+          modal.classList.add("show");
+          modal.style.opacity = "100%";
+        }, 100);
+
+        var newImg = document.createElement("img");
+        newImg.src = e.target.src;
+
+        modalContent.innerHTML = "";
+        modalContent.appendChild(newImg);
+      });
+    }
+
+    modal.addEventListener("click", (e) => {
+      if (e.target.classList.contains("modal")) {
+        modalClose();
+      }
+    });
+
+    document.getElementById("close").addEventListener("click", modalClose);
+
+    function modalClose() {
+      fade.style.opacity = "0";
+      modal.style.opacity = "0";
+      setTimeout(() => {
+        fade.classList.remove("show");
+        modal.classList.remove("show");
+      }, 100);
+    }
+
+    addEventListener("keydown", (e) => {
+      if (e.code == "Escape") {
+        modalClose();
+      }
+    });
+  </script>
 </body>
 
 </html>

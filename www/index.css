@@ -84,6 +84,7 @@ h1 {
 
 img {
     width: calc(100% / 3);
+    margin-right: 6px;
 }
 
 dl,

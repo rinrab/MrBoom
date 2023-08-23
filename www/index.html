@@ -73,6 +73,7 @@
       <img class="zoomable" src="screenshots/640x400/1.png" />
       <img class="zoomable" src="screenshots/640x400/2.png" />
       <img class="zoomable" src="screenshots/640x400/3.png" />
+      <img class="zoomable" video="https://www.youtube.com/embed/DK-doXo1V2E" src="screenshots/watch-trailer.jpg" title="Watch Trailer" />
     </div>
     <p>
       <span lang="en">
@@ -225,11 +226,17 @@
           modal.style.opacity = "100%";
         }, 100);
 
-        var newImg = document.createElement("img");
-        newImg.src = e.target.src;
-
         modalContent.innerHTML = "";
-        modalContent.appendChild(newImg);
+
+        if (e.target.getAttribute("video")) {
+          modalContent.innerHTML =
+            `<iframe width="1263" height="506" src="${e.target.getAttribute("video")}" frameborder="0" allowfullscreen
+             allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" ></iframe>`;
+        } else {
+          var newImg = document.createElement("img");
+          newImg.src = e.target.src;
+          modalContent.appendChild(newImg);
+        }
       });
     }
 

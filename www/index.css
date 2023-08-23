@@ -83,7 +83,7 @@ h1 {
 }
 
 img {
-    width: calc(100% / 3);
+    width: calc(100% / 4);
     margin-right: 6px;
     cursor: zoom-in;
 }
@@ -161,7 +161,7 @@ footer * {
     visibility: visible;
 }
 
-.modal img {
+.modal img, .modal iframe {
     margin: auto;
     width: calc(min((100vw - 50px) / 320, (100vh - 50px) / 200) * 320);
     cursor: unset;

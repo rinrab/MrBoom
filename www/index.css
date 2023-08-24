@@ -161,10 +161,29 @@ footer * {
     visibility: visible;
 }
 
-.modal img, .modal iframe {
+.modal img {
     margin: auto;
     width: calc(min((100vw - 50px) / 320, (100vh - 50px) / 200) * 320);
     cursor: unset;
+}
+
+.modal iframe {
+    margin: auto;
+    width: calc(100vw - 150px);
+    height: calc(100vh - 150px);
+    cursor: unset;
+}
+
+@media (max-width:926px) {
+    .modal iframe {
+        width: 100vw;
+    }
+}
+
+@media (max-height:428px) {
+    .modal iframe {
+        height: 100vh;
+    }
 }
 
 #close {

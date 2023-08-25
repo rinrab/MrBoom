@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
@@ -233,6 +234,10 @@ namespace MrBoom
             if (soundsToPlay.HasFlag(Sound.Clock)) soundAssets.Clock.Play();
             if (soundsToPlay.HasFlag(Sound.TimeEnd)) soundAssets.TimeEnd.Play();
             if (soundsToPlay.HasFlag(Sound.Skull)) soundAssets.Skull.Play();
+        }
+
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        {
         }
     }
 }

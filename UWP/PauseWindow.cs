@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
@@ -27,6 +28,10 @@ namespace MrBoom
         public void Update()
         {
             tick++;
+        }
+
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        {
         }
     }
 }

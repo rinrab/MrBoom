@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1.Effects;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 
@@ -278,6 +279,13 @@ namespace MrBoom
 
                 Next = Screen.Game;
             }
+        }
+
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        {
+            ctx.DrawString(assets.MenuFontBig, "High DPI test",
+                           new Vector2(rect.X + 100 * scale, rect.Y + 100 * scale),
+                           Color.Red, 0, Vector2.Zero, scale / 6, SpriteEffects.None, 0);
         }
     }
 }

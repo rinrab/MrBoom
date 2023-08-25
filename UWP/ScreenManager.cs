@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
@@ -23,6 +24,14 @@ namespace MrBoom
             if (currentScreen != null)
             {
                 currentScreen.Draw(ctx);
+            }
+        }
+
+        public static void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        {
+            if (currentScreen != null)
+            {
+                currentScreen.DrawHighDPI(ctx, rect, scale);
             }
         }
 

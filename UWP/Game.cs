@@ -129,11 +129,17 @@ namespace MrBoom
             matrix.Translation = new Vector3((width - renderTarget.Width * scale) / 2,
                 (height - renderTarget.Height * scale) / 2, 0);
 
-            spriteBatch.Begin(
-                SpriteSortMode.Immediate,
-                transformMatrix: matrix);
+            var rect = new Rectangle(
+                (int)((width - renderTarget.Width * scale) / 2),
+                (int)((height - renderTarget.Height * scale) / 2),
+                (int)(640 * scale), (int)(400 * scale));
 
-            spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.White);
+            spriteBatch.Begin(
+                SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(renderTarget, rect, Color.White);
+
+            ScreenManager.DrawHighDPI(spriteBatch, rect, scale);
 
             spriteBatch.End();
 

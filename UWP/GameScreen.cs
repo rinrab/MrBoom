@@ -238,6 +238,10 @@ namespace MrBoom
 
         public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
         {
+            if (isPause)
+            {
+                pauseWindow.DrawHighDPI(ctx, rect, scale);
+            }
         }
     }
 }

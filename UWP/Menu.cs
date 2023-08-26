@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -83,33 +82,57 @@ namespace MrBoom
         {
             ctx.Draw(assets.BlackPixel, new Rectangle(0, 0, 640, 400), new Rectangle(0, 0, 1, 1), Color.White * 0.7f);
 
-            const int scale = 2;
             const int bombOffset = 8;
 
-            int maxWidth = width;
-            int maxHeight = 0;
+            // 6 is font scale
+
+            Vector2 maxSize = new Vector2(width, 0);
 
             foreach (var item in Items)
             {
-                Vector2 size = assets.MenuFont.MeasureString(item.Text) / scale;
-
-                maxWidth = Math.Max(maxWidth, (int)size.X);
-                maxHeight = Math.Max(maxHeight, (int)size.Y);
+                Vector2 size = assets.MenuFontBig.MeasureString(item.Text) / 6 / 2;
+                maxSize = Vector2.Max(maxSize, size);
             }
 
-            int x = (320 - maxWidth) / 2;
-            int y = (200 - maxHeight * Items.Length) / 2;
+            var img = assets.Bomb[bombTick / 16];
+
+            img.Draw(ctx, (int)((320 - maxSize.X) / 2 - bombOffset - img.Width),
+                          (int)(100 - maxSize.Y * Items.Length / 2 +
+                                maxSize.Y * select + (maxSize.Y - img.Height) / 2));
+        }
+
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        {
+            const int graphicScale = 2;
+
+            // 6 is font scale
+
+            Vector2 offset = new Vector2(rect.X, rect.Y);
+
+            Vector2 maxSize = new Vector2(width * scale * graphicScale, 0);
+
+            foreach (var item in Items)
+            {
+                Vector2 size = assets.MenuFontBig.MeasureString(item.Text) / 6 * scale;
+                maxSize = Vector2.Max(maxSize, size);
+            }
+
+            Vector2 pos = offset +
+                new Vector2(rect.Width - maxSize.X, rect.Height - maxSize.Y * Items.Length) / 2;
 
             for (int i = 0; i < Items.Length; i++)
             {
-                ctx.DrawString(assets.MenuFont, Items[i].Text, new Vector2(x, y) * scale, Color.White);
-                if (select == i)
-                {
-                    assets.Bomb[bombTick / 16].Draw(ctx, x - assets.Bomb[0].Width - bombOffset / 2,
-                                                    y + maxHeight / 2 - assets.Bomb[0].Height / 2);
-                }
+                ctx.DrawString(assets.MenuFontBig,
+                               Items[i].Text,
+                               pos,
+                               Color.White,
+                               0,
+                               Vector2.Zero,
+                               scale / 6,
+                               SpriteEffects.None,
+                               0);
 
-                y += maxHeight;
+                pos.Y += maxSize.Y;
             }
         }
     }

@@ -436,13 +436,7 @@ namespace MrBoom
                 {
                     new PowerUpData(PowerUpType.ExtraBomb, 10),
                     new PowerUpData(PowerUpType.ExtraFire, 10),
-                    new PowerUpData(PowerUpType.Life, 1),
-                    new PowerUpData(PowerUpType.RemoteControl, 1),
                     new PowerUpData(PowerUpType.RollerSkate, 1),
-                    new PowerUpData(PowerUpType.Shield, 1),
-                    new PowerUpData(PowerUpType.Kick, 2),
-                    new PowerUpData(PowerUpType.Clock, 1),
-                    new PowerUpData(PowerUpType.Skull, 2),
                 },
                 Monsters = new MonsterData[]
                 {

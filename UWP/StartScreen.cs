@@ -30,6 +30,13 @@ namespace MrBoom
             "right keyboard: arrows - move  ctrl - drop  bomb  shift - radio control   " +
             "left keyboard: wsad - move  ctrl - drop  bomb  shift - radio control   ";
 
+        private readonly List<string> names = new List<string>
+        {
+            "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
+            "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus",
+            "cpp", "sus", "god", "guy", "bob", "jim", "mrb", "max"
+        };
+
         private int startTick = -1;
         private int teamMode = 0;
         private int playersCount;
@@ -131,13 +138,9 @@ namespace MrBoom
                 {
                     if (controller.IsKeyDown(PlayerKeys.Bomb))
                     {
-                        string[] names = new string[]
-                        {
-                            "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
-                            "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus",
-                            "cpp", "sus", "god", "guy", "bob", "jim", "mrb", "max"
-                        };
-                        string name = names[Terrain.Random.Next(names.Length)];
+                        int index = Terrain.Random.Next(names.Count);
+                        string name = names[index];
+                        names.RemoveAt(index);
 
                         players.Add(new PlayerState(controller, playersCount) { Name = name });
                         playersCount++;

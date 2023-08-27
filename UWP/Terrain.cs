@@ -134,11 +134,12 @@ namespace MrBoom
             }
         }
 
-        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
+        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, 
+                              IController controller, int team, int spawnIndex = -1)
         {
             AbstractPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount, team);
 
-            var spawn = this.spawns[this.generateSpawn()];
+            var spawn = this.spawns[this.generateSpawn(spawnIndex)];
             sprite.x = spawn.x * 16;
             sprite.y = spawn.y * 16;
 

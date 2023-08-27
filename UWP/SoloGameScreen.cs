@@ -25,7 +25,7 @@ namespace MrBoom
 
             var controller = new KeyboardController(Keys.None, Keys.None, Keys.None, Keys.None, Keys.None, Keys.None);
 
-            terrain.AddPlayer(assets.Players[0], controller, 0);
+            terrain.AddPlayer(assets.Players[0], controller, 0, 0);
             terrain.InitializeMonsters();
 
             this.assets = assets;

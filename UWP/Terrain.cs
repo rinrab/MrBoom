@@ -683,6 +683,17 @@ namespace MrBoom
                 yield return sprite;
             }
         }
+
+        public IEnumerable<Monster> GetAliveMonsters()
+        {
+            foreach (Monster monster in monsters)
+            {
+                if (!monster.IsDie)
+                {
+                    yield return monster;
+                }
+            }
+        }
     }
 
     public enum TerrainType

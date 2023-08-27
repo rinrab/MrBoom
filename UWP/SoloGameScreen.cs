@@ -12,24 +12,34 @@ namespace MrBoom
     {
         public Screen Next { get; }
 
-        private readonly Terrain terrain;
+        private Terrain terrain;
         private readonly Assets assets;
         private readonly List<IController> controllers;
 
         private bool isPlayerJoined = false;
         private int bgTicks;
+        private int level;
+        private IController controller;
 
         public SoloGameScreen(Assets assets, List<IController> controllers)
         {
-            terrain = new Terrain(assets, assets.Levels[0], Map.SoloMaps[0]);
+            this.assets = assets;
+            this.controllers = controllers;
 
-            var controller = new KeyboardController(Keys.None, Keys.None, Keys.None, Keys.None, Keys.None, Keys.None);
+            startGame();
+        }
+
+        private void startGame()
+        {
+            terrain = new Terrain(assets, assets.Levels[level], Map.SoloMaps[level]);
+
+            if (controller == null)
+            {
+                controller = new KeyboardController(Keys.None, Keys.None, Keys.None, Keys.None, Keys.None, Keys.None);
+            }
 
             terrain.AddPlayer(assets.Players[0], controller, 0, 0);
             terrain.InitializeMonsters();
-
-            this.assets = assets;
-            this.controllers = controllers;
         }
 
         public void Update()
@@ -41,10 +51,17 @@ namespace MrBoom
                 if (Controller.IsKeyDown(controllers, PlayerKeys.Bomb))
                 {
                     Human sprite = (Human)terrain.GetSprites().ToArray()[0];
-                    sprite.Controller = controllers.Find((a) => a.IsKeyDown(PlayerKeys.Bomb));
+                    controller = controllers.Find((a) => a.IsKeyDown(PlayerKeys.Bomb));
+                    sprite.Controller = controller;
                     isPlayerJoined = true;
                     Controller.Reset(controllers);
                 }
+            }
+
+            if (terrain.GetAliveMonsters().Count() == 0)
+            {
+                level++;
+                startGame();
             }
 
             bgTicks++;

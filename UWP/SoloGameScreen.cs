@@ -20,6 +20,7 @@ namespace MrBoom
         private int bgTicks;
         private int level;
         private IController controller;
+        private int toEnd = -1;
 
         public SoloGameScreen(Assets assets, List<IController> controllers)
         {
@@ -44,7 +45,10 @@ namespace MrBoom
 
         public void Update()
         {
-            terrain.Update();
+            if (toEnd == -1 || toEnd > 140)
+            {
+                terrain.Update();
+            }
 
             if (!isPlayerJoined)
             {
@@ -58,7 +62,17 @@ namespace MrBoom
                 }
             }
 
-            if (terrain.GetAliveMonsters().Count() == 0)
+            if (terrain.GetAliveMonsters().Count() == 0 && toEnd == -1)
+            {
+                toEnd = 60 * 3;
+                Controller.Reset(controllers);
+            }
+
+            if (toEnd > 0)
+            {
+                toEnd--;
+            }
+            if (toEnd == 0 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
                 level++;
                 startGame();
@@ -71,7 +85,7 @@ namespace MrBoom
         {
             terrain.Draw(ctx, bgTicks);
 
-            if (!isPlayerJoined)
+            if (!isPlayerJoined || toEnd >= 0)
             {
                 ctx.Draw(assets.BlackPixel, new Rectangle(0, 0, 640, 400), Color.White * 0.7f);
             }
@@ -84,6 +98,15 @@ namespace MrBoom
                 Vector2 size = assets.MenuFontBig.MeasureString("FIRE TO JOIN") * scale / 6;
 
                 ctx.DrawString(assets.MenuFontBig, "FIRE TO JOIN",
+                               new Vector2(rect.X + 320 * scale - size.X / 2, rect.Y + 200 * scale - size.Y / 2),
+                               Color.White, 0, Vector2.Zero, scale / 6, SpriteEffects.None, 0);
+            }
+
+            if (toEnd >= 0)
+            {
+                Vector2 size = assets.MenuFontBig.MeasureString("YOU WIN!") * scale / 6;
+
+                ctx.DrawString(assets.MenuFontBig, "YOU WIN!",
                                new Vector2(rect.X + 320 * scale - size.X / 2, rect.Y + 200 * scale - size.Y / 2),
                                Color.White, 0, Vector2.Zero, scale / 6, SpriteEffects.None, 0);
             }

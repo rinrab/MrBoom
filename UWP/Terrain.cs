@@ -253,7 +253,7 @@ namespace MrBoom
                 {
                     timeToEnd = 60 * 3;
                 }
-                else if ((Team.Mode != 0 && players.Count != 1))
+                else if (players.Count != 1)
                 {
                     List<int> live = new List<int>();
                     for (int i = 0; i < players.Count; i++)

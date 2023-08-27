@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct2D1.Effects;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 

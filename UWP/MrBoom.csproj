@@ -119,6 +119,7 @@
     <Compile Include="Monster.cs" />
     <Compile Include="PauseWindow.cs" />
     <Compile Include="SkullType.cs" />
+    <Compile Include="SoloGameScreen.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="ResultScreen.cs" />

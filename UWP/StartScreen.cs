@@ -43,8 +43,7 @@ namespace MrBoom
             }
             else if (menu.Action == 1)
             {
-                MessageBox.Show("TODO", "", new string[] { "OK" });
-                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, controllers));
+                ScreenManager.SetScreen(new SoloGameScreen(assets, controllers));
             }
             else if (menu.Action == 2)
             {

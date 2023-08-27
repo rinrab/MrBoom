@@ -127,6 +127,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="StartScreen.cs" />
+    <Compile Include="Team.cs" />
     <Compile Include="Terrain.cs" />
     <Compile Include="UnrepeatableRandom.cs" />
     <Compile Include="VictoryScreen.cs" />

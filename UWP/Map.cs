@@ -410,5 +410,46 @@ namespace MrBoom
                 },
             },
         };
+
+        public static Map[] SoloMaps = new Map[]
+        {
+            new Map()
+            {
+                Data = new string[]
+                {
+                    "###################",
+                    "#* ------------- *#",
+                    "# #-# #-#-#-#-#-# #",
+                    "#--- *------ *----#",
+                    "#-#-#-###-#-# # #-#",
+                    "#-----###-----   -#",
+                    "#-#-#-###-#-#-# #-#",
+                    "#--------- *------#",
+                    "#-#-#-# #-# #-#-#-#",
+                    "#----- *----------#",
+                    "# #-#-#-#-#-#-# ###",
+                    "#* ----------- *###",
+                    "###################"
+                },
+                Time = 120,
+                PowerUps = new PowerUpData[]
+                {
+                    new PowerUpData(PowerUpType.ExtraBomb, 10),
+                    new PowerUpData(PowerUpType.ExtraFire, 10),
+                    new PowerUpData(PowerUpType.Life, 1),
+                    new PowerUpData(PowerUpType.RemoteControl, 1),
+                    new PowerUpData(PowerUpType.RollerSkate, 1),
+                    new PowerUpData(PowerUpType.Shield, 1),
+                    new PowerUpData(PowerUpType.Kick, 2),
+                    new PowerUpData(PowerUpType.Clock, 1),
+                    new PowerUpData(PowerUpType.Skull, 2),
+                },
+                Monsters = new MonsterData[]
+                {
+                    new MonsterData(0, 30, 1)
+                },
+                Final = DefaultFinal
+            },
+        };
     }
 }

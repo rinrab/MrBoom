@@ -48,14 +48,14 @@ namespace MrBoom
             public bool busy;
         }
 
-        public Terrain(int levelIndex, Assets assets)
+        public Terrain(Assets assets, Assets.Level levelAssets, Map map)
         {
             monsters = new List<Monster>();
 
             this.assets = assets;
-            this.levelAssets = assets.Levels[levelIndex];
-            this.map = Map.Maps[levelIndex];
-            this.StartFeatures = Map.Maps[levelIndex].StartFeatures;
+            this.levelAssets = levelAssets;
+            this.map = map;
+            this.StartFeatures = map.StartFeatures;
             this.powerUpList = new List<PowerUpType>();
 
             foreach (var bonus in map.PowerUps)

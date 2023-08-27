@@ -18,7 +18,7 @@ namespace MrBoom
 
         public SoloGameScreen(Assets assets, List<IController> controllers)
         {
-            terrain = new Terrain(0, assets);
+            terrain = new Terrain(assets, assets.Levels[0], Map.SoloMaps[0]);
 
             this.assets = assets;
             this.controllers = controllers;

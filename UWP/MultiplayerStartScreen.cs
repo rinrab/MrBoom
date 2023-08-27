@@ -10,7 +10,7 @@ using Windows.UI.Xaml;
 
 namespace MrBoom
 {
-    public class StartScreen : IScreen
+    public class MultiplayerStartScreen : IScreen
     {
         public Screen Next { get; private set; }
 
@@ -36,7 +36,7 @@ namespace MrBoom
         private readonly List<PlayerState> players;
         private Menu menu;
 
-        public StartScreen(Assets assets, List<Team> teams, List<IController> controllers)
+        public MultiplayerStartScreen(Assets assets, List<Team> teams, List<IController> controllers)
         {
             this.assets = assets;
             this.teams = teams;

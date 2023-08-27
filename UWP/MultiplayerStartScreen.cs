@@ -162,6 +162,7 @@ namespace MrBoom
                         {
                             SelectionIndex = teamMode
                         },
+                        new TextMenuItem("HOME"),
                         new TextMenuItem("QUIT")
                     };
 
@@ -203,6 +204,10 @@ namespace MrBoom
                     Start();
                 }
                 else if (menu.Action == 2)
+                {
+                    ScreenManager.SetScreen(new StartScreen(assets, teams, controllers));
+                }
+                else if (menu.Action == 3)
                 {
                     Application.Current.Exit();
                 }

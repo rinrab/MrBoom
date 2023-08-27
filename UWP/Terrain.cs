@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 using SharpDX.XAPO.Fx;
 
 namespace MrBoom
@@ -47,14 +48,14 @@ namespace MrBoom
             public bool busy;
         }
 
-        public Terrain(int levelIndex, Assets assets)
+        public Terrain(Assets assets, Assets.Level levelAssets, Map map)
         {
             monsters = new List<Monster>();
 
             this.assets = assets;
-            this.levelAssets = assets.Levels[levelIndex];
-            this.map = Map.Maps[levelIndex];
-            this.StartFeatures = Map.Maps[levelIndex].StartFeatures;
+            this.levelAssets = levelAssets;
+            this.map = map;
+            this.StartFeatures = map.StartFeatures;
             this.powerUpList = new List<PowerUpType>();
 
             foreach (var bonus in map.PowerUps)
@@ -133,11 +134,12 @@ namespace MrBoom
             }
         }
 
-        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
+        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, 
+                              IController controller, int team, int spawnIndex = -1)
         {
             AbstractPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount, team);
 
-            var spawn = this.spawns[this.generateSpawn()];
+            var spawn = this.spawns[this.generateSpawn(spawnIndex)];
             sprite.x = spawn.x * 16;
             sprite.y = spawn.y * 16;
 
@@ -400,6 +402,68 @@ namespace MrBoom
             }
         }
 
+        public void Draw(SpriteBatch ctx, int bgTick)
+        {
+            if (LevelAssets.MovingBackground != null)
+            {
+                Image img = LevelAssets.MovingBackground;
+                int xCount = 320 / img.Width + 2;
+
+                for (int y = 0; y < 5; y++)
+                {
+                    for (int x = 0; x < 8; x++)
+                    {
+                        img.Draw(ctx, img.Width * xCount - (bgTick / 2 + x * img.Width +
+                            y * img.Height / 2) % (img.Width * xCount) - img.Width, y * img.Height);
+                    }
+                }
+            }
+
+            var bgs = LevelAssets.Backgrounds;
+            bgs[bgTick / 20].Draw(ctx, 0, 0);
+            var bgSprites = LevelAssets.BackgroundSprites;
+            if (bgSprites != null)
+            {
+                foreach (var overlay in bgSprites)
+                {
+                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
+                }
+            }
+
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    Cell cell = GetCell(x, y);
+                    if (cell.Images != null)
+                    {
+                        int index = (cell.Index == -1) ? 0 : cell.Index;
+                        var image = cell.Images[index];
+
+                        image.Draw(ctx, x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX, y * 16 + 16 - image.Height + cell.OffsetY);
+                    }
+                }
+            }
+
+            List<Sprite> spritesToDraw = new List<Sprite>(GetSprites());
+
+            spritesToDraw.Sort((a, b) => a.y - b.y);
+
+            foreach (Sprite sprite in spritesToDraw)
+            {
+                sprite.Draw(ctx);
+            }
+
+            var overlays = LevelAssets.Overlays;
+            if (overlays != null)
+            {
+                foreach (var overlay in overlays)
+                {
+                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
+                }
+            }
+        }
+
         public Cell GetCell(int x, int y)
         {
             if (x >= 0 && x < this.Width && y >= 0 && y < this.Height)
@@ -617,6 +681,17 @@ namespace MrBoom
             foreach (Sprite sprite in monsters)
             {
                 yield return sprite;
+            }
+        }
+
+        public IEnumerable<Monster> GetAliveMonsters()
+        {
+            foreach (Monster monster in monsters)
+            {
+                if (!monster.IsDie)
+                {
+                    yield return monster;
+                }
             }
         }
     }

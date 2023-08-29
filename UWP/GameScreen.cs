@@ -29,7 +29,7 @@ namespace MrBoom
 #else
             int levelIndex = 0;
 #endif
-            terrain = new Terrain(levelIndex, assets);
+            terrain = new Terrain(assets, assets.Levels[levelIndex], Map.Maps[levelIndex]);
 
             game.NextSong(Map.Maps[levelIndex].Song);
 
@@ -109,64 +109,7 @@ namespace MrBoom
 
         public void Draw(SpriteBatch ctx)
         {
-            if (terrain.LevelAssets.MovingBackground != null)
-            {
-                Image img = terrain.LevelAssets.MovingBackground;
-                int xCount = 320 / img.Width + 2;
-
-                for (int y = 0; y < 5; y++)
-                {
-                    for (int x = 0; x < 8; x++)
-                    {
-                        img.Draw(ctx, img.Width * xCount - (bgTick / 2 + x * img.Width +
-                            y * img.Height / 2) % (img.Width * xCount) - img.Width, y * img.Height);
-                    }
-                }
-            }
-
-            var bgs = terrain.LevelAssets.Backgrounds;
-            bgs[bgTick / 20].Draw(ctx, 0, 0);
-            var bgSprites = terrain.LevelAssets.BackgroundSprites;
-            if (bgSprites != null)
-            {
-                foreach (var overlay in bgSprites)
-                {
-                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
-                }
-            }
-
-            for (int y = 0; y < terrain.Height; y++)
-            {
-                for (int x = 0; x < terrain.Width; x++)
-                {
-                    Cell cell = terrain.GetCell(x, y);
-                    if (cell.Images != null)
-                    {
-                        int index = (cell.Index == -1) ? 0 : cell.Index;
-                        var image = cell.Images[index];
-
-                        image.Draw(ctx, x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX, y * 16 + 16 - image.Height + cell.OffsetY);
-                    }
-                }
-            }
-
-            List<Sprite> spritesToDraw = new List<Sprite>(terrain.GetSprites());
-
-            spritesToDraw.Sort((a, b) => a.y - b.y);
-
-            foreach (Sprite sprite in spritesToDraw)
-            {
-                sprite.Draw(ctx);
-            }
-
-            var overlays = terrain.LevelAssets.Overlays;
-            if (overlays != null)
-            {
-                foreach (var overlay in overlays)
-                {
-                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
-                }
-            }
+            terrain.Draw(ctx, bgTick);
 
             int drawInStart = 60 * 30 - terrain.ApocalypseSpeed * (terrain.MaxApocalypse + 5);
             if (terrain.TimeLeft > 30 * 60)

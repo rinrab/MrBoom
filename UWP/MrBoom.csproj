@@ -119,6 +119,7 @@
     <Compile Include="Monster.cs" />
     <Compile Include="PauseWindow.cs" />
     <Compile Include="SkullType.cs" />
+    <Compile Include="SoloGameScreen.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="ResultScreen.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="MultiplayerStartScreen.cs" />
+    <Compile Include="StartScreen.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Terrain.cs" />
     <Compile Include="UnrepeatableRandom.cs" />

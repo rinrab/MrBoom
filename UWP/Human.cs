@@ -4,7 +4,7 @@ namespace MrBoom
 {
     public class Human : AbstractPlayer
     {
-        public readonly IController Controller;
+        public IController Controller;
 
         public Human(Terrain map, Assets.MovingSpriteAssets animations,
             IController controller, int maxBoom, int maxBombs, int team) :

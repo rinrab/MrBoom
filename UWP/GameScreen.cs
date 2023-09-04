@@ -33,12 +33,19 @@ namespace MrBoom
 
             game.NextSong(Map.Maps[levelIndex].Song);
 
+            int playersCount = 0;
             for (int i = 0; i < teams.Count; i++)
             {
                 for (int j = 0; j < teams[i].Players.Count; j++)
                 {
                     terrain.AddPlayer(assets.Players[teams[i].Players[j].Index], teams[i].Players[j].Controller, i);
+                    playersCount++;
                 }
+            }
+
+            if (playersCount == 1)
+            {
+                terrain.AddComputer(assets.Players[playersCount], playersCount);
             }
 
             terrain.InitializeMonsters();

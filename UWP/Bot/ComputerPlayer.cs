@@ -4,7 +4,7 @@ using MrBoom.BehaviorTree;
 
 namespace MrBoom.Bot
 {
-    public class BotTree
+    public class ComputerPlayer : AbstractPlayer
     {
         class ActionNode : BtNode
         {
@@ -23,7 +23,8 @@ namespace MrBoom.Bot
             }
         }
 
-        public BotTree()
+        public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs, int team)
+            : base(map, animations, maxBoom, maxBombs, team)
         {
             var root = new BtSelector()
                 {
@@ -41,6 +42,11 @@ namespace MrBoom.Bot
         private BtStatus GotoBestBombCell()
         {
             return Goto(GetBestBombCell());
+        }
+
+        public override void Update()
+        {
+            base.Update();
         }
 
         private BtStatus GotoSafeCell()

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrBoom.Bot;
 using SharpDX.XAPO.Fx;
 
 namespace MrBoom
@@ -136,6 +137,17 @@ namespace MrBoom
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
         {
             AbstractPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount, team);
+
+            var spawn = this.spawns[this.generateSpawn()];
+            sprite.x = spawn.x * 16;
+            sprite.y = spawn.y * 16;
+
+            this.players.Add(sprite);
+        }
+
+        public void AddComputer(Assets.MovingSpriteAssets movingSpriteAssets, int team)
+        {
+            AbstractPlayer sprite = new ComputerPlayer(this, movingSpriteAssets, startMaxFire, startMaxBombsCount, team);
 
             var spawn = this.spawns[this.generateSpawn()];
             sprite.x = spawn.x * 16;

@@ -12,6 +12,7 @@ namespace MrBoom.BehaviorTree
 
         public BtComposite()
         {
+            children = new List<BtNode>();
             index = 0;
         }
 

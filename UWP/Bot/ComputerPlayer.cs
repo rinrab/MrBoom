@@ -166,7 +166,22 @@ namespace MrBoom.Bot
 
         private int CalcTravelCost(int x, int y)
         {
-            return terrain.IsWalkable(x, y) && terrain.GetCell(x, y).Type != TerrainType.Fire ? 1 : TravelCostGrid.CostCantGo;
+            if (!terrain.IsWalkable(x, y))
+            {
+                return TravelCostGrid.CostCantGo;
+            }
+
+            if (terrain.GetCell(x, y).Type == TerrainType.Fire)
+            {
+                return TravelCostGrid.CostCantGo;
+            }
+
+            if (terrain.IsTouchingMonster(x, y) || terrain.IsMonsterComing(x, y))
+            {
+                return TravelCostGrid.CostCantGo;
+            }
+
+            return 1;
         }
 
         private BtStatus GotoSafeCell()

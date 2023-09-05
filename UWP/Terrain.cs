@@ -41,6 +41,7 @@ namespace MrBoom
 
         private readonly Assets.Level levelAssets;
         private readonly Grid<bool> hasMonsterGrid;
+        private readonly Grid<bool> isMonsterComingGrid;
 
         private class Spawn
         {
@@ -135,6 +136,7 @@ namespace MrBoom
             }
 
             hasMonsterGrid = new Grid<bool>(Width, Height, false);
+            isMonsterComingGrid = new Grid<bool>(Width, Height, false);
         }
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
@@ -395,11 +397,13 @@ namespace MrBoom
             }
 
             hasMonsterGrid.Reset(false);
+            isMonsterComingGrid.Reset(false);
             foreach (Monster m in monsters)
             {
                 if (m.IsAlive)
                 {
                     hasMonsterGrid[m.CellX, m.CellY] = true;
+                    isMonsterComingGrid[m.CellX + m.Direction.DeltaX(), m.CellY + m.Direction.DeltaY()] = true;
                 }
             }
 
@@ -621,6 +625,11 @@ namespace MrBoom
         }
 
         public bool IsTouchingMonster(int cellX, int cellY)
+        {
+            return hasMonsterGrid[cellX, cellY];
+        }
+
+        public bool IsMonsterComing(int cellX, int cellY)
         {
             return hasMonsterGrid[cellX, cellY];
         }

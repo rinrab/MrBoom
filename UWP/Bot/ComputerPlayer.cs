@@ -85,11 +85,12 @@ namespace MrBoom.Bot
             {
                 for (int j = 0; j < dangerGrid.Height; j++)
                 {
-                    if (terrain.GetCell(i, j).Type == TerrainType.Bomb)
+                    Cell cell = terrain.GetCell(i, j);
+                    if (cell.Type == TerrainType.Bomb)
                     {
                         foreach (Directions dir in new Directions[] { Directions.Left, Directions.Up, Directions.Right, Directions.Down })
                         {
-                            for (int k = 0; k <= 16; k++)
+                            for (int k = 0; k <= cell.maxBoom; k++)
                             {
                                 dangerGrid[i + dir.DeltaX() * k, j + dir.DeltaY() * k] = true;
                             }
@@ -229,7 +230,8 @@ namespace MrBoom.Bot
                 }
                 else
                 {
-                    findPathCost.Update(target.Value.X, target.Value.Y, CalcTravelCost);
+                    findPathCost.Update(target.Value.X, target.Value.Y, 
+                        (x, y) => (x == cellX && y == cellY) ? 1 : CalcTravelCost(x, y));
 
                     Direction = findPathCost.GetBestDirection(cellX, cellY);
                     if (Direction == Directions.None)

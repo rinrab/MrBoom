@@ -22,7 +22,7 @@ namespace MrBoom.Bot
                 this.action = action;
             }
 
-            protected override BtStatus Update()
+            protected override BtStatus OnUpdate()
             {
                 return action();
             }

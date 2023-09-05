@@ -8,13 +8,13 @@ namespace MrBoom.BehaviorTree
     // If all children fails, only then does the selector fail.
     public class BtSelector : BtComposite
     {
-        protected override void Initialize()
+        protected override void OnInitialize()
         {
-            base.Initialize();
+            base.OnInitialize();
             index = 0;
         }
 
-        protected override BtStatus Update()
+        protected override BtStatus OnUpdate()
         {
             if (HasNoChildren())
             {

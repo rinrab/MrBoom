@@ -11,13 +11,13 @@ namespace MrBoom.BehaviorTree
             status = BtStatus.Invalid;
         }
 
-        protected virtual void Initialize()
+        protected virtual void OnInitialize()
         {
         }
 
-        protected abstract BtStatus Update();
+        protected abstract BtStatus OnUpdate();
 
-        protected virtual void Terminate(BtStatus s)
+        protected virtual void OnTerminate(BtStatus s)
         {
         }
 
@@ -25,14 +25,14 @@ namespace MrBoom.BehaviorTree
         {
             if (status != BtStatus.Running)
             {
-                Initialize();
+                OnInitialize();
             }
 
-            status = Update();
+            status = OnUpdate();
 
             if (status != BtStatus.Running)
             {
-                Terminate(status);
+                OnTerminate(status);
             }
 
             return status;

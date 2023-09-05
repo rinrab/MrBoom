@@ -8,12 +8,12 @@ namespace MrBoom.BehaviorTree
     // If all children succeeds, only then does the sequence succeed.
     public class BtSequence : BtComposite
     {
-        protected override void Initialize()
+        protected override void OnInitialize()
         {
             index = 0;
         }
 
-        protected override BtStatus Update()
+        protected override BtStatus OnUpdate()
         {
             if (HasNoChildren())
             {

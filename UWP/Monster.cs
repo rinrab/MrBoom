@@ -32,7 +32,7 @@ namespace MrBoom
         {
             bool isWalkable(int dx, int dy)
             {
-                switch (terrain.GetCell((x + dx * 8 + 8 + dx) / 16, (y + dy * 8 + 8 + dy) / 16).Type)
+                switch (terrain.GetCell((X + dx * 8 + 8 + dx) / 16, (Y + dy * 8 + 8 + dy) / 16).Type)
                 {
                     case TerrainType.Free:
                     case TerrainType.PowerUpFire:
@@ -53,7 +53,7 @@ namespace MrBoom
 
             if (!IsDie)
             {
-                var cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
+                var cell = terrain.GetCell((X + 8) / 16, (Y + 8) / 16);
                 if (cell.Type == TerrainType.Fire && unplugin == 0)
                 {
                     terrain.PlaySound(Sound.Ai);
@@ -66,7 +66,7 @@ namespace MrBoom
                     {
                         IsDie = true;
                         frameIndex = 0;
-                        terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
+                        terrain.SetCell((X + 8) / 16, (Y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
                 if (cell.Type == TerrainType.Apocalypse)
@@ -108,7 +108,7 @@ namespace MrBoom
                     }
                     else if (wait == -1)
                     {
-                        if (x % 16 == 0 && y % 16 == 0 && Terrain.Random.Next(16) == 0)
+                        if (X % 16 == 0 && Y % 16 == 0 && Terrain.Random.Next(16) == 0)
                         {
                             wait = this.monsterData.WaitAfterTurn;
                             frameIndex = 0;

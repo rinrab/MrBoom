@@ -52,8 +52,8 @@ namespace MrBoom
 
             base.Update();
 
-            int cellX = (this.x + 8) / 16;
-            int cellY = (this.y + 8) / 16;
+            int cellX = (this.X + 8) / 16;
+            int cellY = (this.Y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
             if ((dropBombButton || Skull == SkullType.AutoBomb) && Skull != SkullType.BombsDisable)
@@ -170,7 +170,7 @@ namespace MrBoom
                 }
             }
 
-            bool isTouchingMonster = terrain.IsTouchingMonster((x + 8) / 16, (y + 8) / 16);
+            bool isTouchingMonster = terrain.IsTouchingMonster((X + 8) / 16, (Y + 8) / 16);
 
             if ((cell.Type == TerrainType.Fire || isTouchingMonster) && unplugin == 0)
             {

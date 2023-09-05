@@ -76,8 +76,8 @@ namespace MrBoom.Bot
 
         public override void Update()
         {
-            int cellX = (x + 8) / 16;
-            int cellY = (y + 8) / 16;
+            int cellX = (X + 8) / 16;
+            int cellY = (Y + 8) / 16;
 
             dangerGrid.Reset();
             for (int i = 0; i < dangerGrid.Width; i++)
@@ -178,8 +178,8 @@ namespace MrBoom.Bot
         {
             if (target.HasValue)
             {
-                int cellX = (x + 8) / 16;
-                int cellY = (y + 8) / 16;
+                int cellX = (X + 8) / 16;
+                int cellY = (Y + 8) / 16;
 
                 if (target.Value.X == cellX &&
                     target.Value.Y == cellY)

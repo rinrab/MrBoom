@@ -612,7 +612,7 @@ namespace MrBoom
         {
             foreach (Monster m in monsters)
             {
-                if (!m.IsDie && (m.x + 8) / 16 == cellX && (m.y + 8) / 16 == cellY)
+                if (!m.IsDie && (m.X + 8) / 16 == cellX && (m.Y + 8) / 16 == cellY)
                 {
                     return true;
                 }

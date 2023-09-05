@@ -7,6 +7,7 @@ namespace MrBoom.Bot
 {
     public class ComputerPlayer : AbstractPlayer
     {
+        private BtSelector tree;
         private TravelCostGrid travelCost;
         private int tickCount;
 
@@ -30,7 +31,7 @@ namespace MrBoom.Bot
         public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs, int team)
             : base(map, animations, maxBoom, maxBombs, team)
         {
-            var root = new BtSelector()
+            tree = new BtSelector()
                 {
                     new ActionNode(GotoBonusCell),
                     new BtSequence()
@@ -52,6 +53,7 @@ namespace MrBoom.Bot
         public override void Update()
         {
             base.Update();
+            tree.Tick();
 
             int cellX = (x + 8) / 16;
             int cellY = (y + 8) / 16;

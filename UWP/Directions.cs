@@ -21,7 +21,8 @@ namespace MrBoom
                     return -1;
                 case Directions.Right:
                     return 1;
-                default: return 0;
+                default: 
+                    return 0;
             }
         }
 
@@ -33,7 +34,8 @@ namespace MrBoom
                     return -1;
                 case Directions.Down:
                     return 1;
-                default: return 0;
+                default: 
+                    return 0;
             }
         }
     }

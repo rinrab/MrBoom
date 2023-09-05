@@ -28,10 +28,12 @@ namespace MrBoom
         private readonly Assets.MovingSpriteAssets animations;
         private readonly int DefaultSpeed;
 
-        public Sprite(Terrain terrain, Assets.MovingSpriteAssets assets, int speed)
+        public Sprite(Terrain terrain, Assets.MovingSpriteAssets assets, int x, int y, int speed)
         {
             this.terrain = terrain;
             this.animations = assets;
+            this.x = x;
+            this.y = y;
             this.DefaultSpeed = speed;
         }
 

@@ -136,22 +136,24 @@ namespace MrBoom
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
         {
-            AbstractPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount, team);
-
             var spawn = this.spawns[this.generateSpawn()];
-            sprite.x = spawn.x * 16;
-            sprite.y = spawn.y * 16;
+
+            AbstractPlayer sprite = new Human(
+                this, movingSpriteAssets,
+                spawn.x * 16, spawn.y * 16,
+                controller, startMaxFire, startMaxBombsCount, team);
 
             this.players.Add(sprite);
         }
 
         public void AddComputer(Assets.MovingSpriteAssets movingSpriteAssets, int team)
         {
-            AbstractPlayer sprite = new ComputerPlayer(this, movingSpriteAssets, startMaxFire, startMaxBombsCount, team);
-
             var spawn = this.spawns[this.generateSpawn()];
-            sprite.x = spawn.x * 16;
-            sprite.y = spawn.y * 16;
+
+            AbstractPlayer sprite = new ComputerPlayer(
+                this, movingSpriteAssets,
+                spawn.x * 16, spawn.y * 16,
+                startMaxFire, startMaxBombsCount, team);
 
             this.players.Add(sprite);
         }
@@ -163,10 +165,10 @@ namespace MrBoom
             for (int i = 0; i < count; i++)
             {
                 var data = map.Monsters[Random.Next(map.Monsters.Length)];
-                Monster monster = new Monster(this, data, assets.Monsters[data.Type]);
-                int spawn = generateSpawn();
-                monster.x = spawns[spawn].x * 16;
-                monster.y = spawns[spawn].y * 16;
+                var spawn = spawns[generateSpawn()];
+                Monster monster = new Monster(
+                    this, data, assets.Monsters[data.Type],
+                    spawn.x * 16, spawn.y * 16);
                 this.monsters.Add(monster);
             }
         }

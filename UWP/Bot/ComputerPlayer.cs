@@ -32,8 +32,8 @@ namespace MrBoom.Bot
             }
         }
 
-        public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs, int team)
-            : base(map, animations, maxBoom, maxBombs, team)
+        public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int x, int y, int maxBoom, int maxBombs, int team)
+            : base(map, animations, x, y, maxBoom, maxBombs, team)
         {
             tree = new BtSelector()
                 {

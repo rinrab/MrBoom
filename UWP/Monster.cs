@@ -11,7 +11,8 @@ namespace MrBoom
         private int livesCount;
 
         public Monster(Terrain map, Map.MonsterData monsterData,
-            Assets.MovingSpriteAssets animations) : base(map, animations, monsterData.Speed)
+            Assets.MovingSpriteAssets animations, int x, int y) :
+            base(map, animations, x, y, monsterData.Speed)
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;

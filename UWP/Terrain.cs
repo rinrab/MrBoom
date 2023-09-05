@@ -253,7 +253,7 @@ namespace MrBoom
             int playersCount = 0;
             foreach (AbstractPlayer player in this.players)
             {
-                if (!player.IsDie)
+                if (player.IsAlive)
                 {
                     playersCount++;
                 }
@@ -270,7 +270,7 @@ namespace MrBoom
                     List<int> live = new List<int>();
                     for (int i = 0; i < players.Count; i++)
                     {
-                        if (!players[i].IsDie)
+                        if (players[i].IsAlive)
                         {
                             live.Add(players[i].Team);
                         }
@@ -289,7 +289,7 @@ namespace MrBoom
                 {
                     for (int i = 0; i < players.Count; i++)
                     {
-                        if (!players[i].IsDie)
+                        if (players[i].IsAlive)
                         {
                             Winner = players[i].Team;
                         }
@@ -405,7 +405,7 @@ namespace MrBoom
                         sprite1.Skull.HasValue &&
                         !sprite2.Skull.HasValue)
                     {
-                        if (!sprite1.IsDie && !sprite2.IsDie)
+                        if (sprite1.IsAlive && sprite2.IsAlive)
                         {
                             sprite2.SetSkull(sprite1.Skull.Value);
                         }
@@ -612,7 +612,7 @@ namespace MrBoom
         {
             foreach (Monster m in monsters)
             {
-                if (!m.IsDie && (m.X + 8) / 16 == cellX && (m.Y + 8) / 16 == cellY)
+                if (m.IsAlive && (m.X + 8) / 16 == cellX && (m.Y + 8) / 16 == cellY)
                 {
                     return true;
                 }

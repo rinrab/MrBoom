@@ -23,6 +23,7 @@ namespace MrBoom
         public int X { get => x; private set => x = value; }
         public int Y { get => y; private set => y = value; }
         public bool IsDie { get => isDie; }
+        public bool IsAlive { get => !isDie; }
 
         protected int unplugin;
 

@@ -51,7 +51,7 @@ namespace MrBoom
                 }
             }
 
-            if (!IsDie)
+            if (IsAlive)
             {
                 var cell = terrain.GetCell((X + 8) / 16, (Y + 8) / 16);
                 if (cell.Type == TerrainType.Fire && unplugin == 0)

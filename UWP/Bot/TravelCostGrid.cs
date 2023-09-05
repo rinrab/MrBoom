@@ -80,6 +80,11 @@ namespace MrBoom.Bot
             return grid[x, y];
         }
 
+        public bool CanWalk(int x, int y)
+        {
+            return grid[x, y] < CostCantGo;
+        }
+
         public Directions GetBestDirection(int x, int y)
         {
             if (GetCost(x, y) == 0)

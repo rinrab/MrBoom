@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
+
 namespace MrBoom
 {
     public class Grid<T>
@@ -38,7 +40,11 @@ namespace MrBoom
 
             set
             {
-                grid[GetCellIndex(x, y)] = value;
+                if (x >= 0 && x < width &&
+                    y >= 0 && y < height)
+                {
+                    grid[GetCellIndex(x, y)] = value;
+                }
             }
         }
 
@@ -67,6 +73,14 @@ namespace MrBoom
         public int GetCellY(int cellIndex) 
         { 
             return cellIndex / width; 
+        }
+
+        public void Reset()
+        {
+            for(int i =  0; i < grid.Length; i++)
+            {
+                grid[i] = defaultValue;
+            }
         }
     }
 }

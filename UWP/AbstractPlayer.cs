@@ -6,7 +6,15 @@ namespace MrBoom
     {
         public int BombsPlaced;
         public bool rcDitonate = false;
+        public int MaxBoom { get => maxBoom; }
 
+        public int BombsRemaining
+        {
+            get
+            {
+                return MaxBoom - BombsPlaced;
+            }
+        }
         protected bool rcDitonateButton;
         protected bool dropBombButton;
         public int Team;

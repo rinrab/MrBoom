@@ -40,6 +40,7 @@ namespace MrBoom
         public Feature StartFeatures { get; }
 
         private readonly Assets.Level levelAssets;
+        private readonly Grid<bool> hasMonsterGrid;
 
         private class Spawn
         {
@@ -132,6 +133,8 @@ namespace MrBoom
                     }
                 }
             }
+
+            hasMonsterGrid = new Grid<bool>(Width, Height, false);
         }
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
@@ -391,6 +394,15 @@ namespace MrBoom
                 }
             }
 
+            hasMonsterGrid.Reset(false);
+            foreach (Monster m in monsters)
+            {
+                if (m.IsAlive)
+                {
+                    hasMonsterGrid[m.CellX, m.CellY] = true;
+                }
+            }
+
             foreach (Sprite sprite in GetSprites())
             {
                 sprite.Update();
@@ -610,15 +622,7 @@ namespace MrBoom
 
         public bool IsTouchingMonster(int cellX, int cellY)
         {
-            foreach (Monster m in monsters)
-            {
-                if (m.IsAlive && (m.X + 8) / 16 == cellX && (m.Y + 8) / 16 == cellY)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return hasMonsterGrid[cellX, cellY];
         }
 
         public IEnumerable<Sprite> GetSprites()

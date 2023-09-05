@@ -21,7 +21,6 @@ namespace MrBoom
         private int maxBoom;
         private int maxBombsCount;
         private int lifeCount;
-        private int maxBombs;
 
         public AbstractPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs, int team) : base(map, animations, 3)
         {

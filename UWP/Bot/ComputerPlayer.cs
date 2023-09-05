@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using MrBoom.BehaviorTree;
 
 namespace MrBoom.Bot
@@ -120,7 +121,32 @@ namespace MrBoom.Bot
                         {
                             for (int k = 0; k <= MaxBoom; k++)
                             {
-                                flameGrid[i + dir.DeltaX() * k, j + dir.DeltaY() * k] = true;
+                                if (!flameGrid[i + dir.DeltaX() * k, j + dir.DeltaY() * k])
+                                {
+                                    Cell cell = terrain.GetCell(i + dir.DeltaX() * k, j + dir.DeltaY() * k);
+
+                                    switch (cell.Type)
+                                    {
+                                        case TerrainType.TemporaryWall:
+                                            score++;
+                                            break;
+                                        case TerrainType.Bomb:
+                                            score += 2;
+                                            break;
+                                    }
+
+                                    if (terrain.IsTouchingMonster(i + dir.DeltaX() * k, j + dir.DeltaY() * k))
+                                    {
+                                        score += 4;
+                                    }
+
+                                    if (cell.Type != TerrainType.Free)
+                                    {
+                                        break;
+                                    }
+
+                                    flameGrid[i + dir.DeltaX() * k, j + dir.DeltaY() * k] = true;
+                                }
                             }
                         }
 
@@ -257,7 +283,7 @@ namespace MrBoom.Bot
                 {
                     if (terrain.GetCell(x, y).Type != TerrainType.Bomb)
                     {
-                        int score = bestExplosionGrid[x, y];
+                        int score = bestExplosionGrid[x, y] * 128;
                         if (score < 0)
                             score = 0;
                         int travelCost = 1 + travelCostGrid.GetCost(x, y);

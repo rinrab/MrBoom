@@ -38,14 +38,17 @@ namespace MrBoom
             {
                 for (int j = 0; j < teams[i].Players.Count; j++)
                 {
-                    terrain.AddPlayer(assets.Players[teams[i].Players[j].Index], teams[i].Players[j].Controller, i);
+                    var player = teams[i].Players[j];
+                    if (player.type == PlayerState.Type.Human)
+                    {
+                        terrain.AddPlayer(assets.Players[player.Index], player.Controller, i);
+                    }
+                    else
+                    {
+                        terrain.AddComputer(assets.Players[player.Index], i);
+                    }
                     playersCount++;
                 }
-            }
-
-            if (playersCount == 1)
-            {
-                terrain.AddComputer(assets.Players[playersCount], playersCount);
             }
 
             terrain.InitializeMonsters();

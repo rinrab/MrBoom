@@ -140,7 +140,7 @@ namespace MrBoom
                         string name = names[index];
                         names.RemoveAt(index);
 
-                        players.Add(new PlayerState(controller, playersCount) { Name = name });
+                        players.Add(new PlayerState(controller, playersCount, PlayerState.Type.Human, name));
                         playersCount++;
                         assets.Sounds.Addplayer.Play();
 
@@ -213,6 +213,11 @@ namespace MrBoom
 
         private void Start()
         {
+            if (players.Count == 1)
+            {
+                players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
+            }
+
             if (players.Count >= 1)
             {
                 if (players.Count == 1 && teamMode != 0)
@@ -238,14 +243,14 @@ namespace MrBoom
                         {
                             Players = new List<PlayerState>()
                             {
-                                new PlayerState(players[0].Controller, 0) { Name = players[0].Name }
+                                new PlayerState(players[0].Controller, 0, PlayerState.Type.Human, players[0].Name)
                             }
                         });
                         teams.Add(new Team
                         {
                             Players = new List<PlayerState>()
                             {
-                                new PlayerState(players[1].Controller, 2) { Name = players[1].Name }
+                                new PlayerState(players[1].Controller, 1, PlayerState.Type.Human, players[1].Name)
                             }
                         });
                     }

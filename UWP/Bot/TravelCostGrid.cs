@@ -11,41 +11,37 @@ namespace MrBoom.Bot
         public delegate int GetTravelCostDelegate(int nextX, int nextY);
         public const int CostCantGo = 9999;
 
-        private readonly int width;
-        private readonly int height;
-        private int[] grid;
+        private Grid<int> grid;
 
         public TravelCostGrid(int width, int height)
         {
-            grid = new int[width * height];
-            this.width = width;
-            this.height = height;
+            grid = new Grid<int>(width, height, CostCantGo);
         }
 
         public void Update(int startX, int startY, GetTravelCostDelegate getCost)
         {
-            BitArray visited = new BitArray(grid.Length);
+            BitArray visited = new BitArray(grid.Size);
 
-            for (int i = 0; i < grid.Length; i++)
+            for (int i = 0; i < grid.Size; i++)
             {
                 grid[i] = CostCantGo;
             }
 
             Queue<int> queue = new Queue<int>();
 
-            grid[cellIndex(startX, startY)] = 0;
-            queue.Enqueue(cellIndex(startX, startY));
+            grid[startX, startY] = 0;
+            queue.Enqueue(grid.GetCellIndex(startX, startY));
 
             void visitCell(int x, int y, int addX, int addY)
             {
                 int nextX = x + addX;
                 int nextY = y + addY;
-                if (nextX >= 0 && nextX < width && nextY >= 0 && nextY < height)
+                if (nextX >= 0 && nextX < grid.Width && nextY >= 0 && nextY < grid.Height)
                 {
-                    int nextCell = cellIndex(nextX, nextY);
+                    int nextCell = grid.GetCellIndex(nextX, nextY);
                     if (!visited[nextCell])
                     {
-                        int cost = grid[cellIndex(x, y)];
+                        int cost = grid[x, y];
                         int nextCost = cost + getCost(nextX, nextY);
                         if (nextCost < grid[nextCell])
                         {
@@ -68,8 +64,8 @@ namespace MrBoom.Bot
                 {
                     visited[cellIndex] = true;
 
-                    int x = cellX(cellIndex);
-                    int y = cellY(cellIndex);
+                    int x = grid.GetCellX(cellIndex);
+                    int y = grid.GetCellY(cellIndex);
 
                     visitCell(x, y, 0, 1);
                     visitCell(x, y, 0, -1);
@@ -81,15 +77,7 @@ namespace MrBoom.Bot
 
         public int GetCost(int x, int y)
         {
-            if (x >= 0 && x < width &&
-                y >= 0 && y < height)
-            {
-                return grid[cellIndex(x, y)];
-            }
-            else
-            {
-                return CostCantGo;
-            }
+            return grid[x, y];
         }
 
         public Directions GetBestDirection(int x, int y)
@@ -122,19 +110,15 @@ namespace MrBoom.Bot
         {
             StringBuilder result = new StringBuilder();
 
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < grid.Height; y++)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < grid.Width; x++)
                 {
-                    result.AppendFormat("{0,5}", grid[cellIndex(x, y)]);
+                    result.AppendFormat("{0,5}", grid[x, y]);
                 }
                 result.AppendLine();
             }
             return result.ToString();
         }
-
-        private int cellIndex(int x, int y) { return y * width + x; }
-        private int cellX(int cellIndex) { return cellIndex % width; }
-        private int cellY(int cellIndex) { return cellIndex / width; }
     }
 }

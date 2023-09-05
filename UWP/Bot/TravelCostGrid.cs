@@ -99,36 +99,23 @@ namespace MrBoom.Bot
                 return Directions.None;
             }
 
-            Directions d = Directions.None;
-            int minCost = CostCantGo;
+            Directions bestDir = Directions.None;
+            int bestCost = CostCantGo;
 
-            int c;
-            c = GetCost(x - 1, y);
-            if (c < minCost)
+            Directions[] all = new Directions[] { Directions.Up, Directions.Down, Directions.Left, Directions.Right };
+
+            foreach (Directions dir in all)
             {
-                d = Directions.Left;
-                minCost = c;
-            }
-            c = GetCost(x + 1, y);
-            if (c < minCost)
-            {
-                d = Directions.Right;
-                minCost = c;
-            }
-            c = GetCost(x, y - 1);
-            if (c < minCost)
-            {
-                d = Directions.Up;
-                minCost = c;
-            }
-            c = GetCost(x, y + 1);
-            if (c < minCost)
-            {
-                d = Directions.Down;
-                minCost = c;
+                int c = GetCost(x + dir.DeltaX(), y + dir.DeltaY());
+
+                if (c < bestCost)
+                {
+                    bestDir = dir;
+                    bestCost = c;
+                }
             }
 
-            return d;
+            return bestDir;
         }
 
         public override string ToString()

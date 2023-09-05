@@ -30,7 +30,7 @@ namespace MrBoom.BehaviorTree
                 }
 
                 BtNode child = children[index];
-                BtStatus status = child.Tick();
+                BtStatus status = child.Update();
 
                 // If the child fails, or keeps running, do the same.
                 if (status != BtStatus.Success)

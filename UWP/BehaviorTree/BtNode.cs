@@ -21,7 +21,7 @@ namespace MrBoom.BehaviorTree
         {
         }
 
-        public BtStatus Tick()
+        public BtStatus Update()
         {
             if (status != BtStatus.Running)
             {

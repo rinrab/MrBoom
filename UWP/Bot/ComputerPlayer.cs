@@ -53,7 +53,7 @@ namespace MrBoom.Bot
         public override void Update()
         {
             base.Update();
-            tree.Tick();
+            tree.Update();
 
             int cellX = (x + 8) / 16;
             int cellY = (y + 8) / 16;

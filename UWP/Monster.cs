@@ -64,14 +64,14 @@ namespace MrBoom
                     }
                     else
                     {
-                        IsDie = true;
+                        Kill();
                         frameIndex = 0;
                         terrain.SetCell((X + 8) / 16, (Y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
                 if (cell.Type == TerrainType.Apocalypse)
                 {
-                    IsDie = true;
+                    Kill();
                     frameIndex = 0;
                     terrain.PlaySound(Sound.Ai);
                 }

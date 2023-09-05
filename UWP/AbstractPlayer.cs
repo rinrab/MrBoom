@@ -183,7 +183,7 @@ namespace MrBoom
                 }
                 else
                 {
-                    this.IsDie = true;
+                    Kill();
                     this.frameIndex = 0;
                     terrain.PlaySound(Sound.PlayerDie);
                 }
@@ -191,7 +191,7 @@ namespace MrBoom
             if (cell.Type == TerrainType.Apocalypse)
             {
                 unplugin = 0;
-                this.IsDie = true;
+                Kill();
                 this.frameIndex = 0;
                 terrain.PlaySound(Sound.PlayerDie);
             }

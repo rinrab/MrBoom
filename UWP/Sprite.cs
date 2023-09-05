@@ -17,11 +17,12 @@ namespace MrBoom
         public Directions Direction;
         public int frameIndex;
         public int animateIndex;
-        public bool IsDie = false;
+        private bool isDie = false;
         public Feature Features;
         public SkullType? Skull { get; private set; }
         public int X { get => x; private set => x = value; }
         public int Y { get => y; private set => y = value; }
+        public bool IsDie { get => isDie; }
 
         protected int unplugin;
 
@@ -274,6 +275,11 @@ namespace MrBoom
 
             skullTimer = 600;
             Skull = skullType;
+        }
+
+        protected void Kill()
+        {
+            isDie = true;
         }
     }
 }

@@ -55,15 +55,14 @@ namespace MrBoom.Bot
         public override void Update()
         {
             base.Update();
-            tree.Update();
 
             int cellX = (x + 8) / 16;
             int cellY = (y + 8) / 16;
 
             travelCost.Update(cellX, cellY, (x, y) => terrain.IsWalkable(x, y) ? 1 : TravelCostGrid.CostCantGo);
-            findPathCost.Update(1, 1, (x, y) => terrain.IsWalkable(x, y) ? 1 : TravelCostGrid.CostCantGo);
 
-            Direction = findPathCost.GetBestDirection(cellX, cellY);
+            Direction = Directions.None;
+            tree.Update();
 
             tickCount++;
 
@@ -79,10 +78,38 @@ namespace MrBoom.Bot
             return Goto(GetSafeCell());
         }
 
-        private BtStatus Goto(int v)
+        private BtStatus Goto(CellCoord? target)
         {
-            // TODO:
-            return BtStatus.Failure;
+            if (target.HasValue)
+            {
+                int cellX = (x + 8) / 16;
+                int cellY = (y + 8) / 16;
+
+                if (target.Value.X == cellX &&
+                    target.Value.Y == cellY)
+                {
+                    return BtStatus.Success;
+                }
+                else
+                {
+                    findPathCost.Update(target.Value.X, target.Value.Y, (x, y) => terrain.IsWalkable(x, y) ? 1 : TravelCostGrid.CostCantGo);
+
+                    Direction = findPathCost.GetBestDirection(cellX, cellY);
+                    if (Direction == Directions.None)
+                    {
+                        return BtStatus.Failure;
+                    }
+                    else
+                    {
+                        return BtStatus.Running;
+                    }
+                }
+            }
+            else
+            {
+                // TODO:
+                return BtStatus.Failure;
+            }
         }
 
         private BtStatus GotoBonusCell()
@@ -100,22 +127,22 @@ namespace MrBoom.Bot
             return BtStatus.Success;
         }
 
-        private int GetBestBombCell()
+        private CellCoord? GetBestBombCell()
         {
             // TODO:
-            return -1;
+            return null;
         }
 
-        private int GetSafeCell()
+        private CellCoord? GetSafeCell()
         {
             // TODO:
-            return -1;
+            return new CellCoord(1, 1);
         }
 
-        private int GetBonusCell()
+        private CellCoord? GetBonusCell()
         {
             // TODO:
-            return -1;
+            return null;
         }
     }
 }

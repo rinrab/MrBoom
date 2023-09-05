@@ -12,7 +12,7 @@ namespace MrBoom
         {
             get
             {
-                return MaxBoom - BombsPlaced;
+                return maxBombsCount - BombsPlaced;
             }
         }
         protected bool rcDitonateButton;

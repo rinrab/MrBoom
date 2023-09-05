@@ -110,6 +110,7 @@
     <Compile Include="Bot\ComputerPlayer.cs" />
     <Compile Include="Bot\TravelCostGrid.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="Directions.cs" />
     <Compile Include="DrawScreen.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GamePage.xaml.cs">

@@ -92,39 +92,39 @@ namespace MrBoom.Bot
             }
         }
 
-        public Sprite.Directions GetBestDirection(int x, int y)
+        public Directions GetBestDirection(int x, int y)
         {
             if (GetCost(x, y) == 0)
             {
-                return Sprite.Directions.None;
+                return Directions.None;
             }
 
-            Sprite.Directions d = Sprite.Directions.None;
+            Directions d = Directions.None;
             int minCost = CostCantGo;
 
             int c;
             c = GetCost(x - 1, y);
             if (c < minCost)
             {
-                d = Sprite.Directions.Left;
+                d = Directions.Left;
                 minCost = c;
             }
             c = GetCost(x + 1, y);
             if (c < minCost)
             {
-                d = Sprite.Directions.Right;
+                d = Directions.Right;
                 minCost = c;
             }
             c = GetCost(x, y - 1);
             if (c < minCost)
             {
-                d = Sprite.Directions.Up;
+                d = Directions.Up;
                 minCost = c;
             }
             c = GetCost(x, y + 1);
             if (c < minCost)
             {
-                d = Sprite.Directions.Down;
+                d = Directions.Down;
                 minCost = c;
             }
 

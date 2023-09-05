@@ -286,7 +286,7 @@ namespace MrBoom.Bot
                         int score = bestExplosionGrid[x, y] * 128;
                         if (score < 0)
                             score = 0;
-                        int travelCost = 1 + travelCostGrid.GetCost(x, y);
+                        int travelCost = 1 + travelCostGrid.GetCost(x, y) / 2;
                         if (score > travelCost)
                         {
                             score = score / travelCost;
@@ -330,8 +330,26 @@ namespace MrBoom.Bot
 
         private CellCoord? GetBonusCell()
         {
-            // TODO:
-            return null;
+            CellCoord? bestCell = null;
+            int bestScore = int.MinValue;
+
+            for (int x = 0; x < terrain.Width; x++)
+            {
+                for (int y = 0; y < terrain.Height; y++)
+                {
+                    if (terrain.GetCell(x, y).Type == TerrainType.PowerUp && travelCostGrid.CanWalk(x, y))
+                    {
+                        int score = -travelCostGrid.GetCost(x, y);
+                        if (score > bestScore)
+                        {
+                            bestCell = new CellCoord(x, y);
+                            bestScore = score;
+                        }
+                    }
+                }
+            }
+
+            return bestCell;
         }
     }
 }

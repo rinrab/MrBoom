@@ -108,6 +108,7 @@
     <Compile Include="BehaviorTree\BtSequence.cs" />
     <Compile Include="BehaviorTree\BtStatus.cs" />
     <Compile Include="Bot\ComputerPlayer.cs" />
+    <Compile Include="Bot\TravelCostGrid.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="DrawScreen.cs" />
     <Compile Include="Game.cs" />

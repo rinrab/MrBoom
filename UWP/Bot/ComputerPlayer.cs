@@ -1,11 +1,15 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System.Diagnostics;
 using MrBoom.BehaviorTree;
 
 namespace MrBoom.Bot
 {
     public class ComputerPlayer : AbstractPlayer
     {
+        private TravelCostGrid travelCost;
+        private int tickCount;
+
         class ActionNode : BtNode
         {
             public delegate BtStatus ActionlDelegate();
@@ -37,6 +41,7 @@ namespace MrBoom.Bot
                     },
                     new ActionNode(GotoSafeCell)
                 };
+            travelCost = new TravelCostGrid(map.Width, map.Height);
         }
 
         private BtStatus GotoBestBombCell()
@@ -47,6 +52,18 @@ namespace MrBoom.Bot
         public override void Update()
         {
             base.Update();
+
+            int cellX = (x + 8) / 16;
+            int cellY = (y + 8) / 16;
+
+            travelCost.Update(cellX, cellY, (x, y) => terrain.IsWalkable(x, y) ? 1 : TravelCostGrid.CostCantGo);
+            tickCount++;
+
+            if (tickCount % (60 * 5) == 0)
+            {
+                Debug.WriteLine("Travel cost:");
+                Debug.Write(travelCost.ToString());
+            }
         }
 
         private BtStatus GotoSafeCell()

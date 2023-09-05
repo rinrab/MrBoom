@@ -92,6 +92,45 @@ namespace MrBoom.Bot
             }
         }
 
+        public Sprite.Directions GetBestDirection(int x, int y)
+        {
+            if (GetCost(x, y) == 0)
+            {
+                return Sprite.Directions.None;
+            }
+
+            Sprite.Directions d = Sprite.Directions.None;
+            int minCost = CostCantGo;
+
+            int c;
+            c = GetCost(x - 1, y);
+            if (c < minCost)
+            {
+                d = Sprite.Directions.Left;
+                minCost = c;
+            }
+            c = GetCost(x + 1, y);
+            if (c < minCost)
+            {
+                d = Sprite.Directions.Right;
+                minCost = c;
+            }
+            c = GetCost(x, y - 1);
+            if (c < minCost)
+            {
+                d = Sprite.Directions.Up;
+                minCost = c;
+            }
+            c = GetCost(x, y + 1);
+            if (c < minCost)
+            {
+                d = Sprite.Directions.Down;
+                minCost = c;
+            }
+
+            return d;
+        }
+
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();

@@ -9,6 +9,7 @@ namespace MrBoom.Bot
     {
         private BtSelector tree;
         private TravelCostGrid travelCost;
+        private TravelCostGrid findPathCost;
         private int tickCount;
 
         class ActionNode : BtNode
@@ -43,6 +44,7 @@ namespace MrBoom.Bot
                     new ActionNode(GotoSafeCell)
                 };
             travelCost = new TravelCostGrid(map.Width, map.Height);
+            findPathCost = new TravelCostGrid(map.Width, map.Height);
         }
 
         private BtStatus GotoBestBombCell()
@@ -59,6 +61,10 @@ namespace MrBoom.Bot
             int cellY = (y + 8) / 16;
 
             travelCost.Update(cellX, cellY, (x, y) => terrain.IsWalkable(x, y) ? 1 : TravelCostGrid.CostCantGo);
+            findPathCost.Update(1, 1, (x, y) => terrain.IsWalkable(x, y) ? 1 : TravelCostGrid.CostCantGo);
+
+            Direction = findPathCost.GetBestDirection(cellX, cellY);
+
             tickCount++;
 
             if (tickCount % (60 * 5) == 0)

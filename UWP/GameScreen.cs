@@ -48,7 +48,7 @@ namespace MrBoom
                 terrain.AddComputer(assets.Players[playersCount], playersCount);
             }
 
-            // terrain.InitializeMonsters();
+            terrain.InitializeMonsters();
         }
 
         public void Update()

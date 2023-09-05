@@ -101,12 +101,7 @@ namespace MrBoom.Bot
                 }
             }
 
-            travelCostGrid.Update(
-                cellX, cellY,
-                (x, y) =>
-                {
-                    return terrain.IsWalkable(x, y) && terrain.GetCell(x, y).Type != TerrainType.Fire ? 1 : TravelCostGrid.CostCantGo;
-                });
+            travelCostGrid.Update(cellX, cellY, CalcTravelCost);
 
             bestExplosionGrid.Reset();
             for (int i = 0; i < bestExplosionGrid.Width; i++)
@@ -169,6 +164,11 @@ namespace MrBoom.Bot
             base.Update();
         }
 
+        private int CalcTravelCost(int x, int y)
+        {
+            return terrain.IsWalkable(x, y) && terrain.GetCell(x, y).Type != TerrainType.Fire ? 1 : TravelCostGrid.CostCantGo;
+        }
+
         private BtStatus GotoSafeCell()
         {
             return Goto(GetSafeCell());
@@ -188,12 +188,7 @@ namespace MrBoom.Bot
                 }
                 else
                 {
-                    findPathCost.Update
-                        (target.Value.X, target.Value.Y,
-                        (x, y) =>
-                        {
-                            return terrain.IsWalkable(x, y) && terrain.GetCell(x, y).Type != TerrainType.Fire ? 1 : TravelCostGrid.CostCantGo;
-                        });
+                    findPathCost.Update(target.Value.X, target.Value.Y, CalcTravelCost);
 
                     Direction = findPathCost.GetBestDirection(cellX, cellY);
                     if (Direction == Directions.None)

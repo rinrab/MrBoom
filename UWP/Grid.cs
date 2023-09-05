@@ -77,9 +77,14 @@ namespace MrBoom
 
         public void Reset()
         {
-            for(int i =  0; i < grid.Length; i++)
+            Reset(defaultValue);
+        }
+
+        public void Reset(T value)
+        {
+            for (int i = 0; i < grid.Length; i++)
             {
-                grid[i] = defaultValue;
+                grid[i] = value;
             }
         }
     }

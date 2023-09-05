@@ -22,10 +22,7 @@ namespace MrBoom.Bot
         {
             BitArray visited = new BitArray(grid.Size);
 
-            for (int i = 0; i < grid.Size; i++)
-            {
-                grid[i] = CostCantGo;
-            }
+            grid.Reset(CostCantGo);
 
             Queue<int> queue = new Queue<int>();
 

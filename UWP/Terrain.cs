@@ -629,7 +629,7 @@ namespace MrBoom
 
         public bool IsMonsterComing(int cellX, int cellY)
         {
-            return hasMonsterGrid[cellX, cellY];
+            return isMonsterComingGrid[cellX, cellY];
         }
 
         public IEnumerable<Sprite> GetSprites()

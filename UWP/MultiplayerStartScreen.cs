@@ -285,7 +285,7 @@ namespace MrBoom
 
                 Next = Screen.Game;
             }
-        }  
+        }
 
         public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {

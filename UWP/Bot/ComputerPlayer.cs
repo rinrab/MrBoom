@@ -427,9 +427,9 @@ namespace MrBoom.Bot
                 case PowerUpType.RemoteControl:
                     return !Features.HasFlag(Feature.RemoteControl);
                 case PowerUpType.Kick:
-                    return !Features.HasFlag(Feature.RemoteControl);
+                    return !Features.HasFlag(Feature.Kick);
                 case PowerUpType.RollerSkate:
-                    return !Features.HasFlag(Feature.RemoteControl);
+                    return !Features.HasFlag(Feature.RollerSkates);
                 case PowerUpType.Clock:
                     return false;
                 case PowerUpType.MultiBomb:

@@ -14,7 +14,7 @@ namespace MrBoom
         private int x;
         private int y;
         public Terrain terrain;
-        public Directions Direction;
+        public Directions Direction { get; protected set; }
         public int frameIndex;
         public int animateIndex;
         private bool isDie = false;

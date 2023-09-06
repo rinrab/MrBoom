@@ -270,8 +270,42 @@ namespace MrBoom.Bot
                 if (target.Value.X == cellX &&
                     target.Value.Y == cellY)
                 {
-                    Direction = Directions.None;
-                    return BtStatus.Success;
+                    const int MAX_PIXELS_PER_FRAME = 8;
+
+                    int targetX = target.Value.X * 16;
+                    int targetY = target.Value.Y * 16;
+
+                    if (Math.Abs(targetX - X) < MAX_PIXELS_PER_FRAME / 2 && Math.Abs(targetY - Y) < MAX_PIXELS_PER_FRAME / 2)
+                    {
+                        Direction = Directions.None;
+                        return BtStatus.Success;
+                    }
+
+                    if (X > targetX)
+                    {
+                        Direction = Directions.Left;
+                        return BtStatus.Running;
+                    }
+                    else if (X < targetX)
+                    {
+                        Direction = Directions.Right;
+                        return BtStatus.Running;
+                    }
+                    else if (Y > targetY)
+                    {
+                        Direction = Directions.Up;
+                        return BtStatus.Running;
+                    }
+                    else if (Y < targetY)
+                    {
+                        Direction = Directions.Down;
+                        return BtStatus.Running;
+                    }
+                    else
+                    {
+                        Direction = Directions.None;
+                        return BtStatus.Success;
+                    }
                 }
                 else
                 {

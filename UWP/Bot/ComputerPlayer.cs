@@ -22,15 +22,31 @@ namespace MrBoom.Bot
             public delegate BtStatus ActionlDelegate();
 
             readonly ActionlDelegate action;
+            private readonly bool wait;
+            private bool done;
 
-            public ActionNode(ActionlDelegate action)
+            public ActionNode(ActionlDelegate action, bool wait = false)
             {
                 this.action = action;
+                this.wait = wait;
+            }
+
+            protected override void OnInitialize()
+            {
+                base.OnInitialize();
+                done = false;
             }
 
             protected override BtStatus OnUpdate()
             {
-                return action();
+                BtStatus status = action();
+                if (status == BtStatus.Success && wait && !done)
+                {
+                    done = true;
+                    return BtStatus.Running;
+                }
+
+                return status;
             }
         }
 
@@ -44,7 +60,7 @@ namespace MrBoom.Bot
                     {
                         new ActionNode(HasBombsLeft),
                         new ActionNode(GotoBestBombCell),
-                        new ActionNode(DropBomb)
+                        new ActionNode(DropBomb, true)
                     },
                     new BtSequence()
                     {

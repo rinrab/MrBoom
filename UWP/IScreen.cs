@@ -11,6 +11,6 @@ namespace MrBoom
 
         void Update();
         void Draw(SpriteBatch ctx);
-        void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale);
+        void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale);
     }
 }

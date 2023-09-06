@@ -246,11 +246,11 @@ namespace MrBoom
             if (soundsToPlay.HasFlag(Sound.Skull)) soundAssets.Skull.Play();
         }
 
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
             if (isPause)
             {
-                pauseWindow.DrawHighDPI(ctx, rect, scale);
+                pauseWindow.DrawHighDPI(ctx, rect, scale, graphicScale);
             }
         }
     }

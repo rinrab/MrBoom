@@ -30,7 +30,7 @@ namespace MrBoom
             tick++;
         }
 
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
         }
     }

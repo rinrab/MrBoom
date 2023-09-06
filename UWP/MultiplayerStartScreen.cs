@@ -287,9 +287,9 @@ namespace MrBoom
             }
         }  
 
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
-            menu?.DrawHighDPI(ctx, rect, scale);
+            menu?.DrawHighDPI(ctx, rect, scale, graphicScale);
 
             //ctx.DrawString(assets.MenuFontBig, "High DPI test",
             //               new Vector2(rect.X + 100 * scale, rect.Y + 100 * scale),

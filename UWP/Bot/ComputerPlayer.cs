@@ -358,18 +358,76 @@ namespace MrBoom.Bot
             return bestCell;
         }
 
+        private bool IsInterestingBonus(PowerUpType bonusType)
+        {
+            switch (bonusType)
+            {
+                case PowerUpType.Banana:
+                    return true;
+                case PowerUpType.ExtraBomb:
+                    return true;
+                case PowerUpType.ExtraFire:
+                    return true;
+                case PowerUpType.Skull:
+                    return false;
+                case PowerUpType.Shield:
+                    return true;
+                case PowerUpType.Life:
+                    return true;
+                case PowerUpType.RemoteControl:
+                    return !Features.HasFlag(Feature.RemoteControl);
+                case PowerUpType.Kick:
+                    return !Features.HasFlag(Feature.RemoteControl);
+                case PowerUpType.RollerSkate:
+                    return !Features.HasFlag(Feature.RemoteControl);
+                case PowerUpType.Clock:
+                    return false;
+                case PowerUpType.MultiBomb:
+                    return !Features.HasFlag(Feature.MultiBomb);
+                default:
+                    return false;
+            }
+        }
+
+        private int CalcBonusScore(PowerUpType bonusType, int distance)
+        {
+            if (distance == TravelCostGrid.CostCantGo)
+                return 0;
+
+            if (!IsInterestingBonus(bonusType))
+                return 0;
+
+            switch(bonusType)
+            {
+                case PowerUpType.Kick:
+                case PowerUpType.RemoteControl:
+                case PowerUpType.Shield:
+                    distance /= 4;
+                    break;
+
+                case PowerUpType.Life:
+                case PowerUpType.RollerSkate:
+                    distance /= 8;
+                    break;
+            }
+
+            return TravelCostGrid.CostCantGo - distance;
+        }
+
         private CellCoord? GetBonusCell()
         {
             CellCoord? bestCell = null;
-            int bestScore = int.MinValue;
+            int bestScore = 0;
 
             for (int x = 0; x < terrain.Width; x++)
             {
                 for (int y = 0; y < terrain.Height; y++)
                 {
-                    if (terrain.GetCell(x, y).Type == TerrainType.PowerUp && travelSafeCostGrid.CanWalk(x, y))
+                    Cell cell = terrain.GetCell(x, y);
+                    if (cell.Type == TerrainType.PowerUp)
                     {
-                        int score = -travelSafeCostGrid.GetCost(x, y);
+                        int distance = travelSafeCostGrid.GetCost(x, y);
+                        int score = CalcBonusScore(cell.PowerUpType, distance);
                         if (score > bestScore)
                         {
                             bestCell = new CellCoord(x, y);

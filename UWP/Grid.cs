@@ -65,14 +65,14 @@ namespace MrBoom
             return y * width + x;
         }
 
-        public int GetCellX(int cellIndex) 
-        { 
-            return cellIndex % width; 
+        public int GetCellX(int cellIndex)
+        {
+            return cellIndex % width;
         }
 
-        public int GetCellY(int cellIndex) 
-        { 
-            return cellIndex / width; 
+        public int GetCellY(int cellIndex)
+        {
+            return cellIndex / width;
         }
 
         public void Reset()

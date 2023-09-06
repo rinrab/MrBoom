@@ -343,7 +343,9 @@ namespace MrBoom.Bot
 
         private BtStatus HasBombsLeft()
         {
-            if (BombsRemaining > 0)
+            // TODO: Currently it doesn't work well with multiple bombs.
+            // Most likely some bug in GetBestBombCell() algorithm.
+            if (BombsPlaced == 0)
             {
                 return BtStatus.Success;
             }

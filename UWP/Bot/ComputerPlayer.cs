@@ -11,6 +11,7 @@ namespace MrBoom.Bot
     {
         private BtSelector tree;
         private TravelCostGrid travelCostGrid;
+        private readonly TravelCostGrid travelSafeCostGrid;
         private TravelCostGrid findPathCost;
         private Grid<int> bestExplosionGrid;
         private Grid<bool> dangerGrid;
@@ -52,6 +53,7 @@ namespace MrBoom.Bot
                     }
                 };
             travelCostGrid = new TravelCostGrid(map.Width, map.Height);
+            travelSafeCostGrid = new TravelCostGrid(map.Width, map.Height);
             findPathCost = new TravelCostGrid(map.Width, map.Height);
             bestExplosionGrid = new Grid<int>(map.Width, map.Height);
             dangerGrid = new Grid<bool>(map.Width, map.Height, false);
@@ -104,6 +106,7 @@ namespace MrBoom.Bot
             }
 
             travelCostGrid.Update(cellX, cellY, CalcTravelCost);
+            travelSafeCostGrid.Update(cellX, cellY, CalcSafeTravelCost);
 
             bestExplosionGrid.Reset();
             for (int i = 0; i < bestExplosionGrid.Width; i++)
@@ -211,9 +214,34 @@ namespace MrBoom.Bot
             return 1;
         }
 
+        private int CalcSafeTravelCost(int x, int y)
+        {
+            if (dangerGrid[x, y])
+                return TravelCostGrid.CostCantGo;
+
+            return CalcTravelCost(x, y);
+        }
+
         private BtStatus GotoSafeCell()
         {
             return Goto(GetSafeCell());
+        }
+
+        private Directions CalcPathDirection(CellCoord target)
+        {
+            findPathCost.Update(target.X, target.Y,
+                (x, y) => (x == CellX && y == CellY) ? 1 : CalcSafeTravelCost(x, y));
+
+            var result = findPathCost.GetBestDirection(CellX, CellY);
+            if (result == Directions.None)
+            {
+                findPathCost.Update(target.X, target.Y,
+                    (x, y) => (x == CellX && y == CellY) ? 1 : CalcTravelCost(x, y));
+
+                result = findPathCost.GetBestDirection(CellX, CellY);
+            }
+
+            return result;
         }
 
         private BtStatus Goto(CellCoord? target)
@@ -226,14 +254,12 @@ namespace MrBoom.Bot
                 if (target.Value.X == cellX &&
                     target.Value.Y == cellY)
                 {
+                    Direction = Directions.None;
                     return BtStatus.Success;
                 }
                 else
                 {
-                    findPathCost.Update(target.Value.X, target.Value.Y, 
-                        (x, y) => (x == cellX && y == cellY) ? 1 : CalcTravelCost(x, y));
-
-                    Direction = findPathCost.GetBestDirection(cellX, cellY);
+                    Direction = CalcPathDirection(target.Value);
                     if (Direction == Directions.None)
                     {
                         return BtStatus.Failure;
@@ -247,6 +273,8 @@ namespace MrBoom.Bot
             else
             {
                 // TODO:
+                Direction = Directions.None;
+
                 return BtStatus.Failure;
             }
         }
@@ -339,9 +367,9 @@ namespace MrBoom.Bot
             {
                 for (int y = 0; y < terrain.Height; y++)
                 {
-                    if (terrain.GetCell(x, y).Type == TerrainType.PowerUp && travelCostGrid.CanWalk(x, y))
+                    if (terrain.GetCell(x, y).Type == TerrainType.PowerUp && travelSafeCostGrid.CanWalk(x, y))
                     {
-                        int score = -travelCostGrid.GetCost(x, y);
+                        int score = -travelSafeCostGrid.GetCost(x, y);
                         if (score > bestScore)
                         {
                             bestCell = new CellCoord(x, y);

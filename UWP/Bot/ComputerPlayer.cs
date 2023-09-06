@@ -396,6 +396,12 @@ namespace MrBoom.Bot
                     if (!dangerGrid[x, y] && travelCostGrid.CanWalk(x, y))
                     {
                         int score = -travelCostGrid.GetCost(x, y);
+                        Cell cell = terrain.GetCell(x, y);
+                        if (cell.Type == TerrainType.PowerUp && cell.PowerUpType == PowerUpType.Skull)
+                        {
+                            score *= 2;
+                        }
+
                         if (score > bestScore)
                         {
                             bestCell = new CellCoord(x, y);

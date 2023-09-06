@@ -336,8 +336,9 @@ namespace MrBoom.Bot
 
         private BtStatus DropBomb()
         {
+            Direction = Directions.None;
             dropBombButton = true;
-            return BtStatus.Success;
+            return BtStatus.Success;    
         }
 
         private BtStatus HasBombsLeft()
@@ -402,7 +403,7 @@ namespace MrBoom.Bot
                             score *= 2;
                         }
 
-                        if (score > bestScore)
+                        if (score > bestScore && !dangerGrid[x, y] && !terrain.IsTouchingMonster(x, y) && !terrain.IsMonsterComing(x, y))
                         {
                             bestCell = new CellCoord(x, y);
                             bestScore = score;

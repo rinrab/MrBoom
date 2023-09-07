@@ -148,16 +148,16 @@ namespace MrBoom.Bot
                                     switch (cell.Type)
                                     {
                                         case TerrainType.TemporaryWall:
-                                            score+= 2;
+                                            score += 2;
                                             break;
                                         case TerrainType.Bomb:
-                                            score+= 1;
+                                            score += 1;
                                             break;
                                     }
 
                                     if (terrain.IsTouchingMonster(i + dir.DeltaX() * k, j + dir.DeltaY() * k))
                                     {
-                                        score+= 6;
+                                        score += 6;
                                     }
 
                                     if (cell.Type != TerrainType.Free)

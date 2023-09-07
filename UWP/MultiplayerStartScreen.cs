@@ -171,6 +171,8 @@ namespace MrBoom
                     Controller.Reset(controllers);
                 }
 
+
+
                 if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame) ||
                     Controller.IsKeyDown(joinedControllers, PlayerKeys.Bomb))
                 {

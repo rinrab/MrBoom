@@ -25,7 +25,7 @@ namespace MrBoom
 
         private readonly byte[] final;
         private int lastApocalypseSound = -1;
-        private readonly Cell[] data;
+        private readonly Grid<Cell> data;
         private int timeToEnd = -1;
         private int time;
         private readonly List<Spawn> spawns;
@@ -83,7 +83,7 @@ namespace MrBoom
             this.startMaxBombsCount = map.StartMaxBombsCount;
             this.startMaxFire = map.StartMaxFire;
 
-            data = new Cell[this.Width * this.Height];
+            data = new Grid<Cell>(this.Width, this.Height, new Cell(TerrainType.PermanentWall));
             for (int y = 0; y < this.Height; y++)
             {
                 for (int x = 0; x < this.Width; x++)
@@ -93,11 +93,11 @@ namespace MrBoom
                     string bonusStr = "123456789AB";
                     if (src == '#')
                     {
-                        this.data[y * this.Width + x] = new Cell(TerrainType.PermanentWall);
+                        this.data[x, y] = new Cell(TerrainType.PermanentWall);
                     }
                     else if (src == '-')
                     {
-                        this.data[y * this.Width + x] = new Cell(TerrainType.TemporaryWall)
+                        this.data[x, y] = new Cell(TerrainType.TemporaryWall)
                         {
                             Images = levelAssets.Walls
                         };
@@ -110,16 +110,16 @@ namespace MrBoom
                             y = y,
                             busy = false
                         });
-                        this.data[y * this.Width + x] = new Cell(TerrainType.Free);
+                        this.data[x, y] = new Cell(TerrainType.Free);
                     }
                     else if (src == '%')
                     {
-                        this.data[y * this.Width + x] = new Cell(TerrainType.Rubber);
+                        this.data[x, y] = new Cell(TerrainType.Rubber);
                     }
                     else if (bonusStr.Contains(src.ToString()))
                     {
                         int index = bonusStr.IndexOf(src);
-                        this.data[y * this.Width + x] = new Cell(TerrainType.PowerUp)
+                        this.data[x, y] = new Cell(TerrainType.PowerUp)
                         {
                             Images = assets.PowerUps[index],
                             Index = 0,
@@ -129,7 +129,7 @@ namespace MrBoom
                     }
                     else
                     {
-                        this.data[y * this.Width + x] = new Cell(TerrainType.Free);
+                        this.data[x, y] = new Cell(TerrainType.Free);
                     }
                 }
             }
@@ -431,19 +431,12 @@ namespace MrBoom
 
         public Cell GetCell(int x, int y)
         {
-            if (x >= 0 && x < this.Width && y >= 0 && y < this.Height)
-            {
-                return this.data[y * this.Width + x];
-            }
-            else
-            {
-                return new Cell(TerrainType.PermanentWall);
-            }
+            return this.data[x, y];
         }
 
         public void SetCell(int x, int y, Cell cell)
         {
-            this.data[y * this.Width + x] = cell;
+            this.data[x, y] = cell;
         }
 
         public bool IsWalkable(int x, int y)

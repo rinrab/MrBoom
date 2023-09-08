@@ -130,7 +130,7 @@ namespace MrBoom.Bot
                 for(int j = 0; j < bestExplosionGrid.Height; j++)
                 {
                     int score = 0;
-                    if (travelCostGrid.CanWalk(i,j))
+                    if (!dangerGrid[i, j] && travelCostGrid.CanWalk(i,j))
                     {
                         score++;
                         Grid<bool> flameGrid = new Grid<bool>(bestExplosionGrid.Width, bestExplosionGrid.Height);
@@ -177,7 +177,7 @@ namespace MrBoom.Bot
                         {
                             for (int yy = 0; yy < bestExplosionGrid.Height; yy++)
                             {
-                                if (travelCostGrid.CanWalk(xx, yy) && !flameGrid[xx, yy])
+                                if (travelCostGrid.CanWalk(xx, yy) && !flameGrid[xx, yy] && !dangerGrid[xx, yy])
                                 {
                                     foundSafePlace = true;
                                 }
@@ -343,9 +343,7 @@ namespace MrBoom.Bot
 
         private BtStatus HasBombsLeft()
         {
-            // TODO: Currently it doesn't work well with multiple bombs.
-            // Most likely some bug in GetBestBombCell() algorithm.
-            if (BombsPlaced == 0)
+            if (BombsRemaining > 0)
             {
                 return BtStatus.Success;
             }

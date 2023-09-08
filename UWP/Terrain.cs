@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using MrBoom.Bot;
 
 namespace MrBoom
@@ -643,6 +644,18 @@ namespace MrBoom
             {
                 yield return sprite;
             }
+        }
+
+        public string GetCellDebugInfo(int cellX, int cellY)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Sprite sprite in players)
+            {
+                sb.Append(sprite.GetCellDebugInfo(cellX, cellY));
+            }
+
+            return sb.ToString();
         }
     }
 

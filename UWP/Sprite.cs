@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -281,6 +282,11 @@ namespace MrBoom
         protected void Kill()
         {
             isDie = true;
+        }
+
+        public virtual string GetCellDebugInfo(int cellX, int cellY)
+        {
+            return string.Empty;
         }
     }
 }

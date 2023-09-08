@@ -15,7 +15,6 @@ namespace MrBoom.Bot
         private TravelCostGrid findPathCost;
         private Grid<int> bestExplosionGrid;
         private Grid<bool> dangerGrid;
-        private int tickCount;
 
         class ActionNode : BtNode
         {
@@ -198,14 +197,6 @@ namespace MrBoom.Bot
             dropBombButton = false;
             rcDitonateButton = false;
             tree.Update();
-
-            tickCount++;
-
-            if (tickCount % (60 * 5) == 0)
-            {
-                Debug.WriteLine("Travel cost:");
-                Debug.Write(travelCostGrid.ToString());
-            }
 
             base.Update();
         }

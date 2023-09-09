@@ -171,7 +171,13 @@ namespace MrBoom
                     Controller.Reset(controllers);
                 }
 
-
+                if (Controller.IsKeyDown(controllers, PlayerKeys.AddBot) && players.Count < 8)
+                {
+                    // TODO: Sounds
+                    players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
+                    playersCount++;
+                    Controller.Reset(controllers);
+                }
 
                 if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame) ||
                     Controller.IsKeyDown(joinedControllers, PlayerKeys.Bomb))

@@ -15,11 +15,14 @@ namespace MrBoom
         private int bgTick = 0;
         private bool isPause = false;
         private Menu pauseWindow;
+        private readonly bool isDebug;
 
         public Screen Next { get; private set; }
 
         public GameScreen(List<Team> teams, Assets assets, Game game, int teamMode)
         {
+            isDebug = game.LaunchParameters.ContainsKey("-d");
+
             this.assets = assets;
             this.game = game;
             this.teamMode = teamMode;
@@ -253,27 +256,30 @@ namespace MrBoom
                 pauseWindow.DrawHighDPI(ctx, rect, scale, graphicScale);
             }
 
-            for (int y = 1; y < terrain.Height - 1; y++)
+            if (isDebug)
             {
-                for (int x = 1; x < terrain.Width - 1; x++)
+                for (int y = 1; y < terrain.Height - 1; y++)
                 {
-                    string debugInfo = terrain.GetCellDebugInfo(x, y);
+                    for (int x = 1; x < terrain.Width - 1; x++)
+                    {
+                        string debugInfo = terrain.GetCellDebugInfo(x, y);
 
-                    Vector2 size = assets.MenuFont.MeasureString(debugInfo) / 6 / graphicScale;
+                        Vector2 size = assets.MenuFont.MeasureString(debugInfo) / 6 / graphicScale;
 
-                    Vector2 position =
-                        (new Vector2(x, y) * 16 + new Vector2(8 + 8, 0 + 8) - size / 2) *
-                        graphicScale * scale + new Vector2(rect.X, rect.Y);
+                        Vector2 position =
+                            (new Vector2(x, y) * 16 + new Vector2(8 + 8, 0 + 8) - size / 2) *
+                            graphicScale * scale + new Vector2(rect.X, rect.Y);
 
-                    ctx.DrawString(assets.MenuFont,
-                                   debugInfo,
-                                   position,
-                                   Color.White,
-                                   0,
-                                   Vector2.One / 2,
-                                   scale / 6,
-                                   SpriteEffects.None,
-                                   0);
+                        ctx.DrawString(assets.MenuFont,
+                                       debugInfo,
+                                       position,
+                                       Color.White,
+                                       0,
+                                       Vector2.One / 2,
+                                       scale / 6,
+                                       SpriteEffects.None,
+                                       0);
+                    }
                 }
             }
         }

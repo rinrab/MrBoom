@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MrBoom.Bot;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace MrBoom
 {

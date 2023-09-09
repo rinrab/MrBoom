@@ -681,7 +681,7 @@ namespace MrBoom
 
         public void DetonateAll(bool generateBonus)
         {
-            for (int i = 0; i < data.Length; i++)
+            for (int i = 0; i < data.CellCount; i++)
             {
                 if (data[i].Type == TerrainType.TemporaryWall)
                 {

@@ -213,7 +213,7 @@ namespace MrBoom
                 position = "DEAD";
             }
 
-            return $"Player: {position}";
+            return $"P:{position}";
         }
     }
 }

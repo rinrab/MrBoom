@@ -128,6 +128,7 @@
     <Compile Include="MenuItem.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="PauseWindow.cs" />
+    <Compile Include="RandomExtensions.cs" />
     <Compile Include="SkullType.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="PlayerState.cs" />

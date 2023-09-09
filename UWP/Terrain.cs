@@ -682,7 +682,7 @@ namespace MrBoom
                 $"F1 - detonate all\n" +
                 $"F2 - clear all\n" +
                 $"F3 - apocalypse\n" +
-                $"F4 - toggle dubug info\n" +
+                $"F4 - toggle debug info\n" +
                 $"F5 - give all\n"
                 ;
         }

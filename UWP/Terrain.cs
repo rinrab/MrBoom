@@ -694,6 +694,14 @@ namespace MrBoom
                 TimeLeft = timeToApocalypse;
             }
         }
+
+        public void GiveAll()
+        {
+            foreach (AbstractPlayer player in players)
+            {
+                player.GiveAll();
+            }
+        }
     }
 
     public enum TerrainType

@@ -20,6 +20,7 @@ namespace MrBoom
         public int Width { get { return width; } }
         public int Height { get { return height; } }
         public int Size { get { return width * height; } }
+        public int Length {  get {  return width * height; } }
 
         public T this[int x, int y]
         {

@@ -669,7 +669,7 @@ namespace MrBoom
         public string GetDebugInfo()
         {
             return
-                $"Dubug info\n" +
+                $"Debug info\n" +
                 $"Version: {Game.Version}\n" +
                 $"F1 - detonate all and drop items\n" +
                 $"F2 - detonate all\n" +

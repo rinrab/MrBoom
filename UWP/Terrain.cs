@@ -55,23 +55,23 @@ namespace MrBoom
             monsters = new List<Monster>();
 
             this.assets = assets;
-            this.levelAssets = assets.Levels[levelIndex];
-            this.map = Map.Maps[levelIndex];
-            this.StartFeatures = Map.Maps[levelIndex].StartFeatures;
-            this.powerUpList = new List<PowerUpType>();
+            levelAssets = assets.Levels[levelIndex];
+            map = Map.Maps[levelIndex];
+            StartFeatures = Map.Maps[levelIndex].StartFeatures;
+            powerUpList = new List<PowerUpType>();
 
             foreach (var bonus in map.PowerUps)
             {
                 for (int i = 0; i < bonus.Count; i++)
                 {
-                    this.powerUpList.Add(bonus.Type);
+                    powerUpList.Add(bonus.Type);
                 }
             }
-            this.Width = map.Data[0].Length;
-            this.Height = map.Data.Length;
-            this.spawns = new List<Spawn>();
-            this.TimeLeft = (map.Time + 31) * 60;
-            this.final = map.Final;
+            Width = map.Data[0].Length;
+            Height = map.Data.Length;
+            spawns = new List<Spawn>();
+            TimeLeft = (map.Time + 31) * 60;
+            final = map.Final;
             foreach (int fin in final)
             {
                 if (fin != 255)
@@ -79,15 +79,15 @@ namespace MrBoom
                     MaxApocalypse = Math.Max(fin, MaxApocalypse);
                 }
             }
-            this.players = new List<AbstractPlayer>();
+            players = new List<AbstractPlayer>();
 
-            this.startMaxBombsCount = map.StartMaxBombsCount;
-            this.startMaxFire = map.StartMaxFire;
+            startMaxBombsCount = map.StartMaxBombsCount;
+            startMaxFire = map.StartMaxFire;
 
-            data = new Grid<Cell>(this.Width, this.Height, new Cell(TerrainType.PermanentWall));
-            for (int y = 0; y < this.Height; y++)
+            data = new Grid<Cell>(Width, Height, new Cell(TerrainType.PermanentWall));
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = 0; x < this.Width; x++)
+                for (int x = 0; x < Width; x++)
                 {
                     char src = map.Data[y][x];
 
@@ -105,7 +105,7 @@ namespace MrBoom
                     }
                     else if (src == '*')
                     {
-                        this.spawns.Add(new Spawn()
+                        spawns.Add(new Spawn()
                         {
                             x = x,
                             y = y,
@@ -141,31 +141,31 @@ namespace MrBoom
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
         {
-            var spawn = this.spawns[this.generateSpawn()];
+            var spawn = spawns[generateSpawn()];
 
             AbstractPlayer sprite = new Human(
                 this, movingSpriteAssets,
                 spawn.x * 16, spawn.y * 16,
                 controller, startMaxFire, startMaxBombsCount, team);
 
-            this.players.Add(sprite);
+            players.Add(sprite);
         }
 
         public void AddComputer(Assets.MovingSpriteAssets movingSpriteAssets, int team)
         {
-            var spawn = this.spawns[this.generateSpawn()];
+            var spawn = spawns[generateSpawn()];
 
             AbstractPlayer sprite = new ComputerPlayer(
                 this, movingSpriteAssets,
                 spawn.x * 16, spawn.y * 16,
                 startMaxFire, startMaxBombsCount, team);
 
-            this.players.Add(sprite);
+            players.Add(sprite);
         }
 
         public void InitializeMonsters()
         {
-            int count = this.spawns.Count - this.players.Count;
+            int count = spawns.Count - players.Count;
 
             for (int i = 0; i < count; i++)
             {
@@ -174,19 +174,19 @@ namespace MrBoom
                 Monster monster = new Monster(
                     this, data, assets.Monsters[data.Type],
                     spawn.x * 16, spawn.y * 16);
-                this.monsters.Add(monster);
+                monsters.Add(monster);
             }
         }
 
         public void Update()
         {
             SoundsToPlay = 0;
-            this.time++;
+            time++;
             TimeLeft--;
 
-            if (this.timeToEnd != -1)
+            if (timeToEnd != -1)
             {
-                this.timeToEnd--;
+                timeToEnd--;
             }
 
             if (TimeLeft < 30 * 60 - 1)
@@ -256,7 +256,7 @@ namespace MrBoom
             }
 
             int playersCount = 0;
-            foreach (AbstractPlayer player in this.players)
+            foreach (AbstractPlayer player in players)
             {
                 if (player.IsAlive)
                 {
@@ -312,15 +312,15 @@ namespace MrBoom
                 Result = GameResult.Draw;
             }
 
-            for (int y = 0; y < this.Height; y++)
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = 0; x < this.Width; x++)
+                for (int x = 0; x < Width; x++)
                 {
-                    Cell cell = this.GetCell(x, y);
+                    Cell cell = GetCell(x, y);
                     if (cell.Index != -1)
                     {
                         int animateDelay = (cell.animateDelay <= 0) ? 6 : cell.animateDelay;
-                        if (this.time % animateDelay == 0)
+                        if (time % animateDelay == 0)
                         {
                             cell.Index++;
                             if (cell.Index >= cell.Images.Length)
@@ -331,7 +331,7 @@ namespace MrBoom
                                 }
                                 else
                                 {
-                                    this.SetCell(x, y, cell.Next);
+                                    SetCell(x, y, cell.Next);
                                 }
                             }
                         }
@@ -347,12 +347,12 @@ namespace MrBoom
 
                         if (cell.bombTime == 0 || (cell.owner != null && cell.owner.rcDitonate && cell.rcAllowed))
                         {
-                            this.ditonateBomb(x, y);
+                            ditonateBomb(x, y);
                             continue;
                         }
                         if (cell.OffsetX == 0 && cell.OffsetY == 0)
                         {
-                            var next = this.GetCell(x + cell.DeltaX / 2, y + cell.DeltaY / 2);
+                            var next = GetCell(x + cell.DeltaX / 2, y + cell.DeltaY / 2);
                             if (next.Type == TerrainType.Rubber)
                             {
                                 cell.DeltaX = -cell.DeltaX;
@@ -442,7 +442,7 @@ namespace MrBoom
 
         public bool IsWalkable(int x, int y)
         {
-            Cell cell = this.GetCell(x, y);
+            Cell cell = GetCell(x, y);
 
             switch (cell.Type)
             {
@@ -471,7 +471,7 @@ namespace MrBoom
 
         public void ditonateBomb(int bombX, int bombY)
         {
-            Cell bombCell = this.GetCell(bombX, bombY); ;
+            Cell bombCell = GetCell(bombX, bombY); ;
             int maxBoom = bombCell.maxBoom;
 
             if (bombCell.owner != null)
@@ -485,7 +485,7 @@ namespace MrBoom
                 {
                     int x = bombX + i * dx;
                     int y = bombY + i * dy;
-                    Cell cell = this.GetCell(x, y);
+                    Cell cell = GetCell(x, y);
 
                     if (cell.Type == TerrainType.PermanentWall || cell.Type == TerrainType.Apocalypse ||
                         cell.Type == TerrainType.Rubber)
@@ -495,9 +495,9 @@ namespace MrBoom
 
                     if (cell.Type == TerrainType.TemporaryWall)
                     {
-                        Cell next = this.GenerateGiven();
+                        Cell next = GenerateGiven();
 
-                        this.SetCell(x, y, new Cell(TerrainType.PermanentWall)
+                        SetCell(x, y, new Cell(TerrainType.PermanentWall)
                         {
                             Images = levelAssets.Walls,
                             Index = 0,
@@ -508,19 +508,19 @@ namespace MrBoom
                     }
                     else if (cell.Type == TerrainType.PowerUp)
                     {
-                        this.SetCell(x, y, new Cell(TerrainType.PowerUpFire)
+                        SetCell(x, y, new Cell(TerrainType.PowerUpFire)
                         {
                             Images = assets.Fire,
                             Index = 0,
                             animateDelay = 6,
                             Next = new Cell(TerrainType.Free)
                         });
-                        this.PlaySound(Sound.Sac);
+                        PlaySound(Sound.Sac);
                         break;
                     }
                     else if (cell.Type == TerrainType.Bomb)
                     {
-                        this.ditonateBomb(x, y);
+                        ditonateBomb(x, y);
                         break;
                     }
                     else if (cell.Type == TerrainType.Fire || cell.Type == TerrainType.PowerUpFire)
@@ -528,7 +528,7 @@ namespace MrBoom
                     }
                     else
                     {
-                        this.SetCell(x, y, new Cell(TerrainType.Fire)
+                        SetCell(x, y, new Cell(TerrainType.Fire)
                         {
                             Images = i == maxBoom ? imageEnd : image,
                             Index = 0,
@@ -540,7 +540,7 @@ namespace MrBoom
 
             PlaySound(Sound.Bang);
 
-            this.SetCell(bombX, bombY, new Cell(TerrainType.Fire)
+            SetCell(bombX, bombY, new Cell(TerrainType.Fire)
             {
                 Images = assets.BoomMid,
                 Index = 0,
@@ -583,8 +583,8 @@ namespace MrBoom
             int rnd = Random.Next(int.MaxValue);
             if (rnd < int.MaxValue / 2)
             {
-                var powerUpIndex = Random.Next(this.powerUpList.Count);
-                var powerUpType = this.powerUpList[powerUpIndex];
+                var powerUpIndex = Random.Next(powerUpList.Count);
+                var powerUpType = powerUpList[powerUpIndex];
 
                 return GeneratePowerUp(powerUpType);
             }
@@ -599,16 +599,16 @@ namespace MrBoom
             if (spawnIndex == -1)
             {
                 var indexList = new List<int>();
-                for (int i = 0; i < this.spawns.Count; i++)
+                for (int i = 0; i < spawns.Count; i++)
                 {
-                    if (!this.spawns[i].busy)
+                    if (!spawns[i].busy)
                     {
                         indexList.Add(i);
                     }
                 }
                 spawnIndex = indexList[Random.Next(indexList.Count)];
             }
-            this.spawns[spawnIndex].busy = true;
+            spawns[spawnIndex].busy = true;
             return spawnIndex;
         }
 

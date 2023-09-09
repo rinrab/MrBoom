@@ -191,28 +191,28 @@ namespace MrBoom
                         {
                             if (index == Math.Min(MaxApocalypse + 5, 255))
                             {
-                                var cell = GetCell(i % Width, i / Width);
+                                var cell = data[i % Width, i / Width];
                                 if (cell.Type == TerrainType.TemporaryWall)
                                 {
-                                    SetCell(i % Width, i / Width, new Cell(TerrainType.PowerUpFire)
+                                    data[i % Width, i / Width] = new Cell(TerrainType.PowerUpFire)
                                     {
                                         Images = assets.Fire,
                                         Index = 0,
                                         Next = new Cell(TerrainType.Free)
-                                    });
+                                    };
                                     PlaySound(Sound.Sac);
                                 }
                             }
                             else if (final[i] == index)
                             {
-                                var cell = GetCell(i % Width, i / Width);
+                                var cell = data[i % Width, i / Width];
                                 if (cell.Type == TerrainType.Bomb)
                                 {
                                     cell.owner.BombsPlaced--;
                                 }
                                 if (cell.Type != TerrainType.PermanentWall)
                                 {
-                                    SetCell(i % Width, i / Width, new Cell(TerrainType.Apocalypse)
+                                    data[i % Width, i / Width] = new Cell(TerrainType.Apocalypse)
                                     {
                                         Images = levelAssets.PermanentWalls,
                                         Index = 0,
@@ -220,7 +220,7 @@ namespace MrBoom
                                         {
                                             Images = levelAssets.PermanentWalls,
                                         }
-                                    });
+                                    };
                                     if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
                                     {
                                         PlaySound(Sound.Sac);
@@ -242,7 +242,7 @@ namespace MrBoom
                     int y = (Random.Next(0, Height / 2)) * 2 + 1;
 
                     PutBomb(x, y, 4, false, null);
-                    GetCell(x, y).DeltaX = (rndX == 0) ? 2 : -2;
+                    data[x, y].DeltaX = (rndX == 0) ? 2 : -2;
                 }
             }
 
@@ -307,7 +307,7 @@ namespace MrBoom
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    Cell cell = GetCell(x, y);
+                    Cell cell = data[x, y];
                     if (cell.Index != -1)
                     {
                         int animateDelay = (cell.animateDelay <= 0) ? 6 : cell.animateDelay;
@@ -322,7 +322,7 @@ namespace MrBoom
                                 }
                                 else
                                 {
-                                    SetCell(x, y, cell.Next);
+                                    data[x, y] = cell.Next;
                                 }
                             }
                         }
@@ -343,7 +343,7 @@ namespace MrBoom
                         }
                         if (cell.OffsetX == 0 && cell.OffsetY == 0)
                         {
-                            var next = GetCell(x + cell.DeltaX / 2, y + cell.DeltaY / 2);
+                            var next = data[x + cell.DeltaX / 2, y + cell.DeltaY / 2];
                             if (next.Type == TerrainType.Rubber)
                             {
                                 cell.DeltaX = -cell.DeltaX;
@@ -366,10 +366,10 @@ namespace MrBoom
 
                         if (newX != x || newY != y)
                         {
-                            if (GetCell(newX, newY).Type == TerrainType.Free)
+                            if (data[newX, newY].Type == TerrainType.Free)
                             {
-                                SetCell(x, y, new Cell(TerrainType.Free));
-                                SetCell(newX, newY, cell);
+                                data[x, y] = new Cell(TerrainType.Free);
+                                data[newX, newY] = cell;
 
                                 cell.OffsetX += (x - newX) * 16;
                                 cell.OffsetY += (y - newY) * 16;
@@ -433,7 +433,7 @@ namespace MrBoom
 
         public bool IsWalkable(int x, int y)
         {
-            Cell cell = GetCell(x, y);
+            Cell cell = data[x, y];
 
             switch (cell.Type)
             {
@@ -462,7 +462,7 @@ namespace MrBoom
 
         public void ditonateBomb(int bombX, int bombY)
         {
-            Cell bombCell = GetCell(bombX, bombY); ;
+            Cell bombCell = data[bombX, bombY];
             int maxBoom = bombCell.maxBoom;
 
             if (bombCell.owner != null)
@@ -476,7 +476,7 @@ namespace MrBoom
                 {
                     int x = bombX + i * dx;
                     int y = bombY + i * dy;
-                    Cell cell = GetCell(x, y);
+                    Cell cell = data[x, y];
 
                     if (cell.Type == TerrainType.PermanentWall || cell.Type == TerrainType.Apocalypse ||
                         cell.Type == TerrainType.Rubber)
@@ -488,24 +488,24 @@ namespace MrBoom
                     {
                         Cell next = GenerateGiven();
 
-                        SetCell(x, y, new Cell(TerrainType.PermanentWall)
+                        data[x, y] = new Cell(TerrainType.PermanentWall)
                         {
                             Images = levelAssets.Walls,
                             Index = 0,
                             animateDelay = 4,
                             Next = next
-                        });
+                        };
                         break;
                     }
                     else if (cell.Type == TerrainType.PowerUp)
                     {
-                        SetCell(x, y, new Cell(TerrainType.PowerUpFire)
+                        data[x, y] = new Cell(TerrainType.PowerUpFire)
                         {
                             Images = assets.Fire,
                             Index = 0,
                             animateDelay = 6,
                             Next = new Cell(TerrainType.Free)
-                        });
+                        };
                         PlaySound(Sound.Sac);
                         break;
                     }
@@ -519,24 +519,24 @@ namespace MrBoom
                     }
                     else
                     {
-                        SetCell(x, y, new Cell(TerrainType.Fire)
+                        data[x, y] = new Cell(TerrainType.Fire)
                         {
                             Images = i == maxBoom ? imageEnd : image,
                             Index = 0,
                             Next = new Cell(TerrainType.Free)
-                        });
+                        };
                     }
                 }
             }
 
             PlaySound(Sound.Bang);
 
-            SetCell(bombX, bombY, new Cell(TerrainType.Fire)
+            data[bombX, bombY] = new Cell(TerrainType.Fire)
             {
                 Images = assets.BoomMid,
                 Index = 0,
                 Next = new Cell(TerrainType.Free)
-            });
+            };
 
             burn(1, 0, assets.BoomHor, assets.BoomRightEnd);
             burn(-1, 0, assets.BoomHor, assets.BoomLeftEnd);
@@ -557,7 +557,7 @@ namespace MrBoom
 
         public void PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, AbstractPlayer owner)
         {
-            SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
+            data[cellX, cellY] = new Cell(TerrainType.Bomb)
             {
                 Images = assets.Bomb,
                 Index = 0,
@@ -566,7 +566,7 @@ namespace MrBoom
                 maxBoom = maxBoom,
                 rcAllowed = rcAllowed,
                 owner = owner
-            });
+            };
         }
 
         Cell GenerateGiven()

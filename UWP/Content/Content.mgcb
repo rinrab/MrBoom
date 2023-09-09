@@ -715,6 +715,13 @@
 /processorParam:TextureFormat=Color
 /build:CONTROLS.png
 
+#begin font/Debug.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font/Debug.spritefont
+
 #begin font/Menu-big.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

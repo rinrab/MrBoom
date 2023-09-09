@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace MrBoom
 {
@@ -15,11 +16,17 @@ namespace MrBoom
         private int bgTick = 0;
         private bool isPause = false;
         private Menu pauseWindow;
+        private readonly bool isDebug;
+
+        private bool isF4Toggle = false;
+        private bool f4Mask;
 
         public Screen Next { get; private set; }
 
         public GameScreen(List<Team> teams, Assets assets, Game game, int teamMode)
         {
+            isDebug = game.LaunchParameters.ContainsKey("-d");
+
             this.assets = assets;
             this.game = game;
             this.teamMode = teamMode;
@@ -57,6 +64,21 @@ namespace MrBoom
         public void Update()
         {
             bgTick++;
+            
+            var state = Keyboard.GetState();
+
+            if (state.IsKeyDown(Keys.F4))
+            {
+                if (!f4Mask)
+                {
+                    isF4Toggle = !isF4Toggle;
+                }
+                f4Mask = true;
+            }
+            else
+            {
+                f4Mask = false;
+            }
 
             if (isPause)
             {
@@ -86,6 +108,23 @@ namespace MrBoom
             else
             {
                 terrain.Update();
+
+                if (state.IsKeyDown(Keys.F1))
+                {
+                    terrain.DetonateAll(true);
+                }
+                if (state.IsKeyDown(Keys.F2))
+                {
+                    terrain.DetonateAll(false);
+                }
+                if (state.IsKeyDown(Keys.F3))
+                {
+                    terrain.StartApocalypse();
+                }
+                if (state.IsKeyDown(Keys.F5))
+                {
+                    terrain.GiveAll();
+                }
 
                 PlaySounds(terrain.SoundsToPlay);
 
@@ -251,6 +290,43 @@ namespace MrBoom
             if (isPause)
             {
                 pauseWindow.DrawHighDPI(ctx, rect, scale, graphicScale);
+            }
+
+            if (isDebug && isF4Toggle)
+            {
+                for (int y = 1; y < terrain.Height - 1; y++)
+                {
+                    for (int x = 1; x < terrain.Width - 1; x++)
+                    {
+                        string debugInfo = terrain.GetCellDebugInfo(x, y);
+
+                        Vector2 size = assets.DebugFont.MeasureString(debugInfo) / 6 / graphicScale;
+
+                        Vector2 position =
+                            (new Vector2(x, y) * 16 + new Vector2(8 + 8, 0 + 8) - size / 2) *
+                            graphicScale * scale + new Vector2(rect.X, rect.Y);
+
+                        ctx.DrawString(assets.DebugFont,
+                                       debugInfo,
+                                       position,
+                                       Color.White,
+                                       0,
+                                       Vector2.One / 2,
+                                       scale / 6,
+                                       SpriteEffects.None,
+                                       0);
+                    }
+                }
+
+                ctx.DrawString(assets.DebugFont,
+                               terrain.GetDebugInfo(),
+                               Vector2.Zero,
+                               Color.White,
+                               0,
+                               Vector2.Zero,
+                               scale / 6,
+                               SpriteEffects.None,
+                               0);
             }
         }
     }

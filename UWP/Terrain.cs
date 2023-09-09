@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MrBoom.Bot;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MrBoom
 {
@@ -641,14 +642,79 @@ namespace MrBoom
 
         public string GetCellDebugInfo(int cellX, int cellY)
         {
-            StringBuilder sb = new StringBuilder();
+            List<string> cellDebugInfo = new List<string>();
 
             foreach (Sprite sprite in players)
             {
-                sb.Append(sprite.GetCellDebugInfo(cellX, cellY));
+                if (sprite.IsAlive)
+                {
+                    string debugInfo = sprite.GetCellDebugInfo(cellX, cellY);
+
+                    if (!string.IsNullOrEmpty(debugInfo))
+                    {
+                        cellDebugInfo.Add(debugInfo);
+                    }
+                }
             }
 
-            return sb.ToString();
+            return string.Join('\n', cellDebugInfo);
+        }
+
+        public string GetDebugInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (AbstractPlayer player in players)
+            {
+                sb.Append(player.GetDebugInfo() + "\n");
+            }
+
+            return
+                $"DEBUG INFO\n" +
+                $"Version: {Game.Version}\n" +
+                sb.ToString() +
+                $"F1 - detonate all\n" +
+                $"F2 - clear all\n" +
+                $"F3 - apocalypse\n" +
+                $"F4 - toggle debug info\n" +
+                $"F5 - give all\n"
+                ;
+        }
+
+        public void DetonateAll(bool generateBonus)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (data[i].Type == TerrainType.TemporaryWall)
+                {
+                    Cell next = generateBonus ? GenerateGiven() : new Cell(TerrainType.Free);
+
+                    data[i] = new Cell(TerrainType.PermanentWall)
+                    {
+                        Images = levelAssets.Walls,
+                        Index = 0,
+                        animateDelay = 4,
+                        Next = next
+                    };
+                }
+            }
+        }
+
+        public void StartApocalypse()
+        {
+            const int timeToApocalypse = (30 + 2) * 60;
+
+            if (TimeLeft > timeToApocalypse)
+            {
+                TimeLeft = timeToApocalypse;
+            }
+        }
+
+        public void GiveAll()
+        {
+            foreach (AbstractPlayer player in players)
+            {
+                player.GiveAll();
+            }
         }
     }
 

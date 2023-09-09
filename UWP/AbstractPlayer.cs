@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Timofei Zhakov. All rights reserved.
+
+using System;
 
 namespace MrBoom
 {
@@ -196,5 +198,13 @@ namespace MrBoom
                 terrain.PlaySound(Sound.PlayerDie);
             }
         }
+
+        public void GiveAll()
+        {
+            Features |= Feature.RemoteControl | Feature.Kick;
+            SetSkull(SkullType.Fast);
+        }
+
+        public abstract string GetDebugInfo();
     }
 }

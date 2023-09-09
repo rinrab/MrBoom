@@ -152,6 +152,7 @@
     <Content Include="Content\START.png" />
     <Content Include="Content\UI_A.png" />
     <Content Include="Properties\Default.rd.xml" />
+    <None Include="Content\font\Debug.spritefont" />
     <None Include="Content\font\Menu-big.spritefont" />
     <None Include="Content\font\Menu.spritefont" />
     <None Include="Package.StoreAssociation.xml" />

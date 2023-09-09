@@ -22,8 +22,7 @@ namespace MrBoom
         private readonly List<IController> joinedControllers;
         private readonly string helpText =
             "welcome to mr.bomber " +
-            $"v{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}" +
-            $".{Package.Current.Id.Version.Build}!!!   " +
+            $"v{Game.Version}!!!   " +
             "players can join using their drop bomb button second press or enter will start game   " +
             "gamepad controller: d-pad or left stick - move  a button - drop bomb  b button radio control   " +
             "right keyboard: arrows - move  ctrl - drop  bomb  shift - radio control   " +
@@ -171,7 +170,13 @@ namespace MrBoom
                     Controller.Reset(controllers);
                 }
 
-
+                if (Controller.IsKeyDown(controllers, PlayerKeys.AddBot) && players.Count < 8)
+                {
+                    // TODO: Sounds
+                    players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
+                    playersCount++;
+                    Controller.Reset(controllers);
+                }
 
                 if (Controller.IsKeyDown(controllers, PlayerKeys.StartGame) ||
                     Controller.IsKeyDown(joinedControllers, PlayerKeys.Bomb))
@@ -218,6 +223,14 @@ namespace MrBoom
             if (players.Count == 1)
             {
                 players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
+            }
+            else if (players.Count == 0)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
+                    playersCount++;
+                }
             }
 
             if (players.Count >= 1)

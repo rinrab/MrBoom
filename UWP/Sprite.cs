@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -248,7 +247,7 @@ namespace MrBoom
             if (frameIndex != -1)
             {
                 Color color = Color.White;
-                
+
                 AnimatedImage animation = animations.Normal[animateIndex];
                 if (unplugin > 0 && blinking % 30 < 15)
                 {

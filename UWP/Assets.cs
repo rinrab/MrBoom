@@ -93,6 +93,7 @@ namespace MrBoom
 
         public AnimatedImage[] Alpha;
         public SpriteFont MenuFont;
+        public SpriteFont DebugFont;
 
         public static int scale = 2;
 
@@ -414,7 +415,7 @@ namespace MrBoom
                 footanimAssets[0], footanimAssets[1], footanimAssets[2], footanimAssets[3], footanimAssets[4],
                 footanimAssets[5], footanimAssets[4], footanimAssets[3], footanimAssets[2], footanimAssets[1]
             );
-            
+
             var footanimGirls2 = new AnimatedImage(footanimAssets[4], footanimAssets[5]);
 
             var monsters = new MovingSpriteAssets[]
@@ -709,6 +710,7 @@ namespace MrBoom
                 },
                 MenuFont = content.Load<SpriteFont>(@"font\Menu"),
                 MenuFontBig = content.Load<SpriteFont>(@"font\Menu-big"),
+                DebugFont = content.Load<SpriteFont>(@"font\Debug"),
                 BlackPixel = blackPixel,
                 StartButton = content.Load<Texture2D>("START"),
             };

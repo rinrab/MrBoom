@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Windows.ApplicationModel;
 
 namespace MrBoom
 {
@@ -16,6 +17,11 @@ namespace MrBoom
         public List<IController> Controllers;
         public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
         public readonly UnrepeatableRandom SoundRandom = new UnrepeatableRandom();
+
+        public static readonly string Version = 
+            $"{Package.Current.Id.Version.Major}." +
+            $"{Package.Current.Id.Version.Minor}." +
+            $"{Package.Current.Id.Version.Build}";
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;

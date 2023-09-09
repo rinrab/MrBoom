@@ -487,5 +487,10 @@ namespace MrBoom.Bot
 
             return bestCell;
         }
+
+        public override string GetCellDebugInfo(int cellX, int cellY)
+        {
+            return "123";
+        }
     }
 }

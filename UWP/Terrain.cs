@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MrBoom.Bot;
 
@@ -648,14 +649,19 @@ namespace MrBoom
 
         public string GetCellDebugInfo(int cellX, int cellY)
         {
-            StringBuilder sb = new StringBuilder();
+            List<string> cellDebugInfo = new List<string>();
 
             foreach (Sprite sprite in players)
             {
-                sb.Append(sprite.GetCellDebugInfo(cellX, cellY));
+                string debugInfo = sprite.GetCellDebugInfo(cellX, cellY);
+
+                if (!string.IsNullOrEmpty(debugInfo))
+                {
+                    cellDebugInfo.Add(debugInfo);
+                }
             }
 
-            return sb.ToString();
+            return string.Join('\n', cellDebugInfo);
         }
     }
 

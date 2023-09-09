@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using MrBoom.Bot;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -668,14 +669,22 @@ namespace MrBoom
 
         public string GetDebugInfo()
         {
+            StringBuilder sb = new StringBuilder();
+            foreach (AbstractPlayer player in players)
+            {
+                sb.Append(player.GetDebugInfo() + "\n");
+            }
+
             return
                 $"DEBUG INFO\n" +
                 $"Version: {Game.Version}\n" +
+                sb.ToString() +
                 $"F1 - detonate all and drop items\n" +
                 $"F2 - detonate all\n" +
                 $"F3 - apocalypse\n" +
                 $"F4 - toggle dubug info\n" +
-                $"F5 - give all\n";
+                $"F5 - give all\n"
+                ;
         }
 
         public void DetonateAll(bool generateBonus)

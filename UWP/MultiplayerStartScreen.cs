@@ -219,6 +219,14 @@ namespace MrBoom
             {
                 players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
             }
+            else if (players.Count == 0)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
+                    playersCount++;
+                }
+            }
 
             if (players.Count >= 1)
             {

@@ -261,7 +261,7 @@ namespace MrBoom
 
                     Vector2 size = assets.MenuFont.MeasureString(debugInfo) / 6 / graphicScale;
 
-                    Vector2 position = 
+                    Vector2 position =
                         (new Vector2(x, y) * 16 + new Vector2(8 + 8, 0 + 8) - size / 2) *
                         graphicScale * scale + new Vector2(rect.X, rect.Y);
 

@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using MrBoom.BehaviorTree;
 
 namespace MrBoom.Bot
@@ -126,10 +124,10 @@ namespace MrBoom.Bot
             bestExplosionGrid.Reset();
             for (int i = 0; i < bestExplosionGrid.Width; i++)
             {
-                for(int j = 0; j < bestExplosionGrid.Height; j++)
+                for (int j = 0; j < bestExplosionGrid.Height; j++)
                 {
                     int score = 0;
-                    if (!dangerGrid[i, j] && travelCostGrid.CanWalk(i,j))
+                    if (!dangerGrid[i, j] && travelCostGrid.CanWalk(i, j))
                     {
                         score++;
                         Grid<bool> flameGrid = new Grid<bool>(bestExplosionGrid.Width, bestExplosionGrid.Height);
@@ -189,7 +187,7 @@ namespace MrBoom.Bot
                         }
                     }
 
-                    bestExplosionGrid[i,j] = score;
+                    bestExplosionGrid[i, j] = score;
                 }
             }
 
@@ -329,7 +327,7 @@ namespace MrBoom.Bot
         {
             Direction = Directions.None;
             dropBombButton = true;
-            return BtStatus.Success;    
+            return BtStatus.Success;
         }
 
         private BtStatus HasBombsLeft()
@@ -445,7 +443,7 @@ namespace MrBoom.Bot
             if (!IsInterestingBonus(bonusType))
                 return 0;
 
-            switch(bonusType)
+            switch (bonusType)
             {
                 case PowerUpType.Kick:
                 case PowerUpType.RemoteControl:

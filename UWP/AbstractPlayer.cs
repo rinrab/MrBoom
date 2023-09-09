@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Timofei Zhakov. All rights reserved.
+
+using System;
 
 namespace MrBoom
 {

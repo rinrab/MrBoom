@@ -414,7 +414,7 @@ namespace MrBoom
                 footanimAssets[0], footanimAssets[1], footanimAssets[2], footanimAssets[3], footanimAssets[4],
                 footanimAssets[5], footanimAssets[4], footanimAssets[3], footanimAssets[2], footanimAssets[1]
             );
-            
+
             var footanimGirls2 = new AnimatedImage(footanimAssets[4], footanimAssets[5]);
 
             var monsters = new MovingSpriteAssets[]

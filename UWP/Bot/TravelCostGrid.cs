@@ -49,7 +49,7 @@ namespace MrBoom.Bot
                 }
             }
 
-            while(true)
+            while (true)
             {
                 int cellIndex;
                 if (!queue.TryDequeue(out cellIndex))

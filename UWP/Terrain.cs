@@ -717,19 +717,6 @@ namespace MrBoom
         }
     }
 
-    public enum TerrainType
-    {
-        Free,
-        PermanentWall,
-        TemporaryWall,
-        Bomb,
-        PowerUp,
-        PowerUpFire,
-        Apocalypse,
-        Rubber,
-        Fire
-    }
-
     public class Cell
     {
         public readonly TerrainType Type;

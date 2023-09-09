@@ -139,6 +139,7 @@
     <Compile Include="MultiplayerStartScreen.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="TerrainType.cs" />
     <Compile Include="UnrepeatableRandom.cs" />
     <Compile Include="VictoryScreen.cs" />
   </ItemGroup>

@@ -133,7 +133,7 @@ namespace MrBoom
                 List<IController> toRemove = new List<IController>();
                 foreach (IController controller in unjoinedControllers)
                 {
-                    if (controller.IsKeyDown(PlayerKeys.Bomb))
+                    if (controller.IsKeyDown(PlayerKeys.Bomb) && players.Count < 8)
                     {
                         int index = Terrain.Random.Next(names.Count);
                         string name = names[index];

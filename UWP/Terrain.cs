@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using MrBoom.Bot;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MrBoom
 {
@@ -663,6 +664,25 @@ namespace MrBoom
             }
 
             return string.Join('\n', cellDebugInfo);
+        }
+
+        public void DetonateAll(bool generateBonus)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (data[i].Type == TerrainType.TemporaryWall)
+                {
+                    Cell next = generateBonus ? GenerateGiven() : new Cell(TerrainType.Free);
+
+                    data[i] = new Cell(TerrainType.PermanentWall)
+                    {
+                        Images = levelAssets.Walls,
+                        Index = 0,
+                        animateDelay = 4,
+                        Next = next
+                    };
+                }
+            }
         }
     }
 

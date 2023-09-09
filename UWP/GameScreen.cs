@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace MrBoom
 {
@@ -89,6 +90,16 @@ namespace MrBoom
             else
             {
                 terrain.Update();
+
+                var state = Keyboard.GetState();
+                if (state.IsKeyDown(Keys.F1))
+                {
+                    terrain.DetonateAll(true);
+                }
+                if (state.IsKeyDown(Keys.F2))
+                {
+                    terrain.DetonateAll(false);
+                }
 
                 PlaySounds(terrain.SoundsToPlay);
 

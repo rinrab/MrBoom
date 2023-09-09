@@ -18,6 +18,9 @@ namespace MrBoom
         private Menu pauseWindow;
         private readonly bool isDebug;
 
+        private bool isF4Toggle = false;
+        private bool f4Mask;
+
         public Screen Next { get; private set; }
 
         public GameScreen(List<Team> teams, Assets assets, Game game, int teamMode)
@@ -61,6 +64,21 @@ namespace MrBoom
         public void Update()
         {
             bgTick++;
+            
+            var state = Keyboard.GetState();
+
+            if (state.IsKeyDown(Keys.F4))
+            {
+                if (!f4Mask)
+                {
+                    isF4Toggle = !isF4Toggle;
+                }
+                f4Mask = true;
+            }
+            else
+            {
+                f4Mask = false;
+            }
 
             if (isPause)
             {
@@ -91,7 +109,6 @@ namespace MrBoom
             {
                 terrain.Update();
 
-                var state = Keyboard.GetState();
                 if (state.IsKeyDown(Keys.F1))
                 {
                     terrain.DetonateAll(true);
@@ -275,7 +292,7 @@ namespace MrBoom
                 pauseWindow.DrawHighDPI(ctx, rect, scale, graphicScale);
             }
 
-            if (isDebug)
+            if (isDebug && isF4Toggle)
             {
                 for (int y = 1; y < terrain.Height - 1; y++)
                 {

@@ -28,7 +28,7 @@ namespace MrBoom
         private readonly Grid<Cell> data;
         private int timeToEnd = -1;
         private int time;
-        private readonly List<Spawn> spawns;
+        private readonly List<CellCoord> spawns;
         private readonly List<PowerUpType> powerUpList;
         private readonly Map map;
         private readonly List<AbstractPlayer> players;
@@ -41,12 +41,6 @@ namespace MrBoom
         private readonly Assets.Level levelAssets;
         private readonly Grid<bool> hasMonsterGrid;
         private readonly Grid<bool> isMonsterComingGrid;
-
-        private class Spawn
-        {
-            public int x;
-            public int y;
-        }
 
         public Terrain(int levelIndex, Assets assets)
         {
@@ -67,7 +61,7 @@ namespace MrBoom
             }
             Width = map.Data[0].Length;
             Height = map.Data.Length;
-            spawns = new List<Spawn>();
+            spawns = new List<CellCoord>();
             TimeLeft = (map.Time + 31) * 60;
             final = map.Final;
             foreach (int fin in final)
@@ -103,11 +97,7 @@ namespace MrBoom
                     }
                     else if (src == '*')
                     {
-                        spawns.Add(new Spawn()
-                        {
-                            x = x,
-                            y = y,
-                        });
+                        spawns.Add(new CellCoord(x, y));
                         data[x, y] = new Cell(TerrainType.Free);
                     }
                     else if (src == '%')
@@ -139,11 +129,11 @@ namespace MrBoom
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
         {
-            var spawn = generateSpawn();
+            var spawn = generateSpawn().Value;
 
             AbstractPlayer sprite = new Human(
                 this, movingSpriteAssets,
-                spawn.x * 16, spawn.y * 16,
+                spawn.X * 16, spawn.Y * 16,
                 controller, startMaxFire, startMaxBombsCount, team);
 
             players.Add(sprite);
@@ -151,11 +141,11 @@ namespace MrBoom
 
         public void AddComputer(Assets.MovingSpriteAssets movingSpriteAssets, int team)
         {
-            var spawn = generateSpawn();
+            var spawn = generateSpawn().Value;
 
             AbstractPlayer sprite = new ComputerPlayer(
                 this, movingSpriteAssets,
-                spawn.x * 16, spawn.y * 16,
+                spawn.X * 16, spawn.Y * 16,
                 startMaxFire, startMaxBombsCount, team);
 
             players.Add(sprite);
@@ -166,7 +156,7 @@ namespace MrBoom
             while(true)
             {
                 var spawn = generateSpawn();
-                if (spawn == null)
+                if (!spawn.HasValue)
                 {
                     break;
                 }
@@ -174,7 +164,7 @@ namespace MrBoom
                 var data = map.Monsters[Random.Next(map.Monsters.Length)];
                 Monster monster = new Monster(
                     this, data, assets.Monsters[data.Type],
-                    spawn.x * 16, spawn.y * 16);
+                    spawn.Value.X * 16, spawn.Value.Y * 16);
                 monsters.Add(monster);
             }
         }
@@ -595,7 +585,7 @@ namespace MrBoom
             }
         }
 
-        Spawn generateSpawn()
+        CellCoord? generateSpawn()
         {
             if (spawns.Count <= 0)
             {

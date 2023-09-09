@@ -492,7 +492,7 @@ namespace MrBoom.Bot
 
             if (travelCost != TravelCostGrid.CostCantGo)
             {
-                return travelCost.ToString();
+                return travelCost.ToString() + (dangerGrid[dangerGrid.GetCellIndex(cellX, cellY)] ? " X" : "");
             }
             else
             {

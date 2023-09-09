@@ -490,7 +490,16 @@ namespace MrBoom.Bot
 
         public override string GetCellDebugInfo(int cellX, int cellY)
         {
-            return "123";
+            int travelCost = travelCostGrid.GetCost(cellX, cellY);
+
+            if (travelCost != TravelCostGrid.CostCantGo)
+            {
+                return travelCost.ToString();
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
     }
 }

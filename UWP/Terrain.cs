@@ -653,11 +653,14 @@ namespace MrBoom
 
             foreach (Sprite sprite in players)
             {
-                string debugInfo = sprite.GetCellDebugInfo(cellX, cellY);
-
-                if (!string.IsNullOrEmpty(debugInfo))
+                if (sprite.IsAlive)
                 {
-                    cellDebugInfo.Add(debugInfo);
+                    string debugInfo = sprite.GetCellDebugInfo(cellX, cellY);
+
+                    if (!string.IsNullOrEmpty(debugInfo))
+                    {
+                        cellDebugInfo.Add(debugInfo);
+                    }
                 }
             }
 

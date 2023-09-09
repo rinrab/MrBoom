@@ -359,7 +359,7 @@ namespace MrBoom.Bot
                         int travelCost = 1 + travelCostGrid.GetCost(x, y) / 2;
                         if (score > travelCost)
                         {
-                            score = score / travelCost;
+                            score /= travelCost;
                         }
 
                         if (score > bestScore)

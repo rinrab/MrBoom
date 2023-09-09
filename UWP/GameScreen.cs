@@ -300,13 +300,13 @@ namespace MrBoom
                     {
                         string debugInfo = terrain.GetCellDebugInfo(x, y);
 
-                        Vector2 size = assets.MenuFont.MeasureString(debugInfo) / 6 / graphicScale;
+                        Vector2 size = assets.DebugFont.MeasureString(debugInfo) / 6 / graphicScale;
 
                         Vector2 position =
                             (new Vector2(x, y) * 16 + new Vector2(8 + 8, 0 + 8) - size / 2) *
                             graphicScale * scale + new Vector2(rect.X, rect.Y);
 
-                        ctx.DrawString(assets.MenuFont,
+                        ctx.DrawString(assets.DebugFont,
                                        debugInfo,
                                        position,
                                        Color.White,
@@ -318,7 +318,7 @@ namespace MrBoom
                     }
                 }
 
-                ctx.DrawString(assets.MenuFont,
+                ctx.DrawString(assets.DebugFont,
                                terrain.GetDebugInfo(),
                                Vector2.Zero,
                                Color.White,

@@ -93,6 +93,7 @@ namespace MrBoom
 
         public AnimatedImage[] Alpha;
         public SpriteFont MenuFont;
+        public SpriteFont DebugFont;
 
         public static int scale = 2;
 
@@ -709,6 +710,7 @@ namespace MrBoom
                 },
                 MenuFont = content.Load<SpriteFont>(@"font\Menu"),
                 MenuFontBig = content.Load<SpriteFont>(@"font\Menu-big"),
+                DebugFont = content.Load<SpriteFont>(@"font\Debug"),
                 BlackPixel = blackPixel,
                 StartButton = content.Load<Texture2D>("START"),
             };

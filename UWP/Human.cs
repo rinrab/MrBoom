@@ -14,6 +14,17 @@ namespace MrBoom
             Controller = controller;
         }
 
+        public override string GetDebugInfo()
+        {
+            string position = string.Format("({0,3},{1,3})/({2,2},{3,2})", X, Y, (X + 8) / 16, (Y + 8) / 16);
+            if (IsDie)
+            {
+                position = "DEAD";
+            }
+
+            return $"H:{position}";
+        }
+
         public override void Update()
         {
             this.Direction = Directions.None;

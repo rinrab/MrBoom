@@ -13,6 +13,7 @@ namespace MrBoom.Bot
         private TravelCostGrid findPathCost;
         private Grid<int> bestExplosionGrid;
         private Grid<bool> dangerGrid;
+        private Grid<int> flamesGrid;
 
         class ActionNode : BtNode
         {
@@ -70,6 +71,7 @@ namespace MrBoom.Bot
             findPathCost = new TravelCostGrid(map.Width, map.Height);
             bestExplosionGrid = new Grid<int>(map.Width, map.Height);
             dangerGrid = new Grid<bool>(map.Width, map.Height, false);
+            flamesGrid = new Grid<int>(map.Width, map.Height, TravelCostGrid.CostCantGo);
         }
 
         private BtStatus DitonoteRemoteBomb()
@@ -96,6 +98,7 @@ namespace MrBoom.Bot
             int cellY = (Y + 8) / 16;
 
             dangerGrid.Reset();
+            flamesGrid.Reset();
             for (int i = 0; i < dangerGrid.Width; i++)
             {
                 for (int j = 0; j < dangerGrid.Height; j++)
@@ -103,11 +106,35 @@ namespace MrBoom.Bot
                     Cell cell = terrain.GetCell(i, j);
                     if (cell.Type == TerrainType.Bomb)
                     {
+                        bool isBombDanger = cell.owner != this && cell.rcAllowed;
+
                         foreach (Directions dir in new Directions[] { Directions.Left, Directions.Up, Directions.Right, Directions.Down })
                         {
                             for (int k = 0; k <= cell.maxBoom; k++)
                             {
-                                dangerGrid[i + dir.DeltaX() * k, j + dir.DeltaY() * k] = true;
+                                int x = i + dir.DeltaX() * k;
+                                int y = j + dir.DeltaY() * k;
+
+                                dangerGrid[x, y] = true;
+
+                                flamesGrid[x, y] = Math.Min(cell.bombTime, flamesGrid[x, y]);
+                                if (isBombDanger)
+                                {
+                                    // TODO: don't go here
+                                }
+
+                                TerrainType type = terrain.GetCell(x, y).Type;
+
+                                if (type == TerrainType.TemporaryWall ||
+                                    type == TerrainType.PermanentWall)
+                                {
+                                    break;
+                                }
+
+                                if (type == TerrainType.Bomb)
+                                {
+                                    // TODO:
+                                }
                             }
                         }
                     }
@@ -212,6 +239,11 @@ namespace MrBoom.Bot
             }
 
             if (terrain.IsTouchingMonster(x, y) || terrain.IsMonsterComing(x, y))
+            {
+                return TravelCostGrid.CostCantGo;
+            }
+
+            if (flamesGrid[x, y] < 16) // TODO: Correct time
             {
                 return TravelCostGrid.CostCantGo;
             }
@@ -488,11 +520,11 @@ namespace MrBoom.Bot
 
         public override string GetCellDebugInfo(int cellX, int cellY)
         {
-            int travelCost = travelCostGrid.GetCost(cellX, cellY);
+            int time = flamesGrid[cellX, cellY];
 
-            if (travelCost != TravelCostGrid.CostCantGo)
+            if (time != TravelCostGrid.CostCantGo)
             {
-                return travelCost.ToString() + (dangerGrid[dangerGrid.GetCellIndex(cellX, cellY)] ? " X" : "");
+                return time.ToString();
             }
             else
             {

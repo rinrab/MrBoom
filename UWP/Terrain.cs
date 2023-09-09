@@ -684,6 +684,16 @@ namespace MrBoom
                 }
             }
         }
+
+        public void StartApocalypse()
+        {
+            const int timeToApocalypse = (30 + 2) * 60;
+
+            if (TimeLeft > timeToApocalypse)
+            {
+                TimeLeft = timeToApocalypse;
+            }
+        }
     }
 
     public enum TerrainType

@@ -100,6 +100,10 @@ namespace MrBoom
                 {
                     terrain.DetonateAll(false);
                 }
+                if (state.IsKeyDown(Keys.F3))
+                {
+                    terrain.StartApocalypse();
+                }
 
                 PlaySounds(terrain.SoundsToPlay);
 

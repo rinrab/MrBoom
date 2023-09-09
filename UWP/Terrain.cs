@@ -683,8 +683,7 @@ namespace MrBoom
                 $"F2 - clear all\n" +
                 $"F3 - apocalypse\n" +
                 $"F4 - toggle debug info\n" +
-                $"F5 - give all\n"
-                ;
+                $"F5 - give all";
         }
 
         public void DetonateAll(bool generateBonus)

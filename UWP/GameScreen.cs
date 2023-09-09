@@ -318,8 +318,14 @@ namespace MrBoom
                     }
                 }
 
+                string text = terrain.GetDebugInfo();
+
+                Vector2 debugInfoSize = (assets.DebugFont.MeasureString(text) + new Vector2(16)) / 6 * scale;
+                Rectangle area = new Rectangle(0, 0, (int)debugInfoSize.X, (int)debugInfoSize.Y);
+                ctx.Draw(assets.BlackPixel, area, Color.White * 0.7f);
+
                 ctx.DrawString(assets.DebugFont,
-                               terrain.GetDebugInfo(),
+                               text,
                                Vector2.Zero,
                                Color.White,
                                0,

@@ -595,17 +595,14 @@ namespace MrBoom
             }
         }
 
-        Spawn generateSpawn(int spawnIndex = -1)
+        Spawn generateSpawn()
         {
             if (spawns.Count <= 0)
             {
                 return null;
             }
 
-            if (spawnIndex == -1)
-            {
-                spawnIndex = Random.Next(spawns.Count);
-            }
+            int spawnIndex = Random.Next(spawns.Count);
 
             var spawn = spawns[spawnIndex];
             spawns.RemoveAt(spawnIndex);

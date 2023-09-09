@@ -46,7 +46,6 @@ namespace MrBoom
         {
             public int x;
             public int y;
-            public bool busy;
         }
 
         public Terrain(int levelIndex, Assets assets)
@@ -108,7 +107,6 @@ namespace MrBoom
                         {
                             x = x,
                             y = y,
-                            busy = false
                         });
                         data[x, y] = new Cell(TerrainType.Free);
                     }
@@ -136,11 +134,12 @@ namespace MrBoom
 
             hasMonsterGrid = new Grid<bool>(Width, Height, false);
             isMonsterComingGrid = new Grid<bool>(Width, Height, false);
+            Random.Shuffle(spawns);
         }
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
         {
-            var spawn = spawns[generateSpawn()];
+            var spawn = generateSpawn();
 
             AbstractPlayer sprite = new Human(
                 this, movingSpriteAssets,
@@ -152,7 +151,7 @@ namespace MrBoom
 
         public void AddComputer(Assets.MovingSpriteAssets movingSpriteAssets, int team)
         {
-            var spawn = spawns[generateSpawn()];
+            var spawn = generateSpawn();
 
             AbstractPlayer sprite = new ComputerPlayer(
                 this, movingSpriteAssets,
@@ -164,12 +163,15 @@ namespace MrBoom
 
         public void InitializeMonsters()
         {
-            int count = spawns.Count - players.Count;
-
-            for (int i = 0; i < count; i++)
+            while(true)
             {
+                var spawn = generateSpawn();
+                if (spawn == null)
+                {
+                    break;
+                }
+
                 var data = map.Monsters[Random.Next(map.Monsters.Length)];
-                var spawn = spawns[generateSpawn()];
                 Monster monster = new Monster(
                     this, data, assets.Monsters[data.Type],
                     spawn.x * 16, spawn.y * 16);
@@ -593,22 +595,21 @@ namespace MrBoom
             }
         }
 
-        int generateSpawn(int spawnIndex = -1)
+        Spawn generateSpawn(int spawnIndex = -1)
         {
+            if (spawns.Count <= 0)
+            {
+                return null;
+            }
+
             if (spawnIndex == -1)
             {
-                var indexList = new List<int>();
-                for (int i = 0; i < spawns.Count; i++)
-                {
-                    if (!spawns[i].busy)
-                    {
-                        indexList.Add(i);
-                    }
-                }
-                spawnIndex = indexList[Random.Next(indexList.Count)];
+                spawnIndex = Random.Next(spawns.Count);
             }
-            spawns[spawnIndex].busy = true;
-            return spawnIndex;
+
+            var spawn = spawns[spawnIndex];
+            spawns.RemoveAt(spawnIndex);
+            return spawn;
         }
 
         public void PlaySound(Sound sound)

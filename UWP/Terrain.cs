@@ -629,7 +629,7 @@ namespace MrBoom
 
         public string GetCellDebugInfo(int cellX, int cellY)
         {
-            List<string> cellDebugInfo = new List<string>();
+            StringBuilder sb = new StringBuilder();
 
             foreach (Sprite sprite in players)
             {
@@ -639,12 +639,12 @@ namespace MrBoom
 
                     if (!string.IsNullOrEmpty(debugInfo))
                     {
-                        cellDebugInfo.Add(debugInfo);
+                        sb.AppendLine(debugInfo);
                     }
                 }
             }
 
-            return string.Join('\n', cellDebugInfo);
+            return sb.ToString();
         }
 
         public string GetDebugInfo()

@@ -317,6 +317,16 @@ namespace MrBoom
                                        0);
                     }
                 }
+
+                ctx.DrawString(assets.MenuFont,
+                               terrain.GetDebugInfo(),
+                               Vector2.Zero,
+                               Color.White,
+                               0,
+                               Vector2.Zero,
+                               scale / 6,
+                               SpriteEffects.None,
+                               0);
             }
         }
     }

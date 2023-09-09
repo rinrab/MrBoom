@@ -666,6 +666,18 @@ namespace MrBoom
             return string.Join('\n', cellDebugInfo);
         }
 
+        public string GetDebugInfo()
+        {
+            return
+                $"Dubug info\n" +
+                $"Version: {Game.Version}\n" +
+                $"F1 - detonate all and drop items\n" +
+                $"F2 - detonate all\n" +
+                $"F3 - apocalypse\n" +
+                $"F4 - toggle dubug info\n" +
+                $"F5 - give all\n";
+        }
+
         public void DetonateAll(bool generateBonus)
         {
             for (int i = 0; i < data.Length; i++)

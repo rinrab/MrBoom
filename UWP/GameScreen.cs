@@ -64,7 +64,7 @@ namespace MrBoom
         public void Update()
         {
             bgTick++;
-            
+
             var state = Keyboard.GetState();
 
             if (state.IsKeyDown(Keys.F4))

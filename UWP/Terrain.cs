@@ -153,7 +153,7 @@ namespace MrBoom
 
         public void InitializeMonsters()
         {
-            while(true)
+            while (true)
             {
                 var spawn = generateSpawn();
                 if (!spawn.HasValue)

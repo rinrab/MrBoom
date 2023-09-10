@@ -18,7 +18,7 @@ namespace MrBoom
         public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
         public readonly UnrepeatableRandom SoundRandom = new UnrepeatableRandom();
 
-        public static readonly string Version = 
+        public static readonly string Version =
             $"{Package.Current.Id.Version.Major}." +
             $"{Package.Current.Id.Version.Minor}." +
             $"{Package.Current.Id.Version.Build}";

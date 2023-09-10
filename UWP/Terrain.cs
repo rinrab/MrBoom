@@ -483,7 +483,8 @@ namespace MrBoom
                     int y = bombY + i * dy;
                     Cell cell = data[x, y];
 
-                    if (cell.Type == TerrainType.PermanentWall || cell.Type == TerrainType.Apocalypse ||
+                    if (cell.Type == TerrainType.PermanentWall || 
+                        cell.Type == TerrainType.Apocalypse ||
                         cell.Type == TerrainType.Rubber)
                     {
                         break;

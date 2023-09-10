@@ -650,20 +650,22 @@ namespace MrBoom
         public string GetDebugInfo()
         {
             StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"DEBUG INFO");
+            sb.AppendLine($"Version: {Game.Version}");
+
             foreach (AbstractPlayer player in players)
             {
                 sb.AppendLine(player.GetDebugInfo());
             }
 
-            return
-                $"DEBUG INFO\n" +
-                $"Version: {Game.Version}\n" +
-                sb.ToString() +
-                $"F1 - detonate all\n" +
-                $"F2 - clear all\n" +
-                $"F3 - apocalypse\n" +
-                $"F4 - toggle debug info\n" +
-                $"F5 - give all";
+            sb.AppendLine($"F1 - detonate all");
+            sb.AppendLine($"F2 - clear all");
+            sb.AppendLine($"F3 - apocalypse");
+            sb.AppendLine($"F4 - toggle debug info");
+            sb.AppendLine($"F5 - give all");
+
+            return sb.ToString();
         }
 
         public void DetonateAll(bool generateBonus)

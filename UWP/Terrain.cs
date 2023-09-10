@@ -23,11 +23,19 @@ namespace MrBoom
         public Assets.Level LevelAssets => levelAssets;
         public int Winner { get; private set; }
 
+        public int FlameDuration
+        {
+            get
+            {
+                return assets.BoomMid.Length * FLAME_ANIMATION_DELAY;
+            }
+        }
         private readonly Grid<byte> final;
         private int lastApocalypseSound = -1;
         private readonly Grid<Cell> data;
         private int timeToEnd = -1;
         private int time;
+        private const int FLAME_ANIMATION_DELAY = 6;
         private readonly List<CellCoord> spawns;
         private readonly List<PowerUpType> powerUpList;
         private readonly Map map;
@@ -530,6 +538,7 @@ namespace MrBoom
                         {
                             Images = i == maxBoom ? imageEnd : image,
                             Index = 0,
+                            animateDelay = FLAME_ANIMATION_DELAY,
                             Next = new Cell(TerrainType.Free)
                         };
                     }
@@ -542,6 +551,7 @@ namespace MrBoom
             {
                 Images = assets.BoomMid,
                 Index = 0,
+                animateDelay = FLAME_ANIMATION_DELAY,
                 Next = new Cell(TerrainType.Free)
             };
 

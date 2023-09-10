@@ -520,7 +520,8 @@ namespace MrBoom
                         ditonateBomb(x, y);
                         break;
                     }
-                    else if (cell.Type == TerrainType.Fire || cell.Type == TerrainType.PowerUpFire)
+                    else if (cell.Type == TerrainType.Fire ||
+                             cell.Type == TerrainType.PowerUpFire)
                     {
                     }
                     else

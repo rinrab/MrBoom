@@ -218,7 +218,7 @@ namespace MrBoom.Bot
                 }
             }
 
-            Direction = Directions.None;
+            Direction = null;
             dropBombButton = false;
             rcDitonateButton = false;
             tree.Update();
@@ -264,13 +264,13 @@ namespace MrBoom.Bot
             return Goto(GetSafeCell());
         }
 
-        private Directions CalcPathDirection(CellCoord target)
+        private Directions? CalcPathDirection(CellCoord target)
         {
             findPathCost.Update(target.X, target.Y,
                 (x, y) => (x == CellX && y == CellY) ? 1 : CalcSafeTravelCost(x, y));
 
             var result = findPathCost.GetBestDirection(CellX, CellY);
-            if (result == Directions.None)
+            if (result == null)
             {
                 findPathCost.Update(target.X, target.Y,
                     (x, y) => (x == CellX && y == CellY) ? 1 : CalcTravelCost(x, y));
@@ -298,7 +298,7 @@ namespace MrBoom.Bot
 
                     if (Math.Abs(targetX - X) < MAX_PIXELS_PER_FRAME / 2 && Math.Abs(targetY - Y) < MAX_PIXELS_PER_FRAME / 2)
                     {
-                        Direction = Directions.None;
+                        Direction = null;
                         return BtStatus.Success;
                     }
 
@@ -324,14 +324,14 @@ namespace MrBoom.Bot
                     }
                     else
                     {
-                        Direction = Directions.None;
+                        Direction = null;
                         return BtStatus.Success;
                     }
                 }
                 else
                 {
                     Direction = CalcPathDirection(target.Value);
-                    if (Direction == Directions.None)
+                    if (Direction == null)
                     {
                         return BtStatus.Failure;
                     }
@@ -344,7 +344,7 @@ namespace MrBoom.Bot
             else
             {
                 // TODO:
-                Direction = Directions.None;
+                Direction = null;
 
                 return BtStatus.Failure;
             }
@@ -357,7 +357,7 @@ namespace MrBoom.Bot
 
         private BtStatus DropBomb()
         {
-            Direction = Directions.None;
+            Direction = null;
             dropBombButton = true;
             return BtStatus.Success;
         }

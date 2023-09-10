@@ -4,7 +4,6 @@ namespace MrBoom
 {
     public enum Directions
     {
-        None,
         Up,
         Down,
         Left,
@@ -26,6 +25,18 @@ namespace MrBoom
             }
         }
 
+        public static int DeltaX(this Directions? direction)
+        {
+            if (direction.HasValue)
+            {
+                return direction.Value.DeltaX();
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public static int DeltaY(this Directions direction)
         {
             switch (direction)
@@ -36,6 +47,18 @@ namespace MrBoom
                     return 1;
                 default:
                     return 0;
+            }
+        }
+
+        public static int DeltaY(this Directions? direction)
+        {
+            if (direction.HasValue)
+            {
+                return direction.Value.DeltaY();
+            }
+            else
+            {
+                return 0;
             }
         }
     }

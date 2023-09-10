@@ -27,7 +27,7 @@ namespace MrBoom
 
         public override void Update()
         {
-            this.Direction = Directions.None;
+            this.Direction = null;
             if (this.Controller.IsKeyDown(PlayerKeys.Up))
             {
                 this.Direction = Directions.Up;

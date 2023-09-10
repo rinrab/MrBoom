@@ -14,7 +14,7 @@ namespace MrBoom
         private int x;
         private int y;
         public Terrain terrain;
-        public Directions Direction { get; protected set; }
+        public Directions? Direction { get; protected set; }
         public int frameIndex;
         public int animateIndex;
         private bool isDie = false;
@@ -201,13 +201,13 @@ namespace MrBoom
                 }
             }
 
-            if (Direction == Directions.None)
+            if (Direction.HasValue)
             {
-                frameIndex = 0;
+                frameIndex++;
             }
             else
             {
-                frameIndex++;
+                frameIndex = 0;
             }
         }
 

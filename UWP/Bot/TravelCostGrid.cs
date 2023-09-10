@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -82,14 +83,14 @@ namespace MrBoom.Bot
             return grid[x, y] < CostCantGo;
         }
 
-        public Directions GetBestDirection(int x, int y)
+        public Directions? GetBestDirection(int x, int y)
         {
             if (GetCost(x, y) == 0)
             {
-                return Directions.None;
+                return null;
             }
 
-            Directions bestDir = Directions.None;
+            Directions? bestDir = null;
             int bestCost = CostCantGo;
 
             Directions[] all = new Directions[] { Directions.Up, Directions.Down, Directions.Left, Directions.Right };

@@ -117,7 +117,7 @@ namespace MrBoom.Bot
 
                                 dangerGrid[x, y] = true;
 
-                                flamesGrid[x, y] = Math.Min(cell.bombTime, flamesGrid[x, y]);
+                                flamesGrid[x, y] = Math.Min(cell.bombCountdown, flamesGrid[x, y]);
                                 if (isBombDanger)
                                 {
                                     // TODO: don't go here

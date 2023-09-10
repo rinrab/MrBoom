@@ -333,10 +333,10 @@ namespace MrBoom
                         if (!cell.rcAllowed || !cell.owner.Features.HasFlag(
                             Feature.RemoteControl) || cell.owner.IsDie)
                         {
-                            cell.bombTime--;
+                            cell.bombCountdown--;
                         }
 
-                        if (cell.bombTime == 0 || (cell.owner != null && cell.owner.rcDitonate && cell.rcAllowed))
+                        if (cell.bombCountdown == 0 || (cell.owner != null && cell.owner.rcDitonate && cell.rcAllowed))
                         {
                             ditonateBomb(x, y);
                             continue;
@@ -562,7 +562,7 @@ namespace MrBoom
                 Images = assets.Bomb,
                 Index = 0,
                 animateDelay = 12,
-                bombTime = 210,
+                bombCountdown = 210,
                 maxBoom = maxBoom,
                 rcAllowed = rcAllowed,
                 owner = owner
@@ -710,7 +710,7 @@ namespace MrBoom
         public AnimatedImage Images;
         public int Index;
         public int animateDelay;
-        public int bombTime;
+        public int bombCountdown;
         public int maxBoom;
         public bool rcAllowed;
         public AbstractPlayer owner;

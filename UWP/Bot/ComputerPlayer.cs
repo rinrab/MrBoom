@@ -183,6 +183,12 @@ namespace MrBoom.Bot
                                             break;
                                     }
 
+                                    int killablePlayers = terrain.GetKillablePlayers(x, y);
+                                    if ((killablePlayers & (~TeamMask)) != 0)
+                                    {
+                                        score += 8;
+                                    }
+
                                     if (terrain.IsTouchingMonster(x, y))
                                     {
                                         score += 6;

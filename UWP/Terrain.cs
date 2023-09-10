@@ -49,6 +49,7 @@ namespace MrBoom
         private readonly Assets.Level levelAssets;
         private readonly Grid<bool> hasMonsterGrid;
         private readonly Grid<bool> isMonsterComingGrid;
+        private readonly Grid<int> killablePlayerGrid;
 
         public Terrain(int levelIndex, Assets assets)
         {
@@ -134,6 +135,7 @@ namespace MrBoom
 
             hasMonsterGrid = new Grid<bool>(Width, Height, false);
             isMonsterComingGrid = new Grid<bool>(Width, Height, false);
+            killablePlayerGrid = new Grid<int>(Width, Height, 0);
             Random.Shuffle(spawns);
         }
 
@@ -411,6 +413,13 @@ namespace MrBoom
                 }
             }
 
+            killablePlayerGrid.Reset(0);
+            foreach (AbstractPlayer player in players)
+            {
+                // TODO: Check for unplugin.
+                killablePlayerGrid[player.CellX, player.CellY] |= (1 << player.Team);
+            }
+
             foreach (Sprite sprite in GetSprites())
             {
                 sprite.Update();
@@ -628,6 +637,11 @@ namespace MrBoom
         public bool IsMonsterComing(int cellX, int cellY)
         {
             return isMonsterComingGrid[cellX, cellY];
+        }
+
+        public int GetKillablePlayers(int cellX, int cellY)
+        {
+            return killablePlayerGrid[cellX, cellY];
         }
 
         public IEnumerable<Sprite> GetSprites()

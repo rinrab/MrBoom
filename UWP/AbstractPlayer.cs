@@ -20,6 +20,7 @@ namespace MrBoom
         protected bool rcDitonateButton;
         protected bool dropBombButton;
         public int Team;
+        public int TeamMask { get => 1 << Team; }
         private int maxBoom;
         private int maxBombsCount;
         private int lifeCount;

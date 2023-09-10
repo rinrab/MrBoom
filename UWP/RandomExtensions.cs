@@ -30,5 +30,12 @@ namespace MrBoom
 
             return (T)values.GetValue(random.Next(values.Length));
         }
+
+        public static T NextElement<T>(this Random random, IList<T> items)
+        {
+            int index = random.Next(items.Count);
+
+            return items[index];
+        }
     }
 }

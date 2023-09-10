@@ -163,7 +163,7 @@ namespace MrBoom
                     break;
                 }
 
-                var data = map.Monsters[Random.Next(map.Monsters.Length)];
+                var data = Random.NextElement(map.Monsters);
                 Monster monster = new Monster(
                     this, data, assets.Monsters[data.Type],
                     spawn.Value.X * 16, spawn.Value.Y * 16);
@@ -242,12 +242,12 @@ namespace MrBoom
             {
                 if (TimeLeft % 16 == 0)
                 {
-                    int rndX = Random.Next(2);
-                    int x = (rndX == 0) ? 1 : Width - 2;
+                    Directions dir = Random.NextElement(new Directions[] { Directions.Left, Directions.Right });
+                    int x = (dir == Directions.Right) ? 1 : Width - 2;
                     int y = (Random.Next(0, Height / 2)) * 2 + 1;
 
                     PutBomb(x, y, 4, false, null);
-                    data[x, y].DeltaX = (rndX == 0) ? 2 : -2;
+                    data[x, y].DeltaX = dir.DeltaX() * 2;
                 }
             }
 
@@ -579,8 +579,7 @@ namespace MrBoom
             int rnd = Random.Next(int.MaxValue);
             if (rnd < int.MaxValue / 2)
             {
-                var powerUpIndex = Random.Next(powerUpList.Count);
-                var powerUpType = powerUpList[powerUpIndex];
+                var powerUpType = Random.NextElement(powerUpList);
 
                 return GeneratePowerUp(powerUpType);
             }

@@ -150,8 +150,7 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
-                    Array values = Enum.GetValues(typeof(SkullType));
-                    SetSkull((SkullType)values.GetValue(Terrain.Random.Next(values.Length)));
+                    SetSkull(Terrain.Random.NextEnum<SkullType>());
                 }
 
                 if (doFire)

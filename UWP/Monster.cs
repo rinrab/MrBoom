@@ -24,7 +24,7 @@ namespace MrBoom
             }
             else
             {
-                this.Direction = (Directions)Terrain.Random.Next(4);
+                this.Direction = Terrain.Random.NextEnum<Directions>();
             }
         }
 
@@ -91,11 +91,11 @@ namespace MrBoom
 
                         for (int i = 0; ; i++)
                         {
-                            int index = Terrain.Random.Next(4);
+                            Directions dir = Terrain.Random.NextEnum<Directions>();
 
-                            if (isWalkable(delta[index].X, delta[index].Y))
+                            if (isWalkable(dir.DeltaX(), dir.DeltaY()))
                             {
-                                Direction = (Directions)index;
+                                Direction = dir;
                                 break;
                             }
                             if (i >= 32)

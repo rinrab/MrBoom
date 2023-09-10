@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System;
+using System.Text;
 using MrBoom.BehaviorTree;
 
 namespace MrBoom.Bot
@@ -523,16 +524,22 @@ namespace MrBoom.Bot
 
         public override string GetCellDebugInfo(int cellX, int cellY)
         {
+            StringBuilder sb = new StringBuilder();
+
             int time = flamesGrid[cellX, cellY];
 
             if (time != TravelCostGrid.CostCantGo)
             {
-                return time.ToString();
+                sb.AppendFormat("{0,3}", time);
             }
             else
             {
-                return string.Empty;
+                sb.Append("   ");
             }
+
+            sb.Append(dangerGrid[cellX, cellY] ? "D" : " ");
+
+            return sb.ToString();
         }
 
         public override string GetDebugInfo()

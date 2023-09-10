@@ -534,7 +534,7 @@ namespace MrBoom.Bot
 
         public override string GetDebugInfo()
         {
-            string position = string.Format("({0,3},{1,3})/({2,2},{3,2})", X, Y, (X + 8) / 16, (Y + 8) / 16);
+            string position = string.Format("({0,3},{1,3})/({2,2},{3,2})", X, Y, CellX, CellY);
             if (IsDie)
             {
                 position = "DEAD";

@@ -165,9 +165,12 @@ namespace MrBoom.Bot
                         {
                             for (int k = 0; k <= MaxBoom; k++)
                             {
-                                if (!flameGrid[i + dir.DeltaX() * k, j + dir.DeltaY() * k])
+                                int x = i + dir.DeltaX() * k;
+                                int y = j + dir.DeltaY() * k;
+
+                                if (!flameGrid[x, y])
                                 {
-                                    Cell cell = terrain.GetCell(i + dir.DeltaX() * k, j + dir.DeltaY() * k);
+                                    Cell cell = terrain.GetCell(x, y);
 
                                     switch (cell.Type)
                                     {
@@ -179,7 +182,7 @@ namespace MrBoom.Bot
                                             break;
                                     }
 
-                                    if (terrain.IsTouchingMonster(i + dir.DeltaX() * k, j + dir.DeltaY() * k))
+                                    if (terrain.IsTouchingMonster(x, y))
                                     {
                                         score += 6;
                                     }
@@ -189,7 +192,7 @@ namespace MrBoom.Bot
                                         break;
                                     }
 
-                                    flameGrid[i + dir.DeltaX() * k, j + dir.DeltaY() * k] = true;
+                                    flameGrid[x, y] = true;
                                 }
                             }
                         }

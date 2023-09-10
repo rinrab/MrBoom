@@ -652,7 +652,7 @@ namespace MrBoom
             StringBuilder sb = new StringBuilder();
             foreach (AbstractPlayer player in players)
             {
-                sb.Append(player.GetDebugInfo() + "\n");
+                sb.AppendLine(player.GetDebugInfo());
             }
 
             return

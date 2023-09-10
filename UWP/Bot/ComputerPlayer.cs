@@ -100,46 +100,54 @@ namespace MrBoom.Bot
 
             dangerGrid.Reset();
             flamesGrid.Reset();
+
+            void SimulateBomb(int startX, int startY)
+            {
+                Cell cell = terrain.GetCell(startX, startY);
+
+                bool isBombDanger = cell.owner != this && cell.rcAllowed;
+
+                foreach (Directions dir in new Directions[] { Directions.Left, Directions.Up, Directions.Right, Directions.Down })
+                {
+                    for (int k = 0; k <= cell.maxBoom; k++)
+                    {
+                        int x = startX + dir.DeltaX() * k;
+                        int y = startY + dir.DeltaY() * k;
+
+                        dangerGrid[x, y] = true;
+
+                        flamesGrid[x, y] = Math.Min(cell.bombCountdown, flamesGrid[x, y]);
+                        if (isBombDanger)
+                        {
+                            // TODO: don't go here
+                        }
+
+                        TerrainType type = terrain.GetCell(x, y).Type;
+
+                        if (type == TerrainType.TemporaryWall ||
+                            type == TerrainType.PermanentWall)
+                        {
+                            break;
+                        }
+
+                        if (type == TerrainType.Bomb)
+                        {
+                            // TODO:
+                        }
+                    }
+                }
+            }
+
             for (int i = 0; i < dangerGrid.Width; i++)
             {
                 for (int j = 0; j < dangerGrid.Height; j++)
                 {
-                    Cell cell = terrain.GetCell(i, j);
-                    if (cell.Type == TerrainType.Bomb)
+                    TerrainType type = terrain.GetCell(i, j).Type;
+                    if (type == TerrainType.Bomb)
                     {
-                        bool isBombDanger = cell.owner != this && cell.rcAllowed;
-
-                        foreach (Directions dir in new Directions[] { Directions.Left, Directions.Up, Directions.Right, Directions.Down })
-                        {
-                            for (int k = 0; k <= cell.maxBoom; k++)
-                            {
-                                int x = i + dir.DeltaX() * k;
-                                int y = j + dir.DeltaY() * k;
-
-                                dangerGrid[x, y] = true;
-
-                                flamesGrid[x, y] = Math.Min(cell.bombCountdown, flamesGrid[x, y]);
-                                if (isBombDanger)
-                                {
-                                    // TODO: don't go here
-                                }
-
-                                TerrainType type = terrain.GetCell(x, y).Type;
-
-                                if (type == TerrainType.TemporaryWall ||
-                                    type == TerrainType.PermanentWall)
-                                {
-                                    break;
-                                }
-
-                                if (type == TerrainType.Bomb)
-                                {
-                                    // TODO:
-                                }
-                            }
-                        }
+                        SimulateBomb(i, j);
                     }
-                    else if (terrain.GetCell(i, j).Type == TerrainType.Fire)
+                    else if (type == TerrainType.Fire)
                     {
                         dangerGrid[i, j] = true;
                     }

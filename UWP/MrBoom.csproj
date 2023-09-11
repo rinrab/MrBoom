@@ -107,6 +107,7 @@
     <Compile Include="BehaviorTree\BtSelector.cs" />
     <Compile Include="BehaviorTree\BtSequence.cs" />
     <Compile Include="BehaviorTree\BtStatus.cs" />
+    <Compile Include="BehaviorTree\ActionNode.cs" />
     <Compile Include="Bot\ComputerPlayer.cs" />
     <Compile Include="Bot\TravelCostGrid.cs" />
     <Compile Include="CellCoord.cs" />

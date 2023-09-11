@@ -5,10 +5,12 @@ namespace MrBoom.BehaviorTree
     public abstract class BtNode
     {
         protected BtStatus status;
+        protected readonly string name;
 
-        public BtNode()
+        public BtNode(string name = "BtNode")
         {
             status = BtStatus.Invalid;
+            this.name = name;
         }
 
         protected virtual void OnInitialize()
@@ -65,7 +67,7 @@ namespace MrBoom.BehaviorTree
 
         public override string ToString()
         {
-            return "BtNode";
+            return name;
         }
     }
 }

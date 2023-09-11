@@ -12,7 +12,7 @@ namespace MrBoom.Bot
         private readonly bool wait;
         private bool done;
 
-        public ActionNode(ActionlDelegate action, bool wait = false)
+        public ActionNode(ActionlDelegate action, string name = "ActionNode", bool wait = false) : base(name)
         {
             this.action = action;
             this.wait = wait;

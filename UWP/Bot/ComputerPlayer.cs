@@ -19,19 +19,19 @@ namespace MrBoom.Bot
         public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int x, int y, int maxBoom, int maxBombs, int team)
             : base(map, animations, x, y, maxBoom, maxBombs, team)
         {
-            tree = new BtSelector()
+            tree = new BtSelector("BotTree")
             {
-                new ActionNode(GotoBonusCell),
-                new BtSequence()
+                new ActionNode(GotoBonusCell, "Bonus"),
+                new BtSequence("Bomb")
                 {
-                    new ActionNode(HasBombsLeft),
-                    new ActionNode(GotoBestBombCell),
-                    new ActionNode(DropBomb, true)
+                    new ActionNode(HasBombsLeft, "HasBombsLeft"),
+                    new ActionNode(GotoBestBombCell, "GotoBestBombCell"),
+                    new ActionNode(DropBomb, "DropBomb", true)
                 },
-                new BtSequence()
+                new BtSequence("PostBomb")
                 {
-                    new ActionNode(GotoSafeCell),
-                    new ActionNode(DitonoteRemoteBomb)
+                    new ActionNode(GotoSafeCell, "GotoSafeCell"),
+                    new ActionNode(DitonoteRemoteBomb, "DitonoteRemoteBomb")
                 }
             };
             travelCostGrid = new TravelCostGrid(map.Width, map.Height);

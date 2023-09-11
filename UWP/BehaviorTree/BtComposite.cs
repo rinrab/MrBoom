@@ -11,7 +11,7 @@ namespace MrBoom.BehaviorTree
         protected List<BtNode> children;
         protected int index;
 
-        public BtComposite()
+        public BtComposite(string name = "CompositeNode") : base(name)
         {
             children = new List<BtNode>();
             index = 0;
@@ -46,7 +46,7 @@ namespace MrBoom.BehaviorTree
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("BtComposite");
+            sb.Append(name);
 
             for (int i = 0; i < children.Count; i++)
             {

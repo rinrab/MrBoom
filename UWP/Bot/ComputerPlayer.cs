@@ -53,20 +53,20 @@ namespace MrBoom.Bot
             : base(map, animations, x, y, maxBoom, maxBombs, team)
         {
             tree = new BtSelector()
+            {
+                new ActionNode(GotoBonusCell),
+                new BtSequence()
                 {
-                    new ActionNode(GotoBonusCell),
-                    new BtSequence()
-                    {
-                        new ActionNode(HasBombsLeft),
-                        new ActionNode(GotoBestBombCell),
-                        new ActionNode(DropBomb, true)
-                    },
-                    new BtSequence()
-                    {
-                        new ActionNode(GotoSafeCell),
-                        new ActionNode(DitonoteRemoteBomb)
-                    }
-                };
+                    new ActionNode(HasBombsLeft),
+                    new ActionNode(GotoBestBombCell),
+                    new ActionNode(DropBomb, true)
+                },
+                new BtSequence()
+                {
+                    new ActionNode(GotoSafeCell),
+                    new ActionNode(DitonoteRemoteBomb)
+                }
+            };
             travelCostGrid = new TravelCostGrid(map.Width, map.Height);
             travelSafeCostGrid = new TravelCostGrid(map.Width, map.Height);
             findPathCost = new TravelCostGrid(map.Width, map.Height);

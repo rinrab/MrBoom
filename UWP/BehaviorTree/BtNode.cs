@@ -62,5 +62,10 @@ namespace MrBoom.BehaviorTree
         {
             status = BtStatus.Invalid;
         }
+
+        public override string ToString()
+        {
+            return "BtNode";
+        }
     }
 }

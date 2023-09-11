@@ -558,13 +558,15 @@ namespace MrBoom.Bot
 
         public override string GetDebugInfo()
         {
-            string position = string.Format("({0,3},{1,3})/({2,2},{3,2})", X, Y, CellX, CellY);
-            if (IsDie)
-            {
-                position = "DEAD";
-            }
+        //    string position = string.Format("({0,3},{1,3})/({2,2},{3,2})", X, Y, CellX, CellY);
+        //    if (IsDie)
+        //    {
+        //        position = "DEAD";
+        //    }
 
-            return $"B:{position}";
+        //    return $"B:{position}";
+
+            return tree.ToString();
         }
     }
 }

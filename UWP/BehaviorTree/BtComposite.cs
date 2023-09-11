@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MrBoom.BehaviorTree
 {
@@ -39,6 +40,30 @@ namespace MrBoom.BehaviorTree
         IEnumerator IEnumerable.GetEnumerator()
         {
             return children.GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("BtComposite");
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                StringBuilder nsb = new StringBuilder(children[i].ToString());
+
+                for (int j = 0; j < nsb.Length; j++)
+                {
+                    if (nsb[j] == '\n')
+                    {
+                        nsb.Insert(j + 1, "  ");
+                    }
+                }
+
+                sb.Append("\n" + ((i == index) ? "- " : "  ") + nsb);
+            }
+
+            return sb.ToString();
         }
     }
 }

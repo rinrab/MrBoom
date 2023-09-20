@@ -625,6 +625,12 @@
 /processorParam:Quality=Best
 /build:../../www/music/unreeeal.mp3;music/unreeeal.mp3
 
+#begin ../../www/sound/addbot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/addbot.wav;sound/addbot.wav
+
 #begin ../../www/sound/addplayer.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

@@ -9,10 +9,11 @@ namespace MrBoom
 {
     public class GameScreen : IScreen
     {
-        private readonly Terrain terrain;
+        private Terrain terrain;
         private readonly Assets assets;
         private readonly Game game;
-        private readonly int teamMode;
+        private readonly bool isDemo;
+
         private int bgTick = 0;
         private bool isPause = false;
         private Menu pauseWindow;
@@ -21,15 +22,18 @@ namespace MrBoom
         private bool isF4Toggle = false;
         private bool f4Mask;
 
+        private Menu demoMenu;
+        private int demoMenuShow = 10 * 60;
+
         public Screen Next { get; private set; }
 
-        public GameScreen(List<Team> teams, Assets assets, Game game, int teamMode)
+        public GameScreen(List<Team> teams, Assets assets, Game game, bool isDemo)
         {
             isDebug = game.LaunchParameters.ContainsKey("-d");
 
             this.assets = assets;
             this.game = game;
-            this.teamMode = teamMode;
+            this.isDemo = isDemo;
 
 #if true
             int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
@@ -40,21 +44,43 @@ namespace MrBoom
 
             game.NextSong(Map.Maps[levelIndex].Song);
 
-            int playersCount = 0;
-            for (int i = 0; i < teams.Count; i++)
+            if (isDemo)
             {
-                for (int j = 0; j < teams[i].Players.Count; j++)
+                for (int i = 0; i < 4; i++)
                 {
-                    var player = teams[i].Players[j];
-                    if (player.type == PlayerState.Type.Human)
+                    terrain.AddComputer(assets.Players[i], i);
+                }
+
+                demoMenu = new Menu(new IMenuItem[]
+                {
+                    new TextMenuItem("PLAY"),
+                    new SelectMenuItem("TEAM", new string[]
                     {
-                        terrain.AddPlayer(assets.Players[player.Index], player.Controller, i);
-                    }
-                    else
+                        "OFF",
+                        "COLOR",
+                        "SEX",
+                    }),
+                    new TextMenuItem("QUIT"),
+                }, assets, game.Controllers, 160);
+            }
+            else
+            {
+                int playersCount = 0;
+                for (int i = 0; i < teams.Count; i++)
+                {
+                    for (int j = 0; j < teams[i].Players.Count; j++)
                     {
-                        terrain.AddComputer(assets.Players[player.Index], i);
+                        var player = teams[i].Players[j];
+                        if (player.type == PlayerState.Type.Human)
+                        {
+                            terrain.AddPlayer(assets.Players[player.Index], player.Controller, i);
+                        }
+                        else
+                        {
+                            terrain.AddComputer(assets.Players[player.Index], i);
+                        }
+                        playersCount++;
                     }
-                    playersCount++;
                 }
             }
 
@@ -128,30 +154,79 @@ namespace MrBoom
 
                 PlaySounds(terrain.SoundsToPlay);
 
-                if (terrain.Result == GameResult.Victory)
+                if (isDemo)
                 {
-                    int winner = terrain.Winner;
+                    if (terrain.Result == GameResult.Victory || terrain.Result == GameResult.Draw)
+                    {
+                        int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
 
-                    game.Teams[winner].VictoryCount++;
+                        terrain = new Terrain(levelIndex, assets);
 
-                    ScreenManager.SetScreen(new ResultScreen(game.Teams.ToArray(), winner, assets, game.Controllers, teamMode));
+                        game.NextSong(Map.Maps[levelIndex].Song);
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            terrain.AddComputer(assets.Players[i], i);
+                        }
+
+                        terrain.InitializeMonsters();
+                    }
+
+                    if (demoMenuShow > 0)
+                    {
+                        demoMenuShow--;
+
+                        demoMenu.Update();
+
+                        if (demoMenu.Action == 0)
+                        {
+                            Next = Screen.StartMenu;
+                        }
+                        else if (demoMenu.Action == 2)
+                        {
+                            game.Exit();
+                        }
+                        Team.Mode = ((SelectMenuItem)demoMenu.Items[1]).SelectionIndex;
+                    }
+
+                    if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Continue))
+                    {
+                        if (demoMenuShow == 0)
+                        {
+                            Controller.Reset(game.Controllers);
+                        }
+
+                        demoMenuShow = 10 * 60;
+                    }
                 }
-                else if (terrain.Result == GameResult.Draw)
+                else
                 {
-                    ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
-                }
+                    if (terrain.Result == GameResult.Victory)
+                    {
+                        int winner = terrain.Winner;
 
-                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
-                {
-                    var options = new IMenuItem[] {
-                        new TextMenuItem("RESUME"),
-                        new TextMenuItem("MAIN MENU"),
-                        new TextMenuItem("QUIT")
-                    };
+                        game.Teams[winner].VictoryCount++;
 
-                    pauseWindow = new Menu(options, assets, game.Controllers, -1);
-                    Controller.Reset(game.Controllers);
-                    isPause = true;
+                        ScreenManager.SetScreen(new ResultScreen(game.Teams.ToArray(), winner, assets, game.Controllers, Team.Mode));
+                    }
+                    else if (terrain.Result == GameResult.Draw)
+                    {
+                        ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
+                    }
+
+                    if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
+                    {
+                        var options = new IMenuItem[]
+                        {
+                            new TextMenuItem("RESUME"),
+                            new TextMenuItem("MAIN MENU"),
+                            new TextMenuItem("QUIT")
+                        };
+
+                        pauseWindow = new Menu(options, assets, game.Controllers, -1);
+                        Controller.Reset(game.Controllers);
+                        isPause = true;
+                    }
                 }
             }
         }
@@ -265,6 +340,10 @@ namespace MrBoom
             {
                 pauseWindow.Draw(ctx);
             }
+            if (demoMenu != null && demoMenuShow > 0)
+            {
+                demoMenu.Draw(ctx);
+            }
         }
 
         private void PlaySounds(Sound soundsToPlay)
@@ -290,6 +369,11 @@ namespace MrBoom
             if (isPause)
             {
                 pauseWindow.DrawHighDPI(ctx, rect, scale, graphicScale);
+            }
+
+            if (demoMenu != null && demoMenuShow > 0)
+            {
+                demoMenu.DrawHighDPI(ctx, rect, scale, graphicScale);
             }
 
             if (isDebug && isF4Toggle)

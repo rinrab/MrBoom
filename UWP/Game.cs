@@ -58,7 +58,7 @@ namespace MrBoom
             Teams = new List<Team>();
             NextSong(3);
 
-            ScreenManager.SetScreen(new MultiplayerStartScreen(assets, Teams, Controllers));
+            ScreenManager.SetScreen(new GameScreen(Teams, assets, this, true));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -101,7 +101,7 @@ namespace MrBoom
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
-                    ScreenManager.SetScreen(new GameScreen(Teams, assets, this, Team.Mode));
+                    ScreenManager.SetScreen(new GameScreen(Teams, assets, this, false));
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {

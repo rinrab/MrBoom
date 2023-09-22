@@ -23,7 +23,7 @@ namespace MrBoom
         private bool f4Mask;
 
         private Menu demoMenu;
-        private int demoMenuShow = 10 * 60;
+        private bool demoMenuShow = true;
 
         public Screen Next { get; private set; }
 
@@ -172,10 +172,8 @@ namespace MrBoom
                         terrain.InitializeMonsters();
                     }
 
-                    if (demoMenuShow > 0)
+                    if (demoMenuShow)
                     {
-                        demoMenuShow--;
-
                         demoMenu.Update();
 
                         if (demoMenu.Action == 0)
@@ -191,12 +189,11 @@ namespace MrBoom
 
                     if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Continue))
                     {
-                        if (demoMenuShow == 0)
+                        if (!demoMenuShow)
                         {
                             Controller.Reset(game.Controllers);
+                            demoMenuShow = true;
                         }
-
-                        demoMenuShow = 10 * 60;
                     }
                 }
                 else
@@ -340,7 +337,7 @@ namespace MrBoom
             {
                 pauseWindow.Draw(ctx);
             }
-            if (demoMenu != null && demoMenuShow > 0)
+            if (demoMenu != null && demoMenuShow)
             {
                 demoMenu.Draw(ctx);
             }
@@ -371,7 +368,7 @@ namespace MrBoom
                 pauseWindow.DrawHighDPI(ctx, rect, scale, graphicScale);
             }
 
-            if (demoMenu != null && demoMenuShow > 0)
+            if (demoMenu != null && demoMenuShow)
             {
                 demoMenu.DrawHighDPI(ctx, rect, scale, graphicScale);
             }

@@ -13,7 +13,6 @@ namespace MrBoom.Bot
         private TravelCostGrid travelCostGrid;
         private readonly TravelCostGrid travelSafeCostGrid;
         private readonly Directions[] allDirections;
-        private readonly int decisionSeed;
         private readonly int botIndex;
         private TravelCostGrid findPathCost;
         private Grid<int> bestExplosionGrid;

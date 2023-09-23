@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using MrBoom.BehaviorTree;
 
@@ -12,14 +13,17 @@ namespace MrBoom.Bot
         private TravelCostGrid travelCostGrid;
         private readonly TravelCostGrid travelSafeCostGrid;
         private readonly Directions[] allDirections;
+        private readonly int decisionSeed;
+        private readonly int botIndex;
         private TravelCostGrid findPathCost;
         private Grid<int> bestExplosionGrid;
         private Grid<bool> dangerGrid;
         private Grid<int> flamesGrid;
 
-        public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int x, int y, int maxBoom, int maxBombs, int team)
+        public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int x, int y, int maxBoom, int maxBombs, int team, int botIndex)
             : base(map, animations, x, y, maxBoom, maxBombs, team)
         {
+            this.botIndex = botIndex;
             tree = new BtSelector("BotTree")
             {
                 new ActionNode(GotoBonusCell, "Bonus"),
@@ -42,7 +46,8 @@ namespace MrBoom.Bot
             dangerGrid = new Grid<bool>(map.Width, map.Height, false);
             flamesGrid = new Grid<int>(map.Width, map.Height, TravelCostGrid.CostCantGo);
             allDirections = new Directions[] { Directions.Up, Directions.Down, Directions.Left, Directions.Right };
-            Terrain.Random.Shuffle(allDirections);
+
+            GetDecisionRandom().Shuffle(allDirections);
         }
 
         private BtStatus DitonoteRemoteBomb()
@@ -214,6 +219,11 @@ namespace MrBoom.Bot
             base.Update();
         }
 
+        private Random GetDecisionRandom()
+        {
+            return new Random(botIndex);
+        }
+
         private int CalcTravelCost(int x, int y)
         {
             if (!terrain.IsWalkable(x, y))
@@ -364,7 +374,7 @@ namespace MrBoom.Bot
 
         private CellCoord? GetBestBombCell()
         {
-            CellCoord? bestCell = null;
+            List<CellCoord> bestCell = new List<CellCoord>();
             int bestScore = 0;
 
             for (int x = 0; x < bestExplosionGrid.Width; x++)
@@ -382,21 +392,33 @@ namespace MrBoom.Bot
                             score /= travelCost;
                         }
 
-                        if (score > bestScore)
+                        if (score >= bestScore)
                         {
-                            bestCell = new CellCoord(x, y);
+                            if (score > bestScore)
+                            {
+                                bestCell.Clear();
+                            }
+
+                            bestCell.Add(new CellCoord(x, y));
                             bestScore = score;
                         }
                     }
                 }
             }
 
-            return bestCell;
+            if (bestCell.Count > 0)
+            {
+                return GetDecisionRandom().NextElement(bestCell);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private CellCoord? GetSafeCell()
         {
-            CellCoord? bestCell = null;
+            List<CellCoord> bestCell = new List<CellCoord>();
             int bestScore = int.MinValue;
 
             for (int x = 0; x < dangerGrid.Width; x++)
@@ -412,16 +434,28 @@ namespace MrBoom.Bot
                             score *= 2;
                         }
 
-                        if (score > bestScore && !dangerGrid[x, y] && !terrain.IsTouchingMonster(x, y) && !terrain.IsMonsterComing(x, y))
+                        if (score >= bestScore && !dangerGrid[x, y] && !terrain.IsTouchingMonster(x, y) && !terrain.IsMonsterComing(x, y))
                         {
-                            bestCell = new CellCoord(x, y);
+                            if (score > bestScore)
+                            {
+                                bestCell.Clear();
+                            }
+
+                            bestCell.Add(new CellCoord(x, y));
                             bestScore = score;
                         }
                     }
                 }
             }
 
-            return bestCell;
+            if (bestCell.Count > 0)
+            {
+                return GetDecisionRandom().NextElement(bestCell);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private bool IsInterestingBonus(PowerUpType bonusType)
@@ -482,7 +516,7 @@ namespace MrBoom.Bot
 
         private CellCoord? GetBonusCell()
         {
-            CellCoord? bestCell = null;
+            List<CellCoord> bestCell = new List<CellCoord>();
             int bestScore = 0;
 
             for (int x = 0; x < terrain.Width; x++)
@@ -494,16 +528,28 @@ namespace MrBoom.Bot
                     {
                         int distance = travelSafeCostGrid.GetCost(x, y);
                         int score = CalcBonusScore(cell.PowerUpType, distance);
-                        if (score > bestScore)
+                        if (score >= bestScore)
                         {
-                            bestCell = new CellCoord(x, y);
+                            if (score > bestScore)
+                            {
+                                bestCell.Clear();
+                            }
+
+                            bestCell.Add(new CellCoord(x, y));
                             bestScore = score;
                         }
                     }
                 }
             }
 
-            return bestCell;
+            if (bestCell.Count > 0)
+            {
+                return GetDecisionRandom().NextElement(bestCell);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public override string GetCellDebugInfo(int cellX, int cellY)

@@ -158,7 +158,7 @@ namespace MrBoom
             AbstractPlayer sprite = new ComputerPlayer(
                 this, movingSpriteAssets,
                 spawn.X * 16, spawn.Y * 16,
-                startMaxFire, startMaxBombsCount, team);
+                startMaxFire, startMaxBombsCount, team, players.Count);
 
             players.Add(sprite);
         }

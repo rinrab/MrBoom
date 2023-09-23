@@ -173,6 +173,11 @@ namespace MrBoom
                         {
                             var frameX = index + x * 3 + spriteIndex * framesCount;
 
+                            if (spriteIndex == 3 && (index == 6 || index == 7))
+                            {
+                                frameX += 11;
+                            }
+
                             normalImages.Add(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                             whiteImages.Add(loadImage(imgSpriteBoysWhite, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                             redImages.Add(loadImage(imgSpriteBoysRed, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
@@ -198,6 +203,11 @@ namespace MrBoom
                         foreach (var index in framesIndex[x])
                         {
                             var frameX = index + x * 3 + spriteIndex * framesCount;
+
+                            if (spriteIndex == 3 && (index == 6 || index == 7))
+                            {
+                                frameX += 11;
+                            }
 
                             normalImages.Add(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
                             whiteImages.Add(loadImage(imgSpriteGirlWhite, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));

@@ -9,15 +9,15 @@ namespace MrBoom.Bot
 {
     public class ComputerPlayer : AbstractPlayer
     {
-        private BtSelector tree;
-        private TravelCostGrid travelCostGrid;
+        private readonly BtSelector tree;
+        private readonly TravelCostGrid travelCostGrid;
         private readonly TravelCostGrid travelSafeCostGrid;
         private readonly Directions[] allDirections;
         private readonly int botIndex;
-        private TravelCostGrid findPathCost;
-        private Grid<int> bestExplosionGrid;
-        private Grid<bool> dangerGrid;
-        private Grid<int> flamesGrid;
+        private readonly TravelCostGrid findPathCost;
+        private readonly Grid<int> bestExplosionGrid;
+        private readonly Grid<bool> dangerGrid;
+        private readonly Grid<int> flamesGrid;
 
         public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int x, int y, int maxBoom, int maxBombs, int team, int botIndex)
             : base(map, animations, x, y, maxBoom, maxBombs, team)

@@ -44,10 +44,7 @@ namespace MrBoom
 
             if (Skull == SkullType.Reverse)
             {
-                if (Direction == Directions.Up) Direction = Directions.Down;
-                else if (Direction == Directions.Down) Direction = Directions.Up;
-                if (Direction == Directions.Left) Direction = Directions.Right;
-                else if (Direction == Directions.Right) Direction = Directions.Left;
+                Direction = Direction.Reverse();
             }
 
             this.rcDitonate = Features.HasFlag(Feature.RemoteControl) &&

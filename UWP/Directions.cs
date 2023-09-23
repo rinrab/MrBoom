@@ -61,5 +61,29 @@ namespace MrBoom
                 return 0;
             }
         }
+
+        public static Directions Reverse(this Directions direction)
+        {
+            switch (direction)
+            {
+                case Directions.Left: return Directions.Right;
+                case Directions.Right: return Directions.Left;
+                case Directions.Up: return Directions.Down;
+                case Directions.Down: return Directions.Up;
+                default: return direction;
+            }
+        }
+
+        public static Directions? Reverse(this Directions? direction)
+        {
+            if (direction.HasValue)
+            {
+                return direction.Value.Reverse();
+            }
+            else
+            {
+                return null; 
+            }
+        }
     }
 }

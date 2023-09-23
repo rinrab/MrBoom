@@ -216,6 +216,11 @@ namespace MrBoom.Bot
             rcDitonateButton = false;
             tree.Update();
 
+            if (Skull == SkullType.Reverse)
+            {
+                Direction = Direction.Reverse();
+            }
+
             base.Update();
         }
 

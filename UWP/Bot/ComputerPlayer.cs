@@ -11,6 +11,7 @@ namespace MrBoom.Bot
         private BtSelector tree;
         private TravelCostGrid travelCostGrid;
         private readonly TravelCostGrid travelSafeCostGrid;
+        private readonly Directions[] allDirections;
         private TravelCostGrid findPathCost;
         private Grid<int> bestExplosionGrid;
         private Grid<bool> dangerGrid;
@@ -40,6 +41,8 @@ namespace MrBoom.Bot
             bestExplosionGrid = new Grid<int>(map.Width, map.Height);
             dangerGrid = new Grid<bool>(map.Width, map.Height, false);
             flamesGrid = new Grid<int>(map.Width, map.Height, TravelCostGrid.CostCantGo);
+            allDirections = new Directions[] { Directions.Up, Directions.Down, Directions.Left, Directions.Right };
+            Terrain.Random.Shuffle(allDirections);
         }
 
         private BtStatus DitonoteRemoteBomb()
@@ -254,13 +257,13 @@ namespace MrBoom.Bot
             findPathCost.Update(target.X, target.Y,
                 (x, y) => (x == CellX && y == CellY) ? 1 : CalcSafeTravelCost(x, y));
 
-            var result = findPathCost.GetBestDirection(CellX, CellY);
+            var result = findPathCost.GetBestDirection(CellX, CellY, allDirections);
             if (result == null)
             {
                 findPathCost.Update(target.X, target.Y,
                     (x, y) => (x == CellX && y == CellY) ? 1 : CalcTravelCost(x, y));
 
-                result = findPathCost.GetBestDirection(CellX, CellY);
+                result = findPathCost.GetBestDirection(CellX, CellY, allDirections);
             }
 
             return result;

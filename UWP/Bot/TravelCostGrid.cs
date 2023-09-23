@@ -83,7 +83,7 @@ namespace MrBoom.Bot
             return grid[x, y] < CostCantGo;
         }
 
-        public Directions? GetBestDirection(int x, int y)
+        public Directions? GetBestDirection(int x, int y, Directions[] directions)
         {
             if (GetCost(x, y) == 0)
             {
@@ -93,9 +93,7 @@ namespace MrBoom.Bot
             Directions? bestDir = null;
             int bestCost = CostCantGo;
 
-            Directions[] all = new Directions[] { Directions.Up, Directions.Down, Directions.Left, Directions.Right };
-
-            foreach (Directions dir in all)
+            foreach (Directions dir in directions)
             {
                 int c = GetCost(x + dir.DeltaX(), y + dir.DeltaY());
 

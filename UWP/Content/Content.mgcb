@@ -625,6 +625,12 @@
 /processorParam:Quality=Best
 /build:../../www/music/unreeeal.mp3;music/unreeeal.mp3
 
+#begin ../../www/sound/addbot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../www/sound/addbot.wav;sound/addbot.wav
+
 #begin ../../www/sound/addplayer.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -715,6 +721,13 @@
 /processorParam:TextureFormat=Color
 /build:CONTROLS.png
 
+#begin font/Debug.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font/Debug.spritefont
+
 #begin font/Menu-big.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -752,4 +765,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UI_A.png
+
+#begin UI_B.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_B.png
 

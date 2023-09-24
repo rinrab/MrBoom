@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using SharpDX.XAPO.Fx;
+using System.Text;
+using MrBoom.Bot;
 
 namespace MrBoom
 {
@@ -23,12 +23,20 @@ namespace MrBoom
         public Assets.Level LevelAssets => levelAssets;
         public int Winner { get; private set; }
 
-        private readonly byte[] final;
+        public int FlameDuration
+        {
+            get
+            {
+                return assets.BoomMid.Length * FLAME_ANIMATION_DELAY;
+            }
+        }
+        private readonly Grid<byte> final;
         private int lastApocalypseSound = -1;
-        private readonly Cell[] data;
+        private readonly Grid<Cell> data;
         private int timeToEnd = -1;
         private int time;
-        private readonly List<Spawn> spawns;
+        private const int FLAME_ANIMATION_DELAY = 6;
+        private readonly List<CellCoord> spawns;
         private readonly List<PowerUpType> powerUpList;
         private readonly Map map;
         private readonly List<AbstractPlayer> players;
@@ -39,85 +47,78 @@ namespace MrBoom
         public Feature StartFeatures { get; }
 
         private readonly Assets.Level levelAssets;
-
-        private class Spawn
-        {
-            public int x;
-            public int y;
-            public bool busy;
-        }
+        private readonly Grid<bool> hasMonsterGrid;
+        private readonly Grid<bool> isMonsterComingGrid;
+        private readonly Grid<int> killablePlayerGrid;
 
         public Terrain(int levelIndex, Assets assets)
         {
             monsters = new List<Monster>();
 
             this.assets = assets;
-            this.levelAssets = assets.Levels[levelIndex];
-            this.map = Map.Maps[levelIndex];
-            this.StartFeatures = Map.Maps[levelIndex].StartFeatures;
-            this.powerUpList = new List<PowerUpType>();
+            levelAssets = assets.Levels[levelIndex];
+            map = Map.Maps[levelIndex];
+            StartFeatures = Map.Maps[levelIndex].StartFeatures;
+            powerUpList = new List<PowerUpType>();
 
             foreach (var bonus in map.PowerUps)
             {
                 for (int i = 0; i < bonus.Count; i++)
                 {
-                    this.powerUpList.Add(bonus.Type);
+                    powerUpList.Add(bonus.Type);
                 }
             }
-            this.Width = map.Data[0].Length;
-            this.Height = map.Data.Length;
-            this.spawns = new List<Spawn>();
-            this.TimeLeft = (map.Time + 31) * 60;
-            this.final = map.Final;
-            foreach (int fin in final)
+            Width = map.Data[0].Length;
+            Height = map.Data.Length;
+            spawns = new List<CellCoord>();
+            TimeLeft = (map.Time + 31) * 60;
+            final = new Grid<byte>(Width, Height, 255);
+            for (int  i = 0; i < final.CellCount; i++)
             {
+                byte fin = map.Final[i];
+                final[i] = fin;
                 if (fin != 255)
                 {
                     MaxApocalypse = Math.Max(fin, MaxApocalypse);
                 }
             }
-            this.players = new List<AbstractPlayer>();
+            players = new List<AbstractPlayer>();
 
-            this.startMaxBombsCount = map.StartMaxBombsCount;
-            this.startMaxFire = map.StartMaxFire;
+            startMaxBombsCount = map.StartMaxBombsCount;
+            startMaxFire = map.StartMaxFire;
 
-            data = new Cell[this.Width * this.Height];
-            for (int y = 0; y < this.Height; y++)
+            data = new Grid<Cell>(Width, Height, new Cell(TerrainType.PermanentWall));
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = 0; x < this.Width; x++)
+                for (int x = 0; x < Width; x++)
                 {
                     char src = map.Data[y][x];
 
                     string bonusStr = "123456789AB";
                     if (src == '#')
                     {
-                        this.data[y * this.Width + x] = new Cell(TerrainType.PermanentWall);
+                        data[x, y] = new Cell(TerrainType.PermanentWall);
                     }
                     else if (src == '-')
                     {
-                        this.data[y * this.Width + x] = new Cell(TerrainType.TemporaryWall)
+                        data[x, y] = new Cell(TerrainType.TemporaryWall)
                         {
                             Images = levelAssets.Walls
                         };
                     }
                     else if (src == '*')
                     {
-                        this.spawns.Add(new Spawn()
-                        {
-                            x = x,
-                            y = y,
-                            busy = false
-                        });
-                        this.data[y * this.Width + x] = new Cell(TerrainType.Free);
+                        spawns.Add(new CellCoord(x, y));
+                        data[x, y] = new Cell(TerrainType.Free);
                     }
                     else if (src == '%')
                     {
-                        this.data[y * this.Width + x] = new Cell(TerrainType.Rubber);
+                        data[x, y] = new Cell(TerrainType.Rubber);
                     }
                     else if (bonusStr.Contains(src.ToString()))
                     {
                         int index = bonusStr.IndexOf(src);
-                        this.data[y * this.Width + x] = new Cell(TerrainType.PowerUp)
+                        data[x, y] = new Cell(TerrainType.PowerUp)
                         {
                             Images = assets.PowerUps[index],
                             Index = 0,
@@ -127,47 +128,81 @@ namespace MrBoom
                     }
                     else
                     {
-                        this.data[y * this.Width + x] = new Cell(TerrainType.Free);
+                        data[x, y] = new Cell(TerrainType.Free);
                     }
                 }
             }
+
+            hasMonsterGrid = new Grid<bool>(Width, Height, false);
+            isMonsterComingGrid = new Grid<bool>(Width, Height, false);
+            killablePlayerGrid = new Grid<int>(Width, Height, 0);
+            Random.Shuffle(spawns);
         }
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
         {
-            AbstractPlayer sprite = new Human(this, movingSpriteAssets, controller, startMaxFire, startMaxBombsCount, team);
+            var spawn = generateSpawn().Value;
 
-            var spawn = this.spawns[this.generateSpawn()];
-            sprite.x = spawn.x * 16;
-            sprite.y = spawn.y * 16;
+            AbstractPlayer sprite = new Human(
+                this, movingSpriteAssets,
+                spawn.X * 16, spawn.Y * 16,
+                controller, startMaxFire, startMaxBombsCount, team);
 
-            this.players.Add(sprite);
+            players.Add(sprite);
+        }
+
+        public void AddComputer(Assets.MovingSpriteAssets movingSpriteAssets, int team)
+        {
+            var spawn = generateSpawn().Value;
+
+            AbstractPlayer sprite = new ComputerPlayer(
+                this, movingSpriteAssets,
+                spawn.X * 16, spawn.Y * 16,
+                startMaxFire, startMaxBombsCount, team, players.Count);
+
+            players.Add(sprite);
         }
 
         public void InitializeMonsters()
         {
-            int count = this.spawns.Count - this.players.Count;
-
-            for (int i = 0; i < count; i++)
+            while (true)
             {
-                var data = map.Monsters[Random.Next(map.Monsters.Length)];
-                Monster monster = new Monster(this, data, assets.Monsters[data.Type]);
-                int spawn = generateSpawn();
-                monster.x = spawns[spawn].x * 16;
-                monster.y = spawns[spawn].y * 16;
-                this.monsters.Add(monster);
+                var spawn = generateSpawn();
+                if (!spawn.HasValue)
+                {
+                    break;
+                }
+
+                var data = Random.NextElement(map.Monsters);
+                Monster monster = new Monster(
+                    this, data, assets.Monsters[data.Type],
+                    spawn.Value.X * 16, spawn.Value.Y * 16);
+                monsters.Add(monster);
+            }
+        }
+
+        public int GetCellApocalypseRemainingTime(int cellX, int cellY)
+        {
+            byte apocalypseIndex = final[cellX, cellY];
+            if (apocalypseIndex == 255)
+            {
+                return int.MaxValue;
+            }
+            else
+            {
+                return apocalypseIndex * ApocalypseSpeed + TimeLeft - 30 * 60;
             }
         }
 
         public void Update()
         {
             SoundsToPlay = 0;
-            this.time++;
+            time++;
             TimeLeft--;
 
-            if (this.timeToEnd != -1)
+            if (timeToEnd != -1)
             {
-                this.timeToEnd--;
+                timeToEnd--;
             }
 
             if (TimeLeft < 30 * 60 - 1)
@@ -177,44 +212,47 @@ namespace MrBoom
                     int index = (30 * 60 - TimeLeft) / ApocalypseSpeed;
                     if (index != 255)
                     {
-                        for (int i = 0; i < final.Length; i++)
+                        for (int x = 0; x < final.Width; x++)
                         {
-                            if (index == Math.Min(MaxApocalypse + 5, 255))
+                            for (int y = 0; y < final.Height; y++)
                             {
-                                var cell = GetCell(i % Width, i / Width);
-                                if (cell.Type == TerrainType.TemporaryWall)
+                                if (index == Math.Min(MaxApocalypse + 5, 255))
                                 {
-                                    SetCell(i % Width, i / Width, new Cell(TerrainType.PowerUpFire)
+                                    var cell = data[x, y];
+                                    if (cell.Type == TerrainType.TemporaryWall)
                                     {
-                                        Images = assets.Fire,
-                                        Index = 0,
-                                        Next = new Cell(TerrainType.Free)
-                                    });
-                                    PlaySound(Sound.Sac);
+                                        data[x, y] = new Cell(TerrainType.PowerUpFire)
+                                        {
+                                            Images = assets.Fire,
+                                            Index = 0,
+                                            Next = new Cell(TerrainType.Free)
+                                        };
+                                        PlaySound(Sound.Sac);
+                                    }
                                 }
-                            }
-                            else if (final[i] == index)
-                            {
-                                var cell = GetCell(i % Width, i / Width);
-                                if (cell.Type == TerrainType.Bomb)
+                                else if (final[x, y] == index)
                                 {
-                                    cell.owner.BombsPlaced--;
-                                }
-                                if (cell.Type != TerrainType.PermanentWall)
-                                {
-                                    SetCell(i % Width, i / Width, new Cell(TerrainType.Apocalypse)
+                                    var cell = data[x, y];
+                                    if (cell.Type == TerrainType.Bomb)
                                     {
-                                        Images = levelAssets.PermanentWalls,
-                                        Index = 0,
-                                        Next = new Cell(TerrainType.PermanentWall)
+                                        cell.owner.BombsPlaced--;
+                                    }
+                                    if (cell.Type != TerrainType.PermanentWall)
+                                    {
+                                        data[x, y] = new Cell(TerrainType.Apocalypse)
                                         {
                                             Images = levelAssets.PermanentWalls,
+                                            Index = 0,
+                                            Next = new Cell(TerrainType.PermanentWall)
+                                            {
+                                                Images = levelAssets.PermanentWalls,
+                                            }
+                                        };
+                                        if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
+                                        {
+                                            PlaySound(Sound.Sac);
+                                            lastApocalypseSound = TimeLeft;
                                         }
-                                    });
-                                    if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
-                                    {
-                                        PlaySound(Sound.Sac);
-                                        lastApocalypseSound = TimeLeft;
                                     }
                                 }
                             }
@@ -227,19 +265,19 @@ namespace MrBoom
             {
                 if (TimeLeft % 16 == 0)
                 {
-                    int rndX = Random.Next(2);
-                    int x = (rndX == 0) ? 1 : Width - 2;
+                    Directions dir = Random.NextElement(new Directions[] { Directions.Left, Directions.Right });
+                    int x = (dir == Directions.Right) ? 1 : Width - 2;
                     int y = (Random.Next(0, Height / 2)) * 2 + 1;
 
                     PutBomb(x, y, 4, false, null);
-                    GetCell(x, y).DeltaX = (rndX == 0) ? 2 : -2;
+                    data[x, y].DeltaX = dir.DeltaX() * 2;
                 }
             }
 
             int playersCount = 0;
-            foreach (AbstractPlayer player in this.players)
+            foreach (AbstractPlayer player in players)
             {
-                if (!player.IsDie)
+                if (player.IsAlive)
                 {
                     playersCount++;
                 }
@@ -256,7 +294,7 @@ namespace MrBoom
                     List<int> live = new List<int>();
                     for (int i = 0; i < players.Count; i++)
                     {
-                        if (!players[i].IsDie)
+                        if (players[i].IsAlive)
                         {
                             live.Add(players[i].Team);
                         }
@@ -275,7 +313,7 @@ namespace MrBoom
                 {
                     for (int i = 0; i < players.Count; i++)
                     {
-                        if (!players[i].IsDie)
+                        if (players[i].IsAlive)
                         {
                             Winner = players[i].Team;
                         }
@@ -293,15 +331,15 @@ namespace MrBoom
                 Result = GameResult.Draw;
             }
 
-            for (int y = 0; y < this.Height; y++)
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = 0; x < this.Width; x++)
+                for (int x = 0; x < Width; x++)
                 {
-                    Cell cell = this.GetCell(x, y);
+                    Cell cell = data[x, y];
                     if (cell.Index != -1)
                     {
                         int animateDelay = (cell.animateDelay <= 0) ? 6 : cell.animateDelay;
-                        if (this.time % animateDelay == 0)
+                        if (time % animateDelay == 0)
                         {
                             cell.Index++;
                             if (cell.Index >= cell.Images.Length)
@@ -312,7 +350,7 @@ namespace MrBoom
                                 }
                                 else
                                 {
-                                    this.SetCell(x, y, cell.Next);
+                                    data[x, y] = cell.Next;
                                 }
                             }
                         }
@@ -323,17 +361,17 @@ namespace MrBoom
                         if (!cell.rcAllowed || !cell.owner.Features.HasFlag(
                             Feature.RemoteControl) || cell.owner.IsDie)
                         {
-                            cell.bombTime--;
+                            cell.bombCountdown--;
                         }
 
-                        if (cell.bombTime == 0 || (cell.owner != null && cell.owner.rcDitonate && cell.rcAllowed))
+                        if (cell.bombCountdown == 0 || (cell.owner != null && cell.owner.rcDitonate && cell.rcAllowed))
                         {
-                            this.ditonateBomb(x, y);
+                            ditonateBomb(x, y);
                             continue;
                         }
                         if (cell.OffsetX == 0 && cell.OffsetY == 0)
                         {
-                            var next = this.GetCell(x + cell.DeltaX / 2, y + cell.DeltaY / 2);
+                            var next = data[x + cell.DeltaX / 2, y + cell.DeltaY / 2];
                             if (next.Type == TerrainType.Rubber)
                             {
                                 cell.DeltaX = -cell.DeltaX;
@@ -356,10 +394,10 @@ namespace MrBoom
 
                         if (newX != x || newY != y)
                         {
-                            if (GetCell(newX, newY).Type == TerrainType.Free)
+                            if (data[newX, newY].Type == TerrainType.Free)
                             {
-                                SetCell(x, y, new Cell(TerrainType.Free));
-                                SetCell(newX, newY, cell);
+                                data[x, y] = new Cell(TerrainType.Free);
+                                data[newX, newY] = cell;
 
                                 cell.OffsetX += (x - newX) * 16;
                                 cell.OffsetY += (y - newY) * 16;
@@ -377,6 +415,24 @@ namespace MrBoom
                 }
             }
 
+            hasMonsterGrid.Reset(false);
+            isMonsterComingGrid.Reset(false);
+            foreach (Monster m in monsters)
+            {
+                if (m.IsAlive)
+                {
+                    hasMonsterGrid[m.CellX, m.CellY] = true;
+                    isMonsterComingGrid[m.CellX + m.Direction.DeltaX(), m.CellY + m.Direction.DeltaY()] = true;
+                }
+            }
+
+            killablePlayerGrid.Reset(0);
+            foreach (AbstractPlayer player in players)
+            {
+                // TODO: Check for unplugin.
+                killablePlayerGrid[player.CellX, player.CellY] |= (1 << player.Team);
+            }
+
             foreach (Sprite sprite in GetSprites())
             {
                 sprite.Update();
@@ -391,7 +447,7 @@ namespace MrBoom
                         sprite1.Skull.HasValue &&
                         !sprite2.Skull.HasValue)
                     {
-                        if (!sprite1.IsDie && !sprite2.IsDie)
+                        if (sprite1.IsAlive && sprite2.IsAlive)
                         {
                             sprite2.SetSkull(sprite1.Skull.Value);
                         }
@@ -402,24 +458,17 @@ namespace MrBoom
 
         public Cell GetCell(int x, int y)
         {
-            if (x >= 0 && x < this.Width && y >= 0 && y < this.Height)
-            {
-                return this.data[y * this.Width + x];
-            }
-            else
-            {
-                return new Cell(TerrainType.PermanentWall);
-            }
+            return data[x, y];
         }
 
         public void SetCell(int x, int y, Cell cell)
         {
-            this.data[y * this.Width + x] = cell;
+            data[x, y] = cell;
         }
 
         public bool IsWalkable(int x, int y)
         {
-            Cell cell = this.GetCell(x, y);
+            Cell cell = data[x, y];
 
             switch (cell.Type)
             {
@@ -448,7 +497,7 @@ namespace MrBoom
 
         public void ditonateBomb(int bombX, int bombY)
         {
-            Cell bombCell = this.GetCell(bombX, bombY); ;
+            Cell bombCell = data[bombX, bombY];
             int maxBoom = bombCell.maxBoom;
 
             if (bombCell.owner != null)
@@ -462,9 +511,10 @@ namespace MrBoom
                 {
                     int x = bombX + i * dx;
                     int y = bombY + i * dy;
-                    Cell cell = this.GetCell(x, y);
+                    Cell cell = data[x, y];
 
-                    if (cell.Type == TerrainType.PermanentWall || cell.Type == TerrainType.Apocalypse ||
+                    if (cell.Type == TerrainType.PermanentWall || 
+                        cell.Type == TerrainType.Apocalypse ||
                         cell.Type == TerrainType.Rubber)
                     {
                         break;
@@ -472,57 +522,60 @@ namespace MrBoom
 
                     if (cell.Type == TerrainType.TemporaryWall)
                     {
-                        Cell next = this.GenerateGiven();
+                        Cell next = GenerateGiven();
 
-                        this.SetCell(x, y, new Cell(TerrainType.PermanentWall)
+                        data[x, y] = new Cell(TerrainType.PermanentWall)
                         {
                             Images = levelAssets.Walls,
                             Index = 0,
                             animateDelay = 4,
                             Next = next
-                        });
+                        };
                         break;
                     }
                     else if (cell.Type == TerrainType.PowerUp)
                     {
-                        this.SetCell(x, y, new Cell(TerrainType.PowerUpFire)
+                        data[x, y] = new Cell(TerrainType.PowerUpFire)
                         {
                             Images = assets.Fire,
                             Index = 0,
                             animateDelay = 6,
                             Next = new Cell(TerrainType.Free)
-                        });
-                        this.PlaySound(Sound.Sac);
+                        };
+                        PlaySound(Sound.Sac);
                         break;
                     }
                     else if (cell.Type == TerrainType.Bomb)
                     {
-                        this.ditonateBomb(x, y);
+                        ditonateBomb(x, y);
                         break;
                     }
-                    else if (cell.Type == TerrainType.Fire || cell.Type == TerrainType.PowerUpFire)
+                    else if (cell.Type == TerrainType.Fire ||
+                             cell.Type == TerrainType.PowerUpFire)
                     {
                     }
                     else
                     {
-                        this.SetCell(x, y, new Cell(TerrainType.Fire)
+                        data[x, y] = new Cell(TerrainType.Fire)
                         {
                             Images = i == maxBoom ? imageEnd : image,
                             Index = 0,
+                            animateDelay = FLAME_ANIMATION_DELAY,
                             Next = new Cell(TerrainType.Free)
-                        });
+                        };
                     }
                 }
             }
 
             PlaySound(Sound.Bang);
 
-            this.SetCell(bombX, bombY, new Cell(TerrainType.Fire)
+            data[bombX, bombY] = new Cell(TerrainType.Fire)
             {
                 Images = assets.BoomMid,
                 Index = 0,
+                animateDelay = FLAME_ANIMATION_DELAY,
                 Next = new Cell(TerrainType.Free)
-            });
+            };
 
             burn(1, 0, assets.BoomHor, assets.BoomRightEnd);
             burn(-1, 0, assets.BoomHor, assets.BoomLeftEnd);
@@ -543,16 +596,16 @@ namespace MrBoom
 
         public void PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, AbstractPlayer owner)
         {
-            SetCell(cellX, cellY, new Cell(TerrainType.Bomb)
+            data[cellX, cellY] = new Cell(TerrainType.Bomb)
             {
                 Images = assets.Bomb,
                 Index = 0,
                 animateDelay = 12,
-                bombTime = 210,
+                bombCountdown = 210,
                 maxBoom = maxBoom,
                 rcAllowed = rcAllowed,
                 owner = owner
-            });
+            };
         }
 
         Cell GenerateGiven()
@@ -560,8 +613,7 @@ namespace MrBoom
             int rnd = Random.Next(int.MaxValue);
             if (rnd < int.MaxValue / 2)
             {
-                var powerUpIndex = Random.Next(this.powerUpList.Count);
-                var powerUpType = this.powerUpList[powerUpIndex];
+                var powerUpType = Random.NextElement(powerUpList);
 
                 return GeneratePowerUp(powerUpType);
             }
@@ -571,22 +623,18 @@ namespace MrBoom
             }
         }
 
-        int generateSpawn(int spawnIndex = -1)
+        CellCoord? generateSpawn()
         {
-            if (spawnIndex == -1)
+            if (spawns.Count <= 0)
             {
-                var indexList = new List<int>();
-                for (int i = 0; i < this.spawns.Count; i++)
-                {
-                    if (!this.spawns[i].busy)
-                    {
-                        indexList.Add(i);
-                    }
-                }
-                spawnIndex = indexList[Random.Next(indexList.Count)];
+                return null;
             }
-            this.spawns[spawnIndex].busy = true;
-            return spawnIndex;
+
+            int spawnIndex = Random.Next(spawns.Count);
+
+            var spawn = spawns[spawnIndex];
+            spawns.RemoveAt(spawnIndex);
+            return spawn;
         }
 
         public void PlaySound(Sound sound)
@@ -596,15 +644,17 @@ namespace MrBoom
 
         public bool IsTouchingMonster(int cellX, int cellY)
         {
-            foreach (Monster m in monsters)
-            {
-                if (!m.IsDie && (m.x + 8) / 16 == cellX && (m.y + 8) / 16 == cellY)
-                {
-                    return true;
-                }
-            }
+            return hasMonsterGrid[cellX, cellY];
+        }
 
-            return false;
+        public bool IsMonsterComing(int cellX, int cellY)
+        {
+            return isMonsterComingGrid[cellX, cellY];
+        }
+
+        public int GetKillablePlayers(int cellX, int cellY)
+        {
+            return killablePlayerGrid[cellX, cellY];
         }
 
         public IEnumerable<Sprite> GetSprites()
@@ -619,19 +669,84 @@ namespace MrBoom
                 yield return sprite;
             }
         }
-    }
 
-    public enum TerrainType
-    {
-        Free,
-        PermanentWall,
-        TemporaryWall,
-        Bomb,
-        PowerUp,
-        PowerUpFire,
-        Apocalypse,
-        Rubber,
-        Fire
+        public string GetCellDebugInfo(int cellX, int cellY)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Sprite sprite in players)
+            {
+                if (sprite.IsAlive)
+                {
+                    string debugInfo = sprite.GetCellDebugInfo(cellX, cellY);
+
+                    if (!string.IsNullOrEmpty(debugInfo))
+                    {
+                        sb.AppendLine(debugInfo);
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public string GetDebugInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"DEBUG INFO");
+            sb.AppendLine($"Version: {Game.Version}");
+
+            foreach (AbstractPlayer player in players)
+            {
+                sb.AppendLine(player.GetDebugInfo());
+            }
+
+            sb.AppendLine($"F1 - detonate all");
+            sb.AppendLine($"F2 - clear all");
+            sb.AppendLine($"F3 - apocalypse");
+            sb.AppendLine($"F4 - toggle debug info");
+            sb.AppendLine($"F5 - give all");
+
+            return sb.ToString();
+        }
+
+        public void DetonateAll(bool generateBonus)
+        {
+            for (int i = 0; i < data.CellCount; i++)
+            {
+                if (data[i].Type == TerrainType.TemporaryWall)
+                {
+                    Cell next = generateBonus ? GenerateGiven() : new Cell(TerrainType.Free);
+
+                    data[i] = new Cell(TerrainType.PermanentWall)
+                    {
+                        Images = levelAssets.Walls,
+                        Index = 0,
+                        animateDelay = 4,
+                        Next = next
+                    };
+                }
+            }
+        }
+
+        public void StartApocalypse()
+        {
+            const int timeToApocalypse = (30 + 2) * 60;
+
+            if (TimeLeft > timeToApocalypse)
+            {
+                TimeLeft = timeToApocalypse;
+            }
+        }
+
+        public void GiveAll()
+        {
+            foreach (AbstractPlayer player in players)
+            {
+                player.GiveAll();
+            }
+        }
     }
 
     public class Cell
@@ -640,7 +755,7 @@ namespace MrBoom
         public AnimatedImage Images;
         public int Index;
         public int animateDelay;
-        public int bombTime;
+        public int bombCountdown;
         public int maxBoom;
         public bool rcAllowed;
         public AbstractPlayer owner;

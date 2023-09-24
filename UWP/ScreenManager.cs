@@ -31,7 +31,7 @@ namespace MrBoom
         {
             if (currentScreen != null)
             {
-                currentScreen.DrawHighDPI(ctx, rect, scale);
+                currentScreen.DrawHighDPI(ctx, rect, scale, 2);
             }
         }
 

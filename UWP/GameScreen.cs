@@ -3,26 +3,37 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace MrBoom
 {
     public class GameScreen : IScreen
     {
-        private readonly Terrain terrain;
+        private Terrain terrain;
         private readonly Assets assets;
         private readonly Game game;
-        private readonly int teamMode;
+        private readonly bool isDemo;
+
         private int bgTick = 0;
         private bool isPause = false;
         private Menu pauseWindow;
+        private readonly bool isDebug;
+
+        private bool isF4Toggle = false;
+        private bool f4Mask;
+
+        private Menu demoMenu;
+        private bool demoMenuShow = true;
 
         public Screen Next { get; private set; }
 
-        public GameScreen(List<Team> teams, Assets assets, Game game, int teamMode)
+        public GameScreen(List<Team> teams, Assets assets, Game game, bool isDemo)
         {
+            isDebug = game.LaunchParameters.ContainsKey("-d");
+
             this.assets = assets;
             this.game = game;
-            this.teamMode = teamMode;
+            this.isDemo = isDemo;
 
 #if true
             int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
@@ -33,11 +44,43 @@ namespace MrBoom
 
             game.NextSong(Map.Maps[levelIndex].Song);
 
-            for (int i = 0; i < teams.Count; i++)
+            if (isDemo)
             {
-                for (int j = 0; j < teams[i].Players.Count; j++)
+                for (int i = 0; i < 4; i++)
                 {
-                    terrain.AddPlayer(assets.Players[teams[i].Players[j].Index], teams[i].Players[j].Controller, i);
+                    terrain.AddComputer(assets.Players[i], i);
+                }
+
+                demoMenu = new Menu(new IMenuItem[]
+                {
+                    new TextMenuItem("PLAY"),
+                    new SelectMenuItem("TEAM", new string[]
+                    {
+                        "OFF",
+                        "COLOR",
+                        "SEX",
+                    }),
+                    new TextMenuItem("QUIT"),
+                }, assets, game.Controllers, 160);
+            }
+            else
+            {
+                int playersCount = 0;
+                for (int i = 0; i < teams.Count; i++)
+                {
+                    for (int j = 0; j < teams[i].Players.Count; j++)
+                    {
+                        var player = teams[i].Players[j];
+                        if (player.Type == PlayerState.PlayerType.Human)
+                        {
+                            terrain.AddPlayer(assets.Players[player.Index], player.Controller, i);
+                        }
+                        else
+                        {
+                            terrain.AddComputer(assets.Players[player.Index], i);
+                        }
+                        playersCount++;
+                    }
                 }
             }
 
@@ -47,6 +90,21 @@ namespace MrBoom
         public void Update()
         {
             bgTick++;
+
+            var state = Keyboard.GetState();
+
+            if (state.IsKeyDown(Keys.F4))
+            {
+                if (!f4Mask)
+                {
+                    isF4Toggle = !isF4Toggle;
+                }
+                f4Mask = true;
+            }
+            else
+            {
+                f4Mask = false;
+            }
 
             if (isPause)
             {
@@ -77,32 +135,98 @@ namespace MrBoom
             {
                 terrain.Update();
 
+                if (isDebug)
+                {
+                    if (state.IsKeyDown(Keys.F1))
+                    {
+                        terrain.DetonateAll(true);
+                    }
+                    if (state.IsKeyDown(Keys.F2))
+                    {
+                        terrain.DetonateAll(false);
+                    }
+                    if (state.IsKeyDown(Keys.F3))
+                    {
+                        terrain.StartApocalypse();
+                    }
+                    if (state.IsKeyDown(Keys.F5))
+                    {
+                        terrain.GiveAll();
+                    }
+                }
+
                 PlaySounds(terrain.SoundsToPlay);
 
-                if (terrain.Result == GameResult.Victory)
+                if (isDemo)
                 {
-                    int winner = terrain.Winner;
+                    if (terrain.Result == GameResult.Victory || terrain.Result == GameResult.Draw)
+                    {
+                        int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
 
-                    game.Teams[winner].VictoryCount++;
+                        terrain = new Terrain(levelIndex, assets);
 
-                    ScreenManager.SetScreen(new ResultScreen(game.Teams.ToArray(), winner, assets, game.Controllers, teamMode));
+                        game.NextSong(Map.Maps[levelIndex].Song);
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            terrain.AddComputer(assets.Players[i], i);
+                        }
+
+                        terrain.InitializeMonsters();
+                    }
+
+                    if (demoMenuShow)
+                    {
+                        demoMenu.Update();
+
+                        if (demoMenu.Action == 0)
+                        {
+                            Next = Screen.StartMenu;
+                        }
+                        else if (demoMenu.Action == 2)
+                        {
+                            game.Exit();
+                        }
+                        Team.Mode = ((SelectMenuItem)demoMenu.Items[1]).SelectionIndex;
+                    }
+
+                    if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Continue))
+                    {
+                        if (!demoMenuShow)
+                        {
+                            Controller.Reset(game.Controllers);
+                            demoMenuShow = true;
+                        }
+                    }
                 }
-                else if (terrain.Result == GameResult.Draw)
+                else
                 {
-                    ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
-                }
+                    if (terrain.Result == GameResult.Victory)
+                    {
+                        int winner = terrain.Winner;
 
-                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
-                {
-                    var options = new IMenuItem[] {
-                        new TextMenuItem("RESUME"),
-                        new TextMenuItem("MAIN MENU"),
-                        new TextMenuItem("QUIT")
-                    };
+                        game.Teams[winner].VictoryCount++;
 
-                    pauseWindow = new Menu(options, assets, game.Controllers, -1);
-                    Controller.Reset(game.Controllers);
-                    isPause = true;
+                        ScreenManager.SetScreen(new ResultScreen(game.Teams.ToArray(), winner, assets, game.Controllers, Team.Mode));
+                    }
+                    else if (terrain.Result == GameResult.Draw)
+                    {
+                        ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
+                    }
+
+                    if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
+                    {
+                        var options = new IMenuItem[]
+                        {
+                            new TextMenuItem("RESUME"),
+                            new TextMenuItem("MAIN MENU"),
+                            new TextMenuItem("QUIT")
+                        };
+
+                        pauseWindow = new Menu(options, assets, game.Controllers, -1);
+                        Controller.Reset(game.Controllers);
+                        isPause = true;
+                    }
                 }
             }
         }
@@ -152,7 +276,7 @@ namespace MrBoom
 
             List<Sprite> spritesToDraw = new List<Sprite>(terrain.GetSprites());
 
-            spritesToDraw.Sort((a, b) => a.y - b.y);
+            spritesToDraw.Sort((a, b) => a.Y - b.Y);
 
             foreach (Sprite sprite in spritesToDraw)
             {
@@ -216,6 +340,10 @@ namespace MrBoom
             {
                 pauseWindow.Draw(ctx);
             }
+            if (demoMenu != null && demoMenuShow)
+            {
+                demoMenu.Draw(ctx);
+            }
         }
 
         private void PlaySounds(Sound soundsToPlay)
@@ -236,11 +364,59 @@ namespace MrBoom
             if (soundsToPlay.HasFlag(Sound.Skull)) soundAssets.Skull.Play();
         }
 
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
             if (isPause)
             {
-                pauseWindow.DrawHighDPI(ctx, rect, scale);
+                pauseWindow.DrawHighDPI(ctx, rect, scale, graphicScale);
+            }
+
+            if (demoMenu != null && demoMenuShow)
+            {
+                demoMenu.DrawHighDPI(ctx, rect, scale, graphicScale);
+            }
+
+            if (isDebug && isF4Toggle)
+            {
+                for (int y = 1; y < terrain.Height - 1; y++)
+                {
+                    for (int x = 1; x < terrain.Width - 1; x++)
+                    {
+                        string debugInfo = terrain.GetCellDebugInfo(x, y);
+
+                        Vector2 size = assets.DebugFont.MeasureString(debugInfo) / 6 / graphicScale;
+
+                        Vector2 position =
+                            (new Vector2(x, y) * 16 + new Vector2(8 + 8, 0 + 8) - size / 2) *
+                            graphicScale * scale + new Vector2(rect.X, rect.Y);
+
+                        ctx.DrawString(assets.DebugFont,
+                                       debugInfo,
+                                       position,
+                                       Color.White,
+                                       0,
+                                       Vector2.One / 2,
+                                       scale / 6,
+                                       SpriteEffects.None,
+                                       0);
+                    }
+                }
+
+                string text = terrain.GetDebugInfo();
+
+                Vector2 debugInfoSize = (assets.DebugFont.MeasureString(text) + new Vector2(16)) / 6 * scale;
+                Rectangle area = new Rectangle(0, 0, (int)debugInfoSize.X, (int)debugInfoSize.Y);
+                ctx.Draw(assets.BlackPixel, area, Color.White * 0.7f);
+
+                ctx.DrawString(assets.DebugFont,
+                               text,
+                               Vector2.Zero,
+                               Color.White,
+                               0,
+                               Vector2.Zero,
+                               scale / 6,
+                               SpriteEffects.None,
+                               0);
             }
         }
     }

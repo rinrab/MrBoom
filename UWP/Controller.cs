@@ -19,7 +19,8 @@ namespace MrBoom
         StartGame = 0x040,
         Continue = 0x080,
         Menu = 0x100,
-        Back = 0x200
+        Back = 0x200,
+        AddBot = 0x400
     }
 
     public static class Controller
@@ -119,6 +120,7 @@ namespace MrBoom
             if (keyboardState.IsKeyDown(KeyRcDitonate)) result |= PlayerKeys.RcDitonate;
             if (keyboardState.IsKeyDown(Keys.Enter)) result |= PlayerKeys.StartGame;
             if (keyboardState.IsKeyDown(Keys.Escape)) result |= PlayerKeys.Menu | PlayerKeys.Back;
+            if (keyboardState.IsKeyDown(Keys.B)) result |= PlayerKeys.AddBot;
             if (keyboardState.GetPressedKeyCount() > 0) result |= PlayerKeys.Continue;
 
             return result;
@@ -158,7 +160,7 @@ namespace MrBoom
                 result |= PlayerKeys.Bomb;
 
             if (state.IsButtonDown(Buttons.B))
-                result |= PlayerKeys.RcDitonate | PlayerKeys.Back;
+                result |= PlayerKeys.RcDitonate | PlayerKeys.Back | PlayerKeys.AddBot;
 
             if (state.IsButtonDown(Buttons.Start))
             {

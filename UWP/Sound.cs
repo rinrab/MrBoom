@@ -47,6 +47,7 @@ namespace MrBoom
         public Sound Oioi;
         public Sound Ai;
         public Sound Addplayer;
+        public Sound Addbot;
         public Sound Victory;
         public Sound Draw;
         public Sound Clock;
@@ -76,6 +77,7 @@ namespace MrBoom
                 Oioi = loadSound("oioi"),
                 Ai = loadSound("ai"),
                 Addplayer = loadSound("addplayer"),
+                Addbot = loadSound("addbot"),
                 Victory = loadSound("victory"),
                 Draw = loadSound("draw"),
                 Clock = loadSound("clock"),

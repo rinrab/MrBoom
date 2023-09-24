@@ -93,6 +93,7 @@ namespace MrBoom
 
         public AnimatedImage[] Alpha;
         public SpriteFont MenuFont;
+        public SpriteFont DebugFont;
 
         public static int scale = 2;
 
@@ -172,6 +173,11 @@ namespace MrBoom
                         {
                             var frameX = index + x * 3 + spriteIndex * framesCount;
 
+                            if (spriteIndex == 3 && (index == 6 || index == 7))
+                            {
+                                frameX += 11;
+                            }
+
                             normalImages.Add(loadImage(imgSpriteBoys, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                             whiteImages.Add(loadImage(imgSpriteBoysWhite, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
                             redImages.Add(loadImage(imgSpriteBoysRed, (frameX % 13) * spriteWidth, frameX / 13 * spriteHeight, 23, 23));
@@ -197,6 +203,11 @@ namespace MrBoom
                         foreach (var index in framesIndex[x])
                         {
                             var frameX = index + x * 3 + spriteIndex * framesCount;
+
+                            if (spriteIndex == 3 && (index == 6 || index == 7))
+                            {
+                                frameX += 11;
+                            }
 
                             normalImages.Add(loadImage(imgSpriteGirl, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
                             whiteImages.Add(loadImage(imgSpriteGirlWhite, (frameX % 13) * spriteWidth, frameX / 13 * (spriteHeight + 2), 23, 25));
@@ -414,7 +425,7 @@ namespace MrBoom
                 footanimAssets[0], footanimAssets[1], footanimAssets[2], footanimAssets[3], footanimAssets[4],
                 footanimAssets[5], footanimAssets[4], footanimAssets[3], footanimAssets[2], footanimAssets[1]
             );
-            
+
             var footanimGirls2 = new AnimatedImage(footanimAssets[4], footanimAssets[5]);
 
             var monsters = new MovingSpriteAssets[]
@@ -702,13 +713,12 @@ namespace MrBoom
                 {
                     loadImage(content.Load<Texture2D>("UI_A"), 0, 0, 32, 32),
                     loadImage(imgControls, 273, 97, 25, 14),
-                    loadImage(imgControls, 81, 305, 14, 14),
-                    loadImage(imgControls, 513, 161, 30, 30),
-                    loadImage(imgControls, 193, 353, 14, 14),
-                    loadImage(imgControls, 161, 353, 14, 14),
+                    loadImage(content.Load<Texture2D>("UI_B"), 0, 0, 32, 32),
+                    loadImage(imgControls, 369, 65, 13, 14),
                 },
                 MenuFont = content.Load<SpriteFont>(@"font\Menu"),
                 MenuFontBig = content.Load<SpriteFont>(@"font\Menu-big"),
+                DebugFont = content.Load<SpriteFont>(@"font\Debug"),
                 BlackPixel = blackPixel,
                 StartButton = content.Load<Texture2D>("START"),
             };

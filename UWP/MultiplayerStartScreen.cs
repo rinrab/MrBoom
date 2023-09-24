@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Windows.ApplicationModel;
+using Windows.Media.Protection.PlayReady;
 using Windows.UI.Xaml;
 
 namespace MrBoom
@@ -22,8 +22,7 @@ namespace MrBoom
         private readonly List<IController> joinedControllers;
         private readonly string helpText =
             "welcome to mr.bomber " +
-            $"v{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}" +
-            $".{Package.Current.Id.Version.Build}!!!   " +
+            $"v{Game.Version}!!!   " +
             "players can join using their drop bomb button second press or enter will start game   " +
             "gamepad controller: d-pad or left stick - move  a button - drop bomb  b button radio control   " +
             "right keyboard: arrows - move  ctrl - drop  bomb  shift - radio control   " +
@@ -37,7 +36,6 @@ namespace MrBoom
 
         private int startTick = -1;
         private int teamMode = 0;
-        private int playersCount;
         private readonly List<PlayerState> players;
         private Menu menu;
 
@@ -62,9 +60,16 @@ namespace MrBoom
             int oy = 10;
 
             assets.Controls[0].Draw(ctx, ox, oy);
-            Game.DrawString(ctx, ox + 20, oy + 5, "or", assets.Alpha[1]);
-            assets.Controls[1].Draw(ctx, ox + 40, oy + 1);
-            Game.DrawString(ctx, ox + 70, oy + 5, "join", assets.Alpha[1]);
+            Game.DrawString(ctx, ox + 14 + 8, oy + 5, "or", assets.Alpha[1]);
+            assets.Controls[1].Draw(ctx, ox + 14 + 8 * 4, oy + 1);
+            Game.DrawString(ctx, ox + 14 + 25 + 8 * 5, oy + 5, "- join", assets.Alpha[1]);
+
+            const int offset = 20;
+
+            assets.Controls[2].Draw(ctx, ox, oy + offset);
+            Game.DrawString(ctx, ox + 14 + 8, oy + 5 + offset, "or", assets.Alpha[1]);
+            assets.Controls[3].Draw(ctx, ox + 14 + 8 * 4, oy + 1 + offset);
+            Game.DrawString(ctx, ox + 14 * 2 + 8 * 5, oy + 5 + offset, "- add bot", assets.Alpha[1]);
 
             string[] teamModes = new string[] { "off", "color", "sex" };
             Game.DrawString(ctx, 320 - ox - 15 * 8, oy + 5,
@@ -101,7 +106,10 @@ namespace MrBoom
                 }
             }
 
-            Game.DrawString(ctx, 320 - tick % (helpText.Length * 8 + 320), 192, helpText, assets.Alpha[1]);
+            if (startTick < 600)
+            {
+                Game.DrawString(ctx, 320 - tick % (helpText.Length * 8 + 320), 192, helpText, assets.Alpha[1]);
+            }
 
             if (startTick >= 0)
             {
@@ -110,7 +118,7 @@ namespace MrBoom
                 int width = (int)(assets.StartButton.Width * scale);
                 int height = (int)(assets.StartButton.Height * scale);
 
-                Rectangle rect = new Rectangle(300 - width / 2, 38 - height / 2, width, height);
+                Rectangle rect = new Rectangle(325 - width / 2, 38 - height / 2, width, height);
 
                 ctx.Draw(assets.StartButton, rect, Color.White);
             }
@@ -119,7 +127,7 @@ namespace MrBoom
                 string text = "press a or enter";
                 text = text.Substring(0, Math.Min((startTick - 600) / 6, text.Length));
 
-                Game.DrawString(ctx, (300 - text.Length * 8) / 2, 36, text, assets.Alpha[1]);
+                Game.DrawString(ctx, (320 - text.Length * 8) / 2, 200 - 10, text, assets.Alpha[1]);
             }
 
             menu?.Draw(ctx);
@@ -134,17 +142,29 @@ namespace MrBoom
                 List<IController> toRemove = new List<IController>();
                 foreach (IController controller in unjoinedControllers)
                 {
-                    if (controller.IsKeyDown(PlayerKeys.Bomb))
+                    if (controller.IsKeyDown(PlayerKeys.Bomb) )
                     {
-                        int index = Terrain.Random.Next(names.Count);
-                        string name = names[index];
-                        names.RemoveAt(index);
+                        if (players.Count < 8)
+                        {
+                            players.Add(new PlayerState(controller, players.Count, PlayerState.PlayerType.Human, GeneratePlayerName()));
+                            assets.Sounds.Addplayer.Play();
 
-                        players.Add(new PlayerState(controller, playersCount) { Name = name });
-                        playersCount++;
-                        assets.Sounds.Addplayer.Play();
+                            toRemove.Add(controller);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < players.Count; i++)
+                            {
+                                if (players[i].Type == PlayerState.PlayerType.Bot)
+                                {
+                                    players[i] = new PlayerState(controller, i, PlayerState.PlayerType.Human, GeneratePlayerName());
+                                    assets.Sounds.Addplayer.Play();
 
-                        toRemove.Add(controller);
+                                    toRemove.Add(controller);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -168,6 +188,13 @@ namespace MrBoom
                     };
 
                     menu = new Menu(options, assets, controllers, 160);
+                    Controller.Reset(controllers);
+                }
+
+                if (Controller.IsKeyDown(controllers, PlayerKeys.AddBot) && players.Count < 8)
+                {
+                    assets.Sounds.Addbot.Play();
+                    players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
                     Controller.Reset(controllers);
                 }
 
@@ -211,8 +238,29 @@ namespace MrBoom
             }
         }
 
+        private string GeneratePlayerName()
+        {
+            int index = Terrain.Random.Next(names.Count);
+            string name = names[index];
+            names.RemoveAt(index);
+
+            return name;
+        }
+
         private void Start()
         {
+            if (players.Count == 1)
+            {
+                players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
+            }
+            else if (players.Count == 0)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
+                }
+            }
+
             if (players.Count >= 1)
             {
                 if (players.Count == 1 && teamMode != 0)
@@ -238,14 +286,14 @@ namespace MrBoom
                         {
                             Players = new List<PlayerState>()
                             {
-                                new PlayerState(players[0].Controller, 0) { Name = players[0].Name }
+                                new PlayerState(players[0].Controller, 0, PlayerState.PlayerType.Human, players[0].Name)
                             }
                         });
                         teams.Add(new Team
                         {
                             Players = new List<PlayerState>()
                             {
-                                new PlayerState(players[1].Controller, 2) { Name = players[1].Name }
+                                new PlayerState(players[1].Controller, 1, PlayerState.PlayerType.Human, players[1].Name)
                             }
                         });
                     }
@@ -280,11 +328,11 @@ namespace MrBoom
 
                 Next = Screen.Game;
             }
-        }  
+        }
 
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
-            menu?.DrawHighDPI(ctx, rect, scale);
+            menu?.DrawHighDPI(ctx, rect, scale, graphicScale);
 
             //ctx.DrawString(assets.MenuFontBig, "High DPI test",
             //               new Vector2(rect.X + 100 * scale, rect.Y + 100 * scale),

@@ -11,7 +11,8 @@ namespace MrBoom
         private int livesCount;
 
         public Monster(Terrain map, Map.MonsterData monsterData,
-            Assets.MovingSpriteAssets animations) : base(map, animations, monsterData.Speed)
+            Assets.MovingSpriteAssets animations, int x, int y) :
+            base(map, animations, x, y, monsterData.Speed)
         {
             this.monsterData = monsterData;
             this.livesCount = monsterData.LivesCount - 1;
@@ -23,7 +24,7 @@ namespace MrBoom
             }
             else
             {
-                this.Direction = (Directions)Terrain.Random.Next(1, 5);
+                this.Direction = Terrain.Random.NextEnum<Directions>();
             }
         }
 
@@ -31,7 +32,7 @@ namespace MrBoom
         {
             bool isWalkable(int dx, int dy)
             {
-                switch (terrain.GetCell((x + dx * 8 + 8 + dx) / 16, (y + dy * 8 + 8 + dy) / 16).Type)
+                switch (terrain.GetCell((X + dx * 8 + 8 + dx) / 16, (Y + dy * 8 + 8 + dy) / 16).Type)
                 {
                     case TerrainType.Free:
                     case TerrainType.PowerUpFire:
@@ -50,9 +51,9 @@ namespace MrBoom
                 }
             }
 
-            if (!IsDie)
+            if (IsAlive)
             {
-                var cell = terrain.GetCell((x + 8) / 16, (y + 8) / 16);
+                var cell = terrain.GetCell((X + 8) / 16, (Y + 8) / 16);
                 if (cell.Type == TerrainType.Fire && unplugin == 0)
                 {
                     terrain.PlaySound(Sound.Ai);
@@ -63,43 +64,35 @@ namespace MrBoom
                     }
                     else
                     {
-                        IsDie = true;
+                        Kill();
                         frameIndex = 0;
-                        terrain.SetCell((x + 8) / 16, (y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
+                        terrain.SetCell((X + 8) / 16, (Y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
                 if (cell.Type == TerrainType.Apocalypse)
                 {
-                    IsDie = true;
+                    Kill();
                     frameIndex = 0;
                     terrain.PlaySound(Sound.Ai);
                 }
                 else
                 {
-                    Point[] delta = new Point[]
-                    {
-                        new Point(0, -1),
-                        new Point(0, 1),
-                        new Point(-1, 0),
-                        new Point(1, 0),
-                    };
-
                     if (wait == 0)
                     {
                         wait = -1;
 
                         for (int i = 0; ; i++)
                         {
-                            int index = Terrain.Random.Next(4);
+                            Directions dir = Terrain.Random.NextEnum<Directions>();
 
-                            if (isWalkable(delta[index].X, delta[index].Y))
+                            if (isWalkable(dir.DeltaX(), dir.DeltaY()))
                             {
-                                Direction = (Directions)index + 1;
+                                Direction = dir;
                                 break;
                             }
                             if (i >= 32)
                             {
-                                Direction = Directions.None;
+                                Direction = null;
                                 wait = monsterData.WaitAfterTurn;
                                 break;
                             }
@@ -107,19 +100,19 @@ namespace MrBoom
                     }
                     else if (wait == -1)
                     {
-                        if (x % 16 == 0 && y % 16 == 0 && Terrain.Random.Next(16) == 0)
+                        if (X % 16 == 0 && Y % 16 == 0 && Terrain.Random.Next(16) == 0)
                         {
                             wait = this.monsterData.WaitAfterTurn;
                             frameIndex = 0;
-                            Direction = Directions.None;
+                            Direction = null;
                         }
                         else
                         {
-                            if (!isWalkable(delta[(int)Direction - 1].X, delta[(int)Direction - 1].Y))
+                            if (!isWalkable(Direction.DeltaX(), Direction.DeltaY()))
                             {
                                 wait = this.monsterData.WaitAfterTurn;
                                 frameIndex = 0;
-                                Direction = Directions.None;
+                                Direction = null;
                             }
                         }
                     }

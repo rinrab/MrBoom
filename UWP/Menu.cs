@@ -101,12 +101,8 @@ namespace MrBoom
                                 maxSize.Y * select + (maxSize.Y - img.Height) / 2));
         }
 
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
+        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
-            const int graphicScale = 2;
-
-            // 6 is font scale
-
             Vector2 offset = new Vector2(rect.X, rect.Y);
 
             Vector2 maxSize = new Vector2(width * scale * graphicScale, 0);

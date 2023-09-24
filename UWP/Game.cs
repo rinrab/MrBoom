@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Windows.ApplicationModel;
 
 namespace MrBoom
 {
@@ -16,6 +17,11 @@ namespace MrBoom
         public List<IController> Controllers;
         public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
         public readonly UnrepeatableRandom SoundRandom = new UnrepeatableRandom();
+
+        public static readonly string Version =
+            $"{Package.Current.Id.Version.Major}." +
+            $"{Package.Current.Id.Version.Minor}." +
+            $"{Package.Current.Id.Version.Build}";
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -52,7 +58,7 @@ namespace MrBoom
             Teams = new List<Team>();
             NextSong(3);
 
-            ScreenManager.SetScreen(new MultiplayerStartScreen(assets, Teams, Controllers));
+            ScreenManager.SetScreen(new GameScreen(Teams, assets, this, true));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -95,7 +101,7 @@ namespace MrBoom
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
-                    ScreenManager.SetScreen(new GameScreen(Teams, assets, this, Team.Mode));
+                    ScreenManager.SetScreen(new GameScreen(Teams, assets, this, false));
                 }
                 else if (ScreenManager.Next == Screen.StartMenu)
                 {

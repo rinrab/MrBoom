@@ -102,13 +102,24 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Assets.cs" />
+    <Compile Include="BehaviorTree\BtComposite.cs" />
+    <Compile Include="BehaviorTree\BtNode.cs" />
+    <Compile Include="BehaviorTree\BtSelector.cs" />
+    <Compile Include="BehaviorTree\BtSequence.cs" />
+    <Compile Include="BehaviorTree\BtStatus.cs" />
+    <Compile Include="BehaviorTree\ActionNode.cs" />
+    <Compile Include="Bot\ComputerPlayer.cs" />
+    <Compile Include="Bot\TravelCostGrid.cs" />
+    <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="Directions.cs" />
     <Compile Include="DrawScreen.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameScreen.cs" />
+    <Compile Include="Grid.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="IScreen.cs" />
@@ -118,6 +129,7 @@
     <Compile Include="MenuItem.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="PauseWindow.cs" />
+    <Compile Include="RandomExtensions.cs" />
     <Compile Include="SkullType.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="PlayerState.cs" />
@@ -129,6 +141,7 @@
     <Compile Include="MultiplayerStartScreen.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="TerrainType.cs" />
     <Compile Include="UnrepeatableRandom.cs" />
     <Compile Include="VictoryScreen.cs" />
   </ItemGroup>
@@ -138,10 +151,12 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\UI_B.png" />
     <Content Include="Content\CONTROLS.png" />
     <Content Include="Content\START.png" />
     <Content Include="Content\UI_A.png" />
     <Content Include="Properties\Default.rd.xml" />
+    <None Include="Content\font\Debug.spritefont" />
     <None Include="Content\font\Menu-big.spritefont" />
     <None Include="Content\font\Menu.spritefont" />
     <None Include="Package.StoreAssociation.xml" />
@@ -218,6 +233,7 @@
   <ItemGroup>
     <None Include="Content\Content.mgcb" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

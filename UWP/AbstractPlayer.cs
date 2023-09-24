@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Timofei Zhakov. All rights reserved.
+
+using System;
 
 namespace MrBoom
 {
@@ -6,16 +8,25 @@ namespace MrBoom
     {
         public int BombsPlaced;
         public bool rcDitonate = false;
+        public int MaxBoom { get => maxBoom; }
 
+        public int BombsRemaining
+        {
+            get
+            {
+                return maxBombsCount - BombsPlaced;
+            }
+        }
         protected bool rcDitonateButton;
         protected bool dropBombButton;
         public int Team;
+        public int TeamMask { get => 1 << Team; }
         private int maxBoom;
         private int maxBombsCount;
         private int lifeCount;
-        private int maxBombs;
 
-        public AbstractPlayer(Terrain map, Assets.MovingSpriteAssets animations, int maxBoom, int maxBombs, int team) : base(map, animations, 3)
+        public AbstractPlayer(Terrain map, Assets.MovingSpriteAssets animations, int x, int y, int maxBoom, int maxBombs, int team) :
+            base(map, animations, x, y, 3)
         {
             Features = map.StartFeatures;
             this.maxBoom = maxBoom;
@@ -33,10 +44,7 @@ namespace MrBoom
 
             if (Skull == SkullType.Reverse)
             {
-                if (Direction == Directions.Up) Direction = Directions.Down;
-                else if (Direction == Directions.Down) Direction = Directions.Up;
-                if (Direction == Directions.Left) Direction = Directions.Right;
-                else if (Direction == Directions.Right) Direction = Directions.Left;
+                Direction = Direction.Reverse();
             }
 
             this.rcDitonate = Features.HasFlag(Feature.RemoteControl) &&
@@ -44,8 +52,8 @@ namespace MrBoom
 
             base.Update();
 
-            int cellX = (this.x + 8) / 16;
-            int cellY = (this.y + 8) / 16;
+            int cellX = (this.X + 8) / 16;
+            int cellY = (this.Y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
             if ((dropBombButton || Skull == SkullType.AutoBomb) && Skull != SkullType.BombsDisable)
@@ -140,8 +148,7 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
-                    Array values = Enum.GetValues(typeof(SkullType));
-                    SetSkull((SkullType)values.GetValue(Terrain.Random.Next(values.Length)));
+                    SetSkull(Terrain.Random.NextEnum<SkullType>());
                 }
 
                 if (doFire)
@@ -162,7 +169,7 @@ namespace MrBoom
                 }
             }
 
-            bool isTouchingMonster = terrain.IsTouchingMonster((x + 8) / 16, (y + 8) / 16);
+            bool isTouchingMonster = terrain.IsTouchingMonster((X + 8) / 16, (Y + 8) / 16);
 
             if ((cell.Type == TerrainType.Fire || isTouchingMonster) && unplugin == 0)
             {
@@ -175,7 +182,7 @@ namespace MrBoom
                 }
                 else
                 {
-                    this.IsDie = true;
+                    Kill();
                     this.frameIndex = 0;
                     terrain.PlaySound(Sound.PlayerDie);
                 }
@@ -183,10 +190,18 @@ namespace MrBoom
             if (cell.Type == TerrainType.Apocalypse)
             {
                 unplugin = 0;
-                this.IsDie = true;
+                Kill();
                 this.frameIndex = 0;
                 terrain.PlaySound(Sound.PlayerDie);
             }
         }
+
+        public void GiveAll()
+        {
+            Features |= Feature.RemoteControl | Feature.Kick;
+            SetSkull(SkullType.Fast);
+        }
+
+        public abstract string GetDebugInfo();
     }
 }

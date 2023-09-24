@@ -713,6 +713,8 @@ namespace MrBoom
                 {
                     loadImage(content.Load<Texture2D>("UI_A"), 0, 0, 32, 32),
                     loadImage(imgControls, 273, 97, 25, 14),
+                    loadImage(content.Load<Texture2D>("UI_B"), 0, 0, 32, 32),
+                    loadImage(imgControls, 369, 65, 13, 14),
                 },
                 MenuFont = content.Load<SpriteFont>(@"font\Menu"),
                 MenuFontBig = content.Load<SpriteFont>(@"font\Menu-big"),

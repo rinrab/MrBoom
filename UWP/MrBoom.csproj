@@ -151,6 +151,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\UI_B.png" />
     <Content Include="Content\CONTROLS.png" />
     <Content Include="Content\START.png" />
     <Content Include="Content\UI_A.png" />

@@ -60,9 +60,16 @@ namespace MrBoom
             int oy = 10;
 
             assets.Controls[0].Draw(ctx, ox, oy);
-            Game.DrawString(ctx, ox + 20, oy + 5, "or", assets.Alpha[1]);
-            assets.Controls[1].Draw(ctx, ox + 40, oy + 1);
-            Game.DrawString(ctx, ox + 70, oy + 5, "join", assets.Alpha[1]);
+            Game.DrawString(ctx, ox + 14 + 8, oy + 5, "or", assets.Alpha[1]);
+            assets.Controls[1].Draw(ctx, ox + 14 + 8 * 4, oy + 1);
+            Game.DrawString(ctx, ox + 14 + 25 + 8 * 5, oy + 5, "- join", assets.Alpha[1]);
+
+            const int offset = 20;
+
+            assets.Controls[2].Draw(ctx, ox, oy + offset);
+            Game.DrawString(ctx, ox + 14 + 8, oy + 5 + offset, "or", assets.Alpha[1]);
+            assets.Controls[3].Draw(ctx, ox + 14 + 8 * 4, oy + 1 + offset);
+            Game.DrawString(ctx, ox + 14 * 2 + 8 * 5, oy + 5 + offset, "- add bot", assets.Alpha[1]);
 
             string[] teamModes = new string[] { "off", "color", "sex" };
             Game.DrawString(ctx, 320 - ox - 15 * 8, oy + 5,
@@ -99,7 +106,10 @@ namespace MrBoom
                 }
             }
 
-            Game.DrawString(ctx, 320 - tick % (helpText.Length * 8 + 320), 192, helpText, assets.Alpha[1]);
+            if (startTick < 600)
+            {
+                Game.DrawString(ctx, 320 - tick % (helpText.Length * 8 + 320), 192, helpText, assets.Alpha[1]);
+            }
 
             if (startTick >= 0)
             {
@@ -108,7 +118,7 @@ namespace MrBoom
                 int width = (int)(assets.StartButton.Width * scale);
                 int height = (int)(assets.StartButton.Height * scale);
 
-                Rectangle rect = new Rectangle(300 - width / 2, 38 - height / 2, width, height);
+                Rectangle rect = new Rectangle(325 - width / 2, 38 - height / 2, width, height);
 
                 ctx.Draw(assets.StartButton, rect, Color.White);
             }
@@ -117,7 +127,7 @@ namespace MrBoom
                 string text = "press a or enter";
                 text = text.Substring(0, Math.Min((startTick - 600) / 6, text.Length));
 
-                Game.DrawString(ctx, (300 - text.Length * 8) / 2, 36, text, assets.Alpha[1]);
+                Game.DrawString(ctx, (320 - text.Length * 8) / 2, 200 - 10, text, assets.Alpha[1]);
             }
 
             menu?.Draw(ctx);

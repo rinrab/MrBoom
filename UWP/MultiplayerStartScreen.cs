@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Windows.Media.Protection.PlayReady;
 using Windows.UI.Xaml;
 
 namespace MrBoom
@@ -141,16 +142,29 @@ namespace MrBoom
                 List<IController> toRemove = new List<IController>();
                 foreach (IController controller in unjoinedControllers)
                 {
-                    if (controller.IsKeyDown(PlayerKeys.Bomb) && players.Count < 8)
+                    if (controller.IsKeyDown(PlayerKeys.Bomb) )
                     {
-                        int index = Terrain.Random.Next(names.Count);
-                        string name = names[index];
-                        names.RemoveAt(index);
+                        if (players.Count < 8)
+                        {
+                            players.Add(new PlayerState(controller, players.Count, PlayerState.Type.Human, GeneratePlayerName()));
+                            assets.Sounds.Addplayer.Play();
 
-                        players.Add(new PlayerState(controller, players.Count, PlayerState.Type.Human, name));
-                        assets.Sounds.Addplayer.Play();
+                            toRemove.Add(controller);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < players.Count; i++)
+                            {
+                                if (players[i].type == PlayerState.Type.Bot)
+                                {
+                                    players[i] = new PlayerState(controller, i, PlayerState.Type.Human, GeneratePlayerName());
+                                    assets.Sounds.Addplayer.Play();
 
-                        toRemove.Add(controller);
+                                    toRemove.Add(controller);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -222,6 +236,15 @@ namespace MrBoom
                     Application.Current.Exit();
                 }
             }
+        }
+
+        private string GeneratePlayerName()
+        {
+            int index = Terrain.Random.Next(names.Count);
+            string name = names[index];
+            names.RemoveAt(index);
+
+            return name;
         }
 
         private void Start()

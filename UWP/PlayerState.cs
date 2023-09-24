@@ -14,13 +14,13 @@ namespace MrBoom
         public string Name;
         public int VictoryCount;
         public int Index;
-        public PlayerType type;
+        public PlayerType Type;
 
         public PlayerState(IController controller, int index, PlayerType type, string name)
         {
             Controller = controller;
             Index = index;
-            this.type = type;
+            Type = type;
             Name = name;
         }
     }

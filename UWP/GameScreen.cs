@@ -71,7 +71,7 @@ namespace MrBoom
                     for (int j = 0; j < teams[i].Players.Count; j++)
                     {
                         var player = teams[i].Players[j];
-                        if (player.type == PlayerState.PlayerType.Human)
+                        if (player.Type == PlayerState.PlayerType.Human)
                         {
                             terrain.AddPlayer(assets.Players[player.Index], player.Controller, i);
                         }

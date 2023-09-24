@@ -155,7 +155,7 @@ namespace MrBoom
                         {
                             for (int i = 0; i < players.Count; i++)
                             {
-                                if (players[i].type == PlayerState.PlayerType.Bot)
+                                if (players[i].Type == PlayerState.PlayerType.Bot)
                                 {
                                     players[i] = new PlayerState(controller, i, PlayerState.PlayerType.Human, GeneratePlayerName());
                                     assets.Sounds.Addplayer.Play();

@@ -125,6 +125,10 @@ namespace MrBoom.Bot
                     {
                         dangerGrid[i, j] = true;
                     }
+                    else if (IsCellDangerForApocalypse(i, j))
+                    {
+                        dangerGrid[i, j] = true;
+                    }
                 }
             }
 
@@ -221,6 +225,11 @@ namespace MrBoom.Bot
             }
 
             base.Update();
+        }
+
+        private bool IsCellDangerForApocalypse(int cellX, int cellY)
+        {
+            return terrain.GetCellApocalypseRemainingTime(cellX, cellY) < 10 * 60;
         }
 
         private Random GetDecisionRandom()

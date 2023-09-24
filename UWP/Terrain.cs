@@ -181,6 +181,19 @@ namespace MrBoom
             }
         }
 
+        public int GetCellApocalypseRemainingTime(int cellX, int cellY)
+        {
+            byte apocalypseIndex = final[cellX, cellY];
+            if (apocalypseIndex == 255)
+            {
+                return int.MaxValue;
+            }
+            else
+            {
+                return apocalypseIndex * ApocalypseSpeed + TimeLeft - 30 * 60;
+            }
+        }
+
         public void Update()
         {
             SoundsToPlay = 0;

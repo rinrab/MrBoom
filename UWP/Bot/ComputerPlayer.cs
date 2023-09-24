@@ -447,7 +447,7 @@ namespace MrBoom.Bot
                             score *= 2;
                         }
 
-                        if (score >= bestScore && !dangerGrid[x, y] && !terrain.IsTouchingMonster(x, y) && !terrain.IsMonsterComing(x, y))
+                        if (score >= bestScore && IsCellSafe(x, y))
                         {
                             if (score > bestScore)
                             {
@@ -537,7 +537,7 @@ namespace MrBoom.Bot
                 for (int y = 0; y < terrain.Height; y++)
                 {
                     Cell cell = terrain.GetCell(x, y);
-                    if (cell.Type == TerrainType.PowerUp)
+                    if (cell.Type == TerrainType.PowerUp && IsCellSafe(x, y))
                     {
                         int distance = travelSafeCostGrid.GetCost(x, y);
                         int score = CalcBonusScore(cell.PowerUpType, distance);
@@ -563,6 +563,11 @@ namespace MrBoom.Bot
             {
                 return null;
             }
+        }
+
+        private bool IsCellSafe(int x, int y)
+        {
+            return !dangerGrid[x, y] && !terrain.IsTouchingMonster(x, y) && !terrain.IsMonsterComing(x, y);
         }
 
         public override string GetCellDebugInfo(int cellX, int cellY)

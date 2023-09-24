@@ -229,7 +229,7 @@ namespace MrBoom.Bot
 
         private bool IsCellDangerForApocalypse(int cellX, int cellY)
         {
-            return terrain.GetCellApocalypseRemainingTime(cellX, cellY) < 10 * 60;
+            return terrain.GetCellApocalypseRemainingTime(cellX, cellY) < 5 * 60;
         }
 
         private Random GetDecisionRandom()

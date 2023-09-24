@@ -146,7 +146,7 @@ namespace MrBoom
                     {
                         if (players.Count < 8)
                         {
-                            players.Add(new PlayerState(controller, players.Count, PlayerState.Type.Human, GeneratePlayerName()));
+                            players.Add(new PlayerState(controller, players.Count, PlayerState.PlayerType.Human, GeneratePlayerName()));
                             assets.Sounds.Addplayer.Play();
 
                             toRemove.Add(controller);
@@ -155,9 +155,9 @@ namespace MrBoom
                         {
                             for (int i = 0; i < players.Count; i++)
                             {
-                                if (players[i].type == PlayerState.Type.Bot)
+                                if (players[i].type == PlayerState.PlayerType.Bot)
                                 {
-                                    players[i] = new PlayerState(controller, i, PlayerState.Type.Human, GeneratePlayerName());
+                                    players[i] = new PlayerState(controller, i, PlayerState.PlayerType.Human, GeneratePlayerName());
                                     assets.Sounds.Addplayer.Play();
 
                                     toRemove.Add(controller);
@@ -194,7 +194,7 @@ namespace MrBoom
                 if (Controller.IsKeyDown(controllers, PlayerKeys.AddBot) && players.Count < 8)
                 {
                     assets.Sounds.Addbot.Play();
-                    players.Add(new PlayerState(null, players.Count, PlayerState.Type.Bot, "bot"));
+                    players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
                     Controller.Reset(controllers);
                 }
 
@@ -251,13 +251,13 @@ namespace MrBoom
         {
             if (players.Count == 1)
             {
-                players.Add(new PlayerState(null, players.Count, PlayerState.Type.Bot, "bot"));
+                players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
             }
             else if (players.Count == 0)
             {
                 for (int i = 0; i < 8; i++)
                 {
-                    players.Add(new PlayerState(null, players.Count, PlayerState.Type.Bot, "bot"));
+                    players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
                 }
             }
 
@@ -286,14 +286,14 @@ namespace MrBoom
                         {
                             Players = new List<PlayerState>()
                             {
-                                new PlayerState(players[0].Controller, 0, PlayerState.Type.Human, players[0].Name)
+                                new PlayerState(players[0].Controller, 0, PlayerState.PlayerType.Human, players[0].Name)
                             }
                         });
                         teams.Add(new Team
                         {
                             Players = new List<PlayerState>()
                             {
-                                new PlayerState(players[1].Controller, 1, PlayerState.Type.Human, players[1].Name)
+                                new PlayerState(players[1].Controller, 1, PlayerState.PlayerType.Human, players[1].Name)
                             }
                         });
                     }

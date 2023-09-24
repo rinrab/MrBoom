@@ -4,7 +4,7 @@ namespace MrBoom
 {
     public class PlayerState
     {
-        public enum Type
+        public enum PlayerType
         {
             Human,
             Bot
@@ -14,9 +14,9 @@ namespace MrBoom
         public string Name;
         public int VictoryCount;
         public int Index;
-        public Type type;
+        public PlayerType type;
 
-        public PlayerState(IController controller, int index, Type type, string name)
+        public PlayerState(IController controller, int index, PlayerType type, string name)
         {
             Controller = controller;
             Index = index;

@@ -35,7 +35,6 @@ namespace MrBoom
 
         private int startTick = -1;
         private int teamMode = 0;
-        private int playersCount;
         private readonly List<PlayerState> players;
         private Menu menu;
 
@@ -148,8 +147,7 @@ namespace MrBoom
                         string name = names[index];
                         names.RemoveAt(index);
 
-                        players.Add(new PlayerState(controller, playersCount, PlayerState.Type.Human, name));
-                        playersCount++;
+                        players.Add(new PlayerState(controller, players.Count, PlayerState.Type.Human, name));
                         assets.Sounds.Addplayer.Play();
 
                         toRemove.Add(controller);
@@ -182,8 +180,7 @@ namespace MrBoom
                 if (Controller.IsKeyDown(controllers, PlayerKeys.AddBot) && players.Count < 8)
                 {
                     assets.Sounds.Addbot.Play();
-                    players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
-                    playersCount++;
+                    players.Add(new PlayerState(null, players.Count, PlayerState.Type.Bot, "bot"));
                     Controller.Reset(controllers);
                 }
 
@@ -231,14 +228,13 @@ namespace MrBoom
         {
             if (players.Count == 1)
             {
-                players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
+                players.Add(new PlayerState(null, players.Count, PlayerState.Type.Bot, "bot"));
             }
             else if (players.Count == 0)
             {
                 for (int i = 0; i < 8; i++)
                 {
-                    players.Add(new PlayerState(null, playersCount, PlayerState.Type.Bot, "bot"));
-                    playersCount++;
+                    players.Add(new PlayerState(null, players.Count, PlayerState.Type.Bot, "bot"));
                 }
             }
 

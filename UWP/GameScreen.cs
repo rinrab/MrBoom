@@ -187,7 +187,7 @@ namespace MrBoom
                         {
                             game.Exit();
                         }
-                        Team.Mode = ((SelectMenuItem)demoMenu.Items[1]).SelectionIndex;
+                        Team.Mode = (TeamMode)((SelectMenuItem)demoMenu.Items[1]).SelectionIndex;
                     }
 
                     if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Continue))

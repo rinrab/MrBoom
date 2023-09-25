@@ -1,12 +1,21 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace MrBoom
 {
+    public enum TeamMode
+    {
+        [Description("test")]
+        Off = 0,
+        Color,
+        Sex
+    }
+
     public class Team
     {
-        public static int Mode;
+        public static TeamMode Mode;
 
         public List<PlayerState> Players;
         public int VictoryCount;

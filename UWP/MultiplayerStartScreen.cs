@@ -35,7 +35,7 @@ namespace MrBoom
         };
 
         private int startTick = -1;
-        private int teamMode = 0;
+        private TeamMode teamMode = 0;
         private readonly List<PlayerState> players;
         private Menu menu;
 
@@ -73,7 +73,7 @@ namespace MrBoom
 
             string[] teamModes = new string[] { "off", "color", "sex" };
             Game.DrawString(ctx, 320 - ox - 15 * 8, oy + 5,
-                            "team mode: " + teamModes[teamMode], assets.Alpha[1]);
+                            "team mode: " + teamMode, assets.Alpha[1]);
 
             for (int x = 0; x < 4; x++)
             {
@@ -182,7 +182,7 @@ namespace MrBoom
                         new TextMenuItem("START"),
                         new SelectMenuItem("TEAM", new string[] { "OFF", "COLOR", "SEX" })
                         {
-                            SelectionIndex = teamMode
+                            SelectionIndex = (int)teamMode
                         },
                         new TextMenuItem("QUIT")
                     };
@@ -220,7 +220,7 @@ namespace MrBoom
             {
                 menu.Update();
 
-                teamMode = ((SelectMenuItem)menu.Items[1]).SelectionIndex;
+                teamMode = (TeamMode)((SelectMenuItem)menu.Items[1]).SelectionIndex;
 
                 if (menu.Action == -2)
                 {
@@ -271,14 +271,14 @@ namespace MrBoom
                 Team.Mode = teamMode;
 
                 teams.Clear();
-                if (teamMode == 0)
+                if (teamMode == TeamMode.Off)
                 {
                     foreach (PlayerState player in players)
                     {
                         teams.Add(new Team { Players = new List<PlayerState> { player } });
                     }
                 }
-                if (teamMode == 1)
+                if (teamMode == TeamMode.Color)
                 {
                     if (players.Count == 2)
                     {
@@ -311,7 +311,7 @@ namespace MrBoom
                         }
                     }
                 }
-                if (teamMode == 2)
+                if (teamMode == TeamMode.Sex)
                 {
                     teams.Add(new Team { Players = new List<PlayerState>() });
                     teams.Add(new Team { Players = new List<PlayerState>() });

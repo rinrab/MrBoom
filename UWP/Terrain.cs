@@ -58,7 +58,7 @@ namespace MrBoom
             this.assets = assets;
             levelAssets = assets.Levels[levelIndex];
             map = Map.Maps[levelIndex];
-            StartFeatures = Map.Maps[levelIndex].StartFeatures;
+            StartFeatures = map.StartFeatures;
             powerUpList = new List<PowerUpType>();
 
             foreach (var bonus in map.PowerUps)

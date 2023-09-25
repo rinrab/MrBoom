@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 
 namespace MrBoom
 {
     public interface IMenuItem
     {
         string Text { get; }
+        string[] GetDynamicTexts();
 
         bool OnLeft();
         bool OnRight();
@@ -36,6 +38,11 @@ namespace MrBoom
         {
             return true;
         }
+
+        public string[] GetDynamicTexts()
+        {
+            return new string[] { Text };
+        }
     }
 
     public class SelectMenuItem : IMenuItem
@@ -46,7 +53,7 @@ namespace MrBoom
         private string currentOption => options[SelectionIndex];
 
         public int SelectionIndex;
-        public string Text => string.Format("{0}: {1}", header, currentOption);
+        public string Text => FormatText(currentOption);
 
         public SelectMenuItem(string header, string[] options)
         {
@@ -83,6 +90,23 @@ namespace MrBoom
         {
             OnRight();
             return false;
+        }
+
+        public string[] GetDynamicTexts()
+        {
+            List<string> result = new List<string>();
+
+            foreach(var option in options)
+            {
+                result.Add(FormatText(option));
+            }
+
+            return result.ToArray();
+        }
+
+        private string FormatText(string currentOption)
+        {
+            return string.Format("{0}: {1}", header, currentOption);
         }
     }
 }

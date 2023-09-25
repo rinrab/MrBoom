@@ -187,7 +187,7 @@ namespace MrBoom
                         new TextMenuItem("QUIT")
                     };
 
-                    menu = new Menu(options, assets, controllers, 160);
+                    menu = new Menu(options, assets, controllers);
                     Controller.Reset(controllers);
                 }
 

@@ -13,17 +13,15 @@ namespace MrBoom
 
         private readonly Assets assets;
         private readonly IEnumerable<IController> controllers;
-        private readonly int width;
         private int select;
         private int bombTick;
 
-        public Menu(IMenuItem[] items, Assets assets, IEnumerable<IController> controllers, int width)
+        public Menu(IMenuItem[] items, Assets assets, IEnumerable<IController> controllers)
         {
             Items = items;
             this.assets = assets;
             this.controllers = controllers;
             Action = -1;
-            this.width = width;
         }
 
         public void Update()
@@ -86,12 +84,15 @@ namespace MrBoom
 
             // 6 is font scale
 
-            Vector2 maxSize = new Vector2(width, 0);
+            Vector2 maxSize = new Vector2(0, 0);
 
             foreach (var item in Items)
             {
-                Vector2 size = assets.MenuFontBig.MeasureString(item.Text) / 6 / 2;
-                maxSize = Vector2.Max(maxSize, size);
+                foreach (var text in item.GetDynamicTexts())
+                {
+                    Vector2 size = assets.MenuFontBig.MeasureString(text) / 6 / 2;
+                    maxSize = Vector2.Max(maxSize, size);
+                }
             }
 
             var img = assets.Bomb[bombTick / 16];
@@ -105,12 +106,15 @@ namespace MrBoom
         {
             Vector2 offset = new Vector2(rect.X, rect.Y);
 
-            Vector2 maxSize = new Vector2(width * scale * graphicScale, 0);
+            Vector2 maxSize = new Vector2(0, 0);
 
             foreach (var item in Items)
             {
-                Vector2 size = assets.MenuFontBig.MeasureString(item.Text) / 6 * scale;
-                maxSize = Vector2.Max(maxSize, size);
+                foreach (var text in item.GetDynamicTexts())
+                {
+                    Vector2 size = assets.MenuFontBig.MeasureString(text) / 6 * scale;
+                    maxSize = Vector2.Max(maxSize, size);
+                }
             }
 
             Vector2 pos = offset +

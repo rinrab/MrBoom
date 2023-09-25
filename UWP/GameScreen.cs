@@ -61,7 +61,7 @@ namespace MrBoom
                         "SEX",
                     }),
                     new TextMenuItem("QUIT"),
-                }, assets, game.Controllers, 160);
+                }, assets, game.Controllers);
             }
             else
             {
@@ -223,7 +223,7 @@ namespace MrBoom
                             new TextMenuItem("QUIT")
                         };
 
-                        pauseWindow = new Menu(options, assets, game.Controllers, -1);
+                        pauseWindow = new Menu(options, assets, game.Controllers);
                         Controller.Reset(game.Controllers);
                         isPause = true;
                     }

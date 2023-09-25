@@ -11,7 +11,7 @@ namespace MrBoom.Bot
         public delegate int GetTravelCostDelegate(int nextX, int nextY);
         public const int CostCantGo = 9999;
 
-        private Grid<int> grid;
+        private readonly Grid<int> grid;
 
         public TravelCostGrid(int width, int height)
         {

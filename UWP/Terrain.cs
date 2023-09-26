@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MrBoom.Bot;
 
@@ -672,7 +673,7 @@ namespace MrBoom
 
         public string GetCellDebugInfo(int cellX, int cellY)
         {
-            StringBuilder sb = new StringBuilder();
+            List<string> list = new List<string>();
 
             foreach (Sprite sprite in players)
             {
@@ -680,14 +681,14 @@ namespace MrBoom
                 {
                     string debugInfo = sprite.GetCellDebugInfo(cellX, cellY);
 
-                    if (!string.IsNullOrEmpty(debugInfo))
+                    if (!string.IsNullOrEmpty(debugInfo) && !list.Contains(debugInfo))
                     {
-                        sb.AppendLine(debugInfo);
+                        list.Add(debugInfo);
                     }
                 }
             }
 
-            return sb.ToString();
+            return string.Join('\n', list);
         }
 
         public string GetDebugInfo()

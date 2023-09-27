@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace MrBoom
 {
     public enum TeamMode
     {
-        [Description("test")]
-        Off = 0,
+        Off,
         Color,
         Sex
     }

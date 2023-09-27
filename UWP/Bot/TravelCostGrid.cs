@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +11,7 @@ namespace MrBoom.Bot
         public delegate int GetTravelCostDelegate(int nextX, int nextY);
         public const int CostCantGo = 9999;
 
-        private Grid<int> grid;
+        private readonly Grid<int> grid;
 
         public TravelCostGrid(int width, int height)
         {

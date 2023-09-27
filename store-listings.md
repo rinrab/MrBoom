@@ -8,7 +8,7 @@ Game Features:
 - Bomberman-style gameplay
 - Classic DOS look and feel
 - PvP with up to 8 players
-- Play with AI bots
+- Play against AI bots.
 - 8 different levels
 - Same-device multiplayer
 - Full controller and keyboard support
@@ -27,7 +27,7 @@ The game is an unofficial UWP (Universal Windows Platform) remake of a classic D
 - Bomberman-style gameplay
 - Classic DOS look and feel
 - PvP with up to 8 players
-- Play with AI bots
+- Play against AI bots.
 - 8 different levels
 - Same-device multiplayer
 - Full controller and keyboard support

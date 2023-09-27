@@ -72,7 +72,7 @@ namespace MrBoom
             Game.DrawString(ctx, ox + 14 * 2 + 8 * 5, oy + 5 + offset, "- add bot", assets.Alpha[1]);
 
             Game.DrawString(ctx, 320 - ox - 15 * 8, oy + 5,
-                            "team mode: " + teamMode, assets.Alpha[1]);
+                            "team mode: " + teamMode.ToString().ToLower(), assets.Alpha[1]);
 
             for (int x = 0; x < 4; x++)
             {

@@ -71,7 +71,6 @@ namespace MrBoom
             assets.Controls[3].Draw(ctx, ox + 14 + 8 * 4, oy + 1 + offset);
             Game.DrawString(ctx, ox + 14 * 2 + 8 * 5, oy + 5 + offset, "- add bot", assets.Alpha[1]);
 
-            string[] teamModes = new string[] { "off", "color", "sex" };
             Game.DrawString(ctx, 320 - ox - 15 * 8, oy + 5,
                             "team mode: " + teamMode, assets.Alpha[1]);
 

@@ -248,15 +248,10 @@ namespace MrBoom
                 }
             }
 
-            var bgs = terrain.LevelAssets.Backgrounds;
-            bgs[bgTick / 20].Draw(ctx, 0, 0);
-            var bgSprites = terrain.LevelAssets.BackgroundSprites;
-            if (bgSprites != null)
+            terrain.LevelAssets.Backgrounds[bgTick / 20].Draw(ctx, 0, 0);
+            foreach (var overlay in terrain.LevelAssets.BackgroundSprites)
             {
-                foreach (var overlay in bgSprites)
-                {
-                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
-                }
+                overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
             }
 
             for (int y = 0; y < terrain.Height; y++)
@@ -283,13 +278,9 @@ namespace MrBoom
                 sprite.Draw(ctx);
             }
 
-            var overlays = terrain.LevelAssets.Overlays;
-            if (overlays != null)
+            foreach (var overlay in terrain.LevelAssets.Overlays)
             {
-                foreach (var overlay in overlays)
-                {
-                    overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
-                }
+                overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
             }
 
             int drawInStart = 60 * 30 - terrain.ApocalypseSpeed * (terrain.MaxApocalypse + 5);

@@ -39,6 +39,21 @@ namespace MrBoom
             public Overlay[] Overlays;
             public Image MovingBackground;
             public Overlay[] BackgroundSprites;
+
+            public Level(AnimatedImage backgrounds,
+                         AnimatedImage walls,
+                         AnimatedImage permanentWalls,
+                         Overlay[] overlays = null,
+                         Image movingBackground = null,
+                         Overlay[] backgroundSprites = null)
+            {
+                Backgrounds = backgrounds;
+                Walls = walls;
+                PermanentWalls = permanentWalls;
+                Overlays= overlays ?? Array.Empty<Overlay>();
+                MovingBackground= movingBackground;
+                BackgroundSprites= backgroundSprites ?? Array.Empty<Overlay>();
+            }
         }
 
         public class MovingSpriteAssets
@@ -488,29 +503,15 @@ namespace MrBoom
                 },
                 Levels = new Level[]
                 {
-                    new Level()
-                    {
-                        Backgrounds = new AnimatedImage(
+                    new Level(
+                        backgrounds: new AnimatedImage(
                             loadImage(imgNeige1, 0, 0, 320, 200),
                             loadImage(imgNeige2, 0, 0, 320, 200),
                             loadImage(imgNeige3, 0, 0, 320, 200)
                         ),
-                        BackgroundSprites = new Level.Overlay[]
-                        {
-                            new Level.Overlay(9 + 0 * 17, 1, penguinUp, 16),
-                            new Level.Overlay(9 + 1 * 17, 1, penguinUp, 16),
-                            new Level.Overlay(9 + 2 * 17, 1, penguinUp, 16),
-                            new Level.Overlay(114, 1, penguinUp, 16),
-                            new Level.Overlay(162, 1, penguinUp, 16),
-                            new Level.Overlay(194, 1, penguinUp, 16),
-                            new Level.Overlay(258, 1, penguinUp, 16),
-                            new Level.Overlay(1, 33, penguinLeft, 16),
-                            new Level.Overlay(1, 50, penguinLeft, 16),
-                            new Level.Overlay(1, 104, penguinLeft, 16),
-                            new Level.Overlay(1, 151, penguinLeft, 16),
-                            new Level.Overlay(1, 168, penguinLeft, 16),
-                        },
-                        Overlays = new Level.Overlay[] {
+                        walls: loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
+                        permanentWalls : loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
+                        overlays: new Level.Overlay[] {
                             new Level.Overlay() {
                                 x = 232,
                                 y = 57,
@@ -528,25 +529,36 @@ namespace MrBoom
                             new Level.Overlay(117, 200 - 12, penguinDown, 16),
                             new Level.Overlay(202, 200 - 12, penguinDown, 16),
                         },
-                        Walls = loadImageStripe(imgPause, 0 * 16, 80, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 1, 16 * 1, 16, 16)),
-                    },
-                    new Level()
-                    {
-                        Backgrounds = new AnimatedImage(
+                        backgroundSprites: new Level.Overlay[]
+                        {
+                            new Level.Overlay(9 + 0 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(9 + 1 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(9 + 2 * 17, 1, penguinUp, 16),
+                            new Level.Overlay(114, 1, penguinUp, 16),
+                            new Level.Overlay(162, 1, penguinUp, 16),
+                            new Level.Overlay(194, 1, penguinUp, 16),
+                            new Level.Overlay(258, 1, penguinUp, 16),
+                            new Level.Overlay(1, 33, penguinLeft, 16),
+                            new Level.Overlay(1, 50, penguinLeft, 16),
+                            new Level.Overlay(1, 104, penguinLeft, 16),
+                            new Level.Overlay(1, 151, penguinLeft, 16),
+                            new Level.Overlay(1, 168, penguinLeft, 16),
+                        }
+                    ),
+                    new Level(
+                        backgrounds: new AnimatedImage(
                             loadImage(content.Load<Texture2D>("GAME1"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("GAME2"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("GAME3"), 0, 0, 320, 200)
                         ),
-                        Walls = loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16)),
-                    },
-                    new Level()
-                    {
-                        Backgrounds = new AnimatedImage(
+                        walls: loadImageStripe(imgPause, 0 * 16, 128, 16, 16, 8),
+                        permanentWalls: loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 1, 16, 16))
+                    ),
+                    new Level(
+                        backgrounds: new AnimatedImage(
                             loadImage(content.Load<Texture2D>("FOOT"), 0, 0, 320, 200)
                         ),
-                        Overlays = new Level.Overlay[]
+                        overlays: new Level.Overlay[]
                         {
                             new Level.Overlay()
                             {
@@ -556,25 +568,23 @@ namespace MrBoom
                                 y = 0
                             }
                         },
-                        Walls = loadImageStripe(imgPause, 160, 128, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16))
-                    },
-                    new Level()
-                    {
-                        Backgrounds = new AnimatedImage(
+                        walls: loadImageStripe(imgPause, 160, 128, 16, 16, 8),
+                        permanentWalls: loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 0, 16, 16))
+                    ),
+                    new Level(
+                        backgrounds: new AnimatedImage(
                             loadImage(content.Load<Texture2D>("NUAGE1"), 0, 0, 320, 200),
                             loadImage(content.Load<Texture2D>("NUAGE2"), 0, 0, 320, 200)
                         ),
-                        MovingBackground = loadImage(imgSprite2, 64, 16, 48, 44),
-                        Walls = loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16)),
-                    },
-                    new Level()
-                    {
-                        Backgrounds = new AnimatedImage(
+                        movingBackground: loadImage(imgSprite2, 64, 16, 48, 44),
+                        walls: loadImageStripe(imgPause, 0 * 16, 96, 16, 16, 8),
+                        permanentWalls: loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 0, 16 * 0, 16, 16))
+                    ),
+                    new Level(
+                        backgrounds: new AnimatedImage(
                             loadImage(content.Load<Texture2D>("FORET"), 0, 0, 320, 200)
                         ),
-                        Overlays = new Level.Overlay[]
+                        overlays: new Level.Overlay[]
                         {
                             new Level.Overlay()
                             {
@@ -597,15 +607,14 @@ namespace MrBoom
                                 x = 0, y = 166, AnimationDelay = 1
                             },
                         },
-                        Walls = loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16)),
-                    },
-                    new Level()
-                    {
-                        Backgrounds = new AnimatedImage(
+                        walls: loadImageStripe(imgPause, 0 * 16, 64, 16, 16, 8),
+                        permanentWalls: loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 1, 16, 16))
+                    ),
+                    new Level(
+                        backgrounds: new AnimatedImage(
                             loadImage(content.Load<Texture2D>("SOCCER"), 0, 0, 320, 200)
                         ),
-                        BackgroundSprites = new Level.Overlay[]
+                        backgroundSprites: new Level.Overlay[]
                         {
                             new Level.Overlay(0, 140, new AnimatedImage(
                                 new AnimatedImage(Enumerable.Repeat(loadImage(imgFootanim, 0, 0, 23, 23), 16).ToList()),
@@ -619,7 +628,7 @@ namespace MrBoom
                             new Level.Overlay(0, 200 - 23 - 10, new AnimatedImage(footanim1[11], footanim2[1], footanim2[0], footanim2[1]), 16),
                             new Level.Overlay(320 - 2 - 23, 200 - 23 - 40, new AnimatedImage(footanim2[3], footanim2[4], footanim2[3], footanim2[5]), 16),
                         },
-                        Overlays = new Level.Overlay[]
+                        overlays: new Level.Overlay[]
                         {
                             new Level.Overlay(20, 200 - 32, footanimGirls1, 12),
 
@@ -628,15 +637,14 @@ namespace MrBoom
 
                             new Level.Overlay(320 - 48 - 48, 200 - 32, footanimGirls1, 12),
                         },
-                        Walls = loadImageStripe(imgPause, 160, 112, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
-                    },
-                    new Level()
-                    {
-                        Backgrounds = new AnimatedImage(
+                        walls: loadImageStripe(imgPause, 160, 112, 16, 16, 8),
+                        permanentWalls: loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16))
+                    ),
+                    new Level(
+                        backgrounds: new AnimatedImage(
                             loadImage(content.Load<Texture2D>("CRAYON"), 0, 0, 320, 200)
                         ),
-                        Overlays = new Level.Overlay[]
+                        overlays: new Level.Overlay[]
                         {
                             new Level.Overlay()
                             {
@@ -660,16 +668,16 @@ namespace MrBoom
                                 AnimationDelay = 1
                             }
                         },
-                        Walls = loadImageStripe(imgPause, 0, 112, 16, 16, 8),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16)),
-                    },
-                    new Level()
-                    {
-                        Backgrounds = new AnimatedImage(
+                        walls: loadImageStripe(imgPause, 0, 112, 16, 16, 8),
+                        permanentWalls: loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 3, 16 * 0, 16, 16))
+                    ),
+                    new Level(
+                        backgrounds: new AnimatedImage(
                             loadImage(content.Load<Texture2D>("MICRO"), 0, 0, 320, 200)
                         ),
-                        PermanentWalls = loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 1, 16, 16)),
-                    },
+                        walls: AnimatedImage.Empty,
+                        permanentWalls: loadPermanentWall(fire, loadImage(imgPause, 256 + 16 * 2, 16 * 1, 16, 16))
+                    ),
                 },
                 BoomMid = loadImageStripe(imgSprite2, 0 * 16, 46 + 0 * 16, 16, 16, 4),
                 BoomHor = loadImageStripe(imgSprite2, 0 * 16, 46 + 1 * 16, 16, 16, 4),

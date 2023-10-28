@@ -281,20 +281,10 @@ namespace MrBoom
                 {
                     if (players.Count == 2)
                     {
-                        teams.Add(new Team
+                        foreach (PlayerState player in players)
                         {
-                            Players = new List<PlayerState>()
-                            {
-                                new PlayerState(players[0].Controller, 0, PlayerState.PlayerType.Human, players[0].Name)
-                            }
-                        });
-                        teams.Add(new Team
-                        {
-                            Players = new List<PlayerState>()
-                            {
-                                new PlayerState(players[1].Controller, 1, PlayerState.PlayerType.Human, players[1].Name)
-                            }
-                        });
+                            teams.Add(new Team { Players = new List<PlayerState> { player } });
+                        }
                     }
                     else
                     {

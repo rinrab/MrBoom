@@ -103,11 +103,6 @@ namespace MrBoom
                 {
                     ScreenManager.SetScreen(new GameScreen(Teams, assets, this, false));
                 }
-                else if (ScreenManager.Next == Screen.StartMenu)
-                {
-                    NextSong(3);
-                    ScreenManager.SetScreen(new MultiplayerStartScreen(assets, Teams, Controllers));
-                }
                 else
                 {
                     throw new Exception("Can't navigate to " + ScreenManager.Next);

@@ -181,7 +181,7 @@ namespace MrBoom
 
                         if (demoMenu.Action == 0)
                         {
-                            Next = Screen.StartMenu;
+                            ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, game.Controllers));
                         }
                         else if (demoMenu.Action == 2)
                         {
@@ -207,7 +207,7 @@ namespace MrBoom
 
                         game.Teams[winner].VictoryCount++;
 
-                        ScreenManager.SetScreen(new ResultScreen(game.Teams.ToArray(), winner, assets, game.Controllers, Team.Mode));
+                        ScreenManager.SetScreen(new ResultScreen(game.Teams, winner, assets, game.Controllers, Team.Mode));
                     }
                     else if (terrain.Result == GameResult.Draw)
                     {

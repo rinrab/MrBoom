@@ -10,7 +10,7 @@ namespace MrBoom
     {
         public Screen Next { get; private set; }
 
-        private readonly Team[] teams;
+        private readonly List<Team> teams;
         private readonly int winner;
         private readonly List<IController> controllers;
         private readonly TeamMode teamMode;
@@ -18,7 +18,7 @@ namespace MrBoom
 
         private int tick;
 
-        public ResultScreen(Team[] teams, int winner, Assets assets, List<IController> controllers, TeamMode teamMode)
+        public ResultScreen(List<Team> teams, int winner, Assets assets, List<IController> controllers, TeamMode teamMode)
         {
             this.teams = teams;
             this.winner = winner;
@@ -45,7 +45,7 @@ namespace MrBoom
 
             void drawCoins(int x, int y, int teamIndex)
             {
-                if (teamIndex < teams.Length)
+                if (teamIndex < teams.Count)
                 {
                     Team team = teams[teamIndex];
 
@@ -116,7 +116,7 @@ namespace MrBoom
             {
                 if (teams[winner].VictoryCount >= 5)
                 {
-                    ScreenManager.SetScreen(new VictoryScreen(teams[winner], assets, controllers));
+                    ScreenManager.SetScreen(new VictoryScreen(teams[winner], assets, controllers, teams));
                 }
                 else
                 {

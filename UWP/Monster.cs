@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
-using Microsoft.Xna.Framework;
-
 namespace MrBoom
 {
     public class Monster : Sprite

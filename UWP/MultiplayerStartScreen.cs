@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Windows.Media.Protection.PlayReady;
 using Windows.UI.Xaml;
 
 namespace MrBoom
@@ -141,7 +140,7 @@ namespace MrBoom
                 List<IController> toRemove = new List<IController>();
                 foreach (IController controller in unjoinedControllers)
                 {
-                    if (controller.IsKeyDown(PlayerKeys.Bomb) )
+                    if (controller.IsKeyDown(PlayerKeys.Bomb))
                     {
                         if (players.Count < 8)
                         {

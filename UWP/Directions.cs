@@ -82,7 +82,7 @@ namespace MrBoom
             }
             else
             {
-                return null; 
+                return null;
             }
         }
     }

@@ -96,7 +96,7 @@ namespace MrBoom
         {
             List<string> result = new List<string>();
 
-            foreach(var option in options)
+            foreach (var option in options)
             {
                 result.Add(FormatText(option));
             }

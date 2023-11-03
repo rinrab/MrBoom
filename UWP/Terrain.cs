@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using MrBoom.Bot;
 
@@ -74,7 +73,7 @@ namespace MrBoom
             spawns = new List<CellCoord>();
             TimeLeft = (map.Time + 31) * 60;
             final = new Grid<byte>(Width, Height, 255);
-            for (int  i = 0; i < final.CellCount; i++)
+            for (int i = 0; i < final.CellCount; i++)
             {
                 byte fin = map.Final[i];
                 final[i] = fin;
@@ -514,7 +513,7 @@ namespace MrBoom
                     int y = bombY + i * dy;
                     Cell cell = data[x, y];
 
-                    if (cell.Type == TerrainType.PermanentWall || 
+                    if (cell.Type == TerrainType.PermanentWall ||
                         cell.Type == TerrainType.Apocalypse ||
                         cell.Type == TerrainType.Rubber)
                     {

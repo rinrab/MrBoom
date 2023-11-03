@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
-using System;
-
 namespace MrBoom
 {
     public abstract class AbstractPlayer : Sprite

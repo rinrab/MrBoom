@@ -366,7 +366,7 @@ namespace MrBoom
 
                         if (cell.bombCountdown == 0 || (cell.owner != null && cell.owner.rcDitonate && cell.rcAllowed))
                         {
-                            ditonateBomb(x, y);
+                            DitonateBomb(x, y);
                             continue;
                         }
                         if (cell.OffsetX == 0 && cell.OffsetY == 0)
@@ -379,7 +379,7 @@ namespace MrBoom
                             }
                             else if (next.Type == TerrainType.Bomb && ((cell.DeltaX != 0 && next.DeltaX != 0) || (cell.DeltaY != 0 && next.DeltaY != 0)))
                             {
-                                ditonateBomb(x, y);
+                                DitonateBomb(x, y);
                                 continue;
                             }
                             else if (next.Type != TerrainType.Free)
@@ -404,7 +404,7 @@ namespace MrBoom
                             }
                             else
                             {
-                                ditonateBomb(x, y);
+                                DitonateBomb(x, y);
                                 continue;
                             }
                         }
@@ -490,7 +490,7 @@ namespace MrBoom
             }
         }
 
-        public void ditonateBomb(int bombX, int bombY)
+        public void DitonateBomb(int bombX, int bombY)
         {
             Cell bombCell = data[bombX, bombY];
             int maxBoom = bombCell.maxBoom;
@@ -542,7 +542,7 @@ namespace MrBoom
                     }
                     else if (cell.Type == TerrainType.Bomb)
                     {
-                        ditonateBomb(x, y);
+                        DitonateBomb(x, y);
                         break;
                     }
                     else if (cell.Type == TerrainType.Fire ||

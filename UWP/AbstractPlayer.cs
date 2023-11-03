@@ -127,7 +127,7 @@ namespace MrBoom
                         {
                             if (terrain.GetCell(x, y).Type == TerrainType.Bomb)
                             {
-                                terrain.ditonateBomb(x, y);
+                                terrain.DitonateBomb(x, y);
                             }
                         }
                     }

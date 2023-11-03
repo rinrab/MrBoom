@@ -12,21 +12,13 @@ namespace MrBoom
 
         public GameScreen(List<Team> teams, Assets assets, Game game) : base(teams, assets, game)
         {
-            int playersCount = 0;
             for (int i = 0; i < teams.Count; i++)
             {
                 for (int j = 0; j < teams[i].Players.Count; j++)
                 {
-                    var player = teams[i].Players[j];
-                    if (player.Type == PlayerState.PlayerType.Human)
-                    {
-                        terrain.AddPlayer(assets.Players[player.Index], player.Controller, i);
-                    }
-                    else
-                    {
-                        terrain.AddComputer(assets.Players[player.Index], i);
-                    }
-                    playersCount++;
+                    IPlayerState playerState = teams[i].Players[j];
+                    AbstractPlayer player = playerState.GetPlayer(terrain, i);
+                    terrain.AddPlayer(player);
                 }
             }
 

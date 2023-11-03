@@ -6,29 +6,31 @@ namespace MrBoom
     {
         public int BombsPlaced;
         public bool rcDitonate = false;
-        public int MaxBoom { get => maxBoom; }
+        public int MaxBoom;
+        public int MaxBombsCount;
 
         public int BombsRemaining
         {
             get
             {
-                return maxBombsCount - BombsPlaced;
+                return MaxBombsCount - BombsPlaced;
             }
         }
+
         protected bool rcDitonateButton;
         protected bool dropBombButton;
+
         public int Team;
         public int TeamMask { get => 1 << Team; }
-        private int maxBoom;
-        private int maxBombsCount;
         private int lifeCount;
 
-        public AbstractPlayer(Terrain map, Assets.MovingSpriteAssets animations, int x, int y, int maxBoom, int maxBombs, int team) :
-            base(map, animations, x, y, 3)
+        public AbstractPlayer(Terrain map,
+                              Assets.MovingSpriteAssets animations,
+                              int team) : base(map, animations, 0, 0, 3)
         {
             Features = map.StartFeatures;
-            this.maxBoom = maxBoom;
-            maxBombsCount = maxBombs;
+            MaxBoom = map.StartMaxFire;
+            MaxBombsCount = map.SstartMaxBombsCount;
             Team = team;
         }
 
@@ -56,9 +58,9 @@ namespace MrBoom
 
             if ((dropBombButton || Skull == SkullType.AutoBomb) && Skull != SkullType.BombsDisable)
             {
-                if (cell.Type == TerrainType.Free && BombsPlaced < maxBombsCount)
+                if (cell.Type == TerrainType.Free && BombsPlaced < MaxBombsCount)
                 {
-                    terrain.PutBomb(cellX, cellY, maxBoom, Features.HasFlag(Feature.RemoteControl), this);
+                    terrain.PutBomb(cellX, cellY, MaxBoom, Features.HasFlag(Feature.RemoteControl), this);
 
                     BombsPlaced++;
                     terrain.PlaySound(Sound.PoseBomb);
@@ -72,11 +74,11 @@ namespace MrBoom
 
                 if (powerUpType == PowerUpType.ExtraFire)
                 {
-                    maxBoom++;
+                    MaxBoom++;
                 }
                 else if (powerUpType == PowerUpType.ExtraBomb)
                 {
-                    maxBombsCount++;
+                    MaxBombsCount++;
                 }
                 else if (powerUpType == PowerUpType.RemoteControl)
                 {

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MrBoom.Bot;
 
 namespace MrBoom
 {
@@ -26,7 +27,7 @@ namespace MrBoom
 
             for (int i = 0; i < 4; i++)
             {
-                terrain.AddComputer(assets.Players[i], i);
+                terrain.AddPlayer(new ComputerPlayer(terrain, assets.Players[i], i, i));
             }
 
             terrain.InitializeMonsters();
@@ -45,7 +46,7 @@ namespace MrBoom
 
                 for (int i = 0; i < 4; i++)
                 {
-                    terrain.AddComputer(assets.Players[i], i);
+                    terrain.AddPlayer(new ComputerPlayer(terrain, assets.Players[i], i, i));
                 }
 
                 terrain.InitializeMonsters();

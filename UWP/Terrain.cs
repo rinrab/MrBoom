@@ -41,10 +41,10 @@ namespace MrBoom
         private readonly Map map;
         private readonly List<AbstractPlayer> players;
         private readonly List<Monster> monsters;
-        private readonly int startMaxFire;
-        private readonly int startMaxBombsCount;
 
-        public Feature StartFeatures { get; }
+        public readonly Feature StartFeatures;
+        public readonly int StartMaxFire;
+        public readonly int SstartMaxBombsCount;
 
         private readonly Assets.Level levelAssets;
         private readonly Grid<bool> hasMonsterGrid;
@@ -84,8 +84,8 @@ namespace MrBoom
             }
             players = new List<AbstractPlayer>();
 
-            startMaxBombsCount = map.StartMaxBombsCount;
-            startMaxFire = map.StartMaxFire;
+            SstartMaxBombsCount = map.StartMaxBombsCount;
+            StartMaxFire = map.StartMaxFire;
 
             data = new Grid<Cell>(Width, Height, new Cell(TerrainType.PermanentWall));
             for (int y = 0; y < Height; y++)
@@ -139,28 +139,14 @@ namespace MrBoom
             Random.Shuffle(spawns);
         }
 
-        public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
+        public void AddPlayer(AbstractPlayer player)
         {
-            var spawn = GenerateSpawn().Value;
+            CellCoord spawn = GenerateSpawn().Value;
 
-            AbstractPlayer sprite = new Human(
-                this, movingSpriteAssets,
-                spawn.X * 16, spawn.Y * 16,
-                controller, startMaxFire, startMaxBombsCount, team);
+            player.X = spawn.X * 16;
+            player.Y = spawn.Y * 16;
 
-            players.Add(sprite);
-        }
-
-        public void AddComputer(Assets.MovingSpriteAssets movingSpriteAssets, int team)
-        {
-            var spawn = GenerateSpawn().Value;
-
-            AbstractPlayer sprite = new ComputerPlayer(
-                this, movingSpriteAssets,
-                spawn.X * 16, spawn.Y * 16,
-                startMaxFire, startMaxBombsCount, team, players.Count);
-
-            players.Add(sprite);
+            players.Add(player);
         }
 
         public void InitializeMonsters()

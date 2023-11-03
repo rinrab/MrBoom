@@ -20,8 +20,8 @@ namespace MrBoom
         private bool isDie = false;
         public Feature Features;
         public SkullType? Skull { get; private set; }
-        public int X { get => x; private set => x = value; }
-        public int Y { get => y; private set => y = value; }
+        public int X { get => x; set => x = value; }
+        public int Y { get => y; set => y = value; }
         public bool IsDie { get => isDie; }
         public bool IsAlive { get => !isDie; }
 

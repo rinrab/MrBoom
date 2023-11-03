@@ -1,27 +1,56 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using MrBoom.Bot;
+
 namespace MrBoom
 {
-    public class PlayerState
+    public interface IPlayerState
     {
-        public enum PlayerType
-        {
-            Human,
-            Bot
-        }
+        int Index { get; }
+        string Name { get; }
+        int VictoryCount { get; set; }
+        bool IsReplaceble { get; }
 
-        public IController Controller;
-        public string Name;
-        public int VictoryCount;
-        public int Index;
-        public PlayerType Type;
+        AbstractPlayer GetPlayer(Terrain terrain, int team);
+    }
 
-        public PlayerState(IController controller, int index, PlayerType type, string name)
+    public class HumanPlayerState : IPlayerState
+    {
+        public IController Controller { get; }
+        public int Index { get; }
+        public string Name { get; }
+        public int VictoryCount { get; set; }
+        public bool IsReplaceble => false;
+
+        public HumanPlayerState(IController controller, int index, string name)
         {
             Controller = controller;
             Index = index;
-            Type = type;
             Name = name;
+        }
+
+        public AbstractPlayer GetPlayer(Terrain terrain, int team)
+        {
+            return new Human(terrain, terrain.assets.Players[Index], Controller, team);
+        }
+    }
+
+    public class BotPlayerState : IPlayerState
+    {
+        public int Index { get; }
+        public string Name { get; }
+        public int VictoryCount { get; set; }
+        public bool IsReplaceble => true;
+
+        public BotPlayerState(int index, string name)
+        {
+            Index = index;
+            Name = name;
+        }
+
+        public AbstractPlayer GetPlayer(Terrain terrain, int team)
+        {
+            return new ComputerPlayer(terrain, terrain.assets.Players[Index], team, Index);
         }
     }
 }

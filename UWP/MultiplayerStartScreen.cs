@@ -35,7 +35,7 @@ namespace MrBoom
 
         private int startTick = -1;
         private TeamMode teamMode = 0;
-        private readonly List<PlayerState> players;
+        private readonly List<IPlayerState> players;
         private Menu menu;
 
         public MultiplayerStartScreen(Assets assets, List<Team> teams, List<IController> controllers)
@@ -45,7 +45,7 @@ namespace MrBoom
             this.controllers = controllers;
             unjoinedControllers = new List<IController>(controllers);
             joinedControllers = new List<IController>();
-            players = new List<PlayerState>();
+            players = new List<IPlayerState>();
             teamMode = Team.Mode;
 
             teams.Clear();
@@ -81,7 +81,7 @@ namespace MrBoom
                     AnimatedImage images = assets.Alpha[index / 2 + 2];
                     if (index < players.Count)
                     {
-                        PlayerState player = players[index];
+                        IPlayerState player = players[index];
 
                         Game.DrawString(ctx, 13 + x * 80, 78 + y * 70, "name ?", images);
                         Game.DrawString(ctx, 21 + x * 80, 88 + y * 70, player.Name, images);
@@ -144,7 +144,7 @@ namespace MrBoom
                     {
                         if (players.Count < 8)
                         {
-                            players.Add(new PlayerState(controller, players.Count, PlayerState.PlayerType.Human, GeneratePlayerName()));
+                            players.Add(new HumanPlayerState(controller, players.Count, GeneratePlayerName()));
                             assets.Sounds.Addplayer.Play();
 
                             toRemove.Add(controller);
@@ -153,9 +153,9 @@ namespace MrBoom
                         {
                             for (int i = 0; i < players.Count; i++)
                             {
-                                if (players[i].Type == PlayerState.PlayerType.Bot)
+                                if (players[i].IsReplaceble)
                                 {
-                                    players[i] = new PlayerState(controller, i, PlayerState.PlayerType.Human, GeneratePlayerName());
+                                    players[i] = new HumanPlayerState(controller, i, GeneratePlayerName());
                                     assets.Sounds.Addplayer.Play();
 
                                     toRemove.Add(controller);
@@ -192,7 +192,7 @@ namespace MrBoom
                 if (Controller.IsKeyDown(controllers, PlayerKeys.AddBot) && players.Count < 8)
                 {
                     assets.Sounds.Addbot.Play();
-                    players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
+                    players.Add(new BotPlayerState(players.Count, "bot"));
                     Controller.Reset(controllers);
                 }
 
@@ -249,13 +249,13 @@ namespace MrBoom
         {
             if (players.Count == 1)
             {
-                players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
+                players.Add(new BotPlayerState(players.Count, "bot"));
             }
             else if (players.Count == 0)
             {
                 for (int i = 0; i < 8; i++)
                 {
-                    players.Add(new PlayerState(null, players.Count, PlayerState.PlayerType.Bot, "bot"));
+                    players.Add(new BotPlayerState(players.Count, "bot"));
                 }
             }
 
@@ -271,25 +271,25 @@ namespace MrBoom
                 teams.Clear();
                 if (teamMode == TeamMode.Off)
                 {
-                    foreach (PlayerState player in players)
+                    foreach (IPlayerState player in players)
                     {
-                        teams.Add(new Team { Players = new List<PlayerState> { player } });
+                        teams.Add(new Team { Players = new List<IPlayerState> { player } });
                     }
                 }
                 if (teamMode == TeamMode.Color)
                 {
                     if (players.Count == 2)
                     {
-                        foreach (PlayerState player in players)
+                        foreach (IPlayerState player in players)
                         {
-                            teams.Add(new Team { Players = new List<PlayerState> { player } });
+                            teams.Add(new Team { Players = new List<IPlayerState> { player } });
                         }
                     }
                     else
                     {
                         for (int i = 0; i < players.Count; i += 2)
                         {
-                            var newPlayers = new List<PlayerState> { players[i] };
+                            var newPlayers = new List<IPlayerState> { players[i] };
                             if (i + 1 < players.Count)
                             {
                                 newPlayers.Add(players[i + 1]);
@@ -301,8 +301,8 @@ namespace MrBoom
                 }
                 if (teamMode == TeamMode.Sex)
                 {
-                    teams.Add(new Team { Players = new List<PlayerState>() });
-                    teams.Add(new Team { Players = new List<PlayerState>() });
+                    teams.Add(new Team { Players = new List<IPlayerState>() });
+                    teams.Add(new Team { Players = new List<IPlayerState>() });
 
                     for (int i = 0; i < players.Count; i += 2)
                     {

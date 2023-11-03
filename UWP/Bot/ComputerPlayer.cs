@@ -13,16 +13,18 @@ namespace MrBoom.Bot
         private readonly TravelCostGrid travelCostGrid;
         private readonly TravelCostGrid travelSafeCostGrid;
         private readonly Directions[] allDirections;
-        private readonly int botIndex;
+        private readonly int botSeed;
         private readonly TravelCostGrid findPathCost;
         private readonly Grid<int> bestExplosionGrid;
         private readonly Grid<bool> dangerGrid;
         private readonly Grid<int> flamesGrid;
 
-        public ComputerPlayer(Terrain map, Assets.MovingSpriteAssets animations, int x, int y, int maxBoom, int maxBombs, int team, int botIndex)
-            : base(map, animations, x, y, maxBoom, maxBombs, team)
+        public ComputerPlayer(Terrain map,
+                              Assets.MovingSpriteAssets animations,
+                              int team, int botSeed) : base(map, animations, team)
         {
-            this.botIndex = botIndex;
+            this.botSeed = botSeed;
+
             tree = new BtSelector("BotTree")
             {
                 new ActionNode(GotoBonusCell, "Bonus"),
@@ -234,7 +236,7 @@ namespace MrBoom.Bot
 
         private Random GetDecisionRandom()
         {
-            return new Random(botIndex);
+            return new Random(botSeed);
         }
 
         private int CalcTravelCost(int x, int y)

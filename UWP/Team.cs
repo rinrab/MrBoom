@@ -15,7 +15,7 @@ namespace MrBoom
     {
         public static TeamMode Mode;
 
-        public List<PlayerState> Players;
+        public List<IPlayerState> Players;
         public int VictoryCount;
 
         public string[] Names
@@ -23,7 +23,7 @@ namespace MrBoom
             get
             {
                 List<string> names = new List<string>();
-                foreach (PlayerState player in Players)
+                foreach (IPlayerState player in Players)
                 {
                     names.Add(player.Name);
                 }
@@ -31,9 +31,9 @@ namespace MrBoom
             }
         }
 
-        public static PlayerState[] GetPlayers(IEnumerable<Team> teams)
+        public static IPlayerState[] GetPlayers(IEnumerable<Team> teams)
         {
-            List<PlayerState> players = new List<PlayerState>();
+            List<IPlayerState> players = new List<IPlayerState>();
             foreach (Team team in teams)
             {
                 players.AddRange(team.Players);

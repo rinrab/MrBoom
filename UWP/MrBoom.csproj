@@ -104,6 +104,7 @@
     <Compile Include="Assets.cs" />
     <Compile Include="BehaviorTree\BtComposite.cs" />
     <Compile Include="BehaviorTree\BtNode.cs" />
+    <Compile Include="BehaviorTree\BtRepeater.cs" />
     <Compile Include="BehaviorTree\BtSelector.cs" />
     <Compile Include="BehaviorTree\BtSequence.cs" />
     <Compile Include="BehaviorTree\BtStatus.cs" />

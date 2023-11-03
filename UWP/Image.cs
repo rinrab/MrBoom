@@ -27,7 +27,10 @@ namespace MrBoom
 
         public void Draw(SpriteBatch ctx, int x, int y, Color? color = null)
         {
-            ctx.Draw(texture, new Vector2(x * scale, y * scale), rect, color.HasValue ? color.Value : Color.White);
+            ctx.Draw(texture,
+                     new Vector2(x * scale, y * scale),
+                     rect,
+                     color.HasValue ? color.Value : Color.White);
         }
     }
 }

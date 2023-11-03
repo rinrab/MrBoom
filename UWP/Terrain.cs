@@ -678,9 +678,9 @@ namespace MrBoom
             sb.AppendLine($"DEBUG INFO");
             sb.AppendLine($"Version: {Game.Version}");
 
-            foreach (AbstractPlayer player in players)
+            foreach (Sprite sprite in GetSprites())
             {
-                sb.AppendLine(player.GetDebugInfo());
+                sb.AppendLine(sprite.GetDebugInfo());
             }
 
             sb.AppendLine($"F1 - detonate all");

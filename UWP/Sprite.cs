@@ -287,5 +287,10 @@ namespace MrBoom
         {
             return string.Empty;
         }
+
+        public virtual string GetDebugInfo()
+        {
+            return string.Empty;
+        }
     }
 }

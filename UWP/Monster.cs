@@ -1,54 +1,102 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
+using MrBoom.BehaviorTree;
+using MrBoom.Bot;
+
 namespace MrBoom
 {
     public class Monster : Sprite
     {
-        private readonly Map.MonsterData monsterData;
-        private int wait = -1;
+        private readonly BtNode tree;
+
         private int livesCount;
 
         public Monster(Terrain map, Map.MonsterData monsterData,
             Assets.MovingSpriteAssets animations, int x, int y) :
             base(map, animations, x, y, monsterData.Speed)
         {
-            this.monsterData = monsterData;
+            tree = new BtSequence()
+            {
+                new DelayNode(300),
+                new BtSelector()
+                {
+                    new ActionNode(ChooseDirection, "ChooseDirection"),
+                    new ActionNode(Walk, "Walk"),
+                    new DelayNode(monsterData.WaitAfterTurn, "Wait")
+                }
+            };
+
             livesCount = monsterData.LivesCount - 1;
 
             if (monsterData.IsSlowStart)
             {
-                wait = 120;
                 unplugin = 120;
+            }
+        }
+
+        private BtStatus ChooseDirection()
+        {
+            for (int i = 0; ; i++)
+            {
+                Directions dir = Terrain.Random.NextEnum<Directions>();
+
+                if (IsWalkable(dir.DeltaX(), dir.DeltaY()))
+                {
+                    Direction = dir;
+                    return BtStatus.Success;
+                }
+                if (i >= 32)
+                {
+                    Direction = null;
+                    return BtStatus.Failure;
+                }
+            }
+        }
+
+        private BtStatus Walk()
+        {
+            if (X % 16 == 0 && Y % 16 == 0 && Terrain.Random.Next(16) == 0)
+            {
+                frameIndex = 0;
+                Direction = null;
+                return BtStatus.Success;
+            }
+            else if (!IsWalkable(Direction.DeltaX(), Direction.DeltaY()))
+            {
+                frameIndex = 0;
+                Direction = null;
+                return BtStatus.Success;
             }
             else
             {
-                Direction = Terrain.Random.NextEnum<Directions>();
+                return BtStatus.Running;
+            }
+        }
+
+        bool IsWalkable(int dx, int dy)
+        {
+            switch (terrain.GetCell((X + dx * 8 + 8 + dx) / 16, (Y + dy * 8 + 8 + dy) / 16).Type)
+            {
+                case TerrainType.Free:
+                case TerrainType.PowerUpFire:
+                case TerrainType.PowerUp:
+                    return true;
+
+                case TerrainType.PermanentWall:
+                case TerrainType.TemporaryWall:
+                case TerrainType.Bomb:
+                case TerrainType.Fire:
+                case TerrainType.Apocalypse:
+                case TerrainType.Rubber:
+                    return false;
+
+                default: return true;
             }
         }
 
         public override void Update()
         {
-            bool isWalkable(int dx, int dy)
-            {
-                switch (terrain.GetCell((X + dx * 8 + 8 + dx) / 16, (Y + dy * 8 + 8 + dy) / 16).Type)
-                {
-                    case TerrainType.Free:
-                    case TerrainType.PowerUpFire:
-                    case TerrainType.PowerUp:
-                        return true;
-
-                    case TerrainType.PermanentWall:
-                    case TerrainType.TemporaryWall:
-                    case TerrainType.Bomb:
-                    case TerrainType.Fire:
-                    case TerrainType.Apocalypse:
-                    case TerrainType.Rubber:
-                        return false;
-
-                    default: return true;
-                }
-            }
-
             if (IsAlive)
             {
                 var cell = terrain.GetCell((X + 8) / 16, (Y + 8) / 16);
@@ -75,52 +123,15 @@ namespace MrBoom
                 }
                 else
                 {
-                    if (wait == 0)
-                    {
-                        wait = -1;
-
-                        for (int i = 0; ; i++)
-                        {
-                            Directions dir = Terrain.Random.NextEnum<Directions>();
-
-                            if (isWalkable(dir.DeltaX(), dir.DeltaY()))
-                            {
-                                Direction = dir;
-                                break;
-                            }
-                            if (i >= 32)
-                            {
-                                Direction = null;
-                                wait = monsterData.WaitAfterTurn;
-                                break;
-                            }
-                        }
-                    }
-                    else if (wait == -1)
-                    {
-                        if (X % 16 == 0 && Y % 16 == 0 && Terrain.Random.Next(16) == 0)
-                        {
-                            wait = monsterData.WaitAfterTurn;
-                            frameIndex = 0;
-                            Direction = null;
-                        }
-                        else
-                        {
-                            if (!isWalkable(Direction.DeltaX(), Direction.DeltaY()))
-                            {
-                                wait = monsterData.WaitAfterTurn;
-                                frameIndex = 0;
-                                Direction = null;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        wait--;
-                    }
+                    tree.Update();
                 }
             }
             base.Update();
+        }
+
+        public override string GetDebugInfo()
+        {
+            return tree.ToString();
         }
     }
 }

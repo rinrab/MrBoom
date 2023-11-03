@@ -202,6 +202,5 @@ namespace MrBoom
             SetSkull(SkullType.Fast);
         }
 
-        public abstract string GetDebugInfo();
     }
 }

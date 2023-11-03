@@ -141,7 +141,7 @@ namespace MrBoom
 
         public void AddPlayer(Assets.MovingSpriteAssets movingSpriteAssets, IController controller, int team)
         {
-            var spawn = generateSpawn().Value;
+            var spawn = GenerateSpawn().Value;
 
             AbstractPlayer sprite = new Human(
                 this, movingSpriteAssets,
@@ -153,7 +153,7 @@ namespace MrBoom
 
         public void AddComputer(Assets.MovingSpriteAssets movingSpriteAssets, int team)
         {
-            var spawn = generateSpawn().Value;
+            var spawn = GenerateSpawn().Value;
 
             AbstractPlayer sprite = new ComputerPlayer(
                 this, movingSpriteAssets,
@@ -167,7 +167,7 @@ namespace MrBoom
         {
             while (true)
             {
-                var spawn = generateSpawn();
+                var spawn = GenerateSpawn();
                 if (!spawn.HasValue)
                 {
                     break;
@@ -618,7 +618,7 @@ namespace MrBoom
             }
         }
 
-        CellCoord? generateSpawn()
+        CellCoord? GenerateSpawn()
         {
             if (spawns.Count <= 0)
             {

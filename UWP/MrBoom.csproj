@@ -123,7 +123,6 @@
     <Compile Include="Human.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="IScreen.cs" />
-    <Compile Include="ISprite.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />

@@ -30,5 +30,17 @@ namespace MrBoom.BehaviorTree
                 return BtStatus.Running;
             }
         }
+
+        public override string ToString()
+        {
+            if (status == BtStatus.Running)
+            {
+                return name + " " + (delay - ticks + 1);
+            }
+            else
+            {
+                return name + " " + delay;
+            }
+        }
     }
 }

@@ -11,9 +11,10 @@ namespace MrBoom
 
         private int livesCount;
 
-        public Monster(Terrain map, Map.MonsterData monsterData,
-            Assets.MovingSpriteAssets animations, int x, int y) :
-            base(map, animations, x, y, monsterData.Speed)
+        public Monster(Terrain map,
+                       Map.MonsterData monsterData,
+                       Assets.MovingSpriteAssets animations,
+                       int x, int y) : base(map, animations, x, y, monsterData.Speed)
         {
             tree = new BtSequence()
             {

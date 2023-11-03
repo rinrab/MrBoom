@@ -112,12 +112,14 @@
     <Compile Include="Bot\TravelCostGrid.cs" />
     <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="DemoScreen.cs" />
     <Compile Include="Directions.cs" />
     <Compile Include="DrawScreen.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AbstractGameScreen.cs" />
     <Compile Include="GameScreen.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="Human.cs" />

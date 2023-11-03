@@ -22,7 +22,7 @@ namespace MrBoom
                     {
                         new ActionNode(ChooseDirection, "ChooseDirection"),
                         new ActionNode(Walk, "Walk"),
-                        new DelayNode(monsterData.WaitAfterTurn, "Wait")
+                        new DelayNode(monsterData.WaitAfterTurn, "Think")
                     })
             };
 

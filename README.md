@@ -12,6 +12,4 @@ Game Features:
 - Same-device multiplayer
 - Full controller and keyboard support
 
-<a href="https://apps.microsoft.com/store/detail/9P4GKX2DCHTK?launch=true&mode=full">
-  <img src="https://get.microsoft.com/images/en-US%20dark.svg"/>
-</a>
+[![Microsoft Store](https://get.microsoft.com/images/en-US%20dark.svg)](https://apps.microsoft.com/store/detail/9P4GKX2DCHTK?launch=true&mode=full)

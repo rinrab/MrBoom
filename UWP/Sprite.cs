@@ -35,10 +35,10 @@ namespace MrBoom
         public Sprite(Terrain terrain, Assets.MovingSpriteAssets assets, int x, int y, int speed)
         {
             this.terrain = terrain;
-            this.animations = assets;
-            this.X = x;
-            this.Y = y;
-            this.DefaultSpeed = speed;
+            animations = assets;
+            X = x;
+            Y = y;
+            DefaultSpeed = speed;
         }
 
         public virtual void Update()
@@ -92,20 +92,20 @@ namespace MrBoom
 
             void moveY(int delta)
             {
-                if (this.X % 16 == 0)
+                if (X % 16 == 0)
                 {
-                    int newY = (delta < 0) ? (this.Y + delta) / 16 : this.Y / 16 + 1;
-                    int cellX = (this.X + 8) / 16;
-                    int cellY = (this.Y + 8) / 16;
+                    int newY = (delta < 0) ? (Y + delta) / 16 : Y / 16 + 1;
+                    int cellX = (X + 8) / 16;
+                    int cellY = (Y + 8) / 16;
 
                     if (terrain.IsWalkable(cellX, newY))
                     {
-                        this.Y += delta;
+                        Y += delta;
                     }
 
                     if (newY == cellY && cell.Type == TerrainType.Bomb)
                     {
-                        this.Y += delta;
+                        Y += delta;
                     }
                     else
                     {
@@ -124,25 +124,25 @@ namespace MrBoom
                 }
                 else
                 {
-                    this.XAlign(delta);
+                    XAlign(delta);
                 }
             }
             void moveX(int delta)
             {
-                if (this.Y % 16 == 0)
+                if (Y % 16 == 0)
                 {
-                    int newX = (delta < 0) ? (this.X + delta) / 16 : this.X / 16 + 1;
-                    int cellX = (this.X + 8) / 16;
-                    int cellY = (this.Y + 8) / 16;
+                    int newX = (delta < 0) ? (X + delta) / 16 : X / 16 + 1;
+                    int cellX = (X + 8) / 16;
+                    int cellY = (Y + 8) / 16;
 
                     if (terrain.IsWalkable(newX, cellY))
                     {
-                        this.X += delta;
+                        X += delta;
                     }
 
                     if (newX == cellX && cell.Type == TerrainType.Bomb)
                     {
-                        this.X += delta;
+                        X += delta;
                     }
                     else
                     {
@@ -161,7 +161,7 @@ namespace MrBoom
                 }
                 else
                 {
-                    this.YAlign(delta);
+                    YAlign(delta);
                 }
             }
 
@@ -179,25 +179,25 @@ namespace MrBoom
 
             for (int i = 0; i < move; i++)
             {
-                if (this.Direction == Directions.Up)
+                if (Direction == Directions.Up)
                 {
-                    this.animateIndex = 3;
+                    animateIndex = 3;
                     moveY(-1);
                 }
-                else if (this.Direction == Directions.Down)
+                else if (Direction == Directions.Down)
                 {
-                    this.animateIndex = 0;
+                    animateIndex = 0;
                     moveY(1);
                 }
-                else if (this.Direction == Directions.Left)
+                else if (Direction == Directions.Left)
                 {
                     moveX(-1);
-                    this.animateIndex = 2;
+                    animateIndex = 2;
                 }
-                else if (this.Direction == Directions.Right)
+                else if (Direction == Directions.Right)
                 {
                     moveX(1);
-                    this.animateIndex = 1;
+                    animateIndex = 1;
                 }
             }
 
@@ -213,32 +213,32 @@ namespace MrBoom
 
         void XAlign(int deltaY)
         {
-            if (terrain.IsWalkable((this.X - 1) / 16, (this.Y + 8) / 16 + deltaY))
+            if (terrain.IsWalkable((X - 1) / 16, (Y + 8) / 16 + deltaY))
             {
-                this.X -= 1;
+                X -= 1;
 
-                this.AnimateIndex = 2;
+                AnimateIndex = 2;
             }
-            else if (terrain.IsWalkable((this.X + 16) / 16, (this.Y + 8) / 16 + deltaY))
+            else if (terrain.IsWalkable((X + 16) / 16, (Y + 8) / 16 + deltaY))
             {
-                this.X += 1;
+                X += 1;
 
-                this.AnimateIndex = 1;
+                AnimateIndex = 1;
             }
         }
 
         void YAlign(int deltaX)
         {
-            if (terrain.IsWalkable((this.X + 8) / 16 + deltaX, (this.Y - 1) / 16))
+            if (terrain.IsWalkable((X + 8) / 16 + deltaX, (Y - 1) / 16))
             {
-                this.Y -= 1;
-                this.AnimateIndex = 3;
+                Y -= 1;
+                AnimateIndex = 3;
             }
-            else if (terrain.IsWalkable((this.X + 8) / 16 + deltaX, (this.Y + 16) / 16))
+            else if (terrain.IsWalkable((X + 8) / 16 + deltaX, (Y + 16) / 16))
             {
-                this.Y += 1;
+                Y += 1;
 
-                this.AnimateIndex = 0;
+                AnimateIndex = 0;
             }
         }
 
@@ -260,8 +260,8 @@ namespace MrBoom
 
                 Image img = animation[frameIndex / 20];
 
-                int x = this.X + 8 + 8 - img.Width / 2;
-                int y = this.Y + 16 - img.Height;
+                int x = X + 8 + 8 - img.Width / 2;
+                int y = Y + 16 - img.Height;
 
                 if (animateIndex != 4 || frameIndex / 20 < animations.Normal[4].Length)
                 {

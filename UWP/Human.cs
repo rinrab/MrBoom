@@ -27,22 +27,22 @@ namespace MrBoom
 
         public override void Update()
         {
-            this.Direction = null;
-            if (this.Controller.IsKeyDown(PlayerKeys.Up))
+            Direction = null;
+            if (Controller.IsKeyDown(PlayerKeys.Up))
             {
-                this.Direction = Directions.Up;
+                Direction = Directions.Up;
             }
-            else if (this.Controller.IsKeyDown(PlayerKeys.Left))
+            else if (Controller.IsKeyDown(PlayerKeys.Left))
             {
-                this.Direction = Directions.Left;
+                Direction = Directions.Left;
             }
-            else if (this.Controller.IsKeyDown(PlayerKeys.Right))
+            else if (Controller.IsKeyDown(PlayerKeys.Right))
             {
-                this.Direction = Directions.Right;
+                Direction = Directions.Right;
             }
-            else if (this.Controller.IsKeyDown(PlayerKeys.Down))
+            else if (Controller.IsKeyDown(PlayerKeys.Down))
             {
-                this.Direction = Directions.Down;
+                Direction = Directions.Down;
             }
             dropBombButton = Controller.IsKeyDown(PlayerKeys.Bomb);
             rcDitonateButton = Controller.IsKeyDown(PlayerKeys.RcDitonate);

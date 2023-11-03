@@ -112,7 +112,7 @@ namespace MrBoom
 
         public void Update()
         {
-            if (this.tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
+            if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
                 if (teams[winner].VictoryCount >= 5)
                 {
@@ -124,7 +124,7 @@ namespace MrBoom
                 }
             }
 
-            this.tick++;
+            tick++;
         }
 
         public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)

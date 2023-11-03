@@ -28,7 +28,7 @@ namespace MrBoom
         {
             Features = map.StartFeatures;
             this.maxBoom = maxBoom;
-            this.maxBombsCount = maxBombs;
+            maxBombsCount = maxBombs;
             Team = team;
         }
 
@@ -45,22 +45,22 @@ namespace MrBoom
                 Direction = Direction.Reverse();
             }
 
-            this.rcDitonate = Features.HasFlag(Feature.RemoteControl) &&
+            rcDitonate = Features.HasFlag(Feature.RemoteControl) &&
                 rcDitonateButton;
 
             base.Update();
 
-            int cellX = (this.X + 8) / 16;
-            int cellY = (this.Y + 8) / 16;
+            int cellX = (X + 8) / 16;
+            int cellY = (Y + 8) / 16;
             var cell = terrain.GetCell(cellX, cellY);
 
             if ((dropBombButton || Skull == SkullType.AutoBomb) && Skull != SkullType.BombsDisable)
             {
-                if (cell.Type == TerrainType.Free && this.BombsPlaced < this.maxBombsCount)
+                if (cell.Type == TerrainType.Free && BombsPlaced < maxBombsCount)
                 {
-                    terrain.PutBomb(cellX, cellY, this.maxBoom, Features.HasFlag(Feature.RemoteControl), this);
+                    terrain.PutBomb(cellX, cellY, maxBoom, Features.HasFlag(Feature.RemoteControl), this);
 
-                    this.BombsPlaced++;
+                    BombsPlaced++;
                     terrain.PlaySound(Sound.PoseBomb);
                 }
             }
@@ -72,11 +72,11 @@ namespace MrBoom
 
                 if (powerUpType == PowerUpType.ExtraFire)
                 {
-                    this.maxBoom++;
+                    maxBoom++;
                 }
                 else if (powerUpType == PowerUpType.ExtraBomb)
                 {
-                    this.maxBombsCount++;
+                    maxBombsCount++;
                 }
                 else if (powerUpType == PowerUpType.RemoteControl)
                 {
@@ -113,11 +113,11 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Life)
                 {
-                    this.lifeCount++;
+                    lifeCount++;
                 }
                 else if (powerUpType == PowerUpType.Shield)
                 {
-                    this.unplugin = 600;
+                    unplugin = 600;
                 }
                 else if (powerUpType == PowerUpType.Banana)
                 {
@@ -176,12 +176,12 @@ namespace MrBoom
                     lifeCount--;
                     Features = 0;
                     terrain.PlaySound(Sound.Oioi);
-                    this.unplugin = 165;
+                    unplugin = 165;
                 }
                 else
                 {
                     Kill();
-                    this.frameIndex = 0;
+                    frameIndex = 0;
                     terrain.PlaySound(Sound.PlayerDie);
                 }
             }
@@ -189,7 +189,7 @@ namespace MrBoom
             {
                 unplugin = 0;
                 Kill();
-                this.frameIndex = 0;
+                frameIndex = 0;
                 terrain.PlaySound(Sound.PlayerDie);
             }
         }

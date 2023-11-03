@@ -14,7 +14,7 @@ namespace MrBoom
             this.width = width;
             this.height = height;
             this.defaultValue = defaultValue;
-            this.grid = new T[width * height];
+            grid = new T[width * height];
         }
 
         public int Width { get { return width; } }

@@ -11,8 +11,8 @@ namespace MrBoom
 
             public PowerUpData(PowerUpType type, int count)
             {
-                this.Type = type;
-                this.Count = count;
+                Type = type;
+                Count = count;
             }
         }
 

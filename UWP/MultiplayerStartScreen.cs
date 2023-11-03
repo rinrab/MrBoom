@@ -43,8 +43,8 @@ namespace MrBoom
             this.assets = assets;
             this.teams = teams;
             this.controllers = controllers;
-            this.unjoinedControllers = new List<IController>(controllers);
-            this.joinedControllers = new List<IController>();
+            unjoinedControllers = new List<IController>(controllers);
+            joinedControllers = new List<IController>();
             players = new List<PlayerState>();
             teamMode = Team.Mode;
 

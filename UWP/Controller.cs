@@ -98,12 +98,12 @@ namespace MrBoom
         public KeyboardController(Keys keyUp, Keys keyDown, Keys keyLeft,
             Keys keyRight, Keys keyBomb, Keys keyRcDitonate)
         {
-            this.KeyUp = keyUp;
-            this.KeyDown = keyDown;
-            this.KeyLeft = keyLeft;
-            this.KeyRight = keyRight;
-            this.KeyBomb = keyBomb;
-            this.KeyRcDitonate = keyRcDitonate;
+            KeyUp = keyUp;
+            KeyDown = keyDown;
+            KeyLeft = keyLeft;
+            KeyRight = keyRight;
+            KeyBomb = keyBomb;
+            KeyRcDitonate = keyRcDitonate;
         }
 
         protected override PlayerKeys GetState()
@@ -142,7 +142,7 @@ namespace MrBoom
         {
             PlayerKeys result = 0;
 
-            var state = GamePad.GetState(this.index);
+            var state = GamePad.GetState(index);
 
             if (state.ThumbSticks.Left.Y > deadZone || state.IsButtonDown(Buttons.DPadUp))
                 result |= PlayerKeys.Up;

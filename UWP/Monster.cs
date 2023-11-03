@@ -13,7 +13,7 @@ namespace MrBoom
             base(map, animations, x, y, monsterData.Speed)
         {
             this.monsterData = monsterData;
-            this.livesCount = monsterData.LivesCount - 1;
+            livesCount = monsterData.LivesCount - 1;
 
             if (monsterData.IsSlowStart)
             {
@@ -22,7 +22,7 @@ namespace MrBoom
             }
             else
             {
-                this.Direction = Terrain.Random.NextEnum<Directions>();
+                Direction = Terrain.Random.NextEnum<Directions>();
             }
         }
 
@@ -58,7 +58,7 @@ namespace MrBoom
                     if (livesCount > 0)
                     {
                         livesCount--;
-                        this.unplugin = 165;
+                        unplugin = 165;
                     }
                     else
                     {
@@ -100,7 +100,7 @@ namespace MrBoom
                     {
                         if (X % 16 == 0 && Y % 16 == 0 && Terrain.Random.Next(16) == 0)
                         {
-                            wait = this.monsterData.WaitAfterTurn;
+                            wait = monsterData.WaitAfterTurn;
                             frameIndex = 0;
                             Direction = null;
                         }
@@ -108,7 +108,7 @@ namespace MrBoom
                         {
                             if (!isWalkable(Direction.DeltaX(), Direction.DeltaY()))
                             {
-                                wait = this.monsterData.WaitAfterTurn;
+                                wait = monsterData.WaitAfterTurn;
                                 frameIndex = 0;
                                 Direction = null;
                             }

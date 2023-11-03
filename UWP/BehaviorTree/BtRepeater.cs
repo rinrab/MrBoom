@@ -14,7 +14,7 @@ namespace MrBoom.BehaviorTree
 
         protected override BtStatus OnUpdate()
         {
-            status = child.Update();
+           child.Update();
 
             return BtStatus.Running;
         }

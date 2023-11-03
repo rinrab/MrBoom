@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
-using System;
 using MrBoom.BehaviorTree;
 using MrBoom.Bot;
 

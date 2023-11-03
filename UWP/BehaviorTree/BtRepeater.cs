@@ -2,13 +2,10 @@
 
 namespace MrBoom.BehaviorTree
 {
-    public class BtRepeater : BtNode
+    public class BtRepeater : BtDecorator
     {
-        private readonly BtNode child;
-
-        public BtRepeater(BtNode child, string name = "RepeaterNode") : base(name)
+        public BtRepeater(BtNode child, string name = "RepeaterNode") : base(child, name)
         {
-            this.child = child;
         }
 
         protected override void OnInitialize()

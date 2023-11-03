@@ -18,13 +18,9 @@ namespace MrBoom
         {
             tree = new BtSequence()
             {
-                new DelayNode(300),
-                new BtSelector()
-                {
-                    new ActionNode(ChooseDirection, "ChooseDirection"),
-                    new ActionNode(Walk, "Walk"),
-                    new DelayNode(monsterData.WaitAfterTurn, "Wait")
-                }
+                new ActionNode(ChooseDirection, "ChooseDirection"),
+                new ActionNode(Walk, "Walk"),
+                new DelayNode(monsterData.WaitAfterTurn, "Wait")
             };
 
             livesCount = monsterData.LivesCount - 1;

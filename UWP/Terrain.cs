@@ -490,11 +490,6 @@ namespace MrBoom
             }
         }
 
-        public void RcDitonate(AbstractPlayer player)
-        {
-
-        }
-
         public void ditonateBomb(int bombX, int bombY)
         {
             Cell bombCell = data[bombX, bombY];

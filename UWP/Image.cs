@@ -11,12 +11,12 @@ namespace MrBoom
         private readonly Rectangle rect;
         private readonly int scale;
 
-        public int Width { get => rect.Width / scale; }
-        public int Height { get => rect.Height / scale; }
-        public int X { get => rect.X / scale; }
-        public int Y { get => rect.Y / scale; }
+        public int Width => rect.Width / scale;
+        public int Height => rect.Height / scale;
+        public int X => rect.X / scale;
+        public int Y => rect.Y / scale;
 
-        public Texture2D Texture { get => texture; }
+        public Texture2D Texture => texture;
 
         public Image(Texture2D texture, int x, int y, int width, int height, int scale)
         {

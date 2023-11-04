@@ -198,6 +198,5 @@ namespace MrBoom
             Features |= Feature.RemoteControl | Feature.Kick;
             SetSkull(SkullType.Fast);
         }
-
     }
 }

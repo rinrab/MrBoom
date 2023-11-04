@@ -123,14 +123,15 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Kick)
                 {
-                    if (Features.HasFlag(Feature.Kick))
+                    if (!Features.HasFlag(Feature.Kick))
                     {
-                        burnBonus();
+
+                        Features |= Feature.Kick;
+                        pickBonus();
                     }
                     else
                     {
-                        Features |= Feature.Kick;
-                        pickBonus();
+                        burnBonus();
                     }
                 }
                 else if (powerUpType == PowerUpType.Life)

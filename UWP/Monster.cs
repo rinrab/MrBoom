@@ -58,13 +58,11 @@ namespace MrBoom
         {
             if (X % 16 == 0 && Y % 16 == 0 && Terrain.Random.Next(16) == 0)
             {
-                frameIndex = 0;
                 Direction = null;
                 return BtStatus.Success;
             }
             else if (!IsWalkable(Direction.DeltaX(), Direction.DeltaY()))
             {
-                frameIndex = 0;
                 Direction = null;
                 return BtStatus.Success;
             }
@@ -111,14 +109,14 @@ namespace MrBoom
                     else
                     {
                         Kill();
-                        frameIndex = 0;
+                        Direction = null;
                         terrain.SetCell((X + 8) / 16, (Y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
                 if (cell.Type == TerrainType.Apocalypse)
                 {
                     Kill();
-                    frameIndex = 0;
+                    Direction = null;
                     terrain.PlaySound(Sound.Ai);
                 }
                 else

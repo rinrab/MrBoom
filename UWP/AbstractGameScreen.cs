@@ -16,7 +16,6 @@ namespace MrBoom
         protected bool isPause = false;
 
         private int bgTick = 0;
-        private readonly bool isDebug;
 
         private bool isF4Toggle = false;
         private bool f4Mask;
@@ -25,8 +24,6 @@ namespace MrBoom
 
         public AbstractGameScreen(List<Team> teams, Assets assets, Settings settings, Game game)
         {
-            isDebug = game.LaunchParameters.ContainsKey("-d");
-
             this.assets = assets;
             this.settings = settings;
             this.game = game;
@@ -64,7 +61,7 @@ namespace MrBoom
             {
                 terrain.Update();
 
-                if (isDebug)
+                if (settings.IsDebug)
                 {
                     if (state.IsKeyDown(Keys.F1))
                     {
@@ -214,7 +211,7 @@ namespace MrBoom
 
         public virtual void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
-            if (isDebug && isF4Toggle)
+            if (settings.IsDebug && isF4Toggle)
             {
                 for (int y = 1; y < terrain.Height - 1; y++)
                 {

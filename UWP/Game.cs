@@ -33,7 +33,8 @@ namespace MrBoom
             // TODO: Load settings
             settings = new Settings()
             {
-                TeamMode = TeamMode.Off
+                TeamMode = TeamMode.Off,
+                IsDebug = LaunchParameters.ContainsKey("-d")
             };
 
             graphics = new GraphicsDeviceManager(this)

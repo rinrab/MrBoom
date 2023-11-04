@@ -5,6 +5,8 @@ namespace MrBoom
     public class Settings
     {
         public TeamMode TeamMode { get; set; }
+
+        public bool IsDebug { get; set; }
     }
 
     public enum TeamMode

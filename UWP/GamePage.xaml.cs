@@ -8,24 +8,21 @@ namespace MrBoom
 {
     public sealed partial class GamePage : Page
     {
-        Game _game;
-
         public GamePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var launchArguments = string.Empty;
+            string launchArguments = string.Empty;
 
             if (e.Parameter != null && e.Parameter is string commandParam)
             {
                 launchArguments = commandParam;
             }
 
-            // Create the game.
-            _game = MonoGame.Framework.XamlGame<Game>.Create(launchArguments, Window.Current.CoreWindow, swapChainPanel);
+            MonoGame.Framework.XamlGame<Game>.Create(launchArguments, Window.Current.CoreWindow, swapChainPanel);
 
             base.OnNavigatedTo(e);
         }

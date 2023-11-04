@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
-using MrBoom.BehaviorTree;
-
-namespace MrBoom.Bot
+namespace MrBoom.BehaviorTree
 {
     class ActionNode : BtNode
     {

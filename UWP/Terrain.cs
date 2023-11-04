@@ -56,7 +56,7 @@ namespace MrBoom
 
             this.assets = assets;
             levelAssets = assets.Levels[levelIndex];
-            map = Map.Maps[levelIndex];
+            map = MapData.Data[levelIndex];
             StartFeatures = map.StartFeatures;
             powerUpList = new List<PowerUpType>();
 

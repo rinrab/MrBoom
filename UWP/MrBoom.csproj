@@ -130,6 +130,7 @@
     <Compile Include="Image.cs" />
     <Compile Include="IScreen.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="MapData.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="Monster.cs" />

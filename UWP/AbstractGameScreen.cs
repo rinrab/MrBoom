@@ -30,13 +30,13 @@ namespace MrBoom
             this.game = game;
 
 #if true
-            int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
+            int levelIndex = game.LevelRandom.Next(MapData.Data.Length);
 #else
             int levelIndex = 0;
 #endif
             terrain = new Terrain(levelIndex, assets);
 
-            game.NextSong(Map.Maps[levelIndex].Song);
+            game.NextSong(MapData.Data[levelIndex].Song);
         }
 
         public virtual void Update()

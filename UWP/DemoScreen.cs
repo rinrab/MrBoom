@@ -38,11 +38,11 @@ namespace MrBoom
             base.Update();
             if (terrain.Result == GameResult.Victory || terrain.Result == GameResult.Draw)
             {
-                int levelIndex = game.LevelRandom.Next(Map.Maps.Length);
+                int levelIndex = game.LevelRandom.Next(MapData.Data.Length);
 
                 terrain = new Terrain(levelIndex, assets);
 
-                game.NextSong(Map.Maps[levelIndex].Song);
+                game.NextSong(MapData.Data[levelIndex].Song);
 
                 for (int i = 0; i < 4; i++)
                 {

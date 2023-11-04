@@ -67,18 +67,37 @@ namespace MrBoom
                 }
             }
 
+            void pickBonus()
+            {
+                terrain.SetCell(cellX, cellY, new Cell(TerrainType.Free));
+                terrain.PlaySound(Sound.Pick);
+            }
+
+            void burnBonus()
+            {
+                terrain.SetCell(cellX, cellY, new Cell(TerrainType.PowerUpFire)
+                {
+                    Images = terrain.assets.Fire,
+                    Index = 0,
+                    animateDelay = 6,
+                    Next = new Cell(TerrainType.Free)
+                });
+                terrain.PlaySound(Sound.Sac);
+            }
+
             if (cell.Type == TerrainType.PowerUp)
             {
                 var powerUpType = cell.PowerUpType;
-                var doFire = false;
 
                 if (powerUpType == PowerUpType.ExtraFire)
                 {
                     MaxBoom++;
+                    pickBonus();
                 }
                 else if (powerUpType == PowerUpType.ExtraBomb)
                 {
                     MaxBombsCount++;
+                    pickBonus();
                 }
                 else if (powerUpType == PowerUpType.RemoteControl)
                 {
@@ -88,7 +107,7 @@ namespace MrBoom
                     }
                     else
                     {
-                        doFire = true;
+                        burnBonus();
                     }
                 }
                 else if (powerUpType == PowerUpType.RollerSkate)
@@ -96,30 +115,34 @@ namespace MrBoom
                     if (!Features.HasFlag(Feature.RollerSkates))
                     {
                         Features |= Feature.RollerSkates;
+                        pickBonus();
                     }
                     else
                     {
-                        doFire = true;
+                        burnBonus();
                     }
                 }
                 else if (powerUpType == PowerUpType.Kick)
                 {
                     if (Features.HasFlag(Feature.Kick))
                     {
-                        doFire = true;
+                        burnBonus();
                     }
                     else
                     {
                         Features |= Feature.Kick;
+                        pickBonus();
                     }
                 }
                 else if (powerUpType == PowerUpType.Life)
                 {
                     lifeCount++;
+                    pickBonus();
                 }
                 else if (powerUpType == PowerUpType.Shield)
                 {
                     unplugin = 600;
+                    pickBonus();
                 }
                 else if (powerUpType == PowerUpType.Banana)
                 {
@@ -133,6 +156,7 @@ namespace MrBoom
                             }
                         }
                     }
+                    pickBonus();
                 }
                 else if (powerUpType == PowerUpType.Clock)
                 {
@@ -140,32 +164,17 @@ namespace MrBoom
                     {
                         terrain.TimeLeft += 60 * 60;
                         terrain.PlaySound(Sound.Clock);
+                        pickBonus();
                     }
                     else
                     {
-                        doFire = true;
+                        burnBonus();
                     }
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
                     SetSkull(Terrain.Random.NextEnum<SkullType>());
-                }
-
-                if (doFire)
-                {
-                    terrain.SetCell(cellX, cellY, new Cell(TerrainType.PowerUpFire)
-                    {
-                        Images = terrain.assets.Fire,
-                        Index = 0,
-                        animateDelay = 6,
-                        Next = new Cell(TerrainType.Free)
-                    });
-                    terrain.PlaySound(Sound.Sac);
-                }
-                else
-                {
-                    terrain.SetCell(cellX, cellY, new Cell(TerrainType.Free));
-                    terrain.PlaySound(Sound.Pick);
+                    pickBonus();
                 }
             }
 

@@ -9,7 +9,7 @@ namespace MrBoom.Bot
 {
     public class ComputerPlayer : AbstractPlayer
     {
-        private readonly BtSelector tree;
+        private readonly BtNode tree;
         private readonly TravelCostGrid travelCostGrid;
         private readonly TravelCostGrid travelSafeCostGrid;
         private readonly Directions[] allDirections;
@@ -25,21 +25,22 @@ namespace MrBoom.Bot
         {
             this.botSeed = botSeed;
 
-            tree = new BtSelector("BotTree")
-            {
-                new ActionNode(GotoBonusCell, "Bonus"),
-                new BtSequence("Bomb")
+            tree = new BtRepeater(new BtSelector()
                 {
-                    new ActionNode(HasBombsLeft, "HasBombsLeft"),
-                    new ActionNode(GotoBestBombCell, "GotoBestBombCell"),
-                    new ActionNode(DropBomb, "DropBomb", true)
-                },
-                new BtSequence("PostBomb")
-                {
-                    new ActionNode(GotoSafeCell, "GotoSafeCell"),
-                    new ActionNode(DitonoteRemoteBomb, "DitonoteRemoteBomb")
-                }
-            };
+                    new ActionNode(GotoBonusCell, "Bonus"),
+                    new BtSequence("Bomb")
+                    {
+                        new ActionNode(HasBombsLeft, "HasBombsLeft"),
+                        new ActionNode(GotoBestBombCell, "GotoBestBombCell"),
+                        new ActionNode(DropBomb, "DropBomb", true)
+                    },
+                    new BtSequence("PostBomb")
+                    {
+                        new ActionNode(GotoSafeCell, "GotoSafeCell"),
+                        new ActionNode(DitonoteRemoteBomb, "DitonoteRemoteBomb")
+                    }
+                }, "BotMainLoop");
+
             travelCostGrid = new TravelCostGrid(map.Width, map.Height);
             travelSafeCostGrid = new TravelCostGrid(map.Width, map.Height);
             findPathCost = new TravelCostGrid(map.Width, map.Height);

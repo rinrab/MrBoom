@@ -47,8 +47,7 @@ namespace MrBoom
                 Direction = Direction.Reverse();
             }
 
-            rcDitonate = Features.HasFlag(Feature.RemoteControl) &&
-                rcDitonateButton;
+            rcDitonate = Features.HasFlag(Feature.RemoteControl) && rcDitonateButton;
 
             base.Update();
 

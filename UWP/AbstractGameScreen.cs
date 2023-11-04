@@ -10,6 +10,7 @@ namespace MrBoom
     public abstract class AbstractGameScreen : IScreen
     {
         protected Terrain terrain;
+        protected readonly List<Team> teams;
         protected readonly Assets assets;
         protected readonly Settings settings;
         protected readonly Game game;
@@ -24,6 +25,7 @@ namespace MrBoom
 
         public AbstractGameScreen(List<Team> teams, Assets assets, Settings settings, Game game)
         {
+            this.teams = teams;
             this.assets = assets;
             this.settings = settings;
             this.game = game;

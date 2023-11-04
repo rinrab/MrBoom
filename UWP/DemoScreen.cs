@@ -57,7 +57,7 @@ namespace MrBoom
 
             if (demoMenu.Action == 0)
             {
-                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, game.Controllers, settings));
+                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, game.Controllers, settings));
             }
             else if (demoMenu.Action == 2)
             {

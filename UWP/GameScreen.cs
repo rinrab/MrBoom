@@ -36,9 +36,9 @@ namespace MrBoom
             {
                 int winner = terrain.Winner;
 
-                game.Teams[winner].VictoryCount++;
+                teams[winner].VictoryCount++;
 
-                ScreenManager.SetScreen(new ResultScreen(game.Teams, winner, assets, controllers, settings));
+                ScreenManager.SetScreen(new ResultScreen(teams, winner, assets, controllers, settings));
             }
             else if (terrain.Result == GameResult.Draw)
             {
@@ -63,7 +63,7 @@ namespace MrBoom
                 else if (pauseMenu.Action == 1)
                 {
                     game.NextSong(3);
-                    ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, controllers, settings));
+                    ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, controllers, settings));
                 }
                 else if (pauseMenu.Action == 2)
                 {

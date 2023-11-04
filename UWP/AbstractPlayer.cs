@@ -183,7 +183,7 @@ namespace MrBoom
                 else
                 {
                     Kill();
-                    frameIndex = 0;
+                    Direction = null;
                     terrain.PlaySound(Sound.PlayerDie);
                 }
             }
@@ -191,7 +191,7 @@ namespace MrBoom
             {
                 unplugin = 0;
                 Kill();
-                frameIndex = 0;
+                Direction = null;
                 terrain.PlaySound(Sound.PlayerDie);
             }
         }

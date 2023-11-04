@@ -103,6 +103,7 @@ namespace MrBoom
                     if (!Features.HasFlag(Feature.RemoteControl))
                     {
                         Features |= Feature.RemoteControl;
+                        pickBonus();
                     }
                     else
                     {

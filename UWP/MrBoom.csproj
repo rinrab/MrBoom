@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="AbstractGameScreen.cs" />
     <Compile Include="GameScreen.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="Image.cs" />

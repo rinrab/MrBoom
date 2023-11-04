@@ -13,32 +13,32 @@ namespace MrBoom
         private readonly List<Team> teams;
         private readonly int winner;
         private readonly List<IController> controllers;
-        private readonly TeamMode teamMode;
+        private readonly Settings settings;
         private readonly Assets assets;
 
         private int tick;
 
-        public ResultScreen(List<Team> teams, int winner, Assets assets, List<IController> controllers, TeamMode teamMode)
+        public ResultScreen(List<Team> teams, int winner, Assets assets, List<IController> controllers, Settings settings)
         {
             this.teams = teams;
             this.winner = winner;
             this.assets = assets;
             this.controllers = controllers;
-            this.teamMode = teamMode;
+            this.settings = settings;
             assets.Sounds.Victory.Play();
         }
 
         public void Draw(SpriteBatch ctx)
         {
-            if (teamMode == TeamMode.Off)
+            if (settings.TeamMode == TeamMode.Off)
             {
                 assets.Med.Draw(ctx, 0, 0);
             }
-            else if (teamMode == TeamMode.Color)
+            else if (settings.TeamMode == TeamMode.Color)
             {
                 assets.MedC.Draw(ctx, 0, 0);
             }
-            else if (teamMode == TeamMode.Sex)
+            else if (settings.TeamMode == TeamMode.Sex)
             {
                 assets.MedG.Draw(ctx, 0, 0);
             }
@@ -73,19 +73,19 @@ namespace MrBoom
 
                     for (int i = 0; i < team.Names.Length; i++)
                     {
-                        int tx = (teamMode == TeamMode.Sex) ? x - 42 : x - 34;
-                        int ty = (teamMode == TeamMode.Sex) ? y : y + 26 - 10;
+                        int tx = (settings.TeamMode == TeamMode.Sex) ? x - 42 : x - 34;
+                        int ty = (settings.TeamMode == TeamMode.Sex) ? y : y + 26 - 10;
                         int color = 0;
-                        if (teamMode == TeamMode.Off) color = teamIndex / 2 + 2;
-                        if (teamMode == TeamMode.Color) color = teamIndex + 2;
-                        if (teamMode == TeamMode.Sex) color = (teamIndex == 0) ? 4 : 3;
+                        if (settings.TeamMode == TeamMode.Off) color = teamIndex / 2 + 2;
+                        if (settings.TeamMode == TeamMode.Color) color = teamIndex + 2;
+                        if (settings.TeamMode == TeamMode.Sex) color = (teamIndex == 0) ? 4 : 3;
 
                         Game.DrawString(ctx, tx, ty + i * 8, team.Names[i], assets.Alpha[color]);
                     }
                 }
             }
 
-            if (teamMode == TeamMode.Off)
+            if (settings.TeamMode == TeamMode.Off)
             {
                 drawCoins(0 * 161 + 44, 0 * 42 + 27, 0);
                 drawCoins(0 * 161 + 44, 1 * 42 + 27, 1);
@@ -96,14 +96,14 @@ namespace MrBoom
                 drawCoins(1 * 161 + 44, 2 * 42 + 27, 6);
                 drawCoins(1 * 161 + 44, 3 * 42 + 27, 7);
             }
-            else if (teamMode == TeamMode.Color)
+            else if (settings.TeamMode == TeamMode.Color)
             {
                 drawCoins(0 * 161 + 44, 0 * 64 + 53, 0);
                 drawCoins(1 * 161 + 44, 0 * 64 + 53, 1);
                 drawCoins(0 * 161 + 44, 1 * 64 + 53, 2);
                 drawCoins(1 * 161 + 44, 1 * 64 + 53, 3);
             }
-            else if (teamMode == TeamMode.Sex)
+            else if (settings.TeamMode == TeamMode.Sex)
             {
                 drawCoins(126, 0 * 68 + 60, 0);
                 drawCoins(126, 1 * 68 + 60, 1);
@@ -116,7 +116,7 @@ namespace MrBoom
             {
                 if (teams[winner].VictoryCount >= 5)
                 {
-                    ScreenManager.SetScreen(new VictoryScreen(teams[winner], assets, controllers, teams));
+                    ScreenManager.SetScreen(new VictoryScreen(teams[winner], assets, controllers, teams, settings));
                 }
                 else
                 {

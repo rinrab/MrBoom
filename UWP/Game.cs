@@ -26,9 +26,16 @@ namespace MrBoom
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
+        private readonly Settings settings;
 
         public Game()
         {
+            // TODO: Load settings
+            settings = new Settings()
+            {
+                TeamMode = TeamMode.Off
+            };
+
             graphics = new GraphicsDeviceManager(this)
             {
                 IsFullScreen = true
@@ -58,7 +65,7 @@ namespace MrBoom
             Teams = new List<Team>();
             NextSong(3);
 
-            ScreenManager.SetScreen(new DemoScreen(Teams, assets, this));
+            ScreenManager.SetScreen(new DemoScreen(Teams, assets, settings, this));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -101,7 +108,7 @@ namespace MrBoom
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
-                    ScreenManager.SetScreen(new GameScreen(Teams, assets, this));
+                    ScreenManager.SetScreen(new GameScreen(Teams, assets, settings, this));
                 }
                 else
                 {

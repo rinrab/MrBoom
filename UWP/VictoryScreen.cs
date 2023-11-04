@@ -16,13 +16,15 @@ namespace MrBoom
         private readonly Assets assets;
         private readonly List<IController> controllers;
         private readonly List<Team> teams;
+        private readonly Settings settings;
 
-        public VictoryScreen(Team winner, Assets assets, List<IController> controllers, List<Team> teams)
+        public VictoryScreen(Team winner, Assets assets, List<IController> controllers, List<Team> teams, Settings settings)
         {
             this.winner = winner;
             this.assets = assets;
             this.controllers = controllers;
             this.teams = teams;
+            this.settings = settings;
         }
 
         public void Draw(SpriteBatch ctx)
@@ -41,7 +43,7 @@ namespace MrBoom
             tick++;
             if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
-                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, controllers));
+                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, controllers, settings));
             }
         }
 

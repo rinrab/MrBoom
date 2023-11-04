@@ -17,6 +17,7 @@ namespace MrBoom
         private readonly Assets assets;
         private readonly List<Team> teams;
         private readonly List<IController> controllers;
+        private readonly Settings settings;
         private readonly List<IController> unjoinedControllers;
         private readonly List<IController> joinedControllers;
         private readonly string helpText =
@@ -38,15 +39,17 @@ namespace MrBoom
         private readonly List<IPlayerState> players;
         private Menu menu;
 
-        public MultiplayerStartScreen(Assets assets, List<Team> teams, List<IController> controllers)
+        public MultiplayerStartScreen(Assets assets, List<Team> teams, List<IController> controllers, Settings settings)
         {
             this.assets = assets;
             this.teams = teams;
             this.controllers = controllers;
+            this.settings = settings;
+
             unjoinedControllers = new List<IController>(controllers);
             joinedControllers = new List<IController>();
             players = new List<IPlayerState>();
-            teamMode = Team.Mode;
+            teamMode = settings.TeamMode;
 
             teams.Clear();
         }
@@ -266,7 +269,7 @@ namespace MrBoom
                     teamMode = 0;
                 }
 
-                Team.Mode = teamMode;
+                settings.TeamMode = teamMode;
 
                 teams.Clear();
                 if (teamMode == TeamMode.Off)

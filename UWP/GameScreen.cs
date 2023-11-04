@@ -10,7 +10,7 @@ namespace MrBoom
     {
         private Menu pauseMenu;
 
-        public GameScreen(List<Team> teams, Assets assets, Game game) : base(teams, assets, game)
+        public GameScreen(List<Team> teams, Assets assets, Settings settings, Game game) : base(teams, assets, settings, game)
         {
             for (int i = 0; i < teams.Count; i++)
             {
@@ -35,7 +35,7 @@ namespace MrBoom
 
                 game.Teams[winner].VictoryCount++;
 
-                ScreenManager.SetScreen(new ResultScreen(game.Teams, winner, assets, game.Controllers, Team.Mode));
+                ScreenManager.SetScreen(new ResultScreen(game.Teams, winner, assets, game.Controllers, settings));
             }
             else if (terrain.Result == GameResult.Draw)
             {
@@ -60,7 +60,7 @@ namespace MrBoom
                 else if (pauseMenu.Action == 1)
                 {
                     game.NextSong(3);
-                    ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, game.Controllers));
+                    ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, game.Controllers, settings));
                 }
                 else if (pauseMenu.Action == 2)
                 {

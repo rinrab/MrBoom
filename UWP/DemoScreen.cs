@@ -11,7 +11,7 @@ namespace MrBoom
     {
         private readonly Menu demoMenu;
 
-        public DemoScreen(List<Team> teams, Assets assets, Game game) : base(teams, assets, game)
+        public DemoScreen(List<Team> teams, Assets assets, Settings settings, Game game) : base(teams, assets, settings, game)
         {
             demoMenu = new Menu(new IMenuItem[]
             {
@@ -56,14 +56,15 @@ namespace MrBoom
 
             if (demoMenu.Action == 0)
             {
-                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, game.Controllers));
+                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, game.Controllers, settings));
             }
             else if (demoMenu.Action == 2)
             {
                 game.Exit();
             }
 
-            Team.Mode = (TeamMode)((SelectMenuItem)demoMenu.Items[1]).SelectionIndex;
+            SelectMenuItem teamModeMenuItem = (SelectMenuItem)demoMenu.Items[1];
+            settings.TeamMode = (TeamMode)teamModeMenuItem.SelectionIndex;
 
             if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Continue))
             {

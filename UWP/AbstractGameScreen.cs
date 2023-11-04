@@ -11,6 +11,7 @@ namespace MrBoom
     {
         protected Terrain terrain;
         protected readonly Assets assets;
+        protected readonly Settings settings;
         protected readonly Game game;
         protected bool isPause = false;
 
@@ -22,11 +23,12 @@ namespace MrBoom
 
         public Screen Next { get; private set; }
 
-        public AbstractGameScreen(List<Team> teams, Assets assets, Game game)
+        public AbstractGameScreen(List<Team> teams, Assets assets, Settings settings, Game game)
         {
             isDebug = game.LaunchParameters.ContainsKey("-d");
 
             this.assets = assets;
+            this.settings = settings;
             this.game = game;
 
 #if true

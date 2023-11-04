@@ -4,17 +4,8 @@ using System.Collections.Generic;
 
 namespace MrBoom
 {
-    public enum TeamMode
-    {
-        Off,
-        Color,
-        Sex
-    }
-
     public class Team
     {
-        public static TeamMode Mode;
-
         public List<IPlayerState> Players;
         public int VictoryCount;
 

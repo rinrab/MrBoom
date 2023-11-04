@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Windows.UI.Xaml;
 
 namespace MrBoom
 {
@@ -64,7 +65,7 @@ namespace MrBoom
                 }
                 else if (pauseMenu.Action == 2)
                 {
-                    game.Exit();
+                    Application.Current.Exit();
                 }
             }
             else

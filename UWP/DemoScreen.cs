@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MrBoom.Bot;
+using Windows.UI.Xaml;
 
 namespace MrBoom
 {
@@ -60,7 +61,7 @@ namespace MrBoom
             }
             else if (demoMenu.Action == 2)
             {
-                game.Exit();
+                Application.Current.Exit();
             }
 
             SelectMenuItem teamModeMenuItem = (SelectMenuItem)demoMenu.Items[1];

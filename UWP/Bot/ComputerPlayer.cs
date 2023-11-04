@@ -27,17 +27,17 @@ namespace MrBoom.Bot
 
             tree = new BtRepeater(new BtSelector()
                 {
-                    new ActionNode(GotoBonusCell, "Bonus"),
+                    new ActionNode(GotoBonusCell, nameof(GotoBonusCell)),
                     new BtSequence("Bomb")
                     {
-                        new ActionNode(HasBombsLeft, "HasBombsLeft"),
-                        new ActionNode(GotoBestBombCell, "GotoBestBombCell"),
-                        new ActionNode(DropBomb, "DropBomb", true)
+                        new ActionNode(HasBombsLeft, nameof(HasBombsLeft)),
+                        new ActionNode(GotoBestBombCell, nameof(GotoBestBombCell)),
+                        new ActionNode(DropBomb, nameof(DropBomb), true)
                     },
                     new BtSequence("PostBomb")
                     {
-                        new ActionNode(GotoSafeCell, "GotoSafeCell"),
-                        new ActionNode(DitonoteRemoteBomb, "DitonoteRemoteBomb")
+                        new ActionNode(GotoSafeCell, nameof(GotoSafeCell)),
+                        new ActionNode(DitonoteRemoteBomb, nameof(DitonoteRemoteBomb))
                     }
                 }, "BotMainLoop");
 

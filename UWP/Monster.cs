@@ -20,8 +20,8 @@ namespace MrBoom
                 new DelayNode(monsterData.IsSlowStart ? 120 : 0),
                 new BtRepeater(new BtSequence()
                     {
-                        new ActionNode(ChooseDirection, "ChooseDirection"),
-                        new ActionNode(Walk, "Walk"),
+                        new ActionNode(ChooseDirection, nameof(ChooseDirection)),
+                        new ActionNode(Walk, nameof(Walk)),
                         new DelayNode(monsterData.WaitAfterTurn, "Think")
                     })
             };

@@ -282,6 +282,7 @@ namespace MrBoom
         {
             isDie = true;
             Direction = null;
+            frameIndex = 0;
             unplugin = 0;
         }
 

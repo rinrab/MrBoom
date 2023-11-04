@@ -216,13 +216,11 @@ namespace MrBoom
             if (terrain.IsWalkable((X - 1) / 16, (Y + 8) / 16 + deltaY))
             {
                 X -= 1;
-
                 AnimateIndex = 2;
             }
             else if (terrain.IsWalkable((X + 16) / 16, (Y + 8) / 16 + deltaY))
             {
                 X += 1;
-
                 AnimateIndex = 1;
             }
         }
@@ -237,7 +235,6 @@ namespace MrBoom
             else if (terrain.IsWalkable((X + 8) / 16 + deltaX, (Y + 16) / 16))
             {
                 Y += 1;
-
                 AnimateIndex = 0;
             }
         }

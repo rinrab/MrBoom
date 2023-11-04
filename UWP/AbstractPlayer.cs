@@ -183,15 +183,12 @@ namespace MrBoom
                 else
                 {
                     Kill();
-                    Direction = null;
                     terrain.PlaySound(Sound.PlayerDie);
                 }
             }
             if (cell.Type == TerrainType.Apocalypse)
             {
-                unplugin = 0;
                 Kill();
-                Direction = null;
                 terrain.PlaySound(Sound.PlayerDie);
             }
         }

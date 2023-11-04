@@ -108,14 +108,12 @@ namespace MrBoom
                     else
                     {
                         Kill();
-                        Direction = null;
                         terrain.SetCell((X + 8) / 16, (Y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
                 if (cell.Type == TerrainType.Apocalypse)
                 {
                     Kill();
-                    Direction = null;
                     terrain.PlaySound(Sound.Ai);
                 }
                 else

@@ -281,6 +281,8 @@ namespace MrBoom
         protected void Kill()
         {
             isDie = true;
+            Direction = null;
+            unplugin = 0;
         }
 
         public virtual string GetCellDebugInfo(int cellX, int cellY)

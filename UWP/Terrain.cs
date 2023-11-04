@@ -729,35 +729,4 @@ namespace MrBoom
             }
         }
     }
-
-    public enum PowerUpType
-    {
-        Banana,
-        ExtraBomb,
-        ExtraFire,
-        Skull,
-        Shield,
-        Life,
-        RemoteControl,
-        Kick,
-        RollerSkate,
-        Clock,
-        MultiBomb,
-    }
-
-    [Flags]
-    public enum Feature
-    {
-        MultiBomb = 0x01,
-        RemoteControl = 0x02,
-        Kick = 0x04,
-        RollerSkates = 0x08,
-    }
-
-    public enum GameResult
-    {
-        None,
-        Victory,
-        Draw,
-    }
 }

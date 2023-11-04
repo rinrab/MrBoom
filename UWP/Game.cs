@@ -14,7 +14,6 @@ namespace MrBoom
     {
         public List<Team> Teams;
         public Assets assets;
-        public List<IController> Controllers;
         public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
         public readonly UnrepeatableRandom SoundRandom = new UnrepeatableRandom();
 
@@ -26,6 +25,7 @@ namespace MrBoom
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
+        private readonly List<IController> controllers;
         private readonly Settings settings;
 
         public Game()
@@ -47,7 +47,7 @@ namespace MrBoom
 
             Content.RootDirectory = "Content";
 
-            Controllers = new List<IController>()
+            controllers = new List<IController>()
             {
                 new KeyboardController(Keys.W, Keys.S, Keys.A, Keys.D, Keys.LeftControl, Keys.LeftShift),
                 new KeyboardController(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.RightControl, Keys.RightShift),
@@ -66,7 +66,7 @@ namespace MrBoom
             Teams = new List<Team>();
             NextSong(3);
 
-            ScreenManager.SetScreen(new DemoScreen(Teams, assets, settings, this));
+            ScreenManager.SetScreen(new DemoScreen(Teams, assets, settings, controllers, this));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -81,7 +81,7 @@ namespace MrBoom
 
         protected override void Update(GameTime gameTime)
         {
-            foreach (IController controller in Controllers)
+            foreach (IController controller in controllers)
             {
                 if (ScreenManager.ScreenChanged)
                 {
@@ -109,7 +109,7 @@ namespace MrBoom
             {
                 if (ScreenManager.Next == Screen.Game)
                 {
-                    ScreenManager.SetScreen(new GameScreen(Teams, assets, settings, this));
+                    ScreenManager.SetScreen(new GameScreen(Teams, assets, settings, controllers, this));
                 }
                 else
                 {

@@ -12,7 +12,9 @@ namespace MrBoom
     {
         private readonly Menu demoMenu;
 
-        public DemoScreen(List<Team> teams, Assets assets, Settings settings, Game game) : base(teams, assets, settings, game)
+        public DemoScreen(List<Team> teams, Assets assets,
+                          Settings settings, List<IController> controllers,
+                          Game game) : base(teams, assets, settings, controllers, game)
         {
             demoMenu = new Menu(new IMenuItem[]
             {
@@ -24,7 +26,7 @@ namespace MrBoom
                     "SEX",
                 }),
                 new TextMenuItem("QUIT"),
-            }, assets, game.Controllers);
+            }, assets, controllers);
 
             for (int i = 0; i < 4; i++)
             {
@@ -57,7 +59,7 @@ namespace MrBoom
 
             if (demoMenu.Action == 0)
             {
-                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, game.Controllers, settings));
+                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, controllers, settings));
             }
             else if (demoMenu.Action == 2)
             {
@@ -67,9 +69,9 @@ namespace MrBoom
             SelectMenuItem teamModeMenuItem = (SelectMenuItem)demoMenu.Items[1];
             settings.TeamMode = (TeamMode)teamModeMenuItem.SelectionIndex;
 
-            if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Continue))
+            if (Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
-                 Controller.Reset(game.Controllers);
+                 Controller.Reset(controllers);
             }
         }
 

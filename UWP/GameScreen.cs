@@ -11,7 +11,9 @@ namespace MrBoom
     {
         private Menu pauseMenu;
 
-        public GameScreen(List<Team> teams, Assets assets, Settings settings, Game game) : base(teams, assets, settings, game)
+        public GameScreen(List<Team> teams, Assets assets,
+                          Settings settings, List<IController> controllers,
+                          Game game) : base(teams, assets, settings, controllers, game)
         {
             for (int i = 0; i < teams.Count; i++)
             {
@@ -36,22 +38,22 @@ namespace MrBoom
 
                 game.Teams[winner].VictoryCount++;
 
-                ScreenManager.SetScreen(new ResultScreen(game.Teams, winner, assets, game.Controllers, settings));
+                ScreenManager.SetScreen(new ResultScreen(game.Teams, winner, assets, controllers, settings));
             }
             else if (terrain.Result == GameResult.Draw)
             {
-                ScreenManager.SetScreen(new DrawScreen(assets, game.Controllers));
+                ScreenManager.SetScreen(new DrawScreen(assets, controllers));
             }
 
             if (isPause)
             {
                 pauseMenu.Update();
 
-                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu) ||
-                    Controller.IsKeyDown(game.Controllers, PlayerKeys.Back))
+                if (Controller.IsKeyDown(controllers, PlayerKeys.Menu) ||
+                    Controller.IsKeyDown(controllers, PlayerKeys.Back))
                 {
                     isPause = false;
-                    Controller.Reset(game.Controllers);
+                    Controller.Reset(controllers);
                 }
 
                 if (pauseMenu.Action == 0)
@@ -61,7 +63,7 @@ namespace MrBoom
                 else if (pauseMenu.Action == 1)
                 {
                     game.NextSong(3);
-                    ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, game.Controllers, settings));
+                    ScreenManager.SetScreen(new MultiplayerStartScreen(assets, game.Teams, controllers, settings));
                 }
                 else if (pauseMenu.Action == 2)
                 {
@@ -70,7 +72,7 @@ namespace MrBoom
             }
             else
             {
-                if (Controller.IsKeyDown(game.Controllers, PlayerKeys.Menu))
+                if (Controller.IsKeyDown(controllers, PlayerKeys.Menu))
                 {
                     var options = new IMenuItem[]
                     {
@@ -79,10 +81,10 @@ namespace MrBoom
                         new TextMenuItem("QUIT")
                     };
 
-                    pauseMenu = new Menu(options, assets, game.Controllers);
+                    pauseMenu = new Menu(options, assets, controllers);
                     isPause = true;
 
-                    Controller.Reset(game.Controllers);
+                    Controller.Reset(controllers);
                 }
             }
         }

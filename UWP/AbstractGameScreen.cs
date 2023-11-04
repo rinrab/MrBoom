@@ -13,6 +13,7 @@ namespace MrBoom
         protected readonly List<Team> teams;
         protected readonly Assets assets;
         protected readonly Settings settings;
+        protected readonly List<IController> controllers;
         protected readonly Game game;
         protected bool isPause = false;
 
@@ -23,11 +24,12 @@ namespace MrBoom
 
         public Screen Next { get; private set; }
 
-        public AbstractGameScreen(List<Team> teams, Assets assets, Settings settings, Game game)
+        public AbstractGameScreen(List<Team> teams, Assets assets, Settings settings, List<IController> controllers, Game game)
         {
             this.teams = teams;
             this.assets = assets;
             this.settings = settings;
+            this.controllers = controllers;
             this.game = game;
 
 #if true

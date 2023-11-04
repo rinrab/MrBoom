@@ -165,45 +165,45 @@ namespace MrBoom
                 }
             }
 
-            int move = 0;
-            if (speed == 1)
-                move = (frameIndex % 3 == 0) ? 1 : 0;
-            else if (speed == 2)
-                move = (frameIndex % 2 == 0) ? 1 : 0;
-            else if (speed == 3)
-                move = 1;
-            else if (speed == 4)
-                move = 2;
-            else if (speed == 5)
-                move = 4;
-
-            for (int i = 0; i < move; i++)
-            {
-                if (Direction == Directions.Up)
-                {
-                    animateIndex = 3;
-                    moveY(-1);
-                }
-                else if (Direction == Directions.Down)
-                {
-                    animateIndex = 0;
-                    moveY(1);
-                }
-                else if (Direction == Directions.Left)
-                {
-                    moveX(-1);
-                    animateIndex = 2;
-                }
-                else if (Direction == Directions.Right)
-                {
-                    moveX(1);
-                    animateIndex = 1;
-                }
-            }
-
             if (Direction.HasValue)
             {
                 frameIndex++;
+
+                int move = 0;
+                if (speed == 1)
+                    move = (frameIndex % 3 == 0) ? 1 : 0;
+                else if (speed == 2)
+                    move = (frameIndex % 2 == 0) ? 1 : 0;
+                else if (speed == 3)
+                    move = 1;
+                else if (speed == 4)
+                    move = 2;
+                else if (speed == 5)
+                    move = 4;
+
+                for (int i = 0; i < move; i++)
+                {
+                    if (Direction == Directions.Up)
+                    {
+                        animateIndex = 3;
+                        moveY(-1);
+                    }
+                    else if (Direction == Directions.Down)
+                    {
+                        animateIndex = 0;
+                        moveY(1);
+                    }
+                    else if (Direction == Directions.Left)
+                    {
+                        moveX(-1);
+                        animateIndex = 2;
+                    }
+                    else if (Direction == Directions.Right)
+                    {
+                        moveX(1);
+                        animateIndex = 1;
+                    }
+                }
             }
             else
             {

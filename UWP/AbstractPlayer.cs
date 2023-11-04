@@ -53,7 +53,7 @@ namespace MrBoom
 
             int cellX = (X + 8) / 16;
             int cellY = (Y + 8) / 16;
-            var cell = terrain.GetCell(cellX, cellY);
+            Cell cell = terrain.GetCell(cellX, cellY);
 
             if ((dropBombButton || Skull == SkullType.AutoBomb) && Skull != SkullType.BombsDisable)
             {
@@ -86,7 +86,7 @@ namespace MrBoom
 
             if (cell.Type == TerrainType.PowerUp)
             {
-                var powerUpType = cell.PowerUpType;
+                PowerUpType powerUpType = cell.PowerUpType;
 
                 if (powerUpType == PowerUpType.ExtraFire)
                 {

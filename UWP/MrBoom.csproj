@@ -113,6 +113,7 @@
     <Compile Include="BehaviorTree\DelayNode.cs" />
     <Compile Include="Bot\ComputerPlayer.cs" />
     <Compile Include="Bot\TravelCostGrid.cs" />
+    <Compile Include="Cell.cs" />
     <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="DemoScreen.cs" />

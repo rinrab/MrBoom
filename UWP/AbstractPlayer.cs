@@ -62,14 +62,14 @@ namespace MrBoom
                     terrain.PutBomb(cellX, cellY, MaxBoom, Features.HasFlag(Feature.RemoteControl), this);
 
                     BombsPlaced++;
-                    terrain.PlaySound(Sound.PoseBomb);
+                    PlaySound(Sound.PoseBomb);
                 }
             }
 
             void pickBonus()
             {
                 terrain.SetCell(cellX, cellY, new Cell(TerrainType.Free));
-                terrain.PlaySound(Sound.Pick);
+                PlaySound(Sound.Pick);
             }
 
             void burnBonus()
@@ -81,7 +81,7 @@ namespace MrBoom
                     animateDelay = 6,
                     Next = new Cell(TerrainType.Free)
                 });
-                terrain.PlaySound(Sound.Sac);
+                PlaySound(Sound.Sac);
             }
 
             if (cell.Type == TerrainType.PowerUp)
@@ -164,7 +164,7 @@ namespace MrBoom
                     if (terrain.TimeLeft > 31 * 60 + terrain.MaxApocalypse * terrain.ApocalypseSpeed)
                     {
                         terrain.TimeLeft += 60 * 60;
-                        terrain.PlaySound(Sound.Clock);
+                        PlaySound(Sound.Clock);
                         pickBonus();
                     }
                     else
@@ -187,19 +187,19 @@ namespace MrBoom
                 {
                     lifeCount--;
                     Features = 0;
-                    terrain.PlaySound(Sound.Oioi);
+                    PlaySound(Sound.Oioi);
                     unplugin = 165;
                 }
                 else
                 {
                     Kill();
-                    terrain.PlaySound(Sound.PlayerDie);
+                    PlaySound(Sound.PlayerDie);
                 }
             }
             if (cell.Type == TerrainType.Apocalypse)
             {
                 Kill();
-                terrain.PlaySound(Sound.PlayerDie);
+                PlaySound(Sound.PlayerDie);
             }
         }
 

@@ -421,6 +421,7 @@ namespace MrBoom
             foreach (Sprite sprite in GetSprites())
             {
                 sprite.Update();
+                PlaySound(sprite.SoundsToPlay);
             }
 
             foreach (Sprite sprite1 in GetSprites())

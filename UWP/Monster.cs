@@ -94,12 +94,16 @@ namespace MrBoom
 
         public override void Update()
         {
+            tree.Update();
+
+            base.Update();
+
             if (IsAlive)
             {
                 Cell cell = terrain.GetCell((X + 8) / 16, (Y + 8) / 16);
                 if (cell.Type == TerrainType.Fire && unplugin == 0)
                 {
-                    terrain.PlaySound(Sound.Ai);
+                    PlaySound(Sound.Ai);
                     if (livesCount > 0)
                     {
                         livesCount--;
@@ -114,14 +118,9 @@ namespace MrBoom
                 if (cell.Type == TerrainType.Apocalypse)
                 {
                     Kill();
-                    terrain.PlaySound(Sound.Ai);
-                }
-                else
-                {
-                    tree.Update();
+                    PlaySound(Sound.Ai);
                 }
             }
-            base.Update();
         }
 
         public override string GetDebugInfo()

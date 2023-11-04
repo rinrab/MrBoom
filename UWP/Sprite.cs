@@ -22,6 +22,7 @@ namespace MrBoom
         public SkullType? Skull { get; private set; }
         public int X { get => x; set => x = value; }
         public int Y { get => y; set => y = value; }
+        public Sound SoundsToPlay {  get; private set; }
         public bool IsDie { get => isDie; }
         public bool IsAlive { get => !isDie; }
 
@@ -43,6 +44,8 @@ namespace MrBoom
 
         public virtual void Update()
         {
+            SoundsToPlay = 0;
+
             if (IsDie)
             {
                 frameIndex += 4;
@@ -269,7 +272,7 @@ namespace MrBoom
 
         public void SetSkull(SkullType skullType)
         {
-            terrain.PlaySound(Sound.Skull);
+            PlaySound(Sound.Skull);
 
             skullTimer = 600;
             Skull = skullType;
@@ -281,6 +284,11 @@ namespace MrBoom
             Direction = null;
             frameIndex = 0;
             unplugin = 0;
+        }
+
+        protected void PlaySound(Sound sound)
+        {
+            SoundsToPlay |= sound;
         }
 
         public virtual string GetCellDebugInfo(int cellX, int cellY)

@@ -4,16 +4,11 @@ using MrBoom.BehaviorTree;
 
 namespace MrBoom
 {
-    public class Monster : Sprite
+    public class BasicMonster : AbstractMonster
     {
-        private readonly BtNode tree;
 
-        private int livesCount;
-
-        public Monster(Terrain map,
-                       Map.MonsterData monsterData,
-                       Assets.MovingSpriteAssets animations,
-                       int x, int y) : base(map, animations, x, y, monsterData.Speed)
+        public BasicMonster(Terrain map, Map.BasicMonsterData monsterData, Assets.MovingSpriteAssets animations,
+                            int x, int y) : base(map, monsterData, animations, x, y)
         {
             tree = new BtSequence()
             {
@@ -25,14 +20,8 @@ namespace MrBoom
                         new DelayNode(monsterData.WaitAfterTurn, "Think")
                     })
             };
-
-            livesCount = monsterData.LivesCount - 1;
-
-            if (monsterData.IsSlowStart)
-            {
-                unplugin = 120;
-            }
         }
+
 
         private BtStatus ChooseDirection()
         {
@@ -90,42 +79,6 @@ namespace MrBoom
 
                 default: return true;
             }
-        }
-
-        public override void Update()
-        {
-            tree.Update();
-
-            base.Update();
-
-            if (IsAlive)
-            {
-                Cell cell = terrain.GetCell((X + 8) / 16, (Y + 8) / 16);
-                if (cell.Type == TerrainType.Fire && unplugin == 0)
-                {
-                    PlaySound(Sound.Ai);
-                    if (livesCount > 0)
-                    {
-                        livesCount--;
-                        unplugin = 165;
-                    }
-                    else
-                    {
-                        Kill();
-                        terrain.SetCell((X + 8) / 16, (Y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
-                    }
-                }
-                if (cell.Type == TerrainType.Apocalypse)
-                {
-                    Kill();
-                    PlaySound(Sound.Ai);
-                }
-            }
-        }
-
-        public override string GetDebugInfo()
-        {
-            return tree.ToString();
         }
     }
 }

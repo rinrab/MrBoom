@@ -56,7 +56,7 @@ namespace MrBoom
                 },
                 Monsters = new Map.MonsterData[]
                 {
-                    new Map.MonsterData(0, 30, 1)
+                    new Map.BasicMonsterData(0, 30, 1)
                 },
                 Final = defaultFinal
             },
@@ -93,7 +93,7 @@ namespace MrBoom
                 },
                 Monsters = new Map.MonsterData[]
                 {
-                    new Map.MonsterData(1, 30, 3)
+                    new Map.BasicMonsterData(1, 30, 3)
                 },
                 Final = defaultFinal
             },
@@ -131,7 +131,7 @@ namespace MrBoom
                 },
                 Monsters = new Map.MonsterData[]
                 {
-                    new Map.MonsterData(4, 60, 1)
+                    new Map.BasicMonsterData(4, 60, 1)
                 },
                 Final = defaultFinal
             },
@@ -168,13 +168,13 @@ namespace MrBoom
                 },
                 Monsters = new Map.MonsterData[]
                 {
-                    new Map.MonsterData(0, 30, 1),
-                    new Map.MonsterData(0, 30, 1),
-                    new Map.MonsterData(1, 30, 3),
-                    new Map.MonsterData(1, 30, 3),
-                    new Map.MonsterData(2, 60, 1) { Speed = 2 },
-                    new Map.MonsterData(3, 90, 3) { Speed = 1 },
-                    new Map.MonsterData(3, 90, 3) { Speed = 1 },
+                    new Map.BasicMonsterData(0, 30, 1),
+                    new Map.BasicMonsterData(0, 30, 1),
+                    new Map.BasicMonsterData(1, 30, 3),
+                    new Map.BasicMonsterData(1, 30, 3),
+                    new Map.BasicMonsterData(2, 60, 1) { Speed = 2 },
+                    new Map.BasicMonsterData(3, 90, 3) { Speed = 1 },
+                    new Map.BasicMonsterData(3, 90, 3) { Speed = 1 },
                 },
                 Final = new byte[]
                 {
@@ -227,7 +227,7 @@ namespace MrBoom
                 },
                 Monsters = new Map.MonsterData[]
                 {
-                    new Map.MonsterData(3, 90, 3) { Speed = 1 },
+                    new Map.BasicMonsterData(3, 90, 3) { Speed = 1 },
                 },
                 Final = defaultFinal
             },
@@ -265,8 +265,8 @@ namespace MrBoom
                 },
                 Monsters = new Map.MonsterData[]
                 {
-                    new Map.MonsterData(1, 30, 3),
-                    new Map.MonsterData(3, 90, 3) { Speed = 1 },
+                    new Map.BasicMonsterData(1, 30, 3),
+                    new Map.BasicMonsterData(3, 90, 3) { Speed = 1 },
                 },
                 Final = defaultFinal
             },
@@ -304,7 +304,7 @@ namespace MrBoom
                 },
                 Monsters = new Map.MonsterData[]
                 {
-                    new Map.MonsterData(5, 30, 2),
+                    new Map.BasicMonsterData(5, 30, 2),
                 },
                 Final = new byte[]
                 {
@@ -349,7 +349,7 @@ namespace MrBoom
                 Song = 2,
                 Monsters = new Map.MonsterData[]
                 {
-                    new Map.MonsterData(6, 0, 3) { IsSlowStart = true },
+                    new Map.BasicMonsterData(6, 0, 3) { IsSlowStart = true },
                 },
                 Final = new byte[]
                 {

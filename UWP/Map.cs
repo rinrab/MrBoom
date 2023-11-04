@@ -16,21 +16,35 @@ namespace MrBoom
             }
         }
 
-        public class MonsterData
+        public abstract class MonsterData
         {
             public int Speed;
-            public int WaitAfterTurn { get; }
             public int Type { get; }
             public int LivesCount { get; }
             public bool IsSlowStart;
 
-            public MonsterData(int type, int waitAfterTurn, int livesCount)
+            public MonsterData(int type, int livesCount)
             {
-                WaitAfterTurn = waitAfterTurn;
                 Type = type;
                 LivesCount = livesCount;
-
                 Speed = 3;
+            }
+
+            public abstract AbstractMonster GetMonster(Terrain map, Assets.MovingSpriteAssets animations, int x, int y);
+        }
+
+        public class BasicMonsterData : MonsterData
+        {
+            public int WaitAfterTurn { get; }
+
+            public BasicMonsterData(int type, int waitAfterTurn, int livesCount) : base(type, livesCount)
+            {
+                WaitAfterTurn = waitAfterTurn;
+            }
+
+            public override AbstractMonster GetMonster(Terrain map, Assets.MovingSpriteAssets animations, int x, int y)
+            {
+                return new BasicMonster(map, this, animations, x, y);
             }
         }
 

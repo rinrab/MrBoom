@@ -102,6 +102,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Assets.cs" />
+    <Compile Include="BasicMonster.cs" />
     <Compile Include="BehaviorTree\BtComposite.cs" />
     <Compile Include="BehaviorTree\BtDecorator.cs" />
     <Compile Include="BehaviorTree\BtNode.cs" />
@@ -134,7 +135,7 @@
     <Compile Include="MapData.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />
-    <Compile Include="Monster.cs" />
+    <Compile Include="AbstractMonster.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="SkullType.cs" />
     <Compile Include="Sprite.cs" />

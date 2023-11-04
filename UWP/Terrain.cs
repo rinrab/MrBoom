@@ -39,7 +39,7 @@ namespace MrBoom
         private readonly List<PowerUpType> powerUpList;
         private readonly Map map;
         private readonly List<AbstractPlayer> players;
-        private readonly List<Monster> monsters;
+        private readonly List<AbstractMonster> monsters;
 
         public readonly Feature StartFeatures;
         public readonly int StartMaxFire;
@@ -52,7 +52,7 @@ namespace MrBoom
 
         public Terrain(int levelIndex, Assets assets)
         {
-            monsters = new List<Monster>();
+            monsters = new List<AbstractMonster>();
 
             this.assets = assets;
             levelAssets = assets.Levels[levelIndex];
@@ -159,9 +159,9 @@ namespace MrBoom
                 }
 
                 var data = Random.NextElement(map.Monsters);
-                Monster monster = new Monster(
-                    this, data, assets.Monsters[data.Type],
-                    spawn.Value.X * 16, spawn.Value.Y * 16);
+
+                AbstractMonster monster = data.GetMonster(this, assets.Monsters[data.Type], spawn.Value.X * 16, spawn.Value.Y * 16);
+
                 monsters.Add(monster);
             }
         }
@@ -402,7 +402,7 @@ namespace MrBoom
 
             hasMonsterGrid.Reset(false);
             isMonsterComingGrid.Reset(false);
-            foreach (Monster m in monsters)
+            foreach (AbstractMonster m in monsters)
             {
                 if (m.IsAlive)
                 {

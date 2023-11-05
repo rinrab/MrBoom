@@ -117,20 +117,20 @@
     <Compile Include="Cell.cs" />
     <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="DemoScreen.cs" />
+    <Compile Include="Screens\DemoScreen.cs" />
     <Compile Include="Directions.cs" />
-    <Compile Include="DrawScreen.cs" />
+    <Compile Include="Screens\DrawScreen.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AbstractGameScreen.cs" />
-    <Compile Include="GameScreen.cs" />
+    <Compile Include="Screens\AbstractGameScreen.cs" />
+    <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="Image.cs" />
-    <Compile Include="IScreen.cs" />
+    <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MapData.cs" />
     <Compile Include="Menu.cs" />
@@ -140,17 +140,17 @@
     <Compile Include="SkullType.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="PlayerState.cs" />
-    <Compile Include="ResultScreen.cs" />
+    <Compile Include="Screens\ResultScreen.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
-    <Compile Include="MultiplayerStartScreen.cs" />
+    <Compile Include="Screens\MultiplayerStartScreen.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Terrain.cs" />
     <Compile Include="TerrainType.cs" />
     <Compile Include="UnrepeatableRandom.cs" />
-    <Compile Include="VictoryScreen.cs" />
+    <Compile Include="Screens\VictoryScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

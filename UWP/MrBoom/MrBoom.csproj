@@ -126,8 +126,6 @@
     </Compile>
     <Compile Include="Screens\AbstractGameScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
-    <Compile Include="AbstractGameScreen.cs" />
-    <Compile Include="GameScreen.cs" />
     <Compile Include="PlayFabPartyApi.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Grid.cs" />

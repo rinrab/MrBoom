@@ -3,3 +3,5 @@
 .vs
 /UWP/UWP.csproj.user
 /UWP/MrBoom.csproj.user
+/UWP/MrBoom/MrBoom.csproj.user
+/UWP/MrBoom.PlayFabParty/MrBoom.PlayFabParty.vcxproj.user

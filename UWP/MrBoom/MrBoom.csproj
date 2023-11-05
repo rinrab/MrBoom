@@ -48,7 +48,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\WindowsUniversal\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\WindowsUniversal\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
@@ -126,6 +126,7 @@
     </Compile>
     <Compile Include="AbstractGameScreen.cs" />
     <Compile Include="GameScreen.cs" />
+    <Compile Include="PlayFabPartyApi.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="Human.cs" />
@@ -166,6 +167,7 @@
     <None Include="Content\font\Debug.spritefont" />
     <None Include="Content\font\Menu-big.spritefont" />
     <None Include="Content\font\Menu.spritefont" />
+    <None Include="Directory.Build.props" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />

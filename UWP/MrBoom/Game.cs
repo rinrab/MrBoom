@@ -56,6 +56,8 @@ namespace MrBoom
                 new GamepadController(PlayerIndex.Three),
                 new GamepadController(PlayerIndex.Four),
             };
+
+            PlayFabPartyApi.MrBoom_Test();
         }
 
         protected override void Initialize()

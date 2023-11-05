@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Content Include="..\MrBoom.PlayFabParty\bin\$(PlatformName)\$(Configuration)\MrBoom.PlayFabParty.dll" 
+    <Content Include="..\MrBoom.PlayFabParty\bin\$(PlatformName)\$(Configuration)\MrBoom.PlayFabParty.dll"
+             CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="..\MrBoom.PlayFabParty\bin\$(PlatformName)\$(Configuration)\PartyWin.dll"
+             CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="..\MrBoom.PlayFabParty\bin\$(PlatformName)\$(Configuration)\PartyXboxLive.dll"
              CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
 </Project>

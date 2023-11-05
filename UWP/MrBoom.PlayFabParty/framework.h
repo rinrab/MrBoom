@@ -1,6 +1,9 @@
 ﻿#pragma once
 
-#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
 
-// Windows Header Files
-#include <windows.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include <Party.h>
+#include <Party_c.h>

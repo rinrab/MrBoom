@@ -1,7 +1,11 @@
 ﻿#include "pch.h"
 
+
+using namespace Party;
+
 extern "C" __declspec(dllexport)
 void __stdcall MrBoom_Test()
 {
-    // return 22;
+    PartyManager& partyManager = PartyManager::GetSingleton();
+    PartyError err;
 }

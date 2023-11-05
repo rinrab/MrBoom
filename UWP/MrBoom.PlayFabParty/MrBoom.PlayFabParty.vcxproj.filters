@@ -9,4 +9,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="entrypoint.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

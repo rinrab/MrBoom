@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../www/Gfx2x/ALPHA.PNG
+#begin ../../../www/Gfx2x/ALPHA.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,9 +23,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/ALPHA.PNG;ALPHA.PNG
+/build:../../../www/Gfx2x/ALPHA.PNG;ALPHA.PNG
 
-#begin ../../www/Gfx2x/BONUS.PNG
+#begin ../../../www/Gfx2x/BONUS.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,9 +35,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/BONUS.PNG;BONUS.PNG
+/build:../../../www/Gfx2x/BONUS.PNG;BONUS.PNG
 
-#begin ../../www/Gfx2x/CRAYON.PNG
+#begin ../../../www/Gfx2x/CRAYON.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,9 +47,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/CRAYON.PNG;CRAYON.PNG
+/build:../../../www/Gfx2x/CRAYON.PNG;CRAYON.PNG
 
-#begin ../../www/Gfx2x/CRAYON2.PNG
+#begin ../../../www/Gfx2x/CRAYON2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -59,9 +59,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/CRAYON2.PNG;CRAYON2.PNG
+/build:../../../www/Gfx2x/CRAYON2.PNG;CRAYON2.PNG
 
-#begin ../../www/Gfx2x/DRAW1.PNG
+#begin ../../../www/Gfx2x/DRAW1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -71,9 +71,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/DRAW1.PNG;DRAW1.PNG
+/build:../../../www/Gfx2x/DRAW1.PNG;DRAW1.PNG
 
-#begin ../../www/Gfx2x/DRAW2.PNG
+#begin ../../../www/Gfx2x/DRAW2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -83,9 +83,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/DRAW2.PNG;DRAW2.PNG
+/build:../../../www/Gfx2x/DRAW2.PNG;DRAW2.PNG
 
-#begin ../../www/Gfx2x/FEUILLE.PNG
+#begin ../../../www/Gfx2x/FEUILLE.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -95,9 +95,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/FEUILLE.PNG;FEUILLE.PNG
+/build:../../../www/Gfx2x/FEUILLE.PNG;FEUILLE.PNG
 
-#begin ../../www/Gfx2x/FOOT.PNG
+#begin ../../../www/Gfx2x/FOOT.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -107,9 +107,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/FOOT.PNG;FOOT.PNG
+/build:../../../www/Gfx2x/FOOT.PNG;FOOT.PNG
 
-#begin ../../www/Gfx2x/FOOTANIM.PNG
+#begin ../../../www/Gfx2x/FOOTANIM.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -119,9 +119,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/FOOTANIM.PNG;FOOTANIM.PNG
+/build:../../../www/Gfx2x/FOOTANIM.PNG;FOOTANIM.PNG
 
-#begin ../../www/Gfx2x/FORET.PNG
+#begin ../../../www/Gfx2x/FORET.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -131,9 +131,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/FORET.PNG;FORET.PNG
+/build:../../../www/Gfx2x/FORET.PNG;FORET.PNG
 
-#begin ../../www/Gfx2x/GAME1.PNG
+#begin ../../../www/Gfx2x/GAME1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -143,9 +143,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/GAME1.PNG;GAME1.PNG
+/build:../../../www/Gfx2x/GAME1.PNG;GAME1.PNG
 
-#begin ../../www/Gfx2x/GAME2.PNG
+#begin ../../../www/Gfx2x/GAME2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -155,9 +155,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/GAME2.PNG;GAME2.PNG
+/build:../../../www/Gfx2x/GAME2.PNG;GAME2.PNG
 
-#begin ../../www/Gfx2x/GAME3.PNG
+#begin ../../../www/Gfx2x/GAME3.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -167,9 +167,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/GAME3.PNG;GAME3.PNG
+/build:../../../www/Gfx2x/GAME3.PNG;GAME3.PNG
 
-#begin ../../www/Gfx2x/GHOST.PNG
+#begin ../../../www/Gfx2x/GHOST.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -179,9 +179,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/GHOST.PNG;GHOST.PNG
+/build:../../../www/Gfx2x/GHOST.PNG;GHOST.PNG
 
-#begin ../../www/Gfx2x/HELL1.PNG
+#begin ../../../www/Gfx2x/HELL1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -191,9 +191,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/HELL1.PNG;HELL1.PNG
+/build:../../../www/Gfx2x/HELL1.PNG;HELL1.PNG
 
-#begin ../../www/Gfx2x/HELL2.PNG
+#begin ../../../www/Gfx2x/HELL2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -203,9 +203,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/HELL2.PNG;HELL2.PNG
+/build:../../../www/Gfx2x/HELL2.PNG;HELL2.PNG
 
-#begin ../../www/Gfx2x/HELL3.PNG
+#begin ../../../www/Gfx2x/HELL3.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -215,9 +215,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/HELL3.PNG;HELL3.PNG
+/build:../../../www/Gfx2x/HELL3.PNG;HELL3.PNG
 
-#begin ../../www/Gfx2x/LAPIN1.PNG
+#begin ../../../www/Gfx2x/LAPIN1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -227,9 +227,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/LAPIN1.PNG;LAPIN1.PNG
+/build:../../../www/Gfx2x/LAPIN1.PNG;LAPIN1.PNG
 
-#begin ../../www/Gfx2x/LAPIN2.PNG
+#begin ../../../www/Gfx2x/LAPIN2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -239,9 +239,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/LAPIN2.PNG;LAPIN2.PNG
+/build:../../../www/Gfx2x/LAPIN2.PNG;LAPIN2.PNG
 
-#begin ../../www/Gfx2x/LAPIN3.PNG
+#begin ../../../www/Gfx2x/LAPIN3.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -251,9 +251,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/LAPIN3.PNG;LAPIN3.PNG
+/build:../../../www/Gfx2x/LAPIN3.PNG;LAPIN3.PNG
 
-#begin ../../www/Gfx2x/LAPIN4.PNG
+#begin ../../../www/Gfx2x/LAPIN4.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -263,9 +263,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/LAPIN4.PNG;LAPIN4.PNG
+/build:../../../www/Gfx2x/LAPIN4.PNG;LAPIN4.PNG
 
-#begin ../../www/Gfx2x/LAPIN6.PNG
+#begin ../../../www/Gfx2x/LAPIN6.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -275,9 +275,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/LAPIN6.PNG;LAPIN6.PNG
+/build:../../../www/Gfx2x/LAPIN6.PNG;LAPIN6.PNG
 
-#begin ../../www/Gfx2x/MASQUE.PNG
+#begin ../../../www/Gfx2x/MASQUE.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -287,9 +287,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MASQUE.PNG;MASQUE.PNG
+/build:../../../www/Gfx2x/MASQUE.PNG;MASQUE.PNG
 
-#begin ../../www/Gfx2x/MED.PNG
+#begin ../../../www/Gfx2x/MED.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -299,9 +299,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MED.PNG;MED.PNG
+/build:../../../www/Gfx2x/MED.PNG;MED.PNG
 
-#begin ../../www/Gfx2x/MED3.PNG
+#begin ../../../www/Gfx2x/MED3.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -311,9 +311,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MED3.PNG;MED3.PNG
+/build:../../../www/Gfx2x/MED3.PNG;MED3.PNG
 
-#begin ../../www/Gfx2x/MEDC.PNG
+#begin ../../../www/Gfx2x/MEDC.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -323,9 +323,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MEDC.PNG;MEDC.PNG
+/build:../../../www/Gfx2x/MEDC.PNG;MEDC.PNG
 
-#begin ../../www/Gfx2x/MEDG.PNG
+#begin ../../../www/Gfx2x/MEDG.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -335,9 +335,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MEDG.PNG;MEDG.PNG
+/build:../../../www/Gfx2x/MEDG.PNG;MEDG.PNG
 
-#begin ../../www/Gfx2x/MENU.PNG
+#begin ../../../www/Gfx2x/MENU.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -347,9 +347,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MENU.PNG;MENU.PNG
+/build:../../../www/Gfx2x/MENU.PNG;MENU.PNG
 
-#begin ../../www/Gfx2x/MICRO.PNG
+#begin ../../../www/Gfx2x/MICRO.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -359,9 +359,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MICRO.PNG;MICRO.PNG
+/build:../../../www/Gfx2x/MICRO.PNG;MICRO.PNG
 
-#begin ../../www/Gfx2x/MORT.PNG
+#begin ../../../www/Gfx2x/MORT.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -371,9 +371,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MORT.PNG;MORT.PNG
+/build:../../../www/Gfx2x/MORT.PNG;MORT.PNG
 
-#begin ../../www/Gfx2x/MRFOND.PNG
+#begin ../../../www/Gfx2x/MRFOND.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -383,9 +383,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/MRFOND.PNG;MRFOND.PNG
+/build:../../../www/Gfx2x/MRFOND.PNG;MRFOND.PNG
 
-#begin ../../www/Gfx2x/NEIGE1.PNG
+#begin ../../../www/Gfx2x/NEIGE1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -395,9 +395,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/NEIGE1.PNG;NEIGE1.PNG
+/build:../../../www/Gfx2x/NEIGE1.PNG;NEIGE1.PNG
 
-#begin ../../www/Gfx2x/NEIGE2.PNG
+#begin ../../../www/Gfx2x/NEIGE2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -407,9 +407,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/NEIGE2.PNG;NEIGE2.PNG
+/build:../../../www/Gfx2x/NEIGE2.PNG;NEIGE2.PNG
 
-#begin ../../www/Gfx2x/NEIGE3.PNG
+#begin ../../../www/Gfx2x/NEIGE3.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -419,9 +419,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/NEIGE3.PNG;NEIGE3.PNG
+/build:../../../www/Gfx2x/NEIGE3.PNG;NEIGE3.PNG
 
-#begin ../../www/Gfx2x/NUAGE1.PNG
+#begin ../../../www/Gfx2x/NUAGE1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -431,9 +431,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/NUAGE1.PNG;NUAGE1.PNG
+/build:../../../www/Gfx2x/NUAGE1.PNG;NUAGE1.PNG
 
-#begin ../../www/Gfx2x/NUAGE2.PNG
+#begin ../../../www/Gfx2x/NUAGE2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -443,9 +443,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/NUAGE2.PNG;NUAGE2.PNG
+/build:../../../www/Gfx2x/NUAGE2.PNG;NUAGE2.PNG
 
-#begin ../../www/Gfx2x/PAUSE.PNG
+#begin ../../../www/Gfx2x/PAUSE.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -455,9 +455,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/PAUSE.PNG;PAUSE.PNG
+/build:../../../www/Gfx2x/PAUSE.PNG;PAUSE.PNG
 
-#begin ../../www/Gfx2x/PIC.PNG
+#begin ../../../www/Gfx2x/PIC.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -467,9 +467,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/PIC.PNG;PIC.PNG
+/build:../../../www/Gfx2x/PIC.PNG;PIC.PNG
 
-#begin ../../www/Gfx2x/SOCCER.PNG
+#begin ../../../www/Gfx2x/SOCCER.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -479,9 +479,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/SOCCER.PNG;SOCCER.PNG
+/build:../../../www/Gfx2x/SOCCER.PNG;SOCCER.PNG
 
-#begin ../../www/Gfx2x/SOUCOUPE.PNG
+#begin ../../../www/Gfx2x/SOUCOUPE.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -491,9 +491,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/SOUCOUPE.PNG;SOUCOUPE.PNG
+/build:../../../www/Gfx2x/SOUCOUPE.PNG;SOUCOUPE.PNG
 
-#begin ../../www/Gfx2x/SPRITE.PNG
+#begin ../../../www/Gfx2x/SPRITE.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -503,9 +503,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/SPRITE.PNG;SPRITE.PNG
+/build:../../../www/Gfx2x/SPRITE.PNG;SPRITE.PNG
 
-#begin ../../www/Gfx2x/SPRITE2.PNG
+#begin ../../../www/Gfx2x/SPRITE2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -515,9 +515,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/SPRITE2.PNG;SPRITE2.PNG
+/build:../../../www/Gfx2x/SPRITE2.PNG;SPRITE2.PNG
 
-#begin ../../www/Gfx2x/SPRITE3.PNG
+#begin ../../../www/Gfx2x/SPRITE3.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -527,9 +527,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/SPRITE3.PNG;SPRITE3.PNG
+/build:../../../www/Gfx2x/SPRITE3.PNG;SPRITE3.PNG
 
-#begin ../../www/Gfx2x/VIC1.PNG
+#begin ../../../www/Gfx2x/VIC1.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -539,9 +539,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/VIC1.PNG;VIC1.PNG
+/build:../../../www/Gfx2x/VIC1.PNG;VIC1.PNG
 
-#begin ../../www/Gfx2x/VIC2.PNG
+#begin ../../../www/Gfx2x/VIC2.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -551,9 +551,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/VIC2.PNG;VIC2.PNG
+/build:../../../www/Gfx2x/VIC2.PNG;VIC2.PNG
 
-#begin ../../www/Gfx2x/VIC3.PNG
+#begin ../../../www/Gfx2x/VIC3.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -563,9 +563,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/VIC3.PNG;VIC3.PNG
+/build:../../../www/Gfx2x/VIC3.PNG;VIC3.PNG
 
-#begin ../../www/Gfx2x/VIC4.PNG
+#begin ../../../www/Gfx2x/VIC4.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -575,139 +575,139 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../www/Gfx2x/VIC4.PNG;VIC4.PNG
+/build:../../../www/Gfx2x/VIC4.PNG;VIC4.PNG
 
-#begin ../../www/music/anar11.mp3
+#begin ../../../www/music/anar11.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:../../www/music/anar11.mp3;music/anar11.mp3
+/build:../../../www/music/anar11.mp3;music/anar11.mp3
 
-#begin ../../www/music/chipmunk.mp3
+#begin ../../../www/music/chipmunk.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:../../www/music/chipmunk.mp3;music/chipmunk.mp3
+/build:../../../www/music/chipmunk.mp3;music/chipmunk.mp3
 
-#begin ../../www/music/chiptune.mp3
+#begin ../../../www/music/chiptune.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:../../www/music/chiptune.mp3;music/chiptune.mp3
+/build:../../../www/music/chiptune.mp3;music/chiptune.mp3
 
-#begin ../../www/music/deadfeel.mp3
+#begin ../../../www/music/deadfeel.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:../../www/music/deadfeel.mp3;music/deadfeel.mp3
+/build:../../../www/music/deadfeel.mp3;music/deadfeel.mp3
 
-#begin ../../www/music/drop.mp3
+#begin ../../../www/music/drop.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:../../www/music/drop.mp3;music/drop.mp3
+/build:../../../www/music/drop.mp3;music/drop.mp3
 
-#begin ../../www/music/external.mp3
+#begin ../../../www/music/external.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:../../www/music/external.mp3;music/external.mp3
+/build:../../../www/music/external.mp3;music/external.mp3
 
-#begin ../../www/music/matkamie.mp3
+#begin ../../../www/music/matkamie.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:../../www/music/matkamie.mp3;music/matkamie.mp3
+/build:../../../www/music/matkamie.mp3;music/matkamie.mp3
 
-#begin ../../www/music/unreeeal.mp3
+#begin ../../../www/music/unreeeal.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:../../www/music/unreeeal.mp3;music/unreeeal.mp3
+/build:../../../www/music/unreeeal.mp3;music/unreeeal.mp3
 
-#begin ../../www/sound/addbot.wav
+#begin ../../../www/sound/addbot.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/addbot.wav;sound/addbot.wav
+/build:../../../www/sound/addbot.wav;sound/addbot.wav
 
-#begin ../../www/sound/addplayer.wav
+#begin ../../../www/sound/addplayer.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/addplayer.wav;sound/addplayer.wav
+/build:../../../www/sound/addplayer.wav;sound/addplayer.wav
 
-#begin ../../www/sound/ai.wav
+#begin ../../../www/sound/ai.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/ai.wav;sound/ai.wav
+/build:../../../www/sound/ai.wav;sound/ai.wav
 
-#begin ../../www/sound/bang.wav
+#begin ../../../www/sound/bang.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/bang.wav;sound/bang.wav
+/build:../../../www/sound/bang.wav;sound/bang.wav
 
-#begin ../../www/sound/clock.wav
+#begin ../../../www/sound/clock.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/clock.wav;sound/clock.wav
+/build:../../../www/sound/clock.wav;sound/clock.wav
 
-#begin ../../www/sound/draw.wav
+#begin ../../../www/sound/draw.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/draw.wav;sound/draw.wav
+/build:../../../www/sound/draw.wav;sound/draw.wav
 
-#begin ../../www/sound/oioi.wav
+#begin ../../../www/sound/oioi.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/oioi.wav;sound/oioi.wav
+/build:../../../www/sound/oioi.wav;sound/oioi.wav
 
-#begin ../../www/sound/pick.wav
+#begin ../../../www/sound/pick.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/pick.wav;sound/pick.wav
+/build:../../../www/sound/pick.wav;sound/pick.wav
 
-#begin ../../www/sound/player_die.wav
+#begin ../../../www/sound/player_die.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/player_die.wav;sound/player_die.wav
+/build:../../../www/sound/player_die.wav;sound/player_die.wav
 
-#begin ../../www/sound/posebomb.wav
+#begin ../../../www/sound/posebomb.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/posebomb.wav;sound/posebomb.wav
+/build:../../../www/sound/posebomb.wav;sound/posebomb.wav
 
-#begin ../../www/sound/sac.wav
+#begin ../../../www/sound/sac.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/sac.wav;sound/sac.wav
+/build:../../../www/sound/sac.wav;sound/sac.wav
 
-#begin ../../www/sound/skull.wav
+#begin ../../../www/sound/skull.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/skull.wav;sound/skull.wav
+/build:../../../www/sound/skull.wav;sound/skull.wav
 
-#begin ../../www/sound/time_end.wav
+#begin ../../../www/sound/time_end.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/time_end.wav;sound/time_end.wav
+/build:../../../www/sound/time_end.wav;sound/time_end.wav
 
-#begin ../../www/sound/victory.wav
+#begin ../../../www/sound/victory.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../www/sound/victory.wav;sound/victory.wav
+/build:../../../www/sound/victory.wav;sound/victory.wav
 
 #begin CONTROLS.png
 /importer:TextureImporter

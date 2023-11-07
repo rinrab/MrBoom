@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using PlayFab;
 using Windows.ApplicationModel;
 
 namespace MrBoom
@@ -56,6 +57,8 @@ namespace MrBoom
                 new GamepadController(PlayerIndex.Three),
                 new GamepadController(PlayerIndex.Four),
             };
+            
+            PlayFabSettings.staticSettings.TitleId = "E8B53";
 
             PlayFabPartyApi.MrBoom_Test();
         }

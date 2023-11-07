@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PlayFab;
+using PlayFab.ClientModels;
+using PlayFab.MultiplayerModels;
 
 namespace MrBoom
 {
@@ -31,7 +34,45 @@ namespace MrBoom
 
         private async Task StartMatchmaking()
         {
-            // TODO:
+            PlayFabSettings.staticSettings.TitleId = "E8B53";
+
+            PlayFabResult<LoginResult> login = await PlayFabClientAPI.LoginWithCustomIDAsync(new LoginWithCustomIDRequest
+            {
+                CustomId = "GettingStartedGuide", // TODO:
+                CreateAccount = true
+            });
+
+            PlayFabResult<CreateMatchmakingTicketResult> ticket = await PlayFabMultiplayerAPI.CreateMatchmakingTicketAsync(
+                new CreateMatchmakingTicketRequest
+                {
+                    Creator = new MatchmakingPlayer
+                    {
+                        Entity = new PlayFab.MultiplayerModels.EntityKey
+                        {
+                            Id = login.Result.EntityToken.Entity.Id,
+                            Type = login.Result.EntityToken.Entity.Type,
+                        },
+                        Attributes = new MatchmakingPlayerAttributes
+                        {
+                            DataObject = new
+                            {
+                            },
+                        },
+                    },
+                    GiveUpAfterSeconds = 120,
+                    QueueName = "default",
+                });
+
+            while (true)
+            {
+                PlayFabResult<GetMatchmakingTicketResult> newTicket = await PlayFabMultiplayerAPI.GetMatchmakingTicketAsync(new GetMatchmakingTicketRequest
+                {
+                    TicketId = ticket.Result.TicketId,
+                    QueueName = "default"
+                });
+
+                await Task.Delay(6000);
+            }
         }
 
         public void Update()

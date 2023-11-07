@@ -30,12 +30,14 @@ namespace MrBoom
 
         public void Draw(SpriteBatch ctx)
         {
-            assets.Start.Draw(ctx, 0, 0);
+            assets.MrFond.Draw(ctx, 0, 0);
+            string text = "push   !!";
+            assets.Controls[0].Draw(ctx, 320 / 2, 181);
+            Game.DrawString(ctx, (320 - text.Length * 8) / 2, 186, text, assets.Alpha[1]);
         }
 
         public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
-            
         }
     }
 }

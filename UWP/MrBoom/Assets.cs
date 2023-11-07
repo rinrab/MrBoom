@@ -87,6 +87,7 @@ namespace MrBoom
         public Texture2D BlackPixel { get; private set; }
         public Texture2D StartButton { get; private set; }
         public SpriteFont MenuFontBig { get; private set; }
+        public Image MrFond { get; private set; }
 
         public Image DrawGameIn;
         public AnimatedImage DrawGameInNumbers;
@@ -707,6 +708,7 @@ namespace MrBoom
                     loadImage(content.Load<Texture2D>("VIC3"), 0, 0, 320, 200),
                     loadImage(content.Load<Texture2D>("VIC4"), 0, 0, 320, 200)),
                 Splash = loadImage(content.Load<Texture2D>("PIC"), 0, 0, 320, 200),
+                MrFond = loadImage(content.Load<Texture2D>("MRFOND"), 0, 0, 320, 200),
                 DrawGameIn = loadImage(imgSoucoupe, 96, 48, 78, 36),
                 DrawGameInNumbers = loadImageStripe(imgSoucoupe, 173, 32, 8, 7, 10),
                 Controls = new Image[]

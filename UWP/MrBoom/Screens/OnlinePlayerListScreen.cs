@@ -34,7 +34,8 @@ namespace MrBoom
             players = new List<IPlayerState>();
             for (int i = 0; i < match.Result.Members.Count; i++)
             {
-                players.Add(new HumanPlayerState(null, i, match.Result.Members[i].Entity.Id.Substring(0, 4)));
+                string name = match.Result.Members[i].Entity.Id.Substring(0, 4).ToLower();
+                players.Add(new HumanPlayerState(null, i, name));
             }
         }
 

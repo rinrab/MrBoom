@@ -25,7 +25,7 @@ namespace MrBoom
                     "OFF",
                     "COLOR",
                     "SEX",
-                }),
+                }) { SelectionIndex = (int)settings.TeamMode },
                 new TextMenuItem("QUIT"),
             }, assets, controllers);
 

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -25,23 +26,31 @@ namespace MrBoom
         public SearchingForPlayersScreen(Assets assets, List<Team> teams, List<IController> controllers,
                                          Settings settings, IController currentPlayer)
         {
-            matchmakingTask = StartMatchmaking();
             this.assets = assets;
             this.teams = teams;
             this.controllers = controllers;
             this.settings = settings;
             this.currentPlayer = currentPlayer;
+
+            matchmakingTask = StartMatchmaking();
         }
 
         private async Task StartMatchmaking()
         {
             PlayFabSettings.staticSettings.TitleId = "E8B53";
 
+            string playerId = settings.PlayerId;
+            if (playerId == null)
+            {
+                Guid guid = Guid.NewGuid();
+                settings.PlayerId = guid.ToString("N");
+            }
+
             status = "Logging in";
 
             PlayFabResult<LoginResult> login = await PlayFabClientAPI.LoginWithCustomIDAsync(new LoginWithCustomIDRequest
             {
-                CustomId = "test_user_" + Terrain.Random.Next(1000), // TODO:
+                CustomId = settings.PlayerId,
                 CreateAccount = true
             });
 

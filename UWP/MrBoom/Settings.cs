@@ -27,6 +27,18 @@ namespace MrBoom
             }
         }
 
+        public string PlayerId
+        {
+            get
+            {
+                return (string)localSettings.Values[nameof(PlayerId)];
+            }
+            set
+            {
+                localSettings.Values[nameof(PlayerId)] = value;
+            }
+        }
+
         public bool IsDebug { get; set; }
     }
 

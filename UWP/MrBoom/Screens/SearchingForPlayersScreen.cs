@@ -38,7 +38,7 @@ namespace MrBoom
 
             PlayFabResult<LoginResult> login = await PlayFabClientAPI.LoginWithCustomIDAsync(new LoginWithCustomIDRequest
             {
-                CustomId = "GettingStartedGuide", // TODO:
+                CustomId = "test_user_" + Terrain.Random.Next(1000), // TODO:
                 CreateAccount = true
             });
 

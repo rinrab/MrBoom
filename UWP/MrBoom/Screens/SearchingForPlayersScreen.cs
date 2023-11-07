@@ -18,6 +18,7 @@ namespace MrBoom
         private readonly List<IController> controllers;
         private readonly Settings settings;
         private readonly IController currentPlayer;
+        private string status;
 
         public Screen Next => Screen.None;
 
@@ -36,11 +37,15 @@ namespace MrBoom
         {
             PlayFabSettings.staticSettings.TitleId = "E8B53";
 
+            status = "Logging in";
+
             PlayFabResult<LoginResult> login = await PlayFabClientAPI.LoginWithCustomIDAsync(new LoginWithCustomIDRequest
             {
                 CustomId = "test_user_" + Terrain.Random.Next(1000), // TODO:
                 CreateAccount = true
             });
+
+            status = "Creating ticket";
 
             PlayFabResult<CreateMatchmakingTicketResult> ticket = await PlayFabMultiplayerAPI.CreateMatchmakingTicketAsync(
                 new CreateMatchmakingTicketRequest
@@ -71,6 +76,8 @@ namespace MrBoom
                     QueueName = "default"
                 });
 
+                status = newTicket.Result.Status;
+
                 await Task.Delay(6000);
             }
         }
@@ -82,7 +89,7 @@ namespace MrBoom
         public void Draw(SpriteBatch ctx)
         {
             assets.MrFond.Draw(ctx, 0, 0);
-            string text = "searching for players...";
+            string text = status.ToLower() + "...";
             Game.DrawString(ctx, (320 - text.Length * 8) / 2, 190, text, assets.Alpha[1]);
         }
 

@@ -43,14 +43,20 @@ namespace MrBoom
             if (playerId == null)
             {
                 Guid guid = Guid.NewGuid();
-                settings.PlayerId = guid.ToString("N");
+                playerId = guid.ToString("N");
+                settings.PlayerId = playerId;
+            }
+
+            if (settings.IsDebug)
+            {
+                playerId += "-debug";
             }
 
             status = "Logging in";
 
             PlayFabResult<LoginResult> login = await PlayFabClientAPI.LoginWithCustomIDAsync(new LoginWithCustomIDRequest
             {
-                CustomId = settings.PlayerId,
+                CustomId = playerId,
                 CreateAccount = true
             });
 

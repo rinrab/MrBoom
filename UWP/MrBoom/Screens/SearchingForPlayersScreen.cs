@@ -52,7 +52,7 @@ namespace MrBoom
                 playerId += "-debug";
             }
 
-            status = "Logging in";
+            status = "logging in";
 
             PlayFabResult<LoginResult> login = await PlayFabClientAPI.LoginWithCustomIDAsync(new LoginWithCustomIDRequest
             {
@@ -60,7 +60,7 @@ namespace MrBoom
                 CreateAccount = true
             });
 
-            status = "Creating ticket";
+            status = "creating ticket";
 
             PlayFabResult<CreateMatchmakingTicketResult> ticket = await PlayFabMultiplayerAPI.CreateMatchmakingTicketAsync(
                 new CreateMatchmakingTicketRequest
@@ -91,6 +91,17 @@ namespace MrBoom
                     QueueName = "default"
                 });
 
+                if (newTicket.Result.Status == "Matched")
+                {
+                    PlayFabResult<GetMatchResult> match = await PlayFabMultiplayerAPI.GetMatchAsync(new GetMatchRequest
+                    {
+                        MatchId = newTicket.Result.MatchId,
+                        QueueName = "default"
+                    });
+
+                    ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, match));
+                }
+
                 status = newTicket.Result.Status;
 
                 await Task.Delay(6000);
@@ -104,8 +115,25 @@ namespace MrBoom
         public void Draw(SpriteBatch ctx)
         {
             assets.MrFond.Draw(ctx, 0, 0);
-            string text = status.ToLower() + "...";
+
+            string text = GetStatusDisplayString(status);
+
             Game.DrawString(ctx, (320 - text.Length * 8) / 2, 190, text, assets.Alpha[1]);
+        }
+
+        private string GetStatusDisplayString(string status)
+        {
+            switch (status)
+            {
+                case "Creating": return "creating...";
+                case "Joining": return "joining...";
+                case "WaitingForPlayers": return "waiting for players...";
+                case "WaitingForMatch": return "waiting for match...";
+                case "Matched": return "matched";
+                case "Canceled": return "canceled";
+                case "Failed": return "failed";
+                default: return status;
+            }
         }
 
         public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)

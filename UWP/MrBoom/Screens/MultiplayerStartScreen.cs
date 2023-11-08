@@ -20,6 +20,8 @@ namespace MrBoom
         private readonly Settings settings;
         private readonly List<IController> unjoinedControllers;
         private readonly List<IController> joinedControllers;
+        private readonly NameGenerator nameGenerator;
+
         private readonly string helpText =
             "welcome to mr.bomber " +
             $"v{Game.Version}!!!   " +
@@ -27,12 +29,6 @@ namespace MrBoom
             "gamepad controller: d-pad or left stick - move  a button - drop bomb  b button radio control   " +
             "right keyboard: arrows - move  ctrl - drop  bomb  shift - radio control   " +
             "left keyboard: wsad - move  ctrl - drop  bomb  shift - radio control   ";
-        private readonly List<string> names = new List<string>
-        {
-            "gin", "jai", "jay", "lad", "dre", "ash", "zev", "buz", "nox", "oak",
-            "coy", "eza", "fil", "kip", "aya", "jem", "roy", "rex", "ryu", "gus",
-            "cpp", "sus", "god", "guy", "bob", "jim", "mrb", "max"
-        };
 
         private int startTick = -1;
         private TeamMode teamMode = 0;
@@ -48,6 +44,7 @@ namespace MrBoom
 
             unjoinedControllers = new List<IController>(controllers);
             joinedControllers = new List<IController>();
+            nameGenerator = new NameGenerator(Terrain.Random);
             players = new List<IPlayerState>();
             teamMode = settings.TeamMode;
 
@@ -147,7 +144,7 @@ namespace MrBoom
                     {
                         if (players.Count < 8)
                         {
-                            players.Add(new HumanPlayerState(controller, players.Count, GeneratePlayerName()));
+                            players.Add(new HumanPlayerState(controller, players.Count, nameGenerator.GenerateName()));
                             assets.Sounds.Addplayer.Play();
 
                             toRemove.Add(controller);
@@ -158,7 +155,7 @@ namespace MrBoom
                             {
                                 if (players[i].IsReplaceble)
                                 {
-                                    players[i] = new HumanPlayerState(controller, i, GeneratePlayerName());
+                                    players[i] = new HumanPlayerState(controller, i, nameGenerator.GenerateName());
                                     assets.Sounds.Addplayer.Play();
 
                                     toRemove.Add(controller);
@@ -237,15 +234,6 @@ namespace MrBoom
                     Application.Current.Exit();
                 }
             }
-        }
-
-        private string GeneratePlayerName()
-        {
-            int index = Terrain.Random.Next(names.Count);
-            string name = names[index];
-            names.RemoveAt(index);
-
-            return name;
         }
 
         private void Start()

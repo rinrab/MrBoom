@@ -117,6 +117,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="NameGenerator.cs" />
     <Compile Include="Screens\DemoScreen.cs" />
     <Compile Include="Directions.cs" />
     <Compile Include="Screens\DrawScreen.cs" />

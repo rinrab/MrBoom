@@ -19,6 +19,7 @@ namespace MrBoom
         private readonly List<IController> controllers;
         private readonly Settings settings;
         private readonly IController currentPlayer;
+        private readonly NameGenerator nameGenerator;
         private string status;
 
         public Screen Next => Screen.None;
@@ -31,6 +32,7 @@ namespace MrBoom
             this.controllers = controllers;
             this.settings = settings;
             this.currentPlayer = currentPlayer;
+            this.nameGenerator = new NameGenerator(Terrain.Random);
 
             matchmakingTask = StartMatchmaking();
         }
@@ -60,6 +62,14 @@ namespace MrBoom
                 CreateAccount = true
             });
 
+            //if (login.Result.NewlyCreated)
+            //{
+            //    await PlayFabClientAPI.UpdateUserTitleDisplayNameAsync(new UpdateUserTitleDisplayNameRequest
+            //    {
+            //        DisplayName = new NameGenerator(Terrain.Random).GenerateName()
+            //    });
+            //}
+
             status = "creating ticket";
 
             PlayFabResult<CreateMatchmakingTicketResult> ticket = await PlayFabMultiplayerAPI.CreateMatchmakingTicketAsync(
@@ -76,7 +86,8 @@ namespace MrBoom
                         {
                             DataObject = new
                             {
-                            },
+                                Name = new NameGenerator(Terrain.Random).GenerateName(),
+                            }
                         },
                     },
                     GiveUpAfterSeconds = 120,
@@ -96,7 +107,8 @@ namespace MrBoom
                     PlayFabResult<GetMatchResult> match = await PlayFabMultiplayerAPI.GetMatchAsync(new GetMatchRequest
                     {
                         MatchId = newTicket.Result.MatchId,
-                        QueueName = "default"
+                        QueueName = "default",
+                        ReturnMemberAttributes = true,
                     });
 
                     ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, match));

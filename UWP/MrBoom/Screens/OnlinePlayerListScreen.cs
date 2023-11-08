@@ -3,8 +3,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PlayFab.MultiplayerModels;
 using PlayFab;
+using PlayFab.MultiplayerModels;
+using PlayFab.Json;
 
 namespace MrBoom
 {
@@ -32,10 +33,15 @@ namespace MrBoom
             this.match = match;
 
             players = new List<IPlayerState>();
-            for (int i = 0; i < match.Result.Members.Count; i++)
+
+            var members = match.Result.Members;
+            for (int i = 0; i < members.Count; i++)
             {
-                string name = match.Result.Members[i].Entity.Id.Substring(0, 4).ToLower();
-                players.Add(new HumanPlayerState(null, i, name));
+                JsonObject attributes = (JsonObject)members[i].Attributes.DataObject;
+
+                attributes.TryGetValue("Name", out object playerName);
+
+                players.Add(new HumanPlayerState(null, i, (string)playerName));
             }
         }
 

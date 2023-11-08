@@ -119,6 +119,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Screens\OnlinePlayerListScreen.cs" />
     <Compile Include="Screens\OnlineStartScreen.cs" />
+    <Compile Include="NameGenerator.cs" />
     <Compile Include="Screens\DemoScreen.cs" />
     <Compile Include="Directions.cs" />
     <Compile Include="Screens\DrawScreen.cs" />

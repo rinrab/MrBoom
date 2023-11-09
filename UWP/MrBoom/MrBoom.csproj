@@ -117,6 +117,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="PlayFabPubSub.cs" />
     <Compile Include="Screens\OnlinePlayerListScreen.cs" />
     <Compile Include="Screens\OnlineStartScreen.cs" />
     <Compile Include="NameGenerator.cs" />
@@ -237,6 +238,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.SignalR.Core">
+      <Version>2.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core">
+      <Version>7.0.13</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.13</Version>
     </PackageReference>

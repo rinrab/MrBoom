@@ -94,6 +94,11 @@ namespace MrBoom
                     QueueName = "default",
                 });
 
+            PlayFabResult<PubSubNegotiateResult> negotiated = await PlayFabPubSub.Negotiate(new PubSubNegotiateRequest
+            {
+                AuthenticationContext = login.Result.AuthenticationContext
+            });
+
             while (true)
             {
                 PlayFabResult<GetMatchmakingTicketResult> newTicket = await PlayFabMultiplayerAPI.GetMatchmakingTicketAsync(new GetMatchmakingTicketRequest

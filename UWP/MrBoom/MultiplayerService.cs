@@ -21,17 +21,9 @@ namespace MrBoom
 
         public string GetLocalIPAddress()
         {
-            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            IPHostEntry host = Dns.GetHostByName(Dns.GetHostName());
 
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-
-            throw new Exception("No network adapters with an IPv4 address in the system!");
+            return host.AddressList[0].ToString();
         }
 
         public void Connect(PlayerConnectionData[] connectionDatas)

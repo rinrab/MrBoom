@@ -13,6 +13,8 @@ namespace MrBoom
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
+        public static Game game; // TODO:
+
         public List<Team> Teams;
         public Assets assets;
         public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
@@ -31,6 +33,7 @@ namespace MrBoom
 
         public Game()
         {
+            game = this;
             // TODO: Load settings
             settings = new Settings()
             {

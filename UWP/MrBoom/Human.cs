@@ -1,5 +1,8 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
+using System.Collections.Generic;
+
 namespace MrBoom
 {
     public class Human : AbstractPlayer
@@ -48,6 +51,18 @@ namespace MrBoom
             rcDitonateButton = Controller.IsKeyDown(PlayerKeys.RcDitonate);
 
             base.Update();
+        }
+
+        public byte[] GetDataToSend()
+        {
+            return new byte[]
+            {
+                (byte)(X / 256),
+                (byte)(X % 256),
+                (byte)(Y / 256),
+                (byte)(Y % 256),
+                (Direction == null) ? (byte)4 : (byte)Direction,
+            };
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using PlayFab;
 using PlayFab.MultiplayerModels;
 using PlayFab.Json;
-using System;
+using MrBoom.Screens;
 
 namespace MrBoom
 {
@@ -22,7 +22,7 @@ namespace MrBoom
         private readonly List<IPlayerState> players;
         private int tick;
 
-        public Screen Next => Screen.None;
+        public Screen Next { get; private set; }
 
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
                                       Settings settings, IController currentPlayer, PlayFabResult<GetMatchResult> match, MultiplayerService multiplayerService)
@@ -44,11 +44,11 @@ namespace MrBoom
 
                 attributes.TryGetValue("Ip", out object ip);
                 attributes.TryGetValue("Port", out object port);
-                if ((UInt64)port != (UInt64)multiplayerService.Port)
+                if ((ulong)port != (ulong)multiplayerService.Port)
                 {
                     multiplayerService.Connect(new PlayerConnectionData[]
                     {
-                        new PlayerConnectionData((string)ip, (int)multiplayerService.Port)
+                        new PlayerConnectionData((string)ip, (int)(ulong)port)
                     });
                 }
 
@@ -58,7 +58,16 @@ namespace MrBoom
 
         public void Update()
         {
-            _ = multiplayerService.SendAsync(new byte[] { (byte)Terrain.Random.Next(255) });
+            multiplayerService.SendInBackground(new byte[]
+            {
+                255, 255, 255, 255, 255, 255
+            });
+
+            var data = multiplayerService.GetData();
+            if (data != null)
+            {
+                ScreenManager.SetScreen(new NetworkGameScreen(teams, assets, settings, controllers, Game.game, multiplayerService));
+            }
         }
 
         public void Draw(SpriteBatch ctx)
@@ -94,12 +103,6 @@ namespace MrBoom
                     //    }
                     //}
                 }
-            }
-
-            if (multiplayerService.Data != null)
-            {
-                int n = multiplayerService.Data[0];
-                Game.DrawString(ctx, 0, 0, n.ToString(), assets.Alpha[1]);
             }
         }
 

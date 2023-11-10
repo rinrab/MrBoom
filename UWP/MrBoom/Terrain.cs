@@ -728,5 +728,31 @@ namespace MrBoom
                 player.GiveAll();
             }
         }
+
+        public void Recieved(byte[] data)
+        {
+            foreach (AbstractPlayer player in players)
+            {
+                if (player is RemotePlayer remotePlayer)
+                {
+                    remotePlayer.Recieved(data);
+                }
+            }
+        }
+
+        public byte[] GetDataToSend()
+        {
+            List<byte> bytes = new List<byte>();
+
+            foreach (AbstractPlayer player in players)
+            {
+                if (player is Human human)
+                {
+                    bytes.AddRange(human.GetDataToSend());
+                }
+            }
+
+            return bytes.ToArray();
+        }
     }
 }

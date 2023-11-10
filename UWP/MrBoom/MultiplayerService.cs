@@ -4,15 +4,16 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Markup;
 
 namespace MrBoom
 {
     public class MultiplayerService
     {
-        public byte[] Data { get; private set; }
+        private byte[] Data;
         public int Port { get; private set; }
 
-        private UdpClient[] clients;
+        private UdpClient client;
         private Task listenTask;
 
         public MultiplayerService()
@@ -36,39 +37,41 @@ namespace MrBoom
 
         public void Connect(PlayerConnectionData[] connectionDatas)
         {
-            clients = new UdpClient[connectionDatas.Length];
-            for (int i = 0; i < connectionDatas.Length; i++)
-            {
-                clients[i] = new UdpClient(connectionDatas[i].Ip, connectionDatas[i].Port);
-            }
+            client = new UdpClient(connectionDatas[0].Ip, connectionDatas[0].Port);
         }
 
         public void StartListen(int port)
         {
             Port = port;
-            listenTask = Listen(port);
+            _ = ListenAsync();
         }
 
-        private async Task Listen(int port)
+        private async Task ListenAsync()
         {
-            UdpClient server = new UdpClient(port);
+            UdpClient server = new UdpClient(Port);
 
             while (true)
             {
-                UdpReceiveResult recieved = await server.ReceiveAsync();
-
-                Data = recieved.Buffer;
-
-                await Task.Delay(20);
+                var result = await server.ReceiveAsync();
+                Data = result.Buffer;
             }
         }
 
         public async Task SendAsync(byte[] data)
         {
-            foreach (var client in clients)
-            {
-                await client.SendAsync(data, data.Length);
-            }
+            await client.SendAsync(data, data.Length);
+        }
+
+        public void SendInBackground(byte[] data)
+        {
+            _ = SendAsync(data);
+        }
+
+        public byte[] GetData()
+        {
+            byte[] tmp = Data;
+            Data = null;
+            return tmp;
         }
     }
 

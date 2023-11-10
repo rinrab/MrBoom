@@ -9,6 +9,7 @@ namespace MrBoom
         Game,
         Draw,
         Results,
-        Victory
+        Victory,
+        NetworkGameScreen
     }
 }

@@ -62,6 +62,16 @@ namespace MrBoom
                 CreateAccount = true
             });
 
+            await PlayFabMultiplayerAPI.CancelAllMatchmakingTicketsForPlayerAsync(new CancelAllMatchmakingTicketsForPlayerRequest
+            {
+                Entity = new PlayFab.MultiplayerModels.EntityKey
+                {
+                    Id = login.Result.EntityToken.Entity.Id,
+                    Type = login.Result.EntityToken.Entity.Type,
+                },
+                QueueName = "default",
+            });
+
             //if (login.Result.NewlyCreated)
             //{
             //    await PlayFabClientAPI.UpdateUserTitleDisplayNameAsync(new UpdateUserTitleDisplayNameRequest

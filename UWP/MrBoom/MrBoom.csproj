@@ -117,6 +117,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="MultiplayerService.cs" />
     <Compile Include="Screens\OnlinePlayerListScreen.cs" />
     <Compile Include="Screens\OnlineStartScreen.cs" />
     <Compile Include="NameGenerator.cs" />

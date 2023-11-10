@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using PlayFab;
 using PlayFab.MultiplayerModels;
 using PlayFab.Json;
+using System;
 
 namespace MrBoom
 {
@@ -17,13 +18,14 @@ namespace MrBoom
         private readonly Settings settings;
         private readonly IController currentPlayer;
         private readonly PlayFabResult<GetMatchResult> match;
+        private readonly MultiplayerService multiplayerService;
         private readonly List<IPlayerState> players;
         private int tick;
 
         public Screen Next => Screen.None;
 
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
-                                      Settings settings, IController currentPlayer, PlayFabResult<GetMatchResult> match)
+                                      Settings settings, IController currentPlayer, PlayFabResult<GetMatchResult> match, MultiplayerService multiplayerService)
         {
             this.assets = assets;
             this.teams = teams;
@@ -31,15 +33,24 @@ namespace MrBoom
             this.settings = settings;
             this.currentPlayer = currentPlayer;
             this.match = match;
-
+            this.multiplayerService = multiplayerService;
             players = new List<IPlayerState>();
 
             var members = match.Result.Members;
             for (int i = 0; i < members.Count; i++)
             {
                 JsonObject attributes = (JsonObject)members[i].Attributes.DataObject;
-
                 attributes.TryGetValue("Name", out object playerName);
+
+                attributes.TryGetValue("Ip", out object ip);
+                attributes.TryGetValue("Port", out object port);
+                if ((UInt64)port != (UInt64)multiplayerService.Port)
+                {
+                    multiplayerService.Connect(new PlayerConnectionData[]
+                    {
+                        new PlayerConnectionData((string)ip, (int)multiplayerService.Port)
+                    });
+                }
 
                 players.Add(new HumanPlayerState(null, i, (string)playerName));
             }
@@ -47,6 +58,7 @@ namespace MrBoom
 
         public void Update()
         {
+            _ = multiplayerService.SendAsync(new byte[] { (byte)Terrain.Random.Next(255) });
         }
 
         public void Draw(SpriteBatch ctx)
@@ -82,6 +94,12 @@ namespace MrBoom
                     //    }
                     //}
                 }
+            }
+
+            if (multiplayerService.Data != null)
+            {
+                int n = multiplayerService.Data[0];
+                Game.DrawString(ctx, 0, 0, n.ToString(), assets.Alpha[1]);
             }
         }
 

@@ -72,6 +72,11 @@ namespace MrBoom
 
             status = "creating ticket";
 
+            MultiplayerService multiplayerService = new MultiplayerService();
+            string ip = multiplayerService.GetLocalIPAddress();
+            int port = Terrain.Random.Next(65535);
+            multiplayerService.StartListen(port);
+
             PlayFabResult<CreateMatchmakingTicketResult> ticket = await PlayFabMultiplayerAPI.CreateMatchmakingTicketAsync(
                 new CreateMatchmakingTicketRequest
                 {
@@ -87,6 +92,8 @@ namespace MrBoom
                             DataObject = new
                             {
                                 Name = new NameGenerator(Terrain.Random).GenerateName(),
+                                Ip = ip,
+                                Port = port
                             }
                         },
                     },
@@ -111,7 +118,7 @@ namespace MrBoom
                         ReturnMemberAttributes = true,
                     });
 
-                    ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, match));
+                    ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, match, multiplayerService));
                 }
 
                 status = newTicket.Result.Status;

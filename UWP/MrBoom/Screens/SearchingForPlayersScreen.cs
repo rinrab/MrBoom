@@ -119,6 +119,8 @@ namespace MrBoom
                     });
 
                     ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, match, multiplayerService));
+
+                    break;
                 }
 
                 status = newTicket.Result.Status;

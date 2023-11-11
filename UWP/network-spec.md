@@ -6,23 +6,33 @@ type: 00
 TODO:
 
 ## Send player data
-type: 01
 
-| Byte number | Meaning              |
-|-------------|----------------------|
-| 0           | Type (0x01)          |
-| 1           | X / 256              |
-| 2           | X % 256              |
-| 3           | Y / 256              |
-| 4           | Y % 256              |
-| 5           | Direction (4 = null) |
-| 6           | Bombs count          |
+```cs
+// Binary protocol in C# interface
 
-Then bombs list:
+interface GameData
+{
+    byte type = 1;
+    // byte PlayersCount;
+    PlayerData[] Players;
+}
 
-| Byte number | Meaning       |
-|-------------|---------------|
-| 0           | Bomb X        |
-| 1           | Bomb Y        |
-| 2           | Estimate time |
-| 3           | Max fire      |
+interface PlayerData
+{
+    byte XPart1;
+    byte XPart2;
+    byte YPart1;
+    byte YPart2;
+    byte Direction; // 4 = null
+    byte BombsCount;
+    Bomb[] Bombs;
+}
+
+interface BombData
+{
+    byte X;
+    byte Y;
+    byte EstimateTime;
+    byte MaxFire;
+}
+```

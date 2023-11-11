@@ -745,6 +745,8 @@ namespace MrBoom
 
         public IEnumerable<byte> GetDataToSend()
         {
+            yield return 1; // Type
+
             foreach (AbstractPlayer player in players)
             {
                 if (player is Human human)

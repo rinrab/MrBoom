@@ -11,9 +11,8 @@ namespace MrBoom
     {
         private Menu pauseMenu;
 
-        public GameScreen(List<Team> teams, Assets assets,
-                          Settings settings, List<IController> controllers,
-                          Game game) : base(teams, assets, settings, controllers, game)
+        public GameScreen(List<Team> teams, Assets assets, Settings settings,
+                          List<IController> controllers) : base(teams, assets, settings, controllers)
         {
             for (int i = 0; i < teams.Count; i++)
             {
@@ -26,6 +25,8 @@ namespace MrBoom
             }
 
             terrain.InitializeMonsters();
+
+            Controller.Reset(controllers);
         }
 
         public override void Update()
@@ -42,7 +43,7 @@ namespace MrBoom
             }
             else if (terrain.Result == GameResult.Draw)
             {
-                ScreenManager.SetScreen(new DrawScreen(assets, controllers));
+                ScreenManager.SetScreen(new DrawScreen(teams, assets, settings, controllers));
             }
 
             if (isPause)
@@ -62,7 +63,7 @@ namespace MrBoom
                 }
                 else if (pauseMenu.Action == 1)
                 {
-                    game.NextSong(3);
+                    ScreenManager.NextSong(assets.Sounds, 3);
                     ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, controllers, settings));
                 }
                 else if (pauseMenu.Action == 2)

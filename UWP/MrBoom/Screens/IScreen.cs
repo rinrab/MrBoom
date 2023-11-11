@@ -7,8 +7,6 @@ namespace MrBoom
 {
     public interface IScreen
     {
-        Screen Next { get; }
-
         void Update();
         void Draw(SpriteBatch ctx);
         void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale);

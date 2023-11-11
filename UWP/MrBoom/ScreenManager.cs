@@ -9,6 +9,8 @@ namespace MrBoom
     {
         static IScreen currentScreen;
         static bool screenChanged;
+        static readonly UnrepeatableRandom SoundRandom = new UnrepeatableRandom();
+        static readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
 
         public static void Update()
         {
@@ -35,19 +37,22 @@ namespace MrBoom
             }
         }
 
-        public static Screen Next
+        public static void NextSong(SoundAssets sounds, int index = -1)
         {
-            get
+            if (index == -1)
             {
-                if (currentScreen != null)
-                {
-                    return currentScreen.Next;
-                }
-                else
-                {
-                    return Screen.None;
-                }
+                index = SoundRandom.Next(sounds.Musics.Length);
             }
+            sounds.Musics[index].Play();
+        }
+
+        public static int GetNextLevel()
+        {
+#if true
+            return LevelRandom.Next(MapData.Data.Length);
+#else
+            return 0;
+#endif
         }
 
         public static void SetScreen(IScreen screen)

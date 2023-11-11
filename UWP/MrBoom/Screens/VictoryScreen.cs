@@ -8,8 +8,6 @@ namespace MrBoom
 {
     public class VictoryScreen : IScreen
     {
-        public Screen Next { get; private set; }
-
         private int tick;
 
         private readonly Team winner;

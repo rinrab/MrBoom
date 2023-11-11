@@ -17,8 +17,6 @@ namespace MrBoom
 
         public List<Team> Teams;
         public Assets assets;
-        public readonly UnrepeatableRandom LevelRandom = new UnrepeatableRandom();
-        public readonly UnrepeatableRandom SoundRandom = new UnrepeatableRandom();
 
         public static readonly string Version =
             $"{Package.Current.Id.Version.Major}." +
@@ -71,9 +69,9 @@ namespace MrBoom
             MediaPlayer.IsRepeating = true;
 
             Teams = new List<Team>();
-            NextSong(3);
+            ScreenManager.NextSong(assets.Sounds, 3);
 
-            ScreenManager.SetScreen(new DemoScreen(Teams, assets, settings, controllers, this));
+            ScreenManager.SetScreen(new DemoScreen(Teams, assets, settings, controllers));
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 640, 400, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -100,29 +98,12 @@ namespace MrBoom
 
             ScreenManager.Update();
 
-            UpdateNavigation();
-
             if (MediaPlayer.State == MediaState.Stopped)
             {
-                NextSong();
+                ScreenManager.NextSong(assets.Sounds, 3);
             }
 
             base.Update(gameTime);
-        }
-
-        private void UpdateNavigation()
-        {
-            if (ScreenManager.Next != Screen.None)
-            {
-                if (ScreenManager.Next == Screen.Game)
-                {
-                    ScreenManager.SetScreen(new GameScreen(Teams, assets, settings, controllers, this));
-                }
-                else
-                {
-                    throw new Exception("Can't navigate to " + ScreenManager.Next);
-                }
-            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -174,15 +155,6 @@ namespace MrBoom
                     images[index].Draw(ctx, x + i * 8, y);
                 }
             }
-        }
-
-        public void NextSong(int index = -1)
-        {
-            if (index == -1)
-            {
-                index = SoundRandom.Next(assets.Sounds.Musics.Length);
-            }
-            assets.Sounds.Musics[index].Play();
         }
     }
 }

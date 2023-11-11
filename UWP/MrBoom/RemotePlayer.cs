@@ -30,6 +30,23 @@ namespace MrBoom
             {
                 Direction = (Directions)data[4];
             }
+
+            int bombsCount = data[5];
+            for (int i = 0; i < bombsCount; i++)
+            {
+                int startIndex = 6 + i * 4;
+                int bx = data[startIndex + 0];
+                int by = data[startIndex + 1];
+                int estimateTime = data[startIndex + 2];
+                int maxBoom = data[startIndex + 3];
+
+                Cell bombCell = terrain.GetCell(bx, by);
+                if (bombCell.Type != TerrainType.Bomb || bombCell.owner != this)
+                {
+                    bombCell = terrain.PutBomb(bx, by, maxBoom, false, this);
+                }
+                bombCell.bombCountdown = estimateTime;
+            }
         }
     }
 }

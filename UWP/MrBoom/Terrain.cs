@@ -575,9 +575,9 @@ namespace MrBoom
             };
         }
 
-        public void PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, AbstractPlayer owner)
+        public Cell PutBomb(int cellX, int cellY, int maxBoom, bool rcAllowed, AbstractPlayer owner)
         {
-            data[cellX, cellY] = new Cell(TerrainType.Bomb)
+            Cell newCell = new Cell(TerrainType.Bomb)
             {
                 Images = assets.Bomb,
                 Index = 0,
@@ -587,6 +587,9 @@ namespace MrBoom
                 rcAllowed = rcAllowed,
                 owner = owner
             };
+
+            data[cellX, cellY] = newCell;
+            return newCell;
         }
 
         Cell GenerateGiven()
@@ -753,6 +756,21 @@ namespace MrBoom
             }
 
             return bytes.ToArray();
+        }
+
+        public IEnumerable<Tuple<CellCoord, Cell>> GetMyBombs(AbstractPlayer owner)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    var cell = GetCell(x, y);
+                    if (cell.Type == TerrainType.Bomb && cell.owner == owner)
+                    {
+                        yield return new Tuple<CellCoord, Cell>(new CellCoord(x, y), cell);
+                    }
+                }
+            }
         }
     }
 }

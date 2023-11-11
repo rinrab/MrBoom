@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using SharpDX.MediaFoundation;
 
 namespace MrBoom
 {
@@ -53,16 +55,25 @@ namespace MrBoom
             base.Update();
         }
 
-        public byte[] GetDataToSend()
+        public IEnumerable<byte> GetDataToSend()
         {
-            return new byte[]
+            yield return (byte)(X / 256);
+            yield return (byte)(X % 256);
+            yield return (byte)(Y / 256);
+            yield return (byte)(Y % 256);
+            yield return (Direction == null) ? (byte)4 : (byte)Direction;
+
+            Tuple<CellCoord, Cell>[] bombs = terrain.GetMyBombs(this).ToArray();
+
+            yield return (byte)bombs.Length;
+
+            foreach (Tuple<CellCoord, Cell> cell in bombs)
             {
-                (byte)(X / 256),
-                (byte)(X % 256),
-                (byte)(Y / 256),
-                (byte)(Y % 256),
-                (Direction == null) ? (byte)4 : (byte)Direction,
-            };
+                yield return (byte)cell.Item1.X;
+                yield return (byte)cell.Item1.Y;
+                yield return (byte)cell.Item2.bombCountdown;
+                yield return (byte)cell.Item2.maxBoom;
+            }
         }
     }
 }

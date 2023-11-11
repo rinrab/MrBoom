@@ -60,7 +60,7 @@ namespace MrBoom
         {
             multiplayerService.SendInBackground(new byte[]
             {
-                255, 255, 255, 255, 255, 255
+                0, 0, 0, 0, 0, 0
             });
 
             var data = multiplayerService.GetData();

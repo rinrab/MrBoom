@@ -12,9 +12,8 @@ namespace MrBoom
     {
         private readonly Menu demoMenu;
 
-        public DemoScreen(List<Team> teams, Assets assets,
-                          Settings settings, List<IController> controllers,
-                          Game game) : base(teams, assets, settings, controllers, game)
+        public DemoScreen(List<Team> teams, Assets assets, Settings settings,
+                          List<IController> controllers) : base(teams, assets, settings, controllers)
         {
             demoMenu = new Menu(new IMenuItem[]
             {
@@ -41,11 +40,11 @@ namespace MrBoom
             base.Update();
             if (terrain.Result == GameResult.Victory || terrain.Result == GameResult.Draw)
             {
-                int levelIndex = game.LevelRandom.Next(MapData.Data.Length);
+                int levelIndex = ScreenManager.GetNextLevel();
 
                 terrain = new Terrain(levelIndex, assets);
 
-                game.NextSong(MapData.Data[levelIndex].Song);
+                ScreenManager.NextSong(assets.Sounds, MapData.Data[levelIndex].Song);
 
                 for (int i = 0; i < 4; i++)
                 {

@@ -14,7 +14,6 @@ namespace MrBoom
         protected readonly Assets assets;
         protected readonly Settings settings;
         protected readonly List<IController> controllers;
-        protected readonly Game game;
         protected bool isPause = false;
 
         private int bgTick = 0;
@@ -24,22 +23,18 @@ namespace MrBoom
 
         public Screen Next { get; private set; }
 
-        public AbstractGameScreen(List<Team> teams, Assets assets, Settings settings, List<IController> controllers, Game game)
+        public AbstractGameScreen(List<Team> teams, Assets assets, Settings settings, List<IController> controllers)
         {
             this.teams = teams;
             this.assets = assets;
             this.settings = settings;
             this.controllers = controllers;
-            this.game = game;
 
-#if true
-            int levelIndex = game.LevelRandom.Next(MapData.Data.Length);
-#else
-            int levelIndex = 0;
-#endif
+            int levelIndex = ScreenManager.GetNextLevel();
+
             terrain = new Terrain(levelIndex, assets);
 
-            game.NextSong(MapData.Data[levelIndex].Song);
+            ScreenManager.NextSong(assets.Sounds, MapData.Data[levelIndex].Song);
         }
 
         public virtual void Update()

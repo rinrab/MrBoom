@@ -10,13 +10,16 @@ namespace MrBoom
     {
         public Screen Next { get; private set; }
         public List<IController> controllers;
-
+        private readonly List<Team> teams;
         private readonly Assets assets;
+        private readonly Settings settings;
         private int tick;
 
-        public DrawScreen(Assets assets, List<IController> controllers)
+        public DrawScreen(List<Team> teams, Assets assets, Settings settings, List<IController> controllers)
         {
+            this.teams = teams;
             this.assets = assets;
+            this.settings = settings;
             this.controllers = controllers;
 
             assets.Sounds.Draw.Play();
@@ -33,7 +36,7 @@ namespace MrBoom
 
             if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
-                Next = Screen.Game;
+                ScreenManager.SetScreen(new GameScreen(teams, assets, settings, controllers));
             }
         }
 

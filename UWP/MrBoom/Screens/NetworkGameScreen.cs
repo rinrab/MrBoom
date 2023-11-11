@@ -13,8 +13,8 @@ namespace MrBoom.Screens
         private int tick = 0;
 
         public NetworkGameScreen(List<Team> teams, Assets assets, Settings settings,
-                                 List<IController> controllers, Game game, MultiplayerService multiplayerService,
-                                 IEnumerable<IPlayerState> players) : base(teams, assets, settings, controllers, game)
+                                 List<IController> controllers, MultiplayerService multiplayerService,
+                                 IEnumerable<IPlayerState> players) : base(teams, assets, settings, controllers)
         {
             this.multiplayerService = multiplayerService;
             Terrain.Random = new Random(1);

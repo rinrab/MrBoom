@@ -71,7 +71,7 @@ namespace MrBoom
             if (data != null)
             {
                 var newScreen = new NetworkGameScreen(teams, assets, settings, controllers,
-                                                      Game.game, multiplayerService, players);
+                                                      multiplayerService, players);
                 ScreenManager.SetScreen(newScreen);
             }
         }

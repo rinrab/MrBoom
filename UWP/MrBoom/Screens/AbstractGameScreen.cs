@@ -206,6 +206,11 @@ namespace MrBoom
             if (soundsToPlay.HasFlag(Sound.Skull)) soundAssets.Skull.Play();
         }
 
+        public virtual string GetAdditionDebugInfo()
+        {
+            return "";
+        }
+
         public virtual void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
             if (settings.IsDebug && isF4Toggle)
@@ -234,7 +239,7 @@ namespace MrBoom
                     }
                 }
 
-                string text = terrain.GetDebugInfo();
+                string text = GetAdditionDebugInfo() + terrain.GetDebugInfo();
 
                 Vector2 debugInfoSize = (assets.DebugFont.MeasureString(text) + new Vector2(16)) / 6 * scale;
                 Rectangle area = new Rectangle(0, 0, (int)debugInfoSize.X, (int)debugInfoSize.Y);

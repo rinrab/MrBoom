@@ -36,3 +36,21 @@ interface BombData
     byte MaxFire;
 }
 ```
+
+## Ping Request
+
+```cs
+interface PingRequest
+{
+    byte Type = 2;
+}
+```
+
+## Ping Response
+```cs
+interface PingResponse
+{
+    byte Type = 2;
+}
+```
+

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -9,14 +10,17 @@ namespace MrBoom
 {
     public class MultiplayerService
     {
-        private byte[] Data;
         public int Port { get; private set; }
+        public int Ping { get; private set; }
 
+        private byte[] Data;
         private UdpClient client;
         private Task listenTask;
+        private Stopwatch pingSw;
 
         public MultiplayerService()
         {
+            Ping = -1;
         }
 
         public string GetLocalIPAddress()
@@ -51,8 +55,49 @@ namespace MrBoom
 
             while (true)
             {
-                var result = await server.ReceiveAsync();
-                Data = result.Buffer;
+                UdpReceiveResult result = await server.ReceiveAsync();
+                var data = result.Buffer;
+                if (data[0] == 2)
+                {
+                    if (client != null)
+                    {
+                        SendInBackground(new byte[] { 3 });
+                    }
+                }
+                else if (data[0] == 3)
+                {
+                    if (pingSw != null)
+                    {
+                        Ping = (int)pingSw.ElapsedMilliseconds;
+                    }
+                    else
+                    {
+                        Ping = -1;
+                    }
+                }
+                else
+                {
+                    Data = result.Buffer;
+                }
+            }
+        }
+
+        public void StartPinging()
+        {
+            _ = PingAsync();
+        }
+
+        private async Task PingAsync()
+        {
+            while (true)
+            {
+                pingSw = Stopwatch.StartNew();
+
+                SendInBackground(new byte[]
+                {
+                    2
+                });
+                await Task.Delay(200);
             }
         }
 

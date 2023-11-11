@@ -21,6 +21,7 @@ namespace MrBoom
         private readonly MultiplayerService multiplayerService;
         private readonly List<IPlayerState> players;
         private int tick;
+        private int toStart = -1;
 
         public Screen Next { get; private set; }
 
@@ -58,6 +59,8 @@ namespace MrBoom
                     players.Add(new HumanPlayerState(currentPlayer, i, (string)playerName));
                 }
             }
+
+            multiplayerService.StartPinging();
         }
 
         public void Update()
@@ -68,11 +71,21 @@ namespace MrBoom
             });
 
             var data = multiplayerService.GetData();
-            if (data != null)
+            if (data != null && toStart == -1)
+            {
+                toStart = 60 * 3;
+            }
+
+            if (toStart == 0)
             {
                 var newScreen = new NetworkGameScreen(teams, assets, settings, controllers,
                                                       multiplayerService, players);
                 ScreenManager.SetScreen(newScreen);
+            }
+
+            if (toStart != -1)
+            {
+                toStart--;
             }
         }
 
@@ -110,6 +123,18 @@ namespace MrBoom
                     //}
                 }
             }
+
+            string ping;
+            if (multiplayerService.Ping == -1)
+            {
+                ping = "loading...";
+            }
+            else
+            {
+                ping = multiplayerService.Ping.ToString();
+            }
+
+            Game.DrawString(ctx, 0, 0, "ping: " + ping, assets.Alpha[1]);
         }
 
         public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)

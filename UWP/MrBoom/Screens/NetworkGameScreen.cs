@@ -48,5 +48,10 @@ namespace MrBoom.Screens
                 multiplayerService.SendInBackground(dataToSend);
             }
         }
+
+        public override string GetAdditionDebugInfo()
+        {
+            return string.Format("Ping: {0}\n", multiplayerService.Ping);
+        }
     }
 }

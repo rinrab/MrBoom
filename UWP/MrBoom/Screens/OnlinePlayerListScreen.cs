@@ -50,9 +50,13 @@ namespace MrBoom
                     {
                         new PlayerConnectionData((string)ip, (int)(ulong)port)
                     });
-                }
 
-                players.Add(new HumanPlayerState(null, i, (string)playerName));
+                    players.Add(new RemotePlayerState(i, 0, (string)playerName));
+                }
+                else
+                {
+                    players.Add(new HumanPlayerState(currentPlayer, i, (string)playerName));
+                }
             }
         }
 
@@ -66,7 +70,9 @@ namespace MrBoom
             var data = multiplayerService.GetData();
             if (data != null)
             {
-                ScreenManager.SetScreen(new NetworkGameScreen(teams, assets, settings, controllers, Game.game, multiplayerService));
+                var newScreen = new NetworkGameScreen(teams, assets, settings, controllers,
+                                                      Game.game, multiplayerService, players);
+                ScreenManager.SetScreen(newScreen);
             }
         }
 

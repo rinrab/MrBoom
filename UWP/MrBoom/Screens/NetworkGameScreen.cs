@@ -11,15 +11,20 @@ namespace MrBoom.Screens
         private readonly MultiplayerService multiplayerService;
         private int tick = 0;
 
-        public NetworkGameScreen(List<Team> teams, Assets assets, Settings settings, List<IController> controllers,
-                                 Game game, MultiplayerService multiplayerService) : base(teams, assets, settings, controllers, game)
+        public NetworkGameScreen(List<Team> teams, Assets assets, Settings settings,
+                                 List<IController> controllers, Game game, MultiplayerService multiplayerService,
+                                 IEnumerable<IPlayerState> players) : base(teams, assets, settings, controllers, game)
         {
             this.multiplayerService = multiplayerService;
             Terrain.Random = new Random(1);
             terrain = new Terrain(0, assets);
 
-            terrain.AddPlayer(new RemotePlayer(terrain, assets.Players[0], 0));
-            terrain.AddPlayer(new Human(terrain, assets.Players[1], controllers[0], 1));
+            int i = 0;
+            foreach (IPlayerState player in players)
+            {
+                terrain.AddPlayer(player.GetPlayer(terrain, i));
+                i++;
+            }
         }
 
         public override void Update()

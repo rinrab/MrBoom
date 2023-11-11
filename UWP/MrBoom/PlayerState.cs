@@ -53,4 +53,25 @@ namespace MrBoom
             return new ComputerPlayer(terrain, terrain.assets.Players[Index], team, Index);
         }
     }
+
+    public class RemotePlayerState : IPlayerState
+    {
+        public int Index { get; }
+        public int RemoteIndex { get; }
+        public string Name { get; }
+        public int VictoryCount { get; set; }
+        public bool IsReplaceble => true;
+
+        public RemotePlayerState(int index, int remoteIndex, string name)
+        {
+            Index = index;
+            RemoteIndex = remoteIndex;
+            Name = name;
+        }
+
+        public AbstractPlayer GetPlayer(Terrain terrain, int team)
+        {
+            return new RemotePlayer(terrain, terrain.assets.Players[Index], team);
+        }
+    }
 }

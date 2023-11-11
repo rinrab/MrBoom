@@ -37,21 +37,6 @@ namespace MrBoom
             }
         }
 
-        public static Screen Next
-        {
-            get
-            {
-                if (currentScreen != null)
-                {
-                    return currentScreen.Next;
-                }
-                else
-                {
-                    return Screen.None;
-                }
-            }
-        }
-
         public static void NextSong(SoundAssets sounds, int index = -1)
         {
             if (index == -1)

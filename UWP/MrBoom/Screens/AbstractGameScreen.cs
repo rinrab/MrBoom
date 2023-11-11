@@ -21,8 +21,6 @@ namespace MrBoom
         private bool isF4Toggle = false;
         private bool f4Mask;
 
-        public Screen Next { get; private set; }
-
         public AbstractGameScreen(List<Team> teams, Assets assets, Settings settings, List<IController> controllers)
         {
             this.teams = teams;

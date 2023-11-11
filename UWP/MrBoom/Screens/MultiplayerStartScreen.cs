@@ -10,8 +10,6 @@ namespace MrBoom
 {
     public class MultiplayerStartScreen : IScreen
     {
-        public Screen Next { get; private set; }
-
         private int tick = 0;
 
         private readonly Assets assets;

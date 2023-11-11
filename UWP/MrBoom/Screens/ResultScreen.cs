@@ -8,8 +8,6 @@ namespace MrBoom
 {
     public class ResultScreen : IScreen
     {
-        public Screen Next { get; private set; }
-
         private readonly List<Team> teams;
         private readonly int winner;
         private readonly List<IController> controllers;

@@ -8,7 +8,6 @@ namespace MrBoom
 {
     public class DrawScreen : IScreen
     {
-        public Screen Next { get; private set; }
         public List<IController> controllers;
         private readonly List<Team> teams;
         private readonly Assets assets;

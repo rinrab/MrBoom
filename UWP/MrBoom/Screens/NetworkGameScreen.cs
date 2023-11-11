@@ -37,7 +37,8 @@ namespace MrBoom.Screens
 
             if (tick % 1 == 0)
             {
-                multiplayerService.SendInBackground(terrain.GetDataToSend());
+                var dataToSend = terrain.GetDataToSend().ToArray();
+                multiplayerService.SendInBackground(dataToSend);
             }
         }
     }

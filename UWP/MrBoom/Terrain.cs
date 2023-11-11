@@ -743,19 +743,18 @@ namespace MrBoom
             }
         }
 
-        public byte[] GetDataToSend()
+        public IEnumerable<byte> GetDataToSend()
         {
-            List<byte> bytes = new List<byte>();
-
             foreach (AbstractPlayer player in players)
             {
                 if (player is Human human)
                 {
-                    bytes.AddRange(human.GetDataToSend());
+                    foreach (byte b in human.GetDataToSend())
+                    {
+                        yield return b;
+                    }
                 }
             }
-
-            return bytes.ToArray();
         }
 
         public IEnumerable<Tuple<CellCoord, Cell>> GetMyBombs(AbstractPlayer owner)

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace MrBoom.Screens
@@ -33,9 +34,10 @@ namespace MrBoom.Screens
 
             byte[] data = multiplayerService.GetData();
 
-            if (data != null)
+            if (data != null && data[0] == 1)
             {
-                terrain.Recieved(data);
+                NetworkParser.GameData parsedData = NetworkParser.GameData.Parse(new MemoryStream(data));
+                terrain.Recieved(parsedData);
             }
 
             base.Update();

@@ -11,44 +11,24 @@ namespace MrBoom
         {
         }
 
-        public void Recieved(byte[] data)
+        public void Recieved(NetworkParser.PlayerData data)
         {
-            if (data[0] == 1)
+            if (Math.Abs(data.X - X) + Math.Abs(data.Y - Y) >= 4)
             {
-                int x = data[1] * 256 + data[2];
-                int y = data[3] * 256 + data[4];
+                X = data.X;
+                Y = data.Y;
+            }
 
-                if (Math.Abs(x - X) + Math.Abs(y - Y) >= 4)
-                {
-                    X = x;
-                    Y = y;
-                }
+            Direction = data.Direction;
 
-                if (data[5] == 4)
+            foreach (NetworkParser.BombData bomb in data.Bombs)
+            {
+                Cell bombCell = terrain.GetCell(bomb.X, bomb.Y);
+                if (bombCell.Type != TerrainType.Bomb || bombCell.owner != this)
                 {
-                    Direction = null;
+                    bombCell = terrain.PutBomb(bomb.X, bomb.Y, bomb.MaxFire, false, this);
                 }
-                else
-                {
-                    Direction = (Directions)data[5];
-                }
-
-                int bombsCount = data[6];
-                for (int i = 0; i < bombsCount; i++)
-                {
-                    int startIndex = 7 + i * 4;
-                    int bx = data[startIndex + 0];
-                    int by = data[startIndex + 1];
-                    int estimateTime = data[startIndex + 2];
-                    int maxBoom = data[startIndex + 3];
-
-                    Cell bombCell = terrain.GetCell(bx, by);
-                    if (bombCell.Type != TerrainType.Bomb || bombCell.owner != this)
-                    {
-                        bombCell = terrain.PutBomb(bx, by, maxBoom, false, this);
-                    }
-                    bombCell.bombCountdown = estimateTime;
-                }
+                bombCell.bombCountdown = bomb.EstimateTime;
             }
         }
     }

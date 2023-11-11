@@ -732,13 +732,13 @@ namespace MrBoom
             }
         }
 
-        public void Recieved(byte[] data)
+        public void Recieved(NetworkParser.GameData data)
         {
             foreach (AbstractPlayer player in players)
             {
                 if (player is RemotePlayer remotePlayer)
                 {
-                    remotePlayer.Recieved(data);
+                    remotePlayer.Recieved(data.Players[0]);
                 }
             }
         }

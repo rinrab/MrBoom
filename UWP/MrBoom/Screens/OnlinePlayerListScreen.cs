@@ -3,10 +3,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PlayFab;
-using PlayFab.MultiplayerModels;
-using PlayFab.Json;
 using MrBoom.Screens;
+using System.IO;
+using System.Text;
 
 namespace MrBoom
 {
@@ -17,63 +16,75 @@ namespace MrBoom
         private readonly List<IController> controllers;
         private readonly Settings settings;
         private readonly IController currentPlayer;
-        private readonly PlayFabResult<GetMatchResult> match;
         private readonly MultiplayerService multiplayerService;
-        private readonly List<IPlayerState> players;
+        private List<IPlayerState> players;
         private int tick;
         private int toStart = -1;
 
         public Screen Next { get; private set; }
 
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
-                                      Settings settings, IController currentPlayer, PlayFabResult<GetMatchResult> match, MultiplayerService multiplayerService)
+                                      Settings settings, IController currentPlayer, MultiplayerService multiplayerService)
         {
             this.assets = assets;
             this.teams = teams;
             this.controllers = controllers;
             this.settings = settings;
             this.currentPlayer = currentPlayer;
-            this.match = match;
             this.multiplayerService = multiplayerService;
             players = new List<IPlayerState>();
 
-            var members = match.Result.Members;
-            for (int i = 0; i < members.Count; i++)
+            string name = new NameGenerator(Terrain.Random).GenerateName();
+            MemoryStream stream = new MemoryStream();
+            stream.WriteByte(2);
+            foreach (char c in name)
             {
-                JsonObject attributes = (JsonObject)members[i].Attributes.DataObject;
-                attributes.TryGetValue("Name", out object playerName);
-
-                attributes.TryGetValue("Ip", out object ip);
-                attributes.TryGetValue("Port", out object port);
-                if ((ulong)port != (ulong)multiplayerService.Port)
-                {
-                    multiplayerService.Connect(new PlayerConnectionData[]
-                    {
-                        new PlayerConnectionData((string)ip, (int)(ulong)port)
-                    });
-
-                    players.Add(new RemotePlayerState(i, 0, (string)playerName));
-                }
-                else
-                {
-                    players.Add(new HumanPlayerState(currentPlayer, i, (string)playerName));
-                }
+                stream.WriteByte((byte)c);
             }
+            // TODO: resend if not delivered
+            multiplayerService.SendInBackground(stream.ToArray());
 
-            multiplayerService.StartPinging();
+            //multiplayerService.StartPinging();
         }
 
         public void Update()
         {
-            multiplayerService.SendInBackground(new byte[]
-            {
-                0
-            });
-
             var data = multiplayerService.GetData();
-            if (data != null && toStart == -1)
+            if (data != null)
             {
-                toStart = 60 * 3;
+                if (data[0] == 0)
+                {
+                    MemoryStream stream = new MemoryStream(data);
+
+                    stream.ReadByte(); // Type
+
+                    int playersCount = stream.ReadByte();
+                    players = new List<IPlayerState>(playersCount);
+                    for (int i = 0; i < playersCount; i++)
+                    {
+                        int type = stream.ReadByte();
+
+                        StringBuilder name = new StringBuilder();
+                        int nameLength = stream.ReadByte();
+                        for (int j = 0; j < nameLength; j++)
+                        {
+                            name.Append((char)stream.ReadByte());
+                        }
+                        if (type == 0)
+                        {
+                            players.Add(new HumanPlayerState(currentPlayer, i, name.ToString()));
+                        }
+                        else
+                        {
+                            players.Add(new RemotePlayerState(i, i, name.ToString()));
+                        }
+                    }
+
+                    if (players.Count >= 2 && toStart == -1)
+                    {
+                        toStart = 60 * 3;
+                    }
+                }
             }
 
             if (toStart == 0)

@@ -14,6 +14,8 @@ namespace MrBoom
 
         public MultiplayerService(string hostname, int port)
         {
+            Ping = -1;
+
             udpClient = new UdpClient(0);
 
             udpClient.Connect(hostname, port);

@@ -2,6 +2,7 @@
 
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace MrBoom.Server
 {
@@ -22,40 +23,93 @@ namespace MrBoom.Server
         private void UdpServer_OnMesssageReceived(UdpReceiveResult msg)
         {
             List<IPEndPoint> toSend = new List<IPEndPoint>();
-            bool found = false;
 
-            lock (clients)
+            if (msg.Buffer.Length >= 1 && msg.Buffer[0] == 2)
             {
-                foreach (Client client in clients)
+                StringBuilder name = new StringBuilder();
+                for (int i = 1; i < msg.Buffer.Length; i++)
                 {
-                    if (client.EndPoint.ToString() == msg.RemoteEndPoint.ToString())
-                    {
-                        found = true;
-                    }
-                    else
-                    {
-                        toSend.Add(client.EndPoint);
-                    }
+                    name.Append((char)msg.Buffer[i]);
                 }
 
-                if (!found)
+                bool found = false;
+                lock (clients)
                 {
-                    clients.Add(new Client
+                    foreach (Client client in clients)
                     {
-                        EndPoint = msg.RemoteEndPoint,
-                        Name = "name",
-                    });
+                        if (client.EndPoint.ToString() == msg.RemoteEndPoint.ToString())
+                        {
+                            found = true;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        clients.Add(new Client
+                        {
+                            EndPoint = msg.RemoteEndPoint,
+                            Name = name.ToString(),
+                        });
+                    }
                 }
             }
-
-            foreach (IPEndPoint client in toSend)
+            else
             {
-                udpServer.SendMessage(msg.Buffer, client, default);
+                // TODO: Secret
+
+                lock (clients)
+                {
+                    foreach (Client client in clients)
+                    {
+                        if (client.EndPoint.ToString() != msg.RemoteEndPoint.ToString())
+                        {
+                            toSend.Add(client.EndPoint);
+                        }
+                    }
+                }
+
+                foreach (IPEndPoint client in toSend)
+                {
+                    udpServer.SendMessage(msg.Buffer, client, default);
+                }
             }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            while (true)
+            {
+                await Task.Delay(1000 / 20, stoppingToken);
+
+                lock (clients)
+                {
+                    foreach (Client client in clients)
+                    {
+                        _ = udpServer.SendMessage(ClientsToBytes(clients, client.EndPoint), client.EndPoint, stoppingToken);
+                    }
+                }
+            }
+        }
+
+        private static byte[] ClientsToBytes(List<Client> clients, IPEndPoint endPoint)
+        {
+            MemoryStream stream = new MemoryStream();
+
+            stream.WriteByte(0); // type
+
+            stream.WriteByte((byte)clients.Count);
+            foreach (Client client in clients)
+            {
+                stream.WriteByte((byte)((client.EndPoint.ToString() == endPoint.ToString()) ? 0 : 1));
+
+                stream.WriteByte((byte)client.Name.Length);
+                foreach (char c in client.Name)
+                {
+                    stream.WriteByte((byte)c);
+                }
+            }
+
+            return stream.ToArray();
         }
 
         class Client

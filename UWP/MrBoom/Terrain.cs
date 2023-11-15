@@ -190,55 +190,49 @@ namespace MrBoom
                 timeToEnd--;
             }
 
-            if (TimeLeft < 30 * 60 - 1)
+            int index = (30 * 60 - TimeLeft) / ApocalypseSpeed;
+            if (TimeLeft < 30 * 60 - 1 && TimeLeft % ApocalypseSpeed == 0 && index != 255)
             {
-                if (TimeLeft % ApocalypseSpeed == 0)
+                for (int x = 0; x < final.Width; x++)
                 {
-                    int index = (30 * 60 - TimeLeft) / ApocalypseSpeed;
-                    if (index != 255)
+                    for (int y = 0; y < final.Height; y++)
                     {
-                        for (int x = 0; x < final.Width; x++)
+                        if (index == Math.Min(MaxApocalypse + 5, 255))
                         {
-                            for (int y = 0; y < final.Height; y++)
+                            var cell = data[x, y];
+                            if (cell.Type == TerrainType.TemporaryWall)
                             {
-                                if (index == Math.Min(MaxApocalypse + 5, 255))
+                                data[x, y] = new Cell(TerrainType.PowerUpFire)
                                 {
-                                    var cell = data[x, y];
-                                    if (cell.Type == TerrainType.TemporaryWall)
-                                    {
-                                        data[x, y] = new Cell(TerrainType.PowerUpFire)
-                                        {
-                                            Images = assets.Fire,
-                                            Index = 0,
-                                            Next = new Cell(TerrainType.Free)
-                                        };
-                                        PlaySound(Sound.Sac);
-                                    }
-                                }
-                                else if (final[x, y] == index)
+                                    Images = assets.Fire,
+                                    Index = 0,
+                                    Next = new Cell(TerrainType.Free)
+                                };
+                                PlaySound(Sound.Sac);
+                            }
+                        }
+                        else if (final[x, y] == index)
+                        {
+                            var cell = data[x, y];
+                            if (cell.Type == TerrainType.Bomb)
+                            {
+                                cell.owner.BombsPlaced--;
+                            }
+                            if (cell.Type != TerrainType.PermanentWall)
+                            {
+                                data[x, y] = new Cell(TerrainType.Apocalypse)
                                 {
-                                    var cell = data[x, y];
-                                    if (cell.Type == TerrainType.Bomb)
+                                    Images = levelAssets.PermanentWalls,
+                                    Index = 0,
+                                    Next = new Cell(TerrainType.PermanentWall)
                                     {
-                                        cell.owner.BombsPlaced--;
+                                        Images = levelAssets.PermanentWalls,
                                     }
-                                    if (cell.Type != TerrainType.PermanentWall)
-                                    {
-                                        data[x, y] = new Cell(TerrainType.Apocalypse)
-                                        {
-                                            Images = levelAssets.PermanentWalls,
-                                            Index = 0,
-                                            Next = new Cell(TerrainType.PermanentWall)
-                                            {
-                                                Images = levelAssets.PermanentWalls,
-                                            }
-                                        };
-                                        if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
-                                        {
-                                            PlaySound(Sound.Sac);
-                                            lastApocalypseSound = TimeLeft;
-                                        }
-                                    }
+                                };
+                                if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
+                                {
+                                    PlaySound(Sound.Sac);
+                                    lastApocalypseSound = TimeLeft;
                                 }
                             }
                         }

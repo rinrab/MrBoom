@@ -75,8 +75,11 @@ namespace MrBoom
 
         private void Start()
         {
-            assets.Sounds.Bang.Play();
-            ScreenManager.SetScreen(new SearchingForPlayersScreen(assets, teams, controllers, settings, players));
+            if (players.Count > 0)
+            {
+                assets.Sounds.Bang.Play();
+                ScreenManager.SetScreen(new SearchingForPlayersScreen(assets, teams, controllers, settings, players));
+            }
         }
 
         public void Draw(SpriteBatch ctx)

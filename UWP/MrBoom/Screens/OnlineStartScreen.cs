@@ -60,6 +60,11 @@ namespace MrBoom
             {
                 Start();
             }
+            else if (Controller.IsKeyDown(controllers, PlayerKeys.Back))
+            {
+                Controller.Reset(controllers);
+                ScreenManager.SetScreen(new DemoScreen(teams, assets, settings, controllers));
+            }
 
             tick++;
         }

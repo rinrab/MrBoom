@@ -98,6 +98,12 @@ namespace MrBoom
             {
                 toStart--;
             }
+
+            if (Controller.IsKeyDown(controllers, PlayerKeys.Back))
+            {
+                Controller.Reset(controllers);
+                ScreenManager.SetScreen(new OnlineStartScreen(assets, teams, controllers, settings));
+            }
         }
 
         public void Draw(SpriteBatch ctx)

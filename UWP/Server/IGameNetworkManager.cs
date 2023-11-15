@@ -2,8 +2,8 @@
 
 namespace MrBoom.Server
 {
-    public interface IGameServer
+    public interface IGameNetworkManager
     {
-        IGameNetwork GetNetwork();
+        IGameNetwork CreateNetwork();
     }
 }

@@ -38,7 +38,24 @@ namespace MrBoom.Server
 
                     while (!stoppingToken.IsCancellationRequested)
                     {
-                        UdpReceiveResult msg = await udpClient.ReceiveAsync(stoppingToken);
+                        UdpReceiveResult msg;
+                        try
+                        {
+                            msg = await udpClient.ReceiveAsync(stoppingToken);
+                        }
+                        catch (SocketException ex)
+                        {
+                            if (ex.SocketErrorCode == SocketError.ConnectionReset)
+                            {
+                                // Ignore connection reset errors.
+                                continue;
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+
                         logger.LogDebug("Received message from {RemoteEndPoint}", msg.RemoteEndPoint);
 
                         MessageReceivedDelegate handler = OnMesssageReceived;

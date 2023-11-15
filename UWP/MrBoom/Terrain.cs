@@ -191,49 +191,46 @@ namespace MrBoom
             }
 
             int index = (30 * 60 - TimeLeft) / ApocalypseSpeed;
-            if (TimeLeft < 30 * 60 - 1 && TimeLeft % ApocalypseSpeed == 0 && index != 255)
+            for (int x = 0; x < final.Width; x++)
             {
-                for (int x = 0; x < final.Width; x++)
+                for (int y = 0; y < final.Height; y++)
                 {
-                    for (int y = 0; y < final.Height; y++)
+                    if (index == MaxApocalypse + 5)
                     {
-                        if (index == Math.Min(MaxApocalypse + 5, 255))
+                        var cell = data[x, y];
+                        if (cell.Type == TerrainType.TemporaryWall)
                         {
-                            var cell = data[x, y];
-                            if (cell.Type == TerrainType.TemporaryWall)
+                            data[x, y] = new Cell(TerrainType.PowerUpFire)
                             {
-                                data[x, y] = new Cell(TerrainType.PowerUpFire)
-                                {
-                                    Images = assets.Fire,
-                                    Index = 0,
-                                    Next = new Cell(TerrainType.Free)
-                                };
-                                PlaySound(Sound.Sac);
-                            }
+                                Images = assets.Fire,
+                                Index = 0,
+                                Next = new Cell(TerrainType.Free)
+                            };
+                            PlaySound(Sound.Sac);
                         }
-                        else if (final[x, y] == index)
+                    }
+                    else if (final[x, y] == index && final[x, y] != 255)
+                    {
+                        var cell = data[x, y];
+                        if (cell.Type == TerrainType.Bomb)
                         {
-                            var cell = data[x, y];
-                            if (cell.Type == TerrainType.Bomb)
+                            cell.owner.BombsPlaced--;
+                        }
+                        if (cell.Type != TerrainType.PermanentWall)
+                        {
+                            data[x, y] = new Cell(TerrainType.Apocalypse)
                             {
-                                cell.owner.BombsPlaced--;
-                            }
-                            if (cell.Type != TerrainType.PermanentWall)
-                            {
-                                data[x, y] = new Cell(TerrainType.Apocalypse)
+                                Images = levelAssets.PermanentWalls,
+                                Index = 0,
+                                Next = new Cell(TerrainType.PermanentWall)
                                 {
                                     Images = levelAssets.PermanentWalls,
-                                    Index = 0,
-                                    Next = new Cell(TerrainType.PermanentWall)
-                                    {
-                                        Images = levelAssets.PermanentWalls,
-                                    }
-                                };
-                                if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
-                                {
-                                    PlaySound(Sound.Sac);
-                                    lastApocalypseSound = TimeLeft;
                                 }
+                            };
+                            if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
+                            {
+                                PlaySound(Sound.Sac);
+                                lastApocalypseSound = TimeLeft;
                             }
                         }
                     }

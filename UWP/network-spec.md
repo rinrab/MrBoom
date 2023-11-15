@@ -57,7 +57,7 @@ interface PingResponse
 ## Start dialogs
 
 ```mermaid
-    stateDiagram-v2
+stateDiagram-v2
     [*] --> DemoScreen
     DemoScreen --> OnlineStartScreen : Action Play Online
     DemoScreen --> StartScreen : Action Play Local

@@ -75,6 +75,8 @@ interface PingResponse
         AddLocalPlayer --> [*]
         [*] -->  StartGame: Again Bomb Button
         StartGame --> [*]
+        [*] --> AddBot: 'B' button
+        AddBot --> [*]
     }
 
     OnlineStartScreen --> SearchingForPlayers

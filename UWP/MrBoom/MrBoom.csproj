@@ -145,7 +145,6 @@
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Screen.cs" />
     <Compile Include="Screens\MultiplayerStartScreen.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Terrain.cs" />

@@ -17,9 +17,7 @@ namespace MrBoom
 
                 if (j != i)
                 {
-                    T temp = items[i];
-                    items[i] = items[j];
-                    items[j] = temp;
+                    (items[j], items[i]) = (items[i], items[j]);
                 }
             }
         }

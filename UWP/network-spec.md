@@ -67,5 +67,12 @@ interface PingResponse
         StartMatchmaking --> [*]
     }
 
-    OnlineStartScreen --> NetworkGameScreen
+    OnlineStartScreen --> SearchingForPlayers
+
+    state SearchingForPlayers {
+        [*] --> Matchmaking
+        Matchmaking --> [*]
+    }
+
+    SearchingForPlayers --> OnlinePlayerList
 ```

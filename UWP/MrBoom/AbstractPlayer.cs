@@ -30,7 +30,7 @@ namespace MrBoom
         {
             Features = map.StartFeatures;
             MaxBoom = map.StartMaxFire;
-            MaxBombsCount = map.SstartMaxBombsCount;
+            MaxBombsCount = map.StartMaxBombsCount;
             Team = team;
         }
 

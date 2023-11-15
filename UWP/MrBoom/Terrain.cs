@@ -43,7 +43,7 @@ namespace MrBoom
 
         public readonly Feature StartFeatures;
         public readonly int StartMaxFire;
-        public readonly int SstartMaxBombsCount;
+        public readonly int StartMaxBombsCount;
 
         private readonly Assets.Level levelAssets;
         private readonly Grid<bool> hasMonsterGrid;
@@ -83,7 +83,7 @@ namespace MrBoom
             }
             players = new List<AbstractPlayer>();
 
-            SstartMaxBombsCount = mapData.StartMaxBombsCount;
+            StartMaxBombsCount = mapData.StartMaxBombsCount;
             StartMaxFire = mapData.StartMaxFire;
 
             data = new Grid<Cell>(Width, Height, new Cell(TerrainType.PermanentWall));

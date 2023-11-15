@@ -9,14 +9,14 @@ namespace MrBoom.Screens
 {
     public class NetworkGameScreen : AbstractGameScreen
     {
-        private readonly MultiplayerService multiplayerService;
+        private readonly GameNetworkConnection gameNetworkConnection;
         private int tick = 0;
 
         public NetworkGameScreen(List<Team> teams, Assets assets, Settings settings,
-                                 List<IController> controllers, MultiplayerService multiplayerService,
+                                 List<IController> controllers, GameNetworkConnection gameNetworkConnection,
                                  IEnumerable<IPlayerState> players) : base(teams, assets, settings, controllers)
         {
-            this.multiplayerService = multiplayerService;
+            this.gameNetworkConnection = gameNetworkConnection;
             Terrain.Random = new Random(1);
             terrain = new Terrain(0, assets);
 
@@ -32,7 +32,7 @@ namespace MrBoom.Screens
         {
             tick++;
 
-            byte[] data = multiplayerService.GetData();
+            byte[] data = gameNetworkConnection.GetData();
 
             if (data != null && data[0] == 1)
             {
@@ -45,13 +45,13 @@ namespace MrBoom.Screens
             if (tick % 1 == 0)
             {
                 var dataToSend = terrain.GetDataToSend().ToArray();
-                multiplayerService.SendInBackground(dataToSend);
+                gameNetworkConnection.SendInBackground(dataToSend);
             }
         }
 
         public override string GetAdditionDebugInfo()
         {
-            return string.Format("Ping: {0}\n", multiplayerService.Ping);
+            return string.Format("Ping: {0}\n", gameNetworkConnection.Ping);
         }
     }
 }

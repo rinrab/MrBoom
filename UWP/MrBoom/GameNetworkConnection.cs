@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace MrBoom
 {
-    public class MultiplayerService
+    public class GameNetworkConnection
     {
         public int Ping { get; private set; }
 
         private byte[] Data;
         private readonly UdpClient udpClient;
 
-        public MultiplayerService(string hostname, int port)
+        public GameNetworkConnection(string hostname, int port)
         {
             Ping = -1;
 

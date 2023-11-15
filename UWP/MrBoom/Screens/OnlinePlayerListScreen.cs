@@ -16,7 +16,7 @@ namespace MrBoom
         private readonly List<IController> controllers;
         private readonly Settings settings;
         private readonly HumanPlayerState currentPlayer;
-        private readonly MultiplayerService multiplayerService;
+        private readonly GameNetworkConnection gameNetworkConnection;
         private List<IPlayerState> players;
         private int tick;
         private int toStart = -1;
@@ -24,14 +24,14 @@ namespace MrBoom
         public Screen Next { get; private set; }
 
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
-                                      Settings settings, HumanPlayerState currentPlayer, MultiplayerService multiplayerService)
+                                      Settings settings, HumanPlayerState currentPlayer, GameNetworkConnection gameNetworkConnection)
         {
             this.assets = assets;
             this.teams = teams;
             this.controllers = controllers;
             this.settings = settings;
             this.currentPlayer = currentPlayer;
-            this.multiplayerService = multiplayerService;
+            this.gameNetworkConnection = gameNetworkConnection;
             players = new List<IPlayerState>();
 
             string name = new NameGenerator(Terrain.Random).GenerateName();
@@ -42,14 +42,14 @@ namespace MrBoom
                 stream.WriteByte((byte)c);
             }
             // TODO: resend if not delivered
-            multiplayerService.SendInBackground(stream.ToArray());
+            gameNetworkConnection.SendInBackground(stream.ToArray());
 
             //multiplayerService.StartPinging();
         }
 
         public void Update()
         {
-            var data = multiplayerService.GetData();
+            var data = gameNetworkConnection.GetData();
             if (data != null)
             {
                 if (data[0] == 0)
@@ -90,7 +90,7 @@ namespace MrBoom
             if (toStart == 0)
             {
                 var newScreen = new NetworkGameScreen(teams, assets, settings, controllers,
-                                                      multiplayerService, players);
+                                                      gameNetworkConnection, players);
                 ScreenManager.SetScreen(newScreen);
             }
 
@@ -142,13 +142,13 @@ namespace MrBoom
             }
 
             string ping;
-            if (multiplayerService.Ping == -1)
+            if (gameNetworkConnection.Ping == -1)
             {
                 ping = "loading...";
             }
             else
             {
-                ping = multiplayerService.Ping.ToString();
+                ping = gameNetworkConnection.Ping.ToString();
             }
 
             Game.DrawString(ctx, 0, 0, "ping: " + ping, assets.Alpha[1]);

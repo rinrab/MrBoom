@@ -51,10 +51,10 @@ namespace MrBoom
 
             Room room = JsonConvert.DeserializeObject<Room>(await res.Content.ReadAsStringAsync());
 
-            MultiplayerService multiplayerService = new MultiplayerService(room.Hostname, room.Port);
-            multiplayerService.StartListen();
+            GameNetworkConnection gameNetworkConnection = new GameNetworkConnection(room.Hostname, room.Port);
+            gameNetworkConnection.StartListen();
 
-            ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, multiplayerService));
+            ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, gameNetworkConnection));
         }
 
         public void Update()

@@ -117,7 +117,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="MultiplayerService.cs" />
+    <Compile Include="GameNetworkConnection.cs" />
     <Compile Include="NetworkParser.cs" />
     <Compile Include="RemotePlayer.cs" />
     <Compile Include="Screens\NetworkGameScreen.cs" />

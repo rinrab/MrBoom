@@ -133,7 +133,6 @@
     </Compile>
     <Compile Include="Screens\AbstractGameScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
-    <Compile Include="PlayFabPartyApi.cs" />
     <Compile Include="Screens\SearchingForPlayersScreen.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Grid.cs" />
@@ -248,9 +247,6 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="PlayFabAllSDK">
-      <Version>1.168.231101</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

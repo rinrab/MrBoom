@@ -17,13 +17,13 @@ namespace MrBoom
         private readonly List<Team> teams;
         private readonly List<IController> controllers;
         private readonly Settings settings;
-        private readonly IController currentPlayer;
+        private readonly HumanPlayerState currentPlayer;
         private string status;
 
         public Screen Next => Screen.None;
 
         public SearchingForPlayersScreen(Assets assets, List<Team> teams, List<IController> controllers,
-                                         Settings settings, IController currentPlayer)
+                                         Settings settings, HumanPlayerState currentPlayer)
         {
             this.assets = assets;
             this.teams = teams;

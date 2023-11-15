@@ -88,6 +88,7 @@ namespace MrBoom
         public Texture2D StartButton { get; private set; }
         public SpriteFont MenuFontBig { get; private set; }
         public Image MrFond { get; private set; }
+        public Image OnlineMenu { get; private set; }
 
         public Image DrawGameIn;
         public AnimatedImage DrawGameInNumbers;
@@ -685,6 +686,7 @@ namespace MrBoom
                 Monsters = monsters,
                 InsertCoin = loadImageStripe(imgCrayon2, 74, 27, 58, 62, 3, 0),
                 Start = loadImage(content.Load<Texture2D>("MENU"), 0, 0, 320, 200),
+                OnlineMenu = loadImage(content.Load<Texture2D>("ONLINEMENU"), 0, 0, 320, 200),
                 Alpha = new AnimatedImage[] {
                     loadImageStripe(imgAlpha, 0, 0, 8, 6, 44),
                     loadImageStripe(imgAlpha, 0, 8, 8, 6, 44),

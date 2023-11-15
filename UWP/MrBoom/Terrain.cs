@@ -193,9 +193,9 @@ namespace MrBoom
             int index = (30 * 60 - TimeLeft) / ApocalypseSpeed;
             for (int i = 0; i < final.CellCount; i++)
             {
+                Cell cell = data[i];
                 if (index == MaxApocalypse + 5)
                 {
-                    var cell = data[i];
                     if (cell.Type == TerrainType.TemporaryWall)
                     {
                         data[i] = new Cell(TerrainType.PowerUpFire)
@@ -209,7 +209,6 @@ namespace MrBoom
                 }
                 else if (final[i] == index && final[i] != 255)
                 {
-                    var cell = data[i];
                     if (cell.Type == TerrainType.Bomb)
                     {
                         cell.owner.BombsPlaced--;

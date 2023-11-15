@@ -37,7 +37,7 @@ namespace MrBoom
 
             string name = new NameGenerator(Terrain.Random).GenerateName();
             MemoryStream stream = new MemoryStream();
-            stream.WriteByte(2);
+            stream.WriteByte(NetworkMessageType.ConnectReq);
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
                 new AddPlayerMessage()

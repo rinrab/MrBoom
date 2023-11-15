@@ -12,13 +12,18 @@ namespace MrBoom
         private byte[] Data;
         private readonly UdpClient udpClient;
 
-        public GameNetworkConnection(string hostname, int port)
+        private GameNetworkConnection(string hostname, int port)
         {
             Ping = -1;
 
             udpClient = new UdpClient(0);
 
             udpClient.Connect(hostname, port);
+        }
+
+        public static GameNetworkConnection Connect(string hostname, int port)
+        {
+            return new GameNetworkConnection(hostname, port);
         }
 
         public void StartListen()

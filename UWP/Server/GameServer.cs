@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System.Net;
-using System.Text;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom.Server
 {
@@ -20,17 +20,19 @@ namespace MrBoom.Server
 
         private void GameNetwork_ClientConnected(IPEndPoint client, byte[] msg)
         {
-            StringBuilder name = new StringBuilder();
-            for (int i = 1; i < msg.Length; i++)
+            AddPlayerMessage addPlayerMsg;
+            using (BinaryReader reader = new BinaryReader(new MemoryStream(msg)))
             {
-                name.Append((char)msg[i]);
+                byte messageType = reader.ReadByte();
+
+                addPlayerMsg = AddPlayerMessage.Decode(reader);
             }
 
             lock(clients)
             {
                 clients.Add(new Client
                 {
-                    Name = name.ToString(),
+                    Name = addPlayerMsg.Name,
                     EndPoint = client
                 });
             }

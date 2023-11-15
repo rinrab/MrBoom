@@ -6,4 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <Import Project="..\MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.projitems" Label="Shared" />
+
 </Project>

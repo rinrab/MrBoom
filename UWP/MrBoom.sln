@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MrBoom.Server", "Server\MrBoom.Server.csproj", "{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MrBoom.NetworkProtocol", "MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.shproj", "{3A264BF8-2D58-45E7-AC5B-AEFFA359811A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,5 +73,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C44B369-FC14-4BBF-ACAC-1810FEE338B9}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.projitems*{3a264bf8-2d58-45e7-ac5b-aeffa359811a}*SharedItemsImports = 13
+		MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.projitems*{551c3653-b6f5-477b-ab9f-9aa6ac71ff61}*SharedItemsImports = 5
+		MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.projitems*{5bd7ecae-1e4e-44b2-ae53-06438c74ecd3}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

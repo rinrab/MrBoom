@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MrBoom.Screens;
 using System.IO;
 using System.Text;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom
 {
@@ -37,9 +38,12 @@ namespace MrBoom
             string name = new NameGenerator(Terrain.Random).GenerateName();
             MemoryStream stream = new MemoryStream();
             stream.WriteByte(2);
-            foreach (char c in name)
+            using (BinaryWriter writer = new BinaryWriter(stream))
             {
-                stream.WriteByte((byte)c);
+                new AddPlayerMessage()
+                {
+                    Name = name
+                }.Encode(writer);
             }
             // TODO: resend if not delivered
             gameNetworkConnection.SendInBackground(stream.ToArray());

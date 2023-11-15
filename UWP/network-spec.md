@@ -98,5 +98,7 @@ interface PingResponse
 
     SearchingForPlayers --> OnlinePlayerList
     OnlinePlayerList --> NetworkGameScreen
+    OnlinePlayerList --> OnlineStartScreen: Escape
+    OnlineStartScreen --> DemoScreen: Escape
     NetworkGameScreen --> TODO
 ```

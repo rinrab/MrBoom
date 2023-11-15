@@ -20,7 +20,7 @@ namespace MrBoom.Bot
 
         public void Update(int startX, int startY, GetTravelCostDelegate getCost)
         {
-            BitArray visited = new BitArray(grid.Size);
+            BitArray visited = new BitArray(grid.CellCount);
 
             grid.Reset(CostCantGo);
 

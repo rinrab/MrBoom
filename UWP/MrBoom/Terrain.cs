@@ -196,6 +196,7 @@ namespace MrBoom
                 Cell cell = data[i];
                 if (index == MaxApocalypse + 5)
                 {
+                    // Blow cell if final index is 255
                     if (cell.Type == TerrainType.TemporaryWall)
                     {
                         data[i] = new Cell(TerrainType.PowerUpFire)
@@ -209,6 +210,7 @@ namespace MrBoom
                 }
                 else if (final[i] == index && final[i] != 255)
                 {
+                    // Replace cell with apocalypse cell
                     if (cell.Type == TerrainType.Bomb)
                     {
                         cell.owner.BombsPlaced--;

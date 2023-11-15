@@ -235,7 +235,7 @@ namespace MrBoom
                 }
             }
 
-            if (mapData.BombApocalypse && TimeLeft < 30 * 60 - ApocalypseSpeed * MaxApocalypse)
+            if (mapData.IsBombApocalypse && TimeLeft < 30 * 60 - ApocalypseSpeed * MaxApocalypse)
             {
                 if (TimeLeft % 16 == 0)
                 {

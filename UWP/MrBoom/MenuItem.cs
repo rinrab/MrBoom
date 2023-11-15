@@ -50,10 +50,10 @@ namespace MrBoom
         private readonly string header;
         private readonly string[] options;
         private readonly int maxCount;
-        private string currentOption => options[SelectionIndex];
+        private string CurrentOption => options[SelectionIndex];
 
         public int SelectionIndex;
-        public string Text => FormatText(currentOption);
+        public string Text => FormatText(CurrentOption);
 
         public SelectMenuItem(string header, string[] options)
         {

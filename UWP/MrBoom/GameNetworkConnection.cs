@@ -23,10 +23,14 @@ namespace MrBoom
 
         public static GameNetworkConnection Connect(string hostname, int port)
         {
-            return new GameNetworkConnection(hostname, port);
+            GameNetworkConnection connection = new GameNetworkConnection(hostname, port);
+
+            connection.StartListen();
+
+            return connection;
         }
 
-        public void StartListen()
+        private void StartListen()
         {
             Task.Run(async () =>
             {

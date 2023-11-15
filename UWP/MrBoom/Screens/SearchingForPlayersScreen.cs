@@ -52,7 +52,6 @@ namespace MrBoom
             Room room = JsonConvert.DeserializeObject<Room>(await res.Content.ReadAsStringAsync());
 
             GameNetworkConnection gameNetworkConnection = GameNetworkConnection.Connect(room.Hostname, room.Port);
-            gameNetworkConnection.StartListen();
 
             ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, gameNetworkConnection));
         }

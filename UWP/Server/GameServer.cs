@@ -1,78 +1,45 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
 
 namespace MrBoom.Server
 {
     public class GameServer : BackgroundService, IGameServer
     {
-        private readonly IUdpServer udpServer;
-
+        private readonly IGameNetwork gameNetwork;
         private readonly List<Client> clients;
 
-        public GameServer(IUdpServer udpServer)
+        public GameServer(IGameNetworkManager networkManager)
         {
-            this.udpServer = udpServer;
             clients = new List<Client>();
-
-            udpServer.OnMesssageReceived += UdpServer_OnMesssageReceived;
+            gameNetwork = networkManager.CreateNetwork();
+            gameNetwork.MessageReceived += GameNetwork_MessageReceived;
+            gameNetwork.ClientConnected += GameNetwork_ClientConnected;
         }
 
-        private void UdpServer_OnMesssageReceived(UdpReceiveResult msg)
+        private void GameNetwork_ClientConnected(IPEndPoint client, byte[] msg)
         {
-            List<IPEndPoint> toSend = new List<IPEndPoint>();
-
-            if (msg.Buffer.Length >= 1 && msg.Buffer[0] == 2)
+            StringBuilder name = new StringBuilder();
+            for (int i = 1; i < msg.Length; i++)
             {
-                StringBuilder name = new StringBuilder();
-                for (int i = 1; i < msg.Buffer.Length; i++)
-                {
-                    name.Append((char)msg.Buffer[i]);
-                }
-
-                bool found = false;
-                lock (clients)
-                {
-                    foreach (Client client in clients)
-                    {
-                        if (client.EndPoint.ToString() == msg.RemoteEndPoint.ToString())
-                        {
-                            found = true;
-                        }
-                    }
-
-                    if (!found)
-                    {
-                        clients.Add(new Client
-                        {
-                            EndPoint = msg.RemoteEndPoint,
-                            Name = name.ToString(),
-                        });
-                    }
-                }
+                name.Append((char)msg[i]);
             }
-            else
+
+            lock(clients)
             {
-                // TODO: Secret
-
-                lock (clients)
+                clients.Add(new Client
                 {
-                    foreach (Client client in clients)
-                    {
-                        if (client.EndPoint.ToString() != msg.RemoteEndPoint.ToString())
-                        {
-                            toSend.Add(client.EndPoint);
-                        }
-                    }
-                }
-
-                foreach (IPEndPoint client in toSend)
-                {
-                    udpServer.SendMessage(msg.Buffer, client, default);
-                }
+                    Name = name.ToString(),
+                    EndPoint = client
+                });
             }
+        }
+
+        private void GameNetwork_MessageReceived(IPEndPoint client, byte[] msg)
+        {
+            // TODO: Secret
+            gameNetwork.SendMessage(gameNetwork.GetAllExcept(client), msg, default);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -81,12 +48,9 @@ namespace MrBoom.Server
             {
                 await Task.Delay(1000 / 20, stoppingToken);
 
-                lock (clients)
+                foreach (var client in gameNetwork.GetAll())
                 {
-                    foreach (Client client in clients)
-                    {
-                        _ = udpServer.SendMessage(ClientsToBytes(clients, client.EndPoint), client.EndPoint, stoppingToken);
-                    }
+                     _ = gameNetwork.SendMessage(client, ClientsToBytes(clients, client), stoppingToken);
                 }
             }
         }
@@ -110,6 +74,11 @@ namespace MrBoom.Server
             }
 
             return stream.ToArray();
+        }
+
+        public IGameNetwork GetNetwork()
+        {
+            return gameNetwork;
         }
 
         class Client

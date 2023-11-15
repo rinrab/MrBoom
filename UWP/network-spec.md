@@ -58,16 +58,36 @@ interface PingResponse
 
 ```mermaid
     stateDiagram-v2
-    DemoScreen --> OnlineStartScreen : "Play Online" pressed
+    [*] --> DemoScreen
+    DemoScreen --> OnlineStartScreen : Action Play Online
+    DemoScreen --> StartScreen : Action Play Local
+    DemoScreen --> [*] : Action Quit
 
     state OnlineStartScreen {
-        [*] --> AddPlayer : Bomb button
-        AddPlayer --> [*]
+        [*] --> AddRemotePlayer : Bomb button
+        AddRemotePlayer --> [*]
         [*] --> StartMatchmaking : Again Bomb Button
         StartMatchmaking --> [*]
     }
+    
+    state StartScreen {
+        [*] --> AddLocalPlayer : Bomb button
+        AddLocalPlayer --> [*]
+        [*] -->  StartGame: Again Bomb Button
+        StartGame --> [*]
+    }
 
     OnlineStartScreen --> SearchingForPlayers
+    StartScreen --> GameScreen
+    StartScreen --> [*]: Action Quit
+    GameScreen --> ResultScreen
+    GameScreen --> DrawScreen
+    GameScreen --> DemoScreen: Action Start Menu
+    GameScreen --> [*]: Action Quit
+    ResultScreen --> VictoryScreen
+    ResultScreen --> GameScreen
+    VictoryScreen --> DemoScreen
+    DrawScreen --> GameScreen
 
     state SearchingForPlayers {
         [*] --> Matchmaking
@@ -75,4 +95,6 @@ interface PingResponse
     }
 
     SearchingForPlayers --> OnlinePlayerList
+    OnlinePlayerList --> NetworkGameScreen
+    NetworkGameScreen --> TODO
 ```

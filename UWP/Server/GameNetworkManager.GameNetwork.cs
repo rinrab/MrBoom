@@ -53,7 +53,7 @@ namespace MrBoom.Server
                     {
                         if (!client.Equals(exclude))
                         {
-                            result.Add(exclude);
+                            result.Add(client);
                         }
                     }
                 }

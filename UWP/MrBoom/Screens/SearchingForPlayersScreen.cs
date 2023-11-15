@@ -20,8 +20,6 @@ namespace MrBoom
         private readonly HumanPlayerState currentPlayer;
         private string status;
 
-        public Screen Next => Screen.None;
-
         public SearchingForPlayersScreen(Assets assets, List<Team> teams, List<IController> controllers,
                                          Settings settings, HumanPlayerState currentPlayer)
         {

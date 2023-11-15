@@ -22,8 +22,6 @@ namespace MrBoom
         private int tick;
         private int toStart = -1;
 
-        public Screen Next { get; private set; }
-
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
                                       Settings settings, HumanPlayerState currentPlayer, GameNetworkConnection gameNetworkConnection)
         {

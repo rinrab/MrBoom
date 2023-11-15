@@ -18,8 +18,6 @@ namespace MrBoom
         private readonly NameGenerator nameGenerator;
         private int tick;
 
-        public Screen Next => Screen.None;
-
         public OnlineStartScreen(Assets assets, List<Team> teams, List<IController> controllers, Settings settings)
         {
             this.assets = assets;

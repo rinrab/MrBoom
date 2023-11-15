@@ -16,31 +16,30 @@ namespace MrBoom
         private readonly List<Team> teams;
         private readonly List<IController> controllers;
         private readonly Settings settings;
-        private readonly HumanPlayerState currentPlayer;
+        private readonly List<HumanPlayerState> currentPlayers;
         private readonly GameNetworkConnection gameNetworkConnection;
         private List<IPlayerState> players;
         private int tick;
         private int toStart = -1;
 
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
-                                      Settings settings, HumanPlayerState currentPlayer, GameNetworkConnection gameNetworkConnection)
+                                      Settings settings, List<HumanPlayerState> currentPlayers, GameNetworkConnection gameNetworkConnection)
         {
             this.assets = assets;
             this.teams = teams;
             this.controllers = controllers;
             this.settings = settings;
-            this.currentPlayer = currentPlayer;
+            this.currentPlayers = currentPlayers;
             this.gameNetworkConnection = gameNetworkConnection;
             players = new List<IPlayerState>();
 
-            string name = new NameGenerator(Terrain.Random).GenerateName();
             MemoryStream stream = new MemoryStream();
             stream.WriteByte(2);
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
                 new AddPlayerMessage()
                 {
-                    Name = name
+                    Name = currentPlayers[0].Name
                 }.Encode(writer);
             }
             // TODO: resend if not delivered
@@ -74,7 +73,7 @@ namespace MrBoom
                         }
                         if (type == 0)
                         {
-                            players.Add(currentPlayer);
+                            players.Add(currentPlayers[0]); // TODO:
                         }
                         else
                         {
@@ -104,7 +103,7 @@ namespace MrBoom
             if (Controller.IsKeyDown(controllers, PlayerKeys.Back))
             {
                 Controller.Reset(controllers);
-                ScreenManager.SetScreen(new OnlineStartScreen(assets, teams, controllers, settings));
+                ScreenManager.SetScreen(new OnlineStartScreen(assets, teams, controllers, currentPlayers, settings));
             }
         }
 

@@ -12,21 +12,27 @@ namespace MrBoom
         private readonly List<Team> teams;
         private readonly List<IController> controllers;
         private readonly Settings settings;
-        private readonly List<IPlayerState> players;
+        private readonly List<HumanPlayerState> players;
         private readonly List<IController> unjoinedControllers;
         private readonly List<IController> joinedControllers;
         private readonly NameGenerator nameGenerator;
         private int tick;
 
-        public OnlineStartScreen(Assets assets, List<Team> teams, List<IController> controllers, Settings settings)
+        public OnlineStartScreen(Assets assets, List<Team> teams, List<IController> controllers,
+                                 List<HumanPlayerState> players, Settings settings)
         {
             this.assets = assets;
             this.teams = teams;
             this.controllers = controllers;
+            this.players = players;
             this.settings = settings;
-            players = new List<IPlayerState>();
             unjoinedControllers = new List<IController>(controllers);
             joinedControllers = new List<IController>();
+            foreach (HumanPlayerState playerState in players)
+            {
+                unjoinedControllers.Remove(playerState.Controller);
+                joinedControllers.Add(playerState.Controller);
+            }
             nameGenerator = new NameGenerator(Terrain.Random);
         }
 
@@ -70,7 +76,7 @@ namespace MrBoom
         private void Start()
         {
             assets.Sounds.Bang.Play();
-            ScreenManager.SetScreen(new SearchingForPlayersScreen(assets, teams, controllers, settings, (HumanPlayerState)players[0]));
+            ScreenManager.SetScreen(new SearchingForPlayersScreen(assets, teams, controllers, settings, players));
         }
 
         public void Draw(SpriteBatch ctx)

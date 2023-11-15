@@ -445,6 +445,18 @@
 /processorParam:TextureFormat=Color
 /build:../../../www/Gfx2x/NUAGE2.PNG;NUAGE2.PNG
 
+#begin ../../../www/Gfx2x/ONLINEMENU.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../www/Gfx2x/ONLINEMENU.png;ONLINEMENU.png
+
 #begin ../../../www/Gfx2x/PAUSE.PNG
 /importer:TextureImporter
 /processor:TextureProcessor

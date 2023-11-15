@@ -15,7 +15,7 @@ namespace MrBoom
         private readonly List<Team> teams;
         private readonly List<IController> controllers;
         private readonly Settings settings;
-        private readonly IController currentPlayer;
+        private readonly HumanPlayerState currentPlayer;
         private readonly MultiplayerService multiplayerService;
         private List<IPlayerState> players;
         private int tick;
@@ -24,7 +24,7 @@ namespace MrBoom
         public Screen Next { get; private set; }
 
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
-                                      Settings settings, IController currentPlayer, MultiplayerService multiplayerService)
+                                      Settings settings, HumanPlayerState currentPlayer, MultiplayerService multiplayerService)
         {
             this.assets = assets;
             this.teams = teams;
@@ -72,7 +72,7 @@ namespace MrBoom
                         }
                         if (type == 0)
                         {
-                            players.Add(new HumanPlayerState(currentPlayer, i, name.ToString()));
+                            players.Add(currentPlayer);
                         }
                         else
                         {
@@ -97,6 +97,12 @@ namespace MrBoom
             if (toStart != -1)
             {
                 toStart--;
+            }
+
+            if (Controller.IsKeyDown(controllers, PlayerKeys.Back))
+            {
+                Controller.Reset(controllers);
+                ScreenManager.SetScreen(new OnlineStartScreen(assets, teams, controllers, settings));
             }
         }
 

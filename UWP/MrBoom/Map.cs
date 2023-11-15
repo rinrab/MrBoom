@@ -57,6 +57,6 @@ namespace MrBoom
         public int StartMaxBombsCount = 1;
         public Feature StartFeatures = 0;
         public int Song = -1;
-        public bool BombApocalypse = false;
+        public bool IsBombApocalypse = false;
     }
 }

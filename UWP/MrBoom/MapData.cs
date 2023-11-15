@@ -290,7 +290,7 @@ namespace MrBoom
                 },
                 StartFeatures = Feature.Kick,
                 Time = 120,
-                BombApocalypse = true,
+                IsBombApocalypse = true,
                 PowerUps = new Map.PowerUpData[]
                 {
                     new Map.PowerUpData(PowerUpType.ExtraBomb, 10),

@@ -14,27 +14,18 @@ namespace MrBoom
 
         public static void Update()
         {
-            if (currentScreen != null)
-            {
-                currentScreen.Update();
-            }
+            currentScreen?.Update();
             screenChanged = false;
         }
 
         public static void Draw(SpriteBatch ctx)
         {
-            if (currentScreen != null)
-            {
-                currentScreen.Draw(ctx);
-            }
+            currentScreen?.Draw(ctx);
         }
 
         public static void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale)
         {
-            if (currentScreen != null)
-            {
-                currentScreen.DrawHighDPI(ctx, rect, scale, 2);
-            }
+            currentScreen?.DrawHighDPI(ctx, rect, scale, 2);
         }
 
         public static void NextSong(SoundAssets sounds, int index = -1)

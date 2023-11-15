@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 
 namespace MrBoom
@@ -7,6 +8,12 @@ namespace MrBoom
     public class AnimatedImage
     {
         private readonly Image[] images;
+        public static AnimatedImage Empty = new AnimatedImage();
+
+        private AnimatedImage()
+        {
+            this.images = Array.Empty<Image>();
+        }
 
         public AnimatedImage(params Image[] images)
         {

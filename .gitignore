@@ -1,5 +1,5 @@
 .DS_Store
 .gitattributes
 .vs
-/UWP/UWP.csproj.user
-/UWP/MrBoom.csproj.user
+*.csproj.user
+*.vcxproj.user

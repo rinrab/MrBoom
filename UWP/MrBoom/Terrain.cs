@@ -37,7 +37,7 @@ namespace MrBoom
         private const int FLAME_ANIMATION_DELAY = 6;
         private readonly List<CellCoord> spawns;
         private readonly List<PowerUpType> powerUpList;
-        private readonly Map map;
+        private readonly Map mapData;
         private readonly List<AbstractPlayer> players;
         private readonly List<AbstractMonster> monsters;
 
@@ -56,25 +56,25 @@ namespace MrBoom
 
             this.assets = assets;
             levelAssets = assets.Levels[levelIndex];
-            map = MapData.Data[levelIndex];
-            StartFeatures = map.StartFeatures;
+            mapData = MapData.Data[levelIndex];
+            StartFeatures = mapData.StartFeatures;
             powerUpList = new List<PowerUpType>();
 
-            foreach (var bonus in map.PowerUps)
+            foreach (var bonus in mapData.PowerUps)
             {
                 for (int i = 0; i < bonus.Count; i++)
                 {
                     powerUpList.Add(bonus.Type);
                 }
             }
-            Width = map.Data[0].Length;
-            Height = map.Data.Length;
+            Width = mapData.Data[0].Length;
+            Height = mapData.Data.Length;
             spawns = new List<CellCoord>();
-            TimeLeft = (map.Time + 31) * 60;
+            TimeLeft = (mapData.Time + 31) * 60;
             final = new Grid<byte>(Width, Height, 255);
             for (int i = 0; i < final.CellCount; i++)
             {
-                byte fin = map.Final[i];
+                byte fin = mapData.Final[i];
                 final[i] = fin;
                 if (fin != 255)
                 {
@@ -83,15 +83,15 @@ namespace MrBoom
             }
             players = new List<AbstractPlayer>();
 
-            SstartMaxBombsCount = map.StartMaxBombsCount;
-            StartMaxFire = map.StartMaxFire;
+            SstartMaxBombsCount = mapData.StartMaxBombsCount;
+            StartMaxFire = mapData.StartMaxFire;
 
             data = new Grid<Cell>(Width, Height, new Cell(TerrainType.PermanentWall));
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    char src = map.Data[y][x];
+                    char src = mapData.Data[y][x];
 
                     string bonusStr = "123456789AB";
                     if (src == '#')
@@ -158,7 +158,7 @@ namespace MrBoom
                     break;
                 }
 
-                var data = Random.NextElement(map.Monsters);
+                var data = Random.NextElement(mapData.Monsters);
 
                 AbstractMonster monster = data.GetMonster(this, assets.Monsters[data.Type], spawn.Value.X * 16, spawn.Value.Y * 16);
 
@@ -246,7 +246,7 @@ namespace MrBoom
                 }
             }
 
-            if (map.BombApocalypse && TimeLeft < 30 * 60 - ApocalypseSpeed * MaxApocalypse)
+            if (mapData.BombApocalypse && TimeLeft < 30 * 60 - ApocalypseSpeed * MaxApocalypse)
             {
                 if (TimeLeft % 16 == 0)
                 {

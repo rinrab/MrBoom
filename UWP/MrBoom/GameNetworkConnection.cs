@@ -30,7 +30,7 @@ namespace MrBoom
             connection.StartListen();
 
             // TODO: Wait for ConnectAck.
-            await connection.SendPacket(NetworkMessageType.ConnectReq, msg.AsByteSpan());
+            await connection.SendPacket(NetworkPacketType.ConnectReq, msg.AsByteSpan());
 
             return connection;
         }
@@ -55,7 +55,7 @@ namespace MrBoom
 
                     switch(packet.Type)
                     {
-                        case NetworkMessageType.UnreliableData:
+                        case NetworkPacketType.UnreliableData:
                             // TODO: Make data ReadOnlyByteSpan.
                             Data = packet.Data.AsArray();
                             break;
@@ -66,12 +66,12 @@ namespace MrBoom
 
         public Task SendAsync(byte[] data)
         {
-            return SendPacket(NetworkMessageType.UnreliableData, data.AsByteSpan());
+            return SendPacket(NetworkPacketType.UnreliableData, data.AsByteSpan());
         }
 
-        private async Task SendPacket(byte networkMessageType, ReadOnlyByteSpan payload)
+        private async Task SendPacket(byte NetworkPacketType, ReadOnlyByteSpan payload)
         {
-            NetworkPacket packet = new NetworkPacket(networkMessageType, payload);
+            NetworkPacket packet = new NetworkPacket(NetworkPacketType, payload);
             byte[] encodedPacket = packet.Encode().AsArray();
 
             await udpClient.SendAsync(encodedPacket, encodedPacket.Length);

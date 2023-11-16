@@ -67,19 +67,19 @@ namespace MrBoom.Server
 
             public Task SendMessage(IEnumerable<IPEndPoint> clients, ReadOnlyByteSpan message, CancellationToken cancellationToken)
             {
-                return networkManager.SendPacket(NetworkMessageType.UnreliableData, networkId, clients, message, cancellationToken);
+                return networkManager.SendPacket(NetworkPacketType.UnreliableData, networkId, clients, message, cancellationToken);
             }
 
             public Task SendMessage(IPEndPoint client, ReadOnlyByteSpan message, CancellationToken cancellationToken)
             {
-                return networkManager.SendPacket(NetworkMessageType.UnreliableData, networkId, new IPEndPoint[] { client }, message, cancellationToken);
+                return networkManager.SendPacket(NetworkPacketType.UnreliableData, networkId, new IPEndPoint[] { client }, message, cancellationToken);
             }
 
             internal void ProcessPacket(IPEndPoint remoteEndPoint, NetworkPacket packet)
             {
                 switch (packet.Type)
                 {
-                    case NetworkMessageType.ConnectReq:
+                    case NetworkPacketType.ConnectReq:
                         {
                             bool found = false;
 
@@ -107,7 +107,7 @@ namespace MrBoom.Server
                         }
                         break;
 
-                    case NetworkMessageType.UnreliableData:
+                    case NetworkPacketType.UnreliableData:
                         {
                             GameNetworkMessageReceivedDelegate? messageReceived = MessageReceived;
                             messageReceived?.Invoke(remoteEndPoint, packet.Data);

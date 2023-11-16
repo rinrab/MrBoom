@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json;
+using System.IO;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom
 {
@@ -109,7 +111,16 @@ namespace MrBoom
 
                         Room room = JsonConvert.DeserializeObject<Room>(await res.Content.ReadAsStringAsync());
 
-                        GameNetworkConnection gameNetworkConnection = GameNetworkConnection.Connect(room.Hostname, room.Port);
+                        MemoryStream stream = new MemoryStream();
+                        using (BinaryWriter writer = new BinaryWriter(stream))
+                        {
+                            new AddPlayerMessage()
+                            {
+                                Name = players[0].Name
+                            }.Encode(writer);
+                        }
+
+                        GameNetworkConnection gameNetworkConnection = await GameNetworkConnection.Connect(room.Hostname, room.Port, stream.ToArray());
 
                         ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, players, gameNetworkConnection));
                     }

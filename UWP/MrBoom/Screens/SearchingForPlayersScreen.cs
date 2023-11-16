@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json;
 
 namespace MrBoom
@@ -17,19 +18,17 @@ namespace MrBoom
         private readonly List<Team> teams;
         private readonly List<IController> controllers;
         private readonly Settings settings;
-        private readonly HumanPlayerState currentPlayer;
+        private readonly List<HumanPlayerState> players;
         private string status;
 
-        public Screen Next => Screen.None;
-
         public SearchingForPlayersScreen(Assets assets, List<Team> teams, List<IController> controllers,
-                                         Settings settings, HumanPlayerState currentPlayer)
+                                         Settings settings, List<HumanPlayerState> players)
         {
             this.assets = assets;
             this.teams = teams;
             this.controllers = controllers;
             this.settings = settings;
-            this.currentPlayer = currentPlayer;
+            this.players = players;
             status = "finding room";
 
             Task.Run(() => StartMatchmaking());
@@ -37,23 +36,34 @@ namespace MrBoom
 
         private async Task StartMatchmaking()
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5191");
-
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(new
+            try
             {
-                Name = new NameGenerator(Terrain.Random).GenerateName(),
-            }));
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri("http://localhost:5191");
 
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                HttpContent content = new StringContent(JsonConvert.SerializeObject(new
+                {
+                    Name = new NameGenerator(Terrain.Random).GenerateName(),
+                }));
 
-            HttpResponseMessage res = await client.PostAsync("/room/connect", content);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            Room room = JsonConvert.DeserializeObject<Room>(await res.Content.ReadAsStringAsync());
+                HttpResponseMessage res = await client.PostAsync("/room/connect", content);
 
-            GameNetworkConnection gameNetworkConnection = GameNetworkConnection.Connect(room.Hostname, room.Port);
+                Room room = JsonConvert.DeserializeObject<Room>(await res.Content.ReadAsStringAsync());
 
-            ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, currentPlayer, gameNetworkConnection));
+                GameNetworkConnection gameNetworkConnection = GameNetworkConnection.Connect(room.Hostname, room.Port);
+
+                ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, players, gameNetworkConnection));
+            }
+            catch (Exception ex)
+            {
+                await MessageBox.Show("Cannot connect to the server.", ex.Message, new string[]
+                {
+                    "Ok"
+                });
+                ScreenManager.SetScreen(new OnlineStartScreen(assets, teams, controllers, players, settings));
+            }
         }
 
         public void Update()

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
+<!-- Remove two-instances support before release -->
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
@@ -48,6 +49,6 @@
   </Applications>
 
   <Capabilities>
-    <Capability Name="internetClientServer"/>
-    <Capability Name="privateNetworkClientServer"/></Capabilities>
+    <Capability Name="internetClient"/>
+  </Capabilities>
 </Package>

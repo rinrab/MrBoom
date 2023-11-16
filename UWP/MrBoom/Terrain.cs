@@ -37,13 +37,13 @@ namespace MrBoom
         private const int FLAME_ANIMATION_DELAY = 6;
         private readonly List<CellCoord> spawns;
         private readonly List<PowerUpType> powerUpList;
-        private readonly Map map;
+        private readonly Map mapData;
         private readonly List<AbstractPlayer> players;
         private readonly List<AbstractMonster> monsters;
 
         public readonly Feature StartFeatures;
         public readonly int StartMaxFire;
-        public readonly int SstartMaxBombsCount;
+        public readonly int StartMaxBombsCount;
 
         private readonly Assets.Level levelAssets;
         private readonly Grid<bool> hasMonsterGrid;
@@ -56,25 +56,25 @@ namespace MrBoom
 
             this.assets = assets;
             levelAssets = assets.Levels[levelIndex];
-            map = MapData.Data[levelIndex];
-            StartFeatures = map.StartFeatures;
+            mapData = MapData.Data[levelIndex];
+            StartFeatures = mapData.StartFeatures;
             powerUpList = new List<PowerUpType>();
 
-            foreach (var bonus in map.PowerUps)
+            foreach (var bonus in mapData.PowerUps)
             {
                 for (int i = 0; i < bonus.Count; i++)
                 {
                     powerUpList.Add(bonus.Type);
                 }
             }
-            Width = map.Data[0].Length;
-            Height = map.Data.Length;
+            Width = mapData.Data[0].Length;
+            Height = mapData.Data.Length;
             spawns = new List<CellCoord>();
-            TimeLeft = (map.Time + 31) * 60;
+            TimeLeft = (mapData.Time + 31) * 60;
             final = new Grid<byte>(Width, Height, 255);
             for (int i = 0; i < final.CellCount; i++)
             {
-                byte fin = map.Final[i];
+                byte fin = mapData.Final[i];
                 final[i] = fin;
                 if (fin != 255)
                 {
@@ -83,15 +83,15 @@ namespace MrBoom
             }
             players = new List<AbstractPlayer>();
 
-            SstartMaxBombsCount = map.StartMaxBombsCount;
-            StartMaxFire = map.StartMaxFire;
+            StartMaxBombsCount = mapData.StartMaxBombsCount;
+            StartMaxFire = mapData.StartMaxFire;
 
             data = new Grid<Cell>(Width, Height, new Cell(TerrainType.PermanentWall));
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    char src = map.Data[y][x];
+                    char src = mapData.Data[y][x];
 
                     string bonusStr = "123456789AB";
                     if (src == '#')
@@ -158,7 +158,7 @@ namespace MrBoom
                     break;
                 }
 
-                var data = Random.NextElement(map.Monsters);
+                var data = Random.NextElement(mapData.Monsters);
 
                 AbstractMonster monster = data.GetMonster(this, assets.Monsters[data.Type], spawn.Value.X * 16, spawn.Value.Y * 16);
 
@@ -190,63 +190,52 @@ namespace MrBoom
                 timeToEnd--;
             }
 
-            if (TimeLeft < 30 * 60 - 1)
+            int index = (30 * 60 - TimeLeft) / ApocalypseSpeed;
+            for (int i = 0; i < final.CellCount; i++)
             {
-                if (TimeLeft % ApocalypseSpeed == 0)
+                Cell cell = data[i];
+                if (index == MaxApocalypse + 5)
                 {
-                    int index = (30 * 60 - TimeLeft) / ApocalypseSpeed;
-                    if (index != 255)
+                    // Blow cell if final index is 255
+                    if (cell.Type == TerrainType.TemporaryWall)
                     {
-                        for (int x = 0; x < final.Width; x++)
+                        data[i] = new Cell(TerrainType.PowerUpFire)
                         {
-                            for (int y = 0; y < final.Height; y++)
+                            Images = assets.Fire,
+                            Index = 0,
+                            Next = new Cell(TerrainType.Free)
+                        };
+                        PlaySound(Sound.Sac);
+                    }
+                }
+                else if (final[i] == index && final[i] != 255)
+                {
+                    // Replace cell with apocalypse cell
+                    if (cell.Type == TerrainType.Bomb)
+                    {
+                        cell.owner.BombsPlaced--;
+                    }
+                    if (cell.Type != TerrainType.PermanentWall)
+                    {
+                        data[i] = new Cell(TerrainType.Apocalypse)
+                        {
+                            Images = levelAssets.PermanentWalls,
+                            Index = 0,
+                            Next = new Cell(TerrainType.PermanentWall)
                             {
-                                if (index == Math.Min(MaxApocalypse + 5, 255))
-                                {
-                                    var cell = data[x, y];
-                                    if (cell.Type == TerrainType.TemporaryWall)
-                                    {
-                                        data[x, y] = new Cell(TerrainType.PowerUpFire)
-                                        {
-                                            Images = assets.Fire,
-                                            Index = 0,
-                                            Next = new Cell(TerrainType.Free)
-                                        };
-                                        PlaySound(Sound.Sac);
-                                    }
-                                }
-                                else if (final[x, y] == index)
-                                {
-                                    var cell = data[x, y];
-                                    if (cell.Type == TerrainType.Bomb)
-                                    {
-                                        cell.owner.BombsPlaced--;
-                                    }
-                                    if (cell.Type != TerrainType.PermanentWall)
-                                    {
-                                        data[x, y] = new Cell(TerrainType.Apocalypse)
-                                        {
-                                            Images = levelAssets.PermanentWalls,
-                                            Index = 0,
-                                            Next = new Cell(TerrainType.PermanentWall)
-                                            {
-                                                Images = levelAssets.PermanentWalls,
-                                            }
-                                        };
-                                        if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
-                                        {
-                                            PlaySound(Sound.Sac);
-                                            lastApocalypseSound = TimeLeft;
-                                        }
-                                    }
-                                }
+                                Images = levelAssets.PermanentWalls,
                             }
+                        };
+                        if (Math.Abs(lastApocalypseSound - TimeLeft) > 60)
+                        {
+                            PlaySound(Sound.Sac);
+                            lastApocalypseSound = TimeLeft;
                         }
                     }
                 }
             }
 
-            if (map.BombApocalypse && TimeLeft < 30 * 60 - ApocalypseSpeed * MaxApocalypse)
+            if (mapData.IsBombApocalypse && index > 0)
             {
                 if (TimeLeft % 16 == 0)
                 {

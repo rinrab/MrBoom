@@ -53,26 +53,3 @@ interface PingResponse
     byte Type = 2;
 }
 ```
-
-## Start dialogs
-
-```mermaid
-    stateDiagram-v2
-    DemoScreen --> OnlineStartScreen : "Play Online" pressed
-
-    state OnlineStartScreen {
-        [*] --> AddPlayer : Bomb button
-        AddPlayer --> [*]
-        [*] --> StartMatchmaking : Again Bomb Button
-        StartMatchmaking --> [*]
-    }
-
-    OnlineStartScreen --> SearchingForPlayers
-
-    state SearchingForPlayers {
-        [*] --> Matchmaking
-        Matchmaking --> [*]
-    }
-
-    SearchingForPlayers --> OnlinePlayerList
-```

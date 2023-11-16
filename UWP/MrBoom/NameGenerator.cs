@@ -23,16 +23,10 @@ namespace MrBoom
 
         public string GenerateName()
         {
-            try
-            {
-                int index = random.Next(names.Count);
-                names.RemoveAt(index);
-                return names[index];
-            }
-            catch(Exception e)
-            {
-                return e.Message;
-            }
+            int index = random.Next(names.Count);
+            string name = names[index];
+            names.RemoveAt(index);
+            return name;
         }
     }
 }

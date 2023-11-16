@@ -12,6 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)NetworkMessageType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NetworkPacket.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReadOnlyByteSpan.cs" />
-    <Compile Include="..\MrBoom.NetworkProtocol\AddPlayerMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AddPlayerMessage.cs" />
   </ItemGroup>
 </Project>

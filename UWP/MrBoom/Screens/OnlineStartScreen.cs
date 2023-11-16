@@ -94,8 +94,10 @@ namespace MrBoom
                 {
                     try
                     {
-                        HttpClient client = new HttpClient();
-                        client.BaseAddress = new Uri("http://localhost:5191");
+                        HttpClient client = new HttpClient
+                        {
+                            BaseAddress = new Uri("http://localhost:5191")
+                        };
 
                         HttpContent content = new StringContent(JsonConvert.SerializeObject(new
                         {

@@ -176,6 +176,7 @@ namespace MrBoom
                 {
                     var options = new IMenuItem[] {
                         new TextMenuItem("START"),
+                        new TextMenuItem("MAIN MENU"),
                         new SelectMenuItem("TEAM", new string[] { "OFF", "COLOR", "SEX" })
                         {
                             SelectionIndex = (int)teamMode
@@ -216,7 +217,7 @@ namespace MrBoom
             {
                 menu.Update();
 
-                teamMode = (TeamMode)((SelectMenuItem)menu.Items[1]).SelectionIndex;
+                teamMode = (TeamMode)((SelectMenuItem)menu.Items[2]).SelectionIndex;
 
                 if (menu.Action == -2)
                 {
@@ -227,7 +228,11 @@ namespace MrBoom
                 {
                     Start();
                 }
-                else if (menu.Action == 2)
+                else if (menu.Action == 1)
+                {
+                    ScreenManager.SetScreen(new DemoScreen(teams, assets, settings, controllers));
+                }
+                else if (menu.Action == 3)
                 {
                     Application.Current.Exit();
                 }

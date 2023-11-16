@@ -41,7 +41,7 @@ namespace MrBoom
             tick++;
             if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
-                ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, controllers, settings));
+                ScreenManager.SetScreen(new DemoScreen(teams, assets, settings, controllers));
             }
         }
 

@@ -64,7 +64,7 @@ namespace MrBoom
                 else if (pauseMenu.Action == 1)
                 {
                     ScreenManager.NextSong(assets.Sounds, 3);
-                    ScreenManager.SetScreen(new MultiplayerStartScreen(assets, teams, controllers, settings));
+                    ScreenManager.SetScreen(new DemoScreen(teams, assets, settings, controllers));
                 }
                 else if (pauseMenu.Action == 2)
                 {

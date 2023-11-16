@@ -7,6 +7,7 @@ using MrBoom.Screens;
 using System.IO;
 using System.Text;
 using MrBoom.NetworkProtocol;
+using System;
 
 namespace MrBoom
 {
@@ -131,13 +132,15 @@ namespace MrBoom
             }
 
             string ping;
-            if (gameNetworkConnection.Ping == -1)
+            TimeSpan? currentRtt = gameNetworkConnection.Ping;
+
+            if (currentRtt.HasValue)
             {
-                ping = "loading...";
+                ping = currentRtt.Value.TotalMilliseconds.ToString();
             }
             else
             {
-                ping = gameNetworkConnection.Ping.ToString();
+                ping = "loading...";
             }
 
             Game.DrawString(ctx, 0, 0, "ping: " + ping, assets.Alpha[1]);

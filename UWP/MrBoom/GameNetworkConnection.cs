@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using MrBoom.NetworkProtocol;
 
@@ -9,14 +12,14 @@ namespace MrBoom
 {
     public class GameNetworkConnection
     {
-        public int Ping { get; private set; }
+        public TimeSpan? Ping { get; private set; }
 
         private byte[] Data;
         private readonly UdpClient udpClient;
 
         private GameNetworkConnection(string hostname, int port)
         {
-            Ping = -1;
+            Ping = null;
 
             udpClient = new UdpClient(0);
 
@@ -31,6 +34,8 @@ namespace MrBoom
 
             // TODO: Wait for ConnectAck.
             await connection.SendPacket(NetworkPacketType.ConnectReq, msg.AsByteSpan());
+
+            connection.StartPing(default);
 
             return connection;
         }
@@ -59,7 +64,34 @@ namespace MrBoom
                             // TODO: Make data ReadOnlyByteSpan.
                             Data = packet.Data.AsArray();
                             break;
+
+                        case NetworkPacketType.EchoResponse:
+                            EchoPayload payload;
+                            try
+                            {
+                                payload = EchoPayload.Decode(packet.Data);
+                            }
+                            catch
+                            {
+                                continue;
+                            }
+
+                            Ping = TimeSpan.FromTicks((Stopwatch.GetTimestamp() - payload.TimeStamp) * 10000 * 1000 / Stopwatch.Frequency);
+                            break;
                     }
+                }
+            });
+        }
+
+        private void StartPing(CancellationToken cancellationToken)
+        {
+            Task.Run(async () =>
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    await SendPacket(NetworkPacketType.EchoRequest, new EchoPayload(Stopwatch.GetTimestamp()).Encode());
+
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
             });
         }

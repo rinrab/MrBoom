@@ -113,6 +113,10 @@ namespace MrBoom.Server
                             messageReceived?.Invoke(remoteEndPoint, packet.Data);
                         }
                         break;
+
+                    case NetworkPacketType.EchoRequest:
+                        _ = networkManager.SendPacket(NetworkPacketType.EchoResponse, networkId, new IPEndPoint[] { remoteEndPoint }, packet.Data, default);
+                        break;
                 }
             }
         }

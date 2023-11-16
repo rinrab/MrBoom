@@ -58,29 +58,34 @@ namespace MrBoom
                         continue;
                     }
 
-                    switch(packet.Type)
-                    {
-                        case NetworkPacketType.UnreliableData:
-                            // TODO: Make data ReadOnlyByteSpan.
-                            Data = packet.Data.AsArray();
-                            break;
-
-                        case NetworkPacketType.EchoResponse:
-                            EchoPayload payload;
-                            try
-                            {
-                                payload = EchoPayload.Decode(packet.Data);
-                            }
-                            catch
-                            {
-                                continue;
-                            }
-
-                            Ping = TimeSpan.FromTicks((Stopwatch.GetTimestamp() - payload.TimeStamp) * 10000 * 1000 / Stopwatch.Frequency);
-                            break;
-                    }
+                    ProcessNetworkPacket(packet);
                 }
             });
+        }
+
+        private void ProcessNetworkPacket(NetworkPacket packet)
+        {
+            switch (packet.Type)
+            {
+                case NetworkPacketType.UnreliableData:
+                    // TODO: Make data ReadOnlyByteSpan.
+                    Data = packet.Data.AsArray();
+                    break;
+
+                case NetworkPacketType.EchoResponse:
+                    EchoPayload payload;
+                    try
+                    {
+                        payload = EchoPayload.Decode(packet.Data);
+                    }
+                    catch
+                    {
+                        return;
+                    }
+
+                    Ping = TimeSpan.FromTicks((Stopwatch.GetTimestamp() - payload.TimeStamp) * 10000 * 1000 / Stopwatch.Frequency);
+                    break;
+            }
         }
 
         private void StartPing(CancellationToken cancellationToken)

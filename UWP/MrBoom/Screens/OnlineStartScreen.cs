@@ -118,7 +118,6 @@ namespace MrBoom
                         state = 0;
                     }
                 });
-
             }
         }
 

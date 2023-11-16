@@ -8,8 +8,13 @@ stateDiagram-v2
     state OnlineStartScreen {
         [*] --> AddRemotePlayer : Bomb button
         AddRemotePlayer --> [*]
-        [*] --> StartMatchmaking : Again Bomb Button
-        StartMatchmaking --> [*]
+        [*] --> Matchmaking : Again Bomb Button
+        Matchmaking --> Connecting
+        Connecting --> [*]
+        Matchmaking --> Error
+        Connecting --> Error
+        Error --> ShowErrorMessage
+        ShowErrorMessage --> [*] : Go back to add players state
     }
 
     state StartScreen {
@@ -21,7 +26,7 @@ stateDiagram-v2
         AddBot --> [*]
     }
 
-    OnlineStartScreen --> SearchingForPlayers
+    OnlineStartScreen --> OnlinePlayerList
     StartScreen --> GameScreen
     StartScreen --> [*]: Action Quit
     GameScreen --> ResultScreen
@@ -33,12 +38,6 @@ stateDiagram-v2
     VictoryScreen --> DemoScreen
     DrawScreen --> GameScreen
 
-    state SearchingForPlayers {
-        [*] --> Matchmaking
-        Matchmaking --> [*]
-    }
-
-    SearchingForPlayers --> OnlinePlayerList
     OnlinePlayerList --> NetworkGameScreen
     OnlinePlayerList --> OnlineStartScreen: Escape
     OnlineStartScreen --> DemoScreen: Escape

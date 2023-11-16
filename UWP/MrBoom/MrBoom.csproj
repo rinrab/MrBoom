@@ -133,7 +133,6 @@
     </Compile>
     <Compile Include="Screens\AbstractGameScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
-    <Compile Include="Screens\SearchingForPlayersScreen.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="Human.cs" />

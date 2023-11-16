@@ -24,8 +24,9 @@ namespace MrBoom
         public string GenerateName()
         {
             int index = random.Next(names.Count);
+            string name = names[index];
             names.RemoveAt(index);
-            return names[index];
+            return name;
         }
     }
 }

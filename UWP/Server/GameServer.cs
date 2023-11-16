@@ -18,13 +18,11 @@ namespace MrBoom.Server
             gameNetwork.ClientConnected += GameNetwork_ClientConnected;
         }
 
-        private void GameNetwork_ClientConnected(IPEndPoint client, byte[] msg)
+        private void GameNetwork_ClientConnected(IPEndPoint client, ReadOnlyByteSpan msg)
         {
             AddPlayerMessage addPlayerMsg;
-            using (BinaryReader reader = new BinaryReader(new MemoryStream(msg)))
+            using (BinaryReader reader = new BinaryReader(msg.AsStream()))
             {
-                byte messageType = reader.ReadByte();
-
                 addPlayerMsg = AddPlayerMessage.Decode(reader);
             }
 
@@ -38,7 +36,7 @@ namespace MrBoom.Server
             }
         }
 
-        private void GameNetwork_MessageReceived(IPEndPoint client, byte[] msg)
+        private void GameNetwork_MessageReceived(IPEndPoint client, ReadOnlyByteSpan msg)
         {
             // TODO: Secret
             gameNetwork.SendMessage(gameNetwork.GetAllExcept(client), msg, default);
@@ -52,7 +50,7 @@ namespace MrBoom.Server
 
                 foreach (var client in gameNetwork.GetAll())
                 {
-                     _ = gameNetwork.SendMessage(client, ClientsToBytes(clients, client), stoppingToken);
+                     _ = gameNetwork.SendMessage(client, ClientsToBytes(clients, client).AsByteSpan(), stoppingToken);
                 }
             }
         }

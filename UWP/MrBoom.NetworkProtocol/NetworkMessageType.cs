@@ -10,5 +10,6 @@ namespace MrBoom.NetworkProtocol
     {
         public const byte ConnectReq = 2;
         public const byte ConnectAck = 3;
+        public const byte UnreliableData = 4;
     }
 }

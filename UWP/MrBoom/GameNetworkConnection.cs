@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom
 {
@@ -21,11 +23,14 @@ namespace MrBoom
             udpClient.Connect(hostname, port);
         }
 
-        public static GameNetworkConnection Connect(string hostname, int port)
+        public static async Task<GameNetworkConnection> Connect(string hostname, int port, byte[] msg)
         {
             GameNetworkConnection connection = new GameNetworkConnection(hostname, port);
 
             connection.StartListen();
+
+            // TODO: Wait for ConnectAck.
+            await connection.SendPacket(NetworkMessageType.ConnectReq, msg.AsByteSpan());
 
             return connection;
         }
@@ -37,14 +42,39 @@ namespace MrBoom
                 while (true)
                 {
                     UdpReceiveResult response = await udpClient.ReceiveAsync();
-                    Data = response.Buffer;
+
+                    NetworkPacket packet;
+                    try
+                    {
+                        packet = NetworkPacket.Decode(response.Buffer.AsByteSpan());
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+
+                    switch(packet.Type)
+                    {
+                        case NetworkMessageType.UnreliableData:
+                            // TODO: Make data ReadOnlyByteSpan.
+                            Data = packet.Data.AsArray();
+                            break;
+                    }
                 }
             });
         }
 
-        public async Task SendAsync(byte[] data)
+        public Task SendAsync(byte[] data)
         {
-            await udpClient.SendAsync(data, data.Length);
+            return SendPacket(NetworkMessageType.UnreliableData, data.AsByteSpan());
+        }
+
+        private async Task SendPacket(byte networkMessageType, ReadOnlyByteSpan payload)
+        {
+            NetworkPacket packet = new NetworkPacket(networkMessageType, payload);
+            byte[] encodedPacket = packet.Encode().AsArray();
+
+            await udpClient.SendAsync(encodedPacket, encodedPacket.Length);
         }
 
         public void SendInBackground(byte[] data)

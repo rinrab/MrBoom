@@ -2,6 +2,7 @@
 
 using System.Net;
 using System.Net.Sockets;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom.Server
 {
@@ -22,6 +23,16 @@ namespace MrBoom.Server
         {
             GameNetwork? network = null;
 
+            NetworkPacket packet;
+            try
+            {
+                packet = NetworkPacket.Decode(msg.Buffer.AsByteSpan());
+            }
+            catch
+            {
+                return;
+            }
+
             lock (networks)
             {
                 // TODO: Add NetworkId to packet.
@@ -34,17 +45,20 @@ namespace MrBoom.Server
 
             if (network != null)
             {
-                network.ProcessMessage(msg);
+                network.ProcessPacket(msg.RemoteEndPoint, packet);
             }
         }
 
-        private async Task SendMessage(string networkId, IEnumerable<IPEndPoint> clients, byte[] message, CancellationToken cancellationToken)
+        private async Task SendPacket(byte packetType, string networkId, IEnumerable<IPEndPoint> clients, ReadOnlyByteSpan message, CancellationToken cancellationToken)
         {
+            NetworkPacket packet = new NetworkPacket(packetType, message);
+            ReadOnlyByteSpan encodedPacket = packet.Encode();
+
             List<Task> tasks = new List<Task>();
 
             foreach (IPEndPoint client in clients)
             {
-                tasks.Add(udpServer.SendMessage(message, client, cancellationToken));
+                tasks.Add(udpServer.SendMessage(encodedPacket.AsArray(), client, cancellationToken));
             }
 
             await Task.WhenAll(tasks.ToArray());

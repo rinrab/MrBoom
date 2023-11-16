@@ -33,18 +33,6 @@ namespace MrBoom
             this.gameNetworkConnection = gameNetworkConnection;
             players = new List<IPlayerState>();
 
-            MemoryStream stream = new MemoryStream();
-            stream.WriteByte(NetworkMessageType.ConnectReq);
-            using (BinaryWriter writer = new BinaryWriter(stream))
-            {
-                new AddPlayerMessage()
-                {
-                    Name = currentPlayers[0].Name
-                }.Encode(writer);
-            }
-            // TODO: resend if not delivered
-            gameNetworkConnection.SendInBackground(stream.ToArray());
-
             //multiplayerService.StartPinging();
         }
 

@@ -4,15 +4,15 @@ using System.Net;
 
 namespace MrBoom.Server
 {
-    public delegate void GameNetworkMessageReceivedDelegate(IPEndPoint client, byte[] msg);
-    public delegate void ClientConnectedDelegate(IPEndPoint client, byte[] msg);
+    public delegate void GameNetworkMessageReceivedDelegate(IPEndPoint client, ReadOnlyByteSpan msg);
+    public delegate void ClientConnectedDelegate(IPEndPoint client, ReadOnlyByteSpan msg);
 
     public interface IGameNetwork
     {
         string Id { get; }
 
-        Task SendMessage(IEnumerable<IPEndPoint> clients, byte[] message, CancellationToken cancellationToken);
-        Task SendMessage(IPEndPoint client, byte[] message, CancellationToken cancellationToken);
+        Task SendMessage(IEnumerable<IPEndPoint> clients, ReadOnlyByteSpan msg, CancellationToken cancellationToken);
+        Task SendMessage(IPEndPoint client, ReadOnlyByteSpan msg, CancellationToken cancellationToken);
         event GameNetworkMessageReceivedDelegate MessageReceived;
         event ClientConnectedDelegate ClientConnected;
 

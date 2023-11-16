@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System.Net;
-using System.Net.Sockets;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom.Server
 {
@@ -61,48 +61,54 @@ namespace MrBoom.Server
                 return result;
             }
 
-            public Task SendMessage(IEnumerable<IPEndPoint> clients, byte[] message, CancellationToken cancellationToken)
+            public Task SendMessage(IEnumerable<IPEndPoint> clients, ReadOnlyByteSpan message, CancellationToken cancellationToken)
             {
-                return networkManager.SendMessage(networkId, clients, message, cancellationToken);
+                return networkManager.SendPacket(NetworkMessageType.UnreliableData, networkId, clients, message, cancellationToken);
             }
 
-            public Task SendMessage(IPEndPoint client, byte[] message, CancellationToken cancellationToken)
+            public Task SendMessage(IPEndPoint client, ReadOnlyByteSpan message, CancellationToken cancellationToken)
             {
-                return networkManager.SendMessage(networkId, new IPEndPoint[] { client }, message, cancellationToken);
+                return networkManager.SendPacket(NetworkMessageType.UnreliableData, networkId, new IPEndPoint[] { client }, message, cancellationToken);
             }
 
-            internal void ProcessMessage(UdpReceiveResult msg)
+            internal void ProcessPacket(IPEndPoint remoteEndPoint, NetworkPacket packet)
             {
-                if (msg.Buffer.Length >= 1 && msg.Buffer[0] == 2)
+                switch (packet.Type)
                 {
-                    bool found = false;
-
-                    lock (clients)
-                    {
-                        foreach (IPEndPoint client in clients)
+                    case NetworkMessageType.ConnectReq:
                         {
-                            if (client.Equals(msg.RemoteEndPoint))
+                            bool found = false;
+
+                            lock (clients)
                             {
-                                found = true;
+                                foreach (IPEndPoint client in clients)
+                                {
+                                    if (client.Equals(remoteEndPoint))
+                                    {
+                                        found = true;
+                                    }
+                                }
+
+                                if (!found)
+                                {
+                                    clients.Add(remoteEndPoint);
+                                }
+                            }
+
+                            if (!found)
+                            {
+                                ClientConnectedDelegate? clientConnected = ClientConnected;
+                                clientConnected?.Invoke(remoteEndPoint, packet.Data);
                             }
                         }
+                        break;
 
-                        if (!found)
+                    case NetworkMessageType.UnreliableData:
                         {
-                            clients.Add(msg.RemoteEndPoint);
+                            GameNetworkMessageReceivedDelegate? messageReceived = MessageReceived;
+                            messageReceived?.Invoke(remoteEndPoint, packet.Data);
                         }
-                    }
-
-                    if (!found)
-                    {
-                        ClientConnectedDelegate? clientConnected = ClientConnected;
-                        clientConnected?.Invoke(msg.RemoteEndPoint, msg.Buffer);
-                    }
-                }
-                else
-                {
-                    GameNetworkMessageReceivedDelegate? messageReceived = MessageReceived;
-                    messageReceived?.Invoke(msg.RemoteEndPoint, msg.Buffer);
+                        break;
                 }
             }
         }

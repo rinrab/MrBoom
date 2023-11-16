@@ -99,7 +99,6 @@ namespace MrBoom
 
                         HttpContent content = new StringContent(JsonConvert.SerializeObject(new
                         {
-                            Name = new NameGenerator(Terrain.Random).GenerateName(),
                         }));
 
                         content.Headers.ContentType = new MediaTypeHeaderValue("application/json");

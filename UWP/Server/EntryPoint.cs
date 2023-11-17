@@ -14,8 +14,8 @@ namespace MrBoom.Server
             builder.Services.AddControllers();
             builder.Services.AddSingleton<IUdpServer, UdpServer>();
             builder.Services.AddHostedService(serviceProvider => (UdpServer)serviceProvider.GetRequiredService<IUdpServer>());
-            builder.Services.AddSingleton<IGameServer, GameServer>();
-            builder.Services.AddHostedService(serviceProvider => (GameServer)serviceProvider.GetRequiredService<IGameServer>());
+            builder.Services.AddSingleton<IGameServerManager, GameServerManager>();
+            builder.Services.AddHostedService(serviceProvider => (GameServerManager)serviceProvider.GetRequiredService<IGameServerManager>());
             builder.Services.AddSingleton<IGameNetworkManager, GameNetworkManager>();
 
             WebApplication app = builder.Build();

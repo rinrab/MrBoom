@@ -5,22 +5,25 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using MrBoom.NetworkProtocol;
 
 namespace MrBoom.Server
 {
-    public class GameServer : BackgroundService, IGameServer
+    public class GameServer : IGameServer
     {
         private readonly IGameNetwork gameNetwork;
         private readonly List<Client> clients;
+        private readonly CancellationTokenSource stoppingTokenSource;
 
         public GameServer(IGameNetworkManager networkManager)
         {
+            stoppingTokenSource = new CancellationTokenSource();
             clients = new List<Client>();
             gameNetwork = networkManager.CreateNetwork();
             gameNetwork.MessageReceived += GameNetwork_MessageReceived;
             gameNetwork.ClientConnected += GameNetwork_ClientConnected;
+
+            _ = Run(stoppingTokenSource.Token);
         }
 
         private void GameNetwork_ClientConnected(IPEndPoint client, ReadOnlyByteSpan msg)
@@ -31,7 +34,7 @@ namespace MrBoom.Server
                 addPlayerMsg = AddPlayerMessage.Decode(reader);
             }
 
-            lock(clients)
+            lock (clients)
             {
                 clients.Add(new Client
                 {
@@ -47,7 +50,7 @@ namespace MrBoom.Server
             gameNetwork.SendMessage(gameNetwork.GetAllExcept(client), msg, default);
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        private async Task Run(CancellationToken stoppingToken)
         {
             while (true)
             {
@@ -55,7 +58,7 @@ namespace MrBoom.Server
 
                 foreach (var client in gameNetwork.GetAll())
                 {
-                     _ = gameNetwork.SendMessage(client, ClientsToBytes(clients, client).AsByteSpan(), stoppingToken);
+                    _ = gameNetwork.SendMessage(client, ClientsToBytes(clients, client).AsByteSpan(), stoppingToken);
                 }
             }
         }
@@ -84,6 +87,11 @@ namespace MrBoom.Server
         public IGameNetwork GetNetwork()
         {
             return gameNetwork;
+        }
+
+        public void Dispose()
+        {
+            stoppingTokenSource.Cancel();
         }
 
         class Client

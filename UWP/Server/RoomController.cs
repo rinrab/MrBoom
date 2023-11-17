@@ -9,21 +9,21 @@ namespace MrBoom.Server
     [Route("room")]
     public class RoomController : ControllerBase
     {
-        private readonly IGameServer gameServer;
+        private readonly IGameServerManager gameServerManager;
 
-        public RoomController(IGameServer gameServer) 
+        public RoomController(IGameServerManager gameServerManager) 
         {
-            this.gameServer = gameServer;
+            this.gameServerManager = gameServerManager;
         }
 
         [HttpPost("connect")]
         public IActionResult ConnectRoom()
         {
-            IGameNetwork network = gameServer.GetNetwork();
+            IGameServer gameServer = gameServerManager.FindOrCreateGameServer();
 
             return Ok(new Room
             {
-                Id = network.Id,
+                Id = gameServer.GetNetwork().Id,
                 Hostname = "localhost",
                 Port = 7333,
                 // TODO: Secret

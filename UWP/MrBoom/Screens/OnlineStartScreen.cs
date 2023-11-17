@@ -120,7 +120,7 @@ namespace MrBoom
                             }.Encode(writer);
                         }
 
-                        GameNetworkConnection gameNetworkConnection = await GameNetworkConnection.Connect(room.Hostname, room.Port, stream.ToArray());
+                        GameNetworkConnection gameNetworkConnection = await GameNetworkConnection.Connect(room.Hostname, room.Port, room.Id, stream.ToArray());
 
                         ScreenManager.SetScreen(new OnlinePlayerListScreen(assets, teams, controllers, settings, players, gameNetworkConnection));
                     }
@@ -189,7 +189,7 @@ namespace MrBoom
 
         private class Room
         {
-            public string Id { get; set; }
+            public UInt32 Id { get; set; }
             public string Hostname { get; set; }
             public int Port { get; set; }
         };

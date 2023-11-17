@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -11,12 +12,13 @@ namespace MrBoom.Server
 {
     internal partial class GameNetworkManager : IGameNetworkManager
     {
-        private Dictionary<string, GameNetwork> networks;
+        private Dictionary<UInt32, GameNetwork> networks;
+        private volatile UInt32 nextNetworkId;
         private readonly IUdpServer udpServer;
 
         public GameNetworkManager(IUdpServer udpServer)
         {
-            networks = new Dictionary<string, GameNetwork>();
+            networks = new Dictionary<UInt32, GameNetwork>();
 
             udpServer.OnMesssageReceived += UdpServer_OnMesssageReceived;
             this.udpServer = udpServer;
@@ -38,11 +40,9 @@ namespace MrBoom.Server
 
             lock (networks)
             {
-                // TODO: Add NetworkId to packet.
-                foreach(var net in networks.Values)
+                if (!networks.TryGetValue(packet.NetworkId, out network))
                 {
-                    network = net;
-                    break;
+                    network = null;
                 }
             }
 
@@ -52,9 +52,9 @@ namespace MrBoom.Server
             }
         }
 
-        private async Task SendPacket(byte packetType, string networkId, IEnumerable<IPEndPoint> clients, ReadOnlyByteSpan message, CancellationToken cancellationToken)
+        private async Task SendPacket(byte packetType, UInt32 networkId, IEnumerable<IPEndPoint> clients, ReadOnlyByteSpan message, CancellationToken cancellationToken)
         {
-            NetworkPacket packet = new NetworkPacket(packetType, message);
+            NetworkPacket packet = new NetworkPacket(packetType, networkId, message);
             ReadOnlyByteSpan encodedPacket = packet.Encode();
 
             List<Task> tasks = new List<Task>();
@@ -69,7 +69,8 @@ namespace MrBoom.Server
 
         public IGameNetwork CreateNetwork()
         {
-            GameNetwork network = new GameNetwork(this);
+            UInt32 networkId = Interlocked.Increment(ref nextNetworkId);
+            GameNetwork network = new GameNetwork(this, networkId);
 
             lock(networks)
             {

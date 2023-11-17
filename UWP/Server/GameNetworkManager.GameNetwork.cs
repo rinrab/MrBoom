@@ -13,18 +13,18 @@ namespace MrBoom.Server
     {
         private class GameNetwork : IGameNetwork
         {
-            private readonly string networkId;
+            private readonly UInt32 networkId;
             private readonly GameNetworkManager networkManager;
             private readonly List<IPEndPoint> clients;
 
-            public GameNetwork(GameNetworkManager networkManager)
+            public GameNetwork(GameNetworkManager networkManager, UInt32 networkId)
             {
-                networkId = Guid.NewGuid().ToString("N");
+                this.networkId = networkId;
                 this.networkManager = networkManager;
                 clients = new List<IPEndPoint>();
             }
 
-            public string Id
+            public UInt32 Id
             {
                 get
                 {

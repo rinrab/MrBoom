@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -12,7 +13,7 @@ namespace MrBoom.Server
 
     public interface IGameNetwork
     {
-        string Id { get; }
+        UInt32 Id { get; }
 
         Task SendMessage(IEnumerable<IPEndPoint> clients, ReadOnlyByteSpan msg, CancellationToken cancellationToken);
         Task SendMessage(IPEndPoint client, ReadOnlyByteSpan msg, CancellationToken cancellationToken);

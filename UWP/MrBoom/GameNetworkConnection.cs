@@ -15,19 +15,21 @@ namespace MrBoom
 
         private byte[] Data;
         private readonly UdpClient udpClient;
+        private readonly uint networkId;
 
-        private GameNetworkConnection(string hostname, int port)
+        private GameNetworkConnection(string hostname, int port, UInt32 networkId)
         {
             Ping = null;
 
             udpClient = new UdpClient(0);
 
             udpClient.Connect(hostname, port);
+            this.networkId = networkId;
         }
 
-        public static async Task<GameNetworkConnection> Connect(string hostname, int port, byte[] msg)
+        public static async Task<GameNetworkConnection> Connect(string hostname, int port, UInt32 networkId, byte[] msg)
         {
-            GameNetworkConnection connection = new GameNetworkConnection(hostname, port);
+            GameNetworkConnection connection = new GameNetworkConnection(hostname, port, networkId);
 
             connection.StartListen();
 
@@ -107,7 +109,7 @@ namespace MrBoom
 
         private async Task SendPacket(byte NetworkPacketType, ReadOnlyByteSpan payload)
         {
-            NetworkPacket packet = new NetworkPacket(NetworkPacketType, payload);
+            NetworkPacket packet = new NetworkPacket(NetworkPacketType, networkId, payload);
             byte[] encodedPacket = packet.Encode().AsArray();
 
             await udpClient.SendAsync(encodedPacket, encodedPacket.Length);

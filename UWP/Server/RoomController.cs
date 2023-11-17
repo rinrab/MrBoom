@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MrBoom.Server
@@ -32,7 +33,7 @@ namespace MrBoom.Server
 
     public class Room
     {
-        public required string Id { get; set; }
+        public required UInt32 Id { get; set; }
         public required string Hostname { get; set; }
         public required int Port { get; set; }
     }

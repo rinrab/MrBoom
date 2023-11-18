@@ -1,5 +1,15 @@
 ﻿# Network game specification
 
+## Game Network connection
+
+```mermaid
+sequenceDiagram
+    Client -->> Server: ConnectReq (Secret)
+    Server -->> Client: ConnectChallengeRequest (ChallengeData = HMAC(ClientEndPoint))
+    Client -->> Server: ConnectChallengeResponse (ChallengeData)
+    Server -->> Client: ConnectAck
+```
+
 ## Start game
 type: 00
 

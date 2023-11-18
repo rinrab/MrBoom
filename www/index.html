@@ -54,8 +54,8 @@
     </svg>
   </a>
   <div class="container">
-    <h1 style="text-align: center;">Mr. Bomber</h1>
-    <p style="font-size: 1.3rem;">
+    <h1 class="center">Mr. Bomber</h1>
+    <h2>
       <span lang="en">
         Experience classic Bomberman-style gameplay on modern platforms. Use explosives to destroy walls, acquire
         power-ups and win!
@@ -68,12 +68,10 @@
         Попробуйте классический геймплей в стиле Bomberman на современных платформах. Используйте бомбу, чтобы
         взрывать стены, выбивайте бонусы и побеждайте!
       </span>
-    </p>
+    </h2>
     <div style="display: flex;">
-      <img class="zoomable" src="screenshots/640x400/1.png" />
-      <img class="zoomable" src="screenshots/640x400/2.png" />
-      <img class="zoomable" src="screenshots/640x400/3.png" />
-      <img class="zoomable" video="https://www.youtube.com/embed/DK-doXo1V2E" src="screenshots/watch-trailer.jpg" title="Watch Trailer" />
+      <img src="screenshots/640x400/1.png" />
+      <img src="screenshots/640x400/2.png" />
     </div>
     <p>
       <span lang="en">
@@ -93,11 +91,16 @@
       </span>
     </p>
 
-    <dt>
-      <span lang="en">Game Features:</span>
-      <span lang="fr">Fonctionnalités du jeu:</span>
+    <h2 class="center">Watch Trailer</h2>
+    <iframe width="1280" height="720" src="https://www.youtube.com/embed/EbQTL92C6rs"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      title="Mr. Bomber Trailer" frameborder="0" allowfullscreen></iframe>
+
+    <h2 class="center" style="margin-top: .5rem;">
+      <span lang="en">Game Features</span>
+      <span lang="fr">Fonctionnalités du jeu</span>
       <span lang="ru">Особенности игры</span>
-    </dt>
+    </h2>
     <ul>
       <li>
         <span lang="en">Bomberman-style gameplay</span>
@@ -208,66 +211,6 @@
       <p><a href="privacy-policy">Privacy policy</a></p>
     </div>
   </footer>
-
-  <div class="fade"></div>
-  <div class="modal">
-    <div id="modal-content" style="margin: auto"></div>
-    <button id="close" title="Close"></button>
-  </div>
-
-  <script>
-    var images = document.querySelectorAll(".zoomable");
-    var fade = document.querySelector(".fade");
-    var modal = document.querySelector(".modal");
-    var modalContent = document.querySelector("#modal-content");
-
-    for (var img of images) {
-      img.addEventListener("click", (e) => {
-        fade.classList.add("show");
-        fade.style.opacity = "50%";
-
-        setTimeout(() => {
-          modal.classList.add("show");
-          modal.style.opacity = "100%";
-        }, 100);
-
-        modalContent.innerHTML = "";
-
-        if (e.target.getAttribute("video")) {
-          modalContent.innerHTML =
-            `<iframe width="1263" height="506" src="${e.target.getAttribute("video")}" frameborder="0" allowfullscreen
-             allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" ></iframe>`;
-        } else {
-          var newImg = document.createElement("img");
-          newImg.src = e.target.src;
-          modalContent.appendChild(newImg);
-        }
-      });
-    }
-
-    modal.addEventListener("click", (e) => {
-      if (e.target.classList.contains("modal")) {
-        modalClose();
-      }
-    });
-
-    document.getElementById("close").addEventListener("click", modalClose);
-
-    function modalClose() {
-      fade.style.opacity = "0";
-      modal.style.opacity = "0";
-      setTimeout(() => {
-        fade.classList.remove("show");
-        modal.classList.remove("show");
-      }, 100);
-    }
-
-    addEventListener("keydown", (e) => {
-      if (e.code == "Escape") {
-        modalClose();
-      }
-    });
-  </script>
 </body>
 
 </html>

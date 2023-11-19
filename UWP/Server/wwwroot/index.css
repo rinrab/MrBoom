@@ -10,14 +10,12 @@
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    flex-flow: column;
 }
 
 table td, table th {
     border: solid 1px grey;
     padding: 0px 8px;
-}
-
-table tr {
 }
 
 table {

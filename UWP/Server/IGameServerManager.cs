@@ -5,5 +5,6 @@ namespace MrBoom.Server
     public interface IGameServerManager
     {
         IGameServer FindOrCreateGameServer();
+        IGameNetwork GetLobbyNetwork();
     }
 }

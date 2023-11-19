@@ -1,0 +1,26 @@
+﻿body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans",
+                 "Liberation Sans", Arial, sans-serif, "Apple Color Emoji",
+                 "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 18px;
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table td, table th {
+    border: solid 1px grey;
+    padding: 0px 8px;
+}
+
+table tr {
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}

@@ -126,24 +126,5 @@ namespace MrBoom
             Data = null;
             return tmp;
         }
-
-        //public void StartPinging()
-        //{
-        //    _ = PingAsync();
-        //}
-
-        //private async Task PingAsync()
-        //{
-        //    while (true)
-        //    {
-        //        pingSw = Stopwatch.StartNew();
-
-        //        SendInBackground(new byte[]
-        //        {
-        //            2
-        //        });
-        //        await Task.Delay(200);
-        //    }
-        //}
     }
 }

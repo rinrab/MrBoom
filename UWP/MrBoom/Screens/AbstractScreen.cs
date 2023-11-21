@@ -28,6 +28,10 @@ namespace MrBoom
         {
         }
 
+        protected virtual void OnDispose()
+        {
+        }
+
         void IScreen.Draw(SpriteBatch ctx)
         {
             OnDraw(ctx);
@@ -42,6 +46,11 @@ namespace MrBoom
         {
             currentTick++;
             OnUpdate();
+        }
+
+        public void Dispose()
+        {
+            OnDispose();
         }
     }
 }

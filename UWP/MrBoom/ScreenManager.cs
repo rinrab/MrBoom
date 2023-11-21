@@ -48,6 +48,8 @@ namespace MrBoom
 
         public static void SetScreen(IScreen screen)
         {
+            currentScreen?.Dispose();
+
             currentScreen = screen;
             screenChanged = true;
         }

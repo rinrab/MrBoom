@@ -26,7 +26,8 @@ namespace MrBoom
         private byte[] lastGameMessage;
 
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
-                                      Settings settings, List<HumanPlayerState> currentPlayers, GameNetworkConnection gameNetworkConnection)
+                                      Settings settings, List<HumanPlayerState> currentPlayers,
+                                      GameNetworkConnection gameNetworkConnection)
         {
             this.assets = assets;
             this.teams = teams;

@@ -8,6 +8,7 @@ namespace MrBoom.NetworkProtocol
 {
     static public class GameMessageType
     {
+        public const byte ServerConnectedPlayersState = 0;
         public const byte ClientGameState = 1;
     }
 }

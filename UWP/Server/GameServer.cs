@@ -67,7 +67,7 @@ namespace MrBoom.Server
         {
             MemoryStream stream = new MemoryStream();
 
-            stream.WriteByte(0); // type
+            stream.WriteByte(GameMessageType.ServerConnectedPlayersState); // type
 
             stream.WriteByte((byte)clients.Count);
             foreach (Client client in clients)

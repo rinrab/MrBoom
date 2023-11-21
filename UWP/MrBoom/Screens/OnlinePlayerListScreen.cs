@@ -47,7 +47,7 @@ namespace MrBoom
             {
                 byte[] data = msg.AsArray();
 
-                if (data != null && data[0] == 0)
+                if (data != null && data[0] == GameMessageType.ServerConnectedPlayersState)
                 {
                     Interlocked.Exchange(ref lastGameMessage, data);
                 }
@@ -64,7 +64,7 @@ namespace MrBoom
             var data = Interlocked.Exchange(ref lastGameMessage, null);
             if (data != null)
             {
-                if (data[0] == 0)
+                if (data[0] == GameMessageType.ServerConnectedPlayersState)
                 {
                     MemoryStream stream = new MemoryStream(data);
 

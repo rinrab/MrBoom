@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
+using System;
 using System.IO;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom
 {
@@ -13,17 +15,17 @@ namespace MrBoom
             public Directions? Direction;
             public BombData[] Bombs;
 
-            public static PlayerData Parse(Stream stream)
+            public static PlayerData Parse(BinaryReader reader)
             {
-                int x = ParseTwoPartInt(stream);
-                int y = ParseTwoPartInt(stream);
-                Directions? direction = ParseDirection(stream);
+                int x = reader.ReadInt16();
+                int y = reader.ReadInt16();
+                Directions? direction = ParseDirection(reader);
 
-                int bombsCount = stream.ReadByte();
+                int bombsCount = reader.ReadByte();
                 BombData[] bombs = new BombData[bombsCount];
                 for (int i = 0; i < bombsCount; i++)
                 {
-                    bombs[i] = BombData.Parse(stream);
+                    bombs[i] = BombData.Parse(reader);
                 }
 
                 return new PlayerData
@@ -34,6 +36,19 @@ namespace MrBoom
                     Bombs = bombs
                 };
             }
+
+            public void WriteTo(BinaryWriter writer)
+            {
+                writer.Write((Int16)X);
+                writer.Write((Int16)Y);
+                writer.Write(Direction);
+                writer.Write((byte)Bombs.Length);
+
+                foreach(var bombData in Bombs)
+                {
+                    bombData.WriteTo(writer);
+                }
+            }
         }
 
         public struct BombData
@@ -43,15 +58,23 @@ namespace MrBoom
             public int EstimateTime;
             public int MaxFire;
 
-            public static BombData Parse(Stream stream)
+            public static BombData Parse(BinaryReader reader)
             {
                 return new BombData
                 {
-                    X = stream.ReadByte(),
-                    Y = stream.ReadByte(),
-                    EstimateTime = stream.ReadByte(),
-                    MaxFire = stream.ReadByte()
+                    X = reader.ReadByte(),
+                    Y = reader.ReadByte(),
+                    EstimateTime = reader.ReadByte(),
+                    MaxFire = reader.ReadByte()
                 };
+            }
+
+            public void WriteTo(BinaryWriter writer)
+            {
+                writer.Write((byte)X);
+                writer.Write((byte)Y);
+                writer.Write((byte)EstimateTime);
+                writer.Write((byte)MaxFire);
             }
         }
 
@@ -59,38 +82,71 @@ namespace MrBoom
         {
             public PlayerData[] Players;
 
-            public static GameData Parse(Stream stream)
+            public static GameData Decode(ReadOnlyByteSpan span)
             {
-                stream.ReadByte(); // Skip type
+                using (MemoryStream stream = span.AsStream())
+                {
+                    using (BinaryReader reader = new BinaryReader(stream))
+                    {
+                        return Parse(reader);
+                    }
+                }
+            }
 
-                PlayerData players = PlayerData.Parse(stream);
+            public static GameData Parse(BinaryReader reader)
+            {
+                reader.ReadByte(); // Skip type
+
+                PlayerData player = PlayerData.Parse(reader);
 
                 return new GameData
                 {
-                    Players = new PlayerData[] { players } // TODO:
+                    Players = new PlayerData[] { player } // TODO:
                 };
+            }
+
+            public ReadOnlyByteSpan Encode()
+            {
+                // TODO: Add size.
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (BinaryWriter writer = new BinaryWriter(ms))
+                    {
+                        writer.Write(GameMessageType.ClientGameState);
+                        foreach(PlayerData player in Players)
+                        {
+                            player.WriteTo(writer);
+                        }
+                    }
+
+                    return new ReadOnlyByteSpan(ms.ToArray());
+                }
             }
         }
 
-        public static int ParseTwoPartInt(Stream stream)
-        {
-            int part1 = stream.ReadByte();
-            int part2 = stream.ReadByte();
-
-            return part1 * 256 + part2;
-        }
-
-        public static Directions? ParseDirection(Stream stream)
+        public static Directions? ParseDirection(BinaryReader stream)
         {
             int direction = stream.ReadByte();
 
-            if (direction == 4)
+            if (direction == 255)
             {
                 return null;
             }
             else
             {
                 return (Directions)direction;
+            }
+        }
+
+        private static void Write(this BinaryWriter writer, Directions? direction)
+        {
+            if (direction.HasValue)
+            {
+                writer.Write((byte) direction.Value);
+            }
+            else
+            {
+                writer.Write(255);
             }
         }
     }

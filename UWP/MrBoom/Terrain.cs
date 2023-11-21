@@ -732,20 +732,22 @@ namespace MrBoom
             }
         }
 
-        public IEnumerable<byte> GetDataToSend()
+        public NetworkParser.GameData GetDataToSend()
         {
-            yield return 1; // Type
+            List<NetworkParser.PlayerData> playersData = new List<NetworkParser.PlayerData>();
 
             foreach (AbstractPlayer player in players)
             {
                 if (player is Human human)
                 {
-                    foreach (byte b in human.GetDataToSend())
-                    {
-                        yield return b;
-                    }
+                    playersData.Add(human.GetDataToSend());
                 }
             }
+
+            return new NetworkParser.GameData
+            {
+                Players = playersData.ToArray(),
+            };
         }
 
         public IEnumerable<Tuple<CellCoord, Cell>> GetMyBombs(AbstractPlayer owner)

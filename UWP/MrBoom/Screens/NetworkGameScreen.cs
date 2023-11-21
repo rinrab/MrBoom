@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom.Screens
 {
@@ -36,11 +37,9 @@ namespace MrBoom.Screens
         {
             try
             {
-                byte[] data = msg.AsArray();
-
-                if (data != null && data[0] == 1)
+                if (msg[0] == GameMessageType.ClientGameState)
                 {
-                    Interlocked.Exchange(ref lastGameData, NetworkParser.GameData.Parse(new MemoryStream(data)));
+                    Interlocked.Exchange(ref lastGameData, NetworkParser.GameData.Decode(msg));
                 }
             }
             catch(Exception ex)
@@ -62,8 +61,8 @@ namespace MrBoom.Screens
 
             if (CurrentTick % 1 == 0)
             {
-                var dataToSend = terrain.GetDataToSend().ToArray();
-                gameNetworkConnection.SendInBackground(dataToSend);
+                ReadOnlyByteSpan dataToSend = terrain.GetDataToSend().Encode();
+                gameNetworkConnection.SendInBackground(dataToSend.AsArray());
             }
         }
 

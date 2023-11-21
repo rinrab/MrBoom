@@ -55,25 +55,29 @@ namespace MrBoom
             base.Update();
         }
 
-        public IEnumerable<byte> GetDataToSend()
+        public NetworkParser.PlayerData GetDataToSend()
         {
-            yield return (byte)(X / 256);
-            yield return (byte)(X % 256);
-            yield return (byte)(Y / 256);
-            yield return (byte)(Y % 256);
-            yield return (Direction == null) ? (byte)4 : (byte)Direction;
-
             Tuple<CellCoord, Cell>[] bombs = terrain.GetMyBombs(this).ToArray();
 
-            yield return (byte)bombs.Length;
-
+            List<NetworkParser.BombData> bombData = new List<NetworkParser.BombData>(bombs.Length);
             foreach (Tuple<CellCoord, Cell> cell in bombs)
             {
-                yield return (byte)cell.Item1.X;
-                yield return (byte)cell.Item1.Y;
-                yield return (byte)cell.Item2.bombCountdown;
-                yield return (byte)cell.Item2.maxBoom;
+                bombData.Add(new NetworkParser.BombData
+                {
+                    X = cell.Item1.X,
+                    Y = cell.Item1.Y,
+                    EstimateTime = cell.Item2.bombCountdown,
+                    MaxFire = cell.Item2.maxBoom
+                });
             }
+
+            return new NetworkParser.PlayerData
+            {
+                X = X,
+                Y = Y,
+                Direction = Direction,
+                Bombs = bombData.ToArray()
+            };
         }
     }
 }

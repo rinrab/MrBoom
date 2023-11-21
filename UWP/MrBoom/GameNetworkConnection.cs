@@ -11,7 +11,10 @@ namespace MrBoom
 {
     public class GameNetworkConnection
     {
+        public delegate void MessageReceivedDelegate(ReadOnlyByteSpan msg);
+
         public TimeSpan? Ping { get; private set; }
+        public event MessageReceivedDelegate MessageReceived;
 
         private byte[] Data;
         private readonly UdpClient udpClient;
@@ -69,8 +72,8 @@ namespace MrBoom
             switch (packet.Type)
             {
                 case NetworkPacketType.UnreliableData:
-                    // TODO: Make data ReadOnlyByteSpan.
-                    Data = packet.Data.AsArray();
+                    MessageReceivedDelegate messageReceivedDelegate = MessageReceived;
+                    messageReceivedDelegate?.Invoke(packet.Data);
                     break;
 
                 case NetworkPacketType.EchoResponse:
@@ -118,13 +121,6 @@ namespace MrBoom
         public void SendInBackground(byte[] data)
         {
             _ = SendAsync(data);
-        }
-
-        public byte[] GetData()
-        {
-            byte[] tmp = Data;
-            Data = null;
-            return tmp;
         }
     }
 }

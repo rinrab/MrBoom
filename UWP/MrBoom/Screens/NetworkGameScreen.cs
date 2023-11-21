@@ -2,8 +2,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace MrBoom.Screens
 {
@@ -11,12 +13,15 @@ namespace MrBoom.Screens
     {
         private readonly GameNetworkConnection gameNetworkConnection;
         private int tick = 0;
+        private volatile NetworkParser.GameData lastGameData;
 
         public NetworkGameScreen(List<Team> teams, Assets assets, Settings settings,
                                  List<IController> controllers, GameNetworkConnection gameNetworkConnection,
                                  IEnumerable<IPlayerState> players) : base(teams, assets, settings, controllers)
         {
             this.gameNetworkConnection = gameNetworkConnection;
+            this.gameNetworkConnection.MessageReceived += GameNetworkConnection_MessageReceived;
+            // TODO: Unsusbscribe.
             Terrain.Random = new Random(1);
             terrain = new Terrain(0, assets);
 
@@ -28,15 +33,31 @@ namespace MrBoom.Screens
             }
         }
 
+        private void GameNetworkConnection_MessageReceived(ReadOnlyByteSpan msg)
+        {
+            try
+            {
+                byte[] data = msg.AsArray();
+
+                if (data != null && data[0] == 1)
+                {
+                    Interlocked.Exchange(ref lastGameData, NetworkParser.GameData.Parse(new MemoryStream(data)));
+                }
+            }
+            catch(Exception ex)
+            {
+                // Ignore invalid messages.
+                Debug.WriteLine("Unexpecteted error while processing message from the server: {0}", ex.Message);
+            }
+        }
+
         public override void Update()
         {
             tick++;
 
-            byte[] data = gameNetworkConnection.GetData();
-
-            if (data != null && data[0] == 1)
+            NetworkParser.GameData parsedData = Interlocked.Exchange(ref lastGameData, null);
+            if (parsedData != null)
             {
-                NetworkParser.GameData parsedData = NetworkParser.GameData.Parse(new MemoryStream(data));
                 terrain.Recieved(parsedData);
             }
 

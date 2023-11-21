@@ -55,7 +55,7 @@ namespace MrBoom
             }
         }
 
-        public struct GameData
+        public class GameData
         {
             public PlayerData[] Players;
 

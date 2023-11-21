@@ -8,6 +8,8 @@ using System.IO;
 using System.Text;
 using MrBoom.NetworkProtocol;
 using System;
+using System.Threading;
+using System.Diagnostics;
 
 namespace MrBoom
 {
@@ -22,6 +24,7 @@ namespace MrBoom
         private List<IPlayerState> players;
         private int tick;
         private int toStart = -1;
+        private byte[] lastGameMessage;
 
         public OnlinePlayerListScreen(Assets assets, List<Team> teams, List<IController> controllers,
                                       Settings settings, List<HumanPlayerState> currentPlayers, GameNetworkConnection gameNetworkConnection)
@@ -32,14 +35,33 @@ namespace MrBoom
             this.settings = settings;
             this.currentPlayers = currentPlayers;
             this.gameNetworkConnection = gameNetworkConnection;
+            this.gameNetworkConnection.MessageReceived += GameNetworkConnection_MessageReceived;
             players = new List<IPlayerState>();
 
             //multiplayerService.StartPinging();
         }
 
+        private void GameNetworkConnection_MessageReceived(ReadOnlyByteSpan msg)
+        {
+            try
+            {
+                byte[] data = msg.AsArray();
+
+                if (data != null && data[0] == 0)
+                {
+                    Interlocked.Exchange(ref lastGameMessage, data);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Ignore invalid messages.
+                Debug.WriteLine("Unexpecteted error while processing message from the server: {0}", ex.Message);
+            }
+        }
+
         public void Update()
         {
-            var data = gameNetworkConnection.GetData();
+            var data = Interlocked.Exchange(ref lastGameMessage, null);
             if (data != null)
             {
                 if (data[0] == 0)

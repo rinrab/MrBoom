@@ -16,7 +16,6 @@ namespace MrBoom
         public TimeSpan? Ping { get; private set; }
         public event MessageReceivedDelegate MessageReceived;
 
-        private byte[] Data;
         private readonly UdpClient udpClient;
         private readonly uint networkId;
 

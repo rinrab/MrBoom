@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace MrBoom
 {
-    public class OnlinePlayerListScreen : IScreen
+    public class OnlinePlayerListScreen : AbstractScreen
     {
         private readonly Assets assets;
         private readonly List<Team> teams;
@@ -22,7 +22,6 @@ namespace MrBoom
         private readonly List<HumanPlayerState> currentPlayers;
         private readonly GameNetworkConnection gameNetworkConnection;
         private List<IPlayerState> players;
-        private int tick;
         private int toStart = -1;
         private byte[] lastGameMessage;
 
@@ -59,7 +58,7 @@ namespace MrBoom
             }
         }
 
-        public void Update()
+        protected override void OnUpdate()
         {
             var data = Interlocked.Exchange(ref lastGameMessage, null);
             if (data != null)
@@ -118,7 +117,7 @@ namespace MrBoom
             }
         }
 
-        public void Draw(SpriteBatch ctx)
+        protected override void OnDraw(SpriteBatch ctx)
         {
             assets.Start.Draw(ctx, 0, 0);
 
@@ -166,10 +165,6 @@ namespace MrBoom
             }
 
             Game.DrawString(ctx, 0, 0, "ping: " + ping, assets.Alpha[1]);
-        }
-
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
-        {
         }
     }
 }

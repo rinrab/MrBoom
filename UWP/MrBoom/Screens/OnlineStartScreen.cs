@@ -14,7 +14,7 @@ using MrBoom.NetworkProtocol;
 
 namespace MrBoom
 {
-    public class OnlineStartScreen : IScreen
+    public class OnlineStartScreen : AbstractScreen
     {
         private readonly Assets assets;
         private readonly List<Team> teams;
@@ -24,7 +24,6 @@ namespace MrBoom
         private readonly List<IController> unjoinedControllers;
         private readonly List<IController> joinedControllers;
         private readonly NameGenerator nameGenerator;
-        private int tick;
         private int state = 0;
 
         public OnlineStartScreen(Assets assets, List<Team> teams, List<IController> controllers,
@@ -45,7 +44,7 @@ namespace MrBoom
             nameGenerator = new NameGenerator(Terrain.Random);
         }
 
-        public void Update()
+        protected override void OnUpdate()
         {
             if (state == 0)
             {
@@ -81,8 +80,6 @@ namespace MrBoom
                     ScreenManager.SetScreen(new DemoScreen(teams, assets, settings, controllers));
                 }
             }
-
-            tick++;
         }
 
         private void Start()
@@ -134,7 +131,7 @@ namespace MrBoom
             }
         }
 
-        public void Draw(SpriteBatch ctx)
+        protected override void OnDraw(SpriteBatch ctx)
         {
             assets.OnlineMenu.Draw(ctx, 0, 0);
             
@@ -181,10 +178,6 @@ namespace MrBoom
                 string text = "loading...";
                 Game.DrawString(ctx, (320 - text.Length * 8) / 2, 186, text, assets.Alpha[1]);
             }
-        }
-
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
-        {
         }
 
         private class Room

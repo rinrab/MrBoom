@@ -120,6 +120,7 @@
     <Compile Include="GameNetworkConnection.cs" />
     <Compile Include="NetworkParser.cs" />
     <Compile Include="RemotePlayer.cs" />
+    <Compile Include="Screens\AbstractScreen.cs" />
     <Compile Include="Screens\NetworkGameScreen.cs" />
     <Compile Include="Screens\OnlinePlayerListScreen.cs" />
     <Compile Include="Screens\OnlineStartScreen.cs" />

@@ -6,15 +6,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MrBoom
 {
-    public class ResultScreen : IScreen
+    public class ResultScreen : AbstractScreen
     {
         private readonly List<Team> teams;
         private readonly int winner;
         private readonly List<IController> controllers;
         private readonly Settings settings;
         private readonly Assets assets;
-
-        private int tick;
 
         public ResultScreen(List<Team> teams, int winner, Assets assets, List<IController> controllers, Settings settings)
         {
@@ -26,7 +24,7 @@ namespace MrBoom
             assets.Sounds.Victory.Play();
         }
 
-        public void Draw(SpriteBatch ctx)
+        protected override void OnDraw(SpriteBatch ctx)
         {
             if (settings.TeamMode == TeamMode.Off)
             {
@@ -108,7 +106,7 @@ namespace MrBoom
             }
         }
 
-        public void Update()
+        protected override void OnUpdate()
         {
             if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
@@ -121,12 +119,6 @@ namespace MrBoom
                     ScreenManager.SetScreen(new GameScreen(teams, assets, settings, controllers));
                 }
             }
-
-            tick++;
-        }
-
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
-        {
         }
     }
 }

@@ -8,10 +8,8 @@ using Windows.UI.Xaml;
 
 namespace MrBoom
 {
-    public class MultiplayerStartScreen : IScreen
+    public class MultiplayerStartScreen : AbstractScreen
     {
-        private int tick = 0;
-
         private readonly Assets assets;
         private readonly List<Team> teams;
         private readonly List<IController> controllers;
@@ -49,7 +47,7 @@ namespace MrBoom
             teams.Clear();
         }
 
-        public void Draw(SpriteBatch ctx)
+        protected override void OnDraw(SpriteBatch ctx)
         {
             assets.Start.Draw(ctx, 0, 0);
 
@@ -129,10 +127,8 @@ namespace MrBoom
             menu?.Draw(ctx);
         }
 
-        public void Update()
+        protected override void OnUpdate()
         {
-            tick++;
-
             if (menu == null)
             {
                 List<IController> toRemove = new List<IController>();
@@ -312,7 +308,7 @@ namespace MrBoom
             }
         }
 
-        public void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
+        protected override void OnDrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
             menu?.DrawHighDPI(ctx, rect, scale, graphicScale);
         }

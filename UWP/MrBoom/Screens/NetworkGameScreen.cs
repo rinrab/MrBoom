@@ -12,7 +12,6 @@ namespace MrBoom.Screens
     public class NetworkGameScreen : AbstractGameScreen
     {
         private readonly GameNetworkConnection gameNetworkConnection;
-        private int tick = 0;
         private volatile NetworkParser.GameData lastGameData;
 
         public NetworkGameScreen(List<Team> teams, Assets assets, Settings settings,
@@ -51,17 +50,15 @@ namespace MrBoom.Screens
             }
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
-            tick++;
-
             NetworkParser.GameData parsedData = Interlocked.Exchange(ref lastGameData, null);
             if (parsedData != null)
             {
                 terrain.Recieved(parsedData);
             }
 
-            base.Update();
+            base.OnUpdate();
 
             if (tick % 1 == 0)
             {

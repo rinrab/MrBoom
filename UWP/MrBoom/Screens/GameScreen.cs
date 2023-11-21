@@ -29,9 +29,9 @@ namespace MrBoom
             Controller.Reset(controllers);
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
+            base.OnUpdate();
 
             if (terrain.Result == GameResult.Victory)
             {
@@ -90,9 +90,9 @@ namespace MrBoom
             }
         }
 
-        public override void Draw(SpriteBatch ctx)
+        protected override void OnDraw(SpriteBatch ctx)
         {
-            base.Draw(ctx);
+            base.OnDraw(ctx);
 
             if (isPause)
             {
@@ -100,9 +100,9 @@ namespace MrBoom
             }
         }
 
-        public override void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
+        protected override void OnDrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
-            base.DrawHighDPI(ctx, rect, scale, graphicScale);
+            base.OnDrawHighDPI(ctx, rect, scale, graphicScale);
 
             if (isPause)
             {

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MrBoom
 {
-    public abstract class AbstractGameScreen : IScreen
+    public abstract class AbstractGameScreen : AbstractScreen
     {
         protected Terrain terrain;
         protected readonly List<Team> teams;
@@ -35,7 +35,7 @@ namespace MrBoom
             ScreenManager.NextSong(assets.Sounds, MapData.Data[levelIndex].Song);
         }
 
-        public virtual void Update()
+        protected override void OnUpdate()
         {
             bgTick++;
 
@@ -82,7 +82,7 @@ namespace MrBoom
             }
         }
 
-        public virtual void Draw(SpriteBatch ctx)
+        protected override void OnDraw(SpriteBatch ctx)
         {
             if (terrain.LevelAssets.MovingBackground != null)
             {
@@ -202,7 +202,7 @@ namespace MrBoom
             return "";
         }
 
-        public virtual void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
+        protected override void OnDrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
             if (settings.IsDebug && isF4Toggle)
             {

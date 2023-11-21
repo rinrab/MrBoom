@@ -36,9 +36,9 @@ namespace MrBoom
             terrain.InitializeMonsters();
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
+            base.OnUpdate();
             if (terrain.Result == GameResult.Victory || terrain.Result == GameResult.Draw)
             {
                 int levelIndex = ScreenManager.GetNextLevel();
@@ -79,16 +79,16 @@ namespace MrBoom
             }
         }
 
-        public override void Draw(SpriteBatch ctx)
+        protected override void OnDraw(SpriteBatch ctx)
         {
-            base.Draw(ctx);
+            base.OnDraw(ctx);
 
             demoMenu.Draw(ctx);
         }
 
-        public override void DrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
+        protected override void OnDrawHighDPI(SpriteBatch ctx, Rectangle rect, float scale, int graphicScale)
         {
-            base.DrawHighDPI(ctx, rect, scale, graphicScale);
+            base.OnDrawHighDPI(ctx, rect, scale, graphicScale);
 
             demoMenu.DrawHighDPI(ctx, rect, scale, graphicScale);
         }

@@ -166,5 +166,12 @@ namespace MrBoom
 
             Game.DrawString(ctx, 0, 0, "ping: " + ping, assets.Alpha[1]);
         }
+
+        protected override void OnDispose()
+        {
+            gameNetworkConnection.MessageReceived -= GameNetworkConnection_MessageReceived;
+
+            base.OnDispose();
+        }
     }
 }

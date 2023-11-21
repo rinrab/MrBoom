@@ -20,7 +20,7 @@ namespace MrBoom.Screens
         {
             this.gameNetworkConnection = gameNetworkConnection;
             this.gameNetworkConnection.MessageReceived += GameNetworkConnection_MessageReceived;
-            // TODO: Unsusbscribe.
+
             Terrain.Random = new Random(1);
             terrain = new Terrain(0, assets);
 
@@ -65,6 +65,13 @@ namespace MrBoom.Screens
                 var dataToSend = terrain.GetDataToSend().ToArray();
                 gameNetworkConnection.SendInBackground(dataToSend);
             }
+        }
+
+        protected override void OnDispose()
+        {
+            gameNetworkConnection.MessageReceived -= GameNetworkConnection_MessageReceived;
+
+            base.OnDispose();
         }
 
         public override string GetAdditionDebugInfo()

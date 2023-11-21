@@ -12,7 +12,7 @@ namespace MrBoom.Server
 {
     internal partial class GameNetworkManager : IGameNetworkManager
     {
-        private Dictionary<UInt32, GameNetwork> networks;
+        private readonly Dictionary<UInt32, GameNetwork> networks;
         private volatile UInt32 nextNetworkId;
         private readonly IUdpServer udpServer;
 

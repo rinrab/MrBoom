@@ -19,7 +19,7 @@ namespace MrBoom
                 for (int j = 0; j < teams[i].Players.Count; j++)
                 {
                     IPlayerState playerState = teams[i].Players[j];
-                    AbstractPlayer player = playerState.GetPlayer(terrain, i);
+                    AbstractPlayer player = playerState.CreatePlayerObject(terrain, i);
                     terrain.AddPlayer(player);
                 }
             }

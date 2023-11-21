@@ -27,7 +27,7 @@ namespace MrBoom.Screens
             int i = 0;
             foreach (IPlayerState player in players)
             {
-                terrain.AddPlayer(player.GetPlayer(terrain, i));
+                terrain.AddPlayer(player.CreatePlayerObject(terrain, i));
                 i++;
             }
         }

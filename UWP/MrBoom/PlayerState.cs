@@ -11,7 +11,7 @@ namespace MrBoom
         int VictoryCount { get; set; }
         bool IsReplaceble { get; }
 
-        AbstractPlayer GetPlayer(Terrain terrain, int team);
+        AbstractPlayer CreatePlayerObject(Terrain terrain, int team);
     }
 
     public class HumanPlayerState : IPlayerState
@@ -29,7 +29,7 @@ namespace MrBoom
             Name = name;
         }
 
-        public AbstractPlayer GetPlayer(Terrain terrain, int team)
+        public AbstractPlayer CreatePlayerObject(Terrain terrain, int team)
         {
             return new Human(terrain, terrain.assets.Players[Index], Controller, team);
         }
@@ -48,7 +48,7 @@ namespace MrBoom
             Name = name;
         }
 
-        public AbstractPlayer GetPlayer(Terrain terrain, int team)
+        public AbstractPlayer CreatePlayerObject(Terrain terrain, int team)
         {
             return new ComputerPlayer(terrain, terrain.assets.Players[Index], team, Index);
         }
@@ -69,7 +69,7 @@ namespace MrBoom
             Name = name;
         }
 
-        public AbstractPlayer GetPlayer(Terrain terrain, int team)
+        public AbstractPlayer CreatePlayerObject(Terrain terrain, int team)
         {
             return new RemotePlayer(terrain, terrain.assets.Players[Index], team);
         }

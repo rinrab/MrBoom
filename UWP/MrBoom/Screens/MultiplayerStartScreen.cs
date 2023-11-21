@@ -84,13 +84,13 @@ namespace MrBoom
                     }
                     else
                     {
-                        if (tick / 30 % 4 == 0)
+                        if (CurrentTick / 30 % 4 == 0)
                         {
                             Game.DrawString(ctx, x * 80 + 20, y * 70 + 78, "join", images);
                             Game.DrawString(ctx, x * 80 + 28, y * 70 + 88, "us", images);
                             Game.DrawString(ctx, x * 80 + 28, y * 70 + 98, "!!", images);
                         }
-                        else if (tick / 30 % 4 == 2)
+                        else if (CurrentTick / 30 % 4 == 2)
                         {
                             Game.DrawString(ctx, x * 80 + 20, y * 70 + 78, "push", images);
                             Game.DrawString(ctx, x * 80 + 20, y * 70 + 88, "fire", images);
@@ -102,7 +102,7 @@ namespace MrBoom
 
             if (startTick < 600)
             {
-                Game.DrawString(ctx, 320 - tick % (helpText.Length * 8 + 320), 192, helpText, assets.Alpha[1]);
+                Game.DrawString(ctx, 320 - CurrentTick % (helpText.Length * 8 + 320), 192, helpText, assets.Alpha[1]);
             }
 
             if (startTick >= 0)

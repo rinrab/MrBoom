@@ -150,13 +150,13 @@ namespace MrBoom
                     }
                     else
                     {
-                        if (tick / 30 % 4 == 0)
+                        if (CurrentTick / 30 % 4 == 0)
                         {
                             Game.DrawString(ctx, 91 + 4 * 2 + x * 93, 73 + y * 54, "join", images);
                             Game.DrawString(ctx, 91 + 4 * 4 + x * 93, 83 + y * 54, "us", images);
                             Game.DrawString(ctx, 91 + 4 * 4 + x * 93, 93 + y * 54, "!!", images);
                         }
-                        else if (tick / 30 % 4 == 2)
+                        else if (CurrentTick / 30 % 4 == 2)
                         {
                             Game.DrawString(ctx, 91 + 4 * 2 + x * 93, 73 + y * 54, "push", images);
                             Game.DrawString(ctx, 91 + 4 * 2 + x * 93, 83 + y * 54, "fire", images);

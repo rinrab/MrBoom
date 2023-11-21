@@ -25,12 +25,12 @@ namespace MrBoom
 
         protected override void OnDraw(SpriteBatch ctx)
         {
-            assets.Draw[tick / 30].Draw(ctx, 0, 0);
+            assets.Draw[CurrentTick / 30].Draw(ctx, 0, 0);
         }
 
         protected override void OnUpdate()
         {
-            if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
+            if (CurrentTick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
                 ScreenManager.SetScreen(new GameScreen(teams, assets, settings, controllers));
             }

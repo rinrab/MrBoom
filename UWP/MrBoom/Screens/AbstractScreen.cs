@@ -9,7 +9,7 @@ namespace MrBoom
     {
         private int currentTick;
 
-        protected int tick { get => currentTick; }
+        protected int CurrentTick { get => currentTick; }
 
         public AbstractScreen()
         {

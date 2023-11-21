@@ -47,11 +47,11 @@ namespace MrBoom
 
                     for (int j = 0; j < team.VictoryCount; j++)
                     {
-                        int index = tick / (8 + j) % assets.Coin.Length;
+                        int index = CurrentTick / (8 + j) % assets.Coin.Length;
 
                         if (teamIndex == winner && j == team.VictoryCount - 1)
                         {
-                            if (tick % 60 < 30)
+                            if (CurrentTick % 60 < 30)
                             {
                                 index = 0;
                             }
@@ -108,7 +108,7 @@ namespace MrBoom
 
         protected override void OnUpdate()
         {
-            if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
+            if (CurrentTick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
                 if (teams[winner].VictoryCount >= 5)
                 {

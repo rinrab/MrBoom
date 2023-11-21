@@ -60,7 +60,7 @@ namespace MrBoom.Screens
 
             base.OnUpdate();
 
-            if (tick % 1 == 0)
+            if (CurrentTick % 1 == 0)
             {
                 var dataToSend = terrain.GetDataToSend().ToArray();
                 gameNetworkConnection.SendInBackground(dataToSend);

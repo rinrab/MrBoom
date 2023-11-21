@@ -25,18 +25,18 @@ namespace MrBoom
 
         protected override void OnDraw(SpriteBatch ctx)
         {
-            assets.Vic[tick / 5].Draw(ctx, 0, 0);
+            assets.Vic[CurrentTick / 5].Draw(ctx, 0, 0);
 
             for (int i = 0; i < winner.Players.Count; i++)
             {
-                Image img = assets.Players[winner.Players[i].Index].Normal[0][tick / 20];
+                Image img = assets.Players[winner.Players[i].Index].Normal[0][CurrentTick / 20];
                 img.Draw(ctx, 320 / 2 - img.Width / 2 - winner.Players.Count * 5 + i * 20, 80 - img.Height);
             }
         }
 
         protected override void OnUpdate()
         {
-            if (tick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
+            if (CurrentTick > 120 && Controller.IsKeyDown(controllers, PlayerKeys.Continue))
             {
                 ScreenManager.SetScreen(new DemoScreen(teams, assets, settings, controllers));
             }

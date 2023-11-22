@@ -97,9 +97,10 @@ namespace MrBoom
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    await SendPacket(NetworkPacketType.EchoRequest, new EchoPayload(Stopwatch.GetTimestamp()).Encode());
+                    ReadOnlyByteSpan payload = new EchoPayload(Stopwatch.GetTimestamp()).Encode();
 
-                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                    await Task.WhenAll(SendPacket(NetworkPacketType.EchoRequest, payload),
+                                       Task.Delay(TimeSpan.FromSeconds(1), cancellationToken));
                 }
             });
         }

@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		network-spec.md = network-spec.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MrBoom.Server", "Server\MrBoom.Server.csproj", "{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MrBoom.NetworkProtocol", "MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.shproj", "{3A264BF8-2D58-45E7-AC5B-AEFFA359811A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MrBoom.Server", "MrBoom.Server\MrBoom.Server.csproj", "{9FDE377D-D635-43F5-93A3-7526CC02D841}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,22 +51,22 @@ Global
 		{5BD7ECAE-1E4E-44B2-AE53-06438C74ECD3}.Release|x86.ActiveCfg = Release|x86
 		{5BD7ECAE-1E4E-44B2-AE53-06438C74ECD3}.Release|x86.Build.0 = Release|x86
 		{5BD7ECAE-1E4E-44B2-AE53-06438C74ECD3}.Release|x86.Deploy.0 = Release|x86
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Debug|ARM.Build.0 = Debug|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Debug|x64.Build.0 = Debug|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Debug|x86.Build.0 = Debug|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Release|ARM.ActiveCfg = Release|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Release|ARM.Build.0 = Release|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Release|x64.ActiveCfg = Release|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Release|x64.Build.0 = Release|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Release|x86.ActiveCfg = Release|Any CPU
-		{551C3653-B6F5-477B-AB9F-9AA6AC71FF61}.Release|x86.Build.0 = Release|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Debug|x64.Build.0 = Debug|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Debug|x86.Build.0 = Debug|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Release|ARM.Build.0 = Release|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Release|x64.ActiveCfg = Release|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Release|x64.Build.0 = Release|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Release|x86.ActiveCfg = Release|Any CPU
+		{9FDE377D-D635-43F5-93A3-7526CC02D841}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,7 +76,7 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.projitems*{3a264bf8-2d58-45e7-ac5b-aeffa359811a}*SharedItemsImports = 13
-		MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.projitems*{551c3653-b6f5-477b-ab9f-9aa6ac71ff61}*SharedItemsImports = 5
 		MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.projitems*{5bd7ecae-1e4e-44b2-ae53-06438c74ecd3}*SharedItemsImports = 4
+		MrBoom.NetworkProtocol\MrBoom.NetworkProtocol.projitems*{9fde377d-d635-43f5-93a3-7526cc02d841}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

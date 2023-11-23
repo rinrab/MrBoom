@@ -13,16 +13,49 @@ namespace MrBoom
     {
         public delegate void MessageReceivedDelegate(ReadOnlyByteSpan msg);
 
-        public TimeSpan? Ping { get; private set; }
+        public TimeSpan? Ping
+        {
+            get
+            {
+                int count = 0;
+                TimeSpan sum = TimeSpan.Zero;
+                foreach (PingRequests request in pingRequests)
+                {
+                    if (request.SendTime.HasValue && request.ReceiveTime.HasValue)
+                    {
+                        sum += request.ReceiveTime.Value - request.SendTime.Value;
+                        count++;
+                    }
+                }
+
+                if (count > 0)
+                {
+                    return sum / count;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
         public event MessageReceivedDelegate MessageReceived;
 
         private readonly UdpClient udpClient;
         private readonly uint networkId;
 
+        struct PingRequests
+        {
+            public TimeSpan? SendTime;
+            public TimeSpan? ReceiveTime;
+        }
+
+        private readonly PingRequests[] pingRequests;
+        private UInt64 pingIndex;
+
         private GameNetworkConnection(string hostname, int port, UInt32 networkId)
         {
-            Ping = null;
-
+            pingRequests = new PingRequests[5];
+            pingIndex = 0;
             udpClient = new UdpClient(0);
 
             udpClient.Connect(hostname, port);
@@ -86,7 +119,8 @@ namespace MrBoom
                         return;
                     }
 
-                    Ping = TimeSpan.FromTicks((Stopwatch.GetTimestamp() - payload.TimeStamp) * 10000 * 1000 / Stopwatch.Frequency);
+                    pingRequests[payload.TimeStamp % pingRequests.Length].ReceiveTime = TimeSpan.FromTicks(Stopwatch.GetTimestamp() * 10000 * 1000 / Stopwatch.Frequency);
+
                     break;
             }
         }
@@ -97,7 +131,13 @@ namespace MrBoom
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    await SendPacket(NetworkPacketType.EchoRequest, new EchoPayload(Stopwatch.GetTimestamp()).Encode());
+                    pingIndex++;
+
+                    int idx = (int)(pingIndex % (uint)pingRequests.Length);
+                    pingRequests[idx].SendTime = TimeSpan.FromTicks(Stopwatch.GetTimestamp() * 10000 * 1000 / Stopwatch.Frequency);
+                    pingRequests[idx].ReceiveTime = null;
+
+                    await SendPacket(NetworkPacketType.EchoRequest, new EchoPayload((long)pingIndex).Encode());
 
                     await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }

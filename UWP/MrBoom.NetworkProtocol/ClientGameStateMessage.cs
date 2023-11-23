@@ -1,25 +1,24 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
-using System;
 using System.IO;
-using MrBoom.NetworkProtocol;
+using System;
 
-namespace MrBoom
+namespace MrBoom.NetworkProtocol
 {
-    public static class NetworkParser
+    public static class ClientGameStateMessage
     {
         public struct PlayerData
         {
             public int X;
             public int Y;
-            public Directions? Direction;
+            public byte Direction;
             public BombData[] Bombs;
 
             public static PlayerData Parse(BinaryReader reader)
             {
                 int x = reader.ReadInt16();
                 int y = reader.ReadInt16();
-                Directions? direction = ParseDirection(reader);
+                byte direction = reader.ReadByte();
 
                 int bombsCount = reader.ReadByte();
                 BombData[] bombs = new BombData[bombsCount];
@@ -41,10 +40,10 @@ namespace MrBoom
             {
                 writer.Write((Int16)X);
                 writer.Write((Int16)Y);
-                writer.Write(Direction);
+                writer.Write((byte)Direction);
                 writer.Write((byte)Bombs.Length);
 
-                foreach(var bombData in Bombs)
+                foreach (var bombData in Bombs)
                 {
                     bombData.WriteTo(writer);
                 }
@@ -113,7 +112,7 @@ namespace MrBoom
                     using (BinaryWriter writer = new BinaryWriter(ms))
                     {
                         writer.Write(GameMessageType.ClientGameState);
-                        foreach(PlayerData player in Players)
+                        foreach (PlayerData player in Players)
                         {
                             player.WriteTo(writer);
                         }
@@ -121,32 +120,6 @@ namespace MrBoom
 
                     return new ReadOnlyByteSpan(ms.ToArray());
                 }
-            }
-        }
-
-        public static Directions? ParseDirection(BinaryReader stream)
-        {
-            int direction = stream.ReadByte();
-
-            if (direction == 255)
-            {
-                return null;
-            }
-            else
-            {
-                return (Directions)direction;
-            }
-        }
-
-        private static void Write(this BinaryWriter writer, Directions? direction)
-        {
-            if (direction.HasValue)
-            {
-                writer.Write((byte) direction.Value);
-            }
-            else
-            {
-                writer.Write(255);
             }
         }
     }

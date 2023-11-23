@@ -118,7 +118,6 @@
     <Compile Include="CellCoord.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="GameNetworkConnection.cs" />
-    <Compile Include="NetworkParser.cs" />
     <Compile Include="RemotePlayer.cs" />
     <Compile Include="Screens\AbstractScreen.cs" />
     <Compile Include="Screens\NetworkGameScreen.cs" />

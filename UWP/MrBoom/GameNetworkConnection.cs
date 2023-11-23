@@ -137,9 +137,10 @@ namespace MrBoom
                     pingRequests[idx].SendTime = TimeSpan.FromTicks(Stopwatch.GetTimestamp() * 10000 * 1000 / Stopwatch.Frequency);
                     pingRequests[idx].ReceiveTime = null;
 
-                    await SendPacket(NetworkPacketType.EchoRequest, new EchoPayload((long)pingIndex).Encode());
+                    ReadOnlyByteSpan payload = new EchoPayload((long)pingIndex).Encode();
 
-                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                    await Task.WhenAll(SendPacket(NetworkPacketType.EchoRequest, payload),
+                                       Task.Delay(TimeSpan.FromSeconds(1), cancellationToken));
                 }
             });
         }

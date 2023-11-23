@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All rights reserved.
 
 using System;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom
 {
@@ -11,7 +12,7 @@ namespace MrBoom
         {
         }
 
-        public void Recieved(NetworkParser.PlayerData data)
+        public void Recieved(ClientGameStateMessage.PlayerData data)
         {
             if (Math.Abs(data.X - X) + Math.Abs(data.Y - Y) >= 4)
             {
@@ -19,9 +20,9 @@ namespace MrBoom
                 Y = data.Y;
             }
 
-            Direction = data.Direction;
+            Direction = data.Direction == 255 ? null : (Directions?)data.Direction;
 
-            foreach (NetworkParser.BombData bomb in data.Bombs)
+            foreach (ClientGameStateMessage.BombData bomb in data.Bombs)
             {
                 Cell bombCell = terrain.GetCell(bomb.X, bomb.Y);
                 if (bombCell.Type != TerrainType.Bomb || bombCell.owner != this)

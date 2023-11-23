@@ -13,7 +13,7 @@ namespace MrBoom
 
         private int x;
         private int y;
-        public Terrain terrain;
+        public readonly Terrain terrain;
         public Directions? Direction { get; protected set; }
         public int frameIndex;
         public int animateIndex;

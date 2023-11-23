@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrBoom.NetworkProtocol;
 using SharpDX.MediaFoundation;
 
 namespace MrBoom
@@ -55,14 +56,14 @@ namespace MrBoom
             base.Update();
         }
 
-        public NetworkParser.PlayerData GetDataToSend()
+        public ClientGameStateMessage.PlayerData GetDataToSend()
         {
             Tuple<CellCoord, Cell>[] bombs = terrain.GetMyBombs(this).ToArray();
 
-            List<NetworkParser.BombData> bombData = new List<NetworkParser.BombData>(bombs.Length);
+            List<ClientGameStateMessage.BombData> bombData = new List<ClientGameStateMessage.BombData>(bombs.Length);
             foreach (Tuple<CellCoord, Cell> cell in bombs)
             {
-                bombData.Add(new NetworkParser.BombData
+                bombData.Add(new ClientGameStateMessage.BombData
                 {
                     X = cell.Item1.X,
                     Y = cell.Item1.Y,
@@ -71,11 +72,11 @@ namespace MrBoom
                 });
             }
 
-            return new NetworkParser.PlayerData
+            return new ClientGameStateMessage.PlayerData
             {
                 X = X,
                 Y = Y,
-                Direction = Direction,
+                Direction = (Direction == null ? (byte)255 : (byte)Direction),
                 Bombs = bombData.ToArray()
             };
         }

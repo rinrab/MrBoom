@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MrBoom.NetworkProtocol;
 
 namespace MrBoom
 {
@@ -721,7 +722,7 @@ namespace MrBoom
             }
         }
 
-        public void Recieved(NetworkParser.GameData data)
+        public void Recieved(ClientGameStateMessage.GameData data)
         {
             foreach (AbstractPlayer player in players)
             {
@@ -732,9 +733,9 @@ namespace MrBoom
             }
         }
 
-        public NetworkParser.GameData GetDataToSend()
+        public ClientGameStateMessage.GameData GetDataToSend()
         {
-            List<NetworkParser.PlayerData> playersData = new List<NetworkParser.PlayerData>();
+            List<ClientGameStateMessage.PlayerData> playersData = new List<ClientGameStateMessage.PlayerData>();
 
             foreach (AbstractPlayer player in players)
             {
@@ -744,7 +745,7 @@ namespace MrBoom
                 }
             }
 
-            return new NetworkParser.GameData
+            return new ClientGameStateMessage.GameData
             {
                 Players = playersData.ToArray(),
             };

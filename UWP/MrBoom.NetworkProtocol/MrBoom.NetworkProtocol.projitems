@@ -9,6 +9,7 @@
     <Import_RootNamespace>MrBoom.NetworkProtocol</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ClientGameStateMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EchoPayload.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameMessageType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NetworkPacketType.cs" />

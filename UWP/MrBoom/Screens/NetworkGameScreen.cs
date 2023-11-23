@@ -13,7 +13,7 @@ namespace MrBoom.Screens
     public class NetworkGameScreen : AbstractGameScreen
     {
         private readonly GameNetworkConnection gameNetworkConnection;
-        private volatile NetworkParser.GameData lastGameData;
+        private volatile ClientGameStateMessage.GameData lastGameData;
 
         public NetworkGameScreen(List<Team> teams, Assets assets, Settings settings,
                                  List<IController> controllers, GameNetworkConnection gameNetworkConnection,
@@ -39,7 +39,7 @@ namespace MrBoom.Screens
             {
                 if (msg[0] == GameMessageType.ClientGameState)
                 {
-                    Interlocked.Exchange(ref lastGameData, NetworkParser.GameData.Decode(msg));
+                    Interlocked.Exchange(ref lastGameData, ClientGameStateMessage.GameData.Decode(msg));
                 }
             }
             catch(Exception ex)
@@ -51,7 +51,7 @@ namespace MrBoom.Screens
 
         protected override void OnUpdate()
         {
-            NetworkParser.GameData parsedData = Interlocked.Exchange(ref lastGameData, null);
+            ClientGameStateMessage.GameData parsedData = Interlocked.Exchange(ref lastGameData, null);
             if (parsedData != null)
             {
                 terrain.Recieved(parsedData);

@@ -174,7 +174,7 @@ namespace MrBoom
                 }
                 else if (powerUpType == PowerUpType.Skull)
                 {
-                    SetSkull(Terrain.Random.NextEnum<SkullType>());
+                    SetSkull(terrain.Random.NextEnum<SkullType>());
                     pickBonus();
                 }
             }

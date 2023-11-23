@@ -27,7 +27,7 @@ namespace MrBoom
         {
             for (int i = 0; ; i++)
             {
-                Directions dir = Terrain.Random.NextEnum<Directions>();
+                Directions dir = terrain.Random.NextEnum<Directions>();
 
                 if (IsWalkable(dir.DeltaX(), dir.DeltaY()))
                 {
@@ -44,7 +44,7 @@ namespace MrBoom
 
         private BtStatus Walk()
         {
-            if (X % 16 == 0 && Y % 16 == 0 && Terrain.Random.Next(16) == 0)
+            if (X % 16 == 0 && Y % 16 == 0 && terrain.Random.Next(16) == 0)
             {
                 Direction = null;
                 return BtStatus.Success;

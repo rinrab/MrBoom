@@ -41,7 +41,7 @@ namespace MrBoom
                 unjoinedControllers.Remove(playerState.Controller);
                 joinedControllers.Add(playerState.Controller);
             }
-            nameGenerator = new NameGenerator(Terrain.Random);
+            nameGenerator = new NameGenerator(new Random(1));
         }
 
         protected override void OnUpdate()

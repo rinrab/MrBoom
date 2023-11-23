@@ -40,7 +40,7 @@ namespace MrBoom
 
             unjoinedControllers = new List<IController>(controllers);
             joinedControllers = new List<IController>();
-            nameGenerator = new NameGenerator(Terrain.Random);
+            nameGenerator = new NameGenerator(new Random());
             players = new List<IPlayerState>();
             teamMode = settings.TeamMode;
 

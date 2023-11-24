@@ -566,7 +566,7 @@ namespace MrBoom
             burn(0, -1, CellImageType.BoomVert, CellImageType.BoomTopEnd);
         }
 
-        private static CellImageType[] powerUps = new CellImageType[]
+        private static readonly CellImageType[] powerUps = new CellImageType[]
         {
             CellImageType.Banana,
             CellImageType.ExtraBomb,

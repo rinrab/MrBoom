@@ -22,7 +22,7 @@ namespace MrBoom.Screens
             this.gameNetworkConnection = gameNetworkConnection;
             this.gameNetworkConnection.MessageReceived += GameNetworkConnection_MessageReceived;
 
-            terrain = new Terrain(0, assets, 1);
+            terrain = new Terrain(0, 1);
 
             int i = 0;
             foreach (IPlayerState player in players)

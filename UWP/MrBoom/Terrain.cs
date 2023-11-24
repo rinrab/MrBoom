@@ -19,7 +19,6 @@ namespace MrBoom
         public int ApocalypseSpeed = 2;
         public int MaxApocalypse;
 
-        public Assets.Level LevelAssets => levelAssets;
         public int Winner { get; private set; }
 
         private const int FLAME_ANIMATION_DELAY = 6;
@@ -47,18 +46,16 @@ namespace MrBoom
         public readonly int StartMaxFire;
         public readonly int StartMaxBombsCount;
 
-        private readonly Assets.Level levelAssets;
         private readonly Grid<bool> hasMonsterGrid;
         private readonly Grid<bool> isMonsterComingGrid;
         private readonly Grid<int> killablePlayerGrid;
 
-        public Terrain(int levelIndex, Assets assets, int? seed = null)
+        public Terrain(int levelIndex, int? seed = null)
         {
             Random = seed.HasValue ? new Random(seed.Value) : new Random();
 
             monsters = new List<AbstractMonster>();
 
-            levelAssets = assets.Levels[levelIndex];
             mapData = MapData.Data[levelIndex];
             StartFeatures = mapData.StartFeatures;
             powerUpList = new List<PowerUpType>();

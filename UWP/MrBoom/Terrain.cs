@@ -25,6 +25,8 @@ namespace MrBoom
 
         private const int FLAME_ANIMATION_DELAY = 6;
         public const int FLAME_ANIMATION_LENGTH = 4;
+        private const int WALL_ANIMATION_DELAY = 4;
+        public const int WALL_ANIMATION_LENGTH = 8;
         public int FlameDuration => FLAME_ANIMATION_DELAY * FLAME_ANIMATION_LENGTH;
 
         private readonly Grid<byte> final;
@@ -502,8 +504,8 @@ namespace MrBoom
                         {
                             ImageType = CellImageType.Walls,
                             Index = 0,
-                            animateDelay = 4,
-                            TimeToNext = 8 * 4,
+                            animateDelay = WALL_ANIMATION_DELAY,
+                            TimeToNext = WALL_ANIMATION_LENGTH * WALL_ANIMATION_DELAY,
                             Next = next
                         };
                         break;
@@ -720,7 +722,7 @@ namespace MrBoom
                         ImageType = CellImageType.Walls,
                         Index = 0,
                         animateDelay = 4,
-                        TimeToNext = 8 * 4,
+                        TimeToNext = WALL_ANIMATION_LENGTH * WALL_ANIMATION_DELAY,
                         Next = next
                     };
                 }

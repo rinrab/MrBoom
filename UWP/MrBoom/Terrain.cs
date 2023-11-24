@@ -9,7 +9,7 @@ namespace MrBoom
 {
     public class Terrain
     {
-        public static Random Random = new Random();
+        public Random Random;
 
         public readonly int Width;
         public readonly int Height;
@@ -47,8 +47,10 @@ namespace MrBoom
         private readonly Grid<bool> isMonsterComingGrid;
         private readonly Grid<int> killablePlayerGrid;
 
-        public Terrain(int levelIndex, Assets assets)
+        public Terrain(int levelIndex, Assets assets, int? seed = null)
         {
+            Random = seed.HasValue ? new Random(seed.Value) : new Random();
+
             monsters = new List<AbstractMonster>();
 
             this.assets = assets;

@@ -201,6 +201,8 @@ namespace MrBoom
                         data[i] = new Cell(TerrainType.PowerUpFire, time)
                         {
                             ImageType = CellImageType.PowerUpFire,
+                            animateDelay = FLAME_ANIMATION_DELAY,
+                            TimeToNext = FLAME_ANIMATION_LENGTH * FLAME_ANIMATION_DELAY,
                             Next = new Cell(TerrainType.Free, time)
                         };
                         PlaySound(Sound.Sac);
@@ -218,6 +220,8 @@ namespace MrBoom
                         data[i] = new Cell(TerrainType.Apocalypse, time)
                         {
                             ImageType = CellImageType.Apocalypse,
+                            animateDelay = FLAME_ANIMATION_DELAY,
+                            TimeToNext = FLAME_ANIMATION_LENGTH * FLAME_ANIMATION_DELAY,
                             Next = new Cell(TerrainType.PermanentWall, time)
                             {
                                 ImageType = CellImageType.Apocalypse,

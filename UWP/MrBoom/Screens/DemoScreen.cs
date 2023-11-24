@@ -33,7 +33,7 @@ namespace MrBoom
                 terrain.AddPlayer(new ComputerPlayer(terrain, assets.Players[i], i, i));
             }
 
-            terrain.InitializeMonsters();
+            terrain.InitializeMonsters(assets.Monsters);
         }
 
         protected override void OnUpdate()
@@ -52,7 +52,7 @@ namespace MrBoom
                     terrain.AddPlayer(new ComputerPlayer(terrain, assets.Players[i], i, i));
                 }
 
-                terrain.InitializeMonsters();
+                terrain.InitializeMonsters(assets.Monsters);
             }
 
             demoMenu.Update();

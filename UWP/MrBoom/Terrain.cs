@@ -13,7 +13,6 @@ namespace MrBoom
 
         public readonly int Width;
         public readonly int Height;
-        public Assets assets;
         public int TimeLeft;
         public Sound SoundsToPlay;
         public GameResult Result = GameResult.None;
@@ -59,7 +58,6 @@ namespace MrBoom
 
             monsters = new List<AbstractMonster>();
 
-            this.assets = assets;
             levelAssets = assets.Levels[levelIndex];
             mapData = MapData.Data[levelIndex];
             StartFeatures = mapData.StartFeatures;
@@ -152,7 +150,7 @@ namespace MrBoom
             players.Add(player);
         }
 
-        public void InitializeMonsters()
+        public void InitializeMonsters(Assets.MovingSpriteAssets[] assets)
         {
             while (true)
             {
@@ -164,7 +162,7 @@ namespace MrBoom
 
                 var data = Random.NextElement(mapData.Monsters);
 
-                AbstractMonster monster = data.GetMonster(this, assets.Monsters[data.Type], spawn.Value.X * 16, spawn.Value.Y * 16);
+                AbstractMonster monster = data.GetMonster(this, assets[data.Type], spawn.Value.X * 16, spawn.Value.Y * 16);
 
                 monsters.Add(monster);
             }

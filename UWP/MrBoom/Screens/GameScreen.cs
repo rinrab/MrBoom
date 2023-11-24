@@ -24,7 +24,7 @@ namespace MrBoom
                 }
             }
 
-            terrain.InitializeMonsters();
+            terrain.InitializeMonsters(assets.Monsters);
 
             Controller.Reset(controllers);
         }

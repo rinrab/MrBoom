@@ -6,72 +6,69 @@ namespace MrBoom
 {
     public interface IPlayerState
     {
-        int Index { get; }
         string Name { get; }
         int VictoryCount { get; set; }
         bool IsReplaceble { get; }
 
-        AbstractPlayer CreatePlayerObject(Terrain terrain, int team); // TODO: add player assets to CreatePlayerObject
+        AbstractPlayer CreatePlayerObject(Terrain terrain, Assets.MovingSpriteAssets assets, int team);
     }
 
     public class HumanPlayerState : IPlayerState
     {
         public IController Controller { get; }
-        public int Index { get; }
         public string Name { get; }
         public int VictoryCount { get; set; }
         public bool IsReplaceble => false;
 
-        public HumanPlayerState(IController controller, int index, string name)
+        public HumanPlayerState(IController controller, string name)
         {
             Controller = controller;
-            Index = index;
             Name = name;
         }
 
-        public AbstractPlayer CreatePlayerObject(Terrain terrain, int team)
+        public AbstractPlayer CreatePlayerObject(Terrain terrain, Assets.MovingSpriteAssets assets, int team)
         {
-            return new Human(terrain, terrain.assets.Players[Index], Controller, team);
+            return new Human(terrain, assets, Controller, team);
         }
     }
 
     public class BotPlayerState : IPlayerState
     {
-        public int Index { get; }
         public string Name { get; }
         public int VictoryCount { get; set; }
         public bool IsReplaceble => true;
 
+        // TODO: Remove this property
+        private readonly int index;
+
         public BotPlayerState(int index, string name)
         {
-            Index = index;
+            this.index = index;
             Name = name;
         }
 
-        public AbstractPlayer CreatePlayerObject(Terrain terrain, int team)
+        public AbstractPlayer CreatePlayerObject(Terrain terrain, Assets.MovingSpriteAssets assets, int team)
         {
-            return new ComputerPlayer(terrain, terrain.assets.Players[Index], team, Index);
+            return new ComputerPlayer(terrain, assets, team, index);
         }
     }
 
     public class RemotePlayerState : IPlayerState
     {
-        public int Index { get; }
         public int RemoteIndex { get; }
         public string Name { get; }
         public int VictoryCount { get; set; }
         public bool IsReplaceble => true;
 
-        public RemotePlayerState(int index, int remoteIndex, string name)
+        public RemotePlayerState(int remoteIndex, string name)
         {
-            Index = index;
             RemoteIndex = remoteIndex;
             Name = name;
         }
 
-        public AbstractPlayer CreatePlayerObject(Terrain terrain, int team)
+        public AbstractPlayer CreatePlayerObject(Terrain terrain, Assets.MovingSpriteAssets assets, int team)
         {
-            return new RemotePlayer(terrain, terrain.assets.Players[Index], team);
+            return new RemotePlayer(terrain, assets, team);
         }
     }
 }

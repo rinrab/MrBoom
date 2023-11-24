@@ -29,7 +29,7 @@ namespace MrBoom
 
             for (int i = 0; i < winner.Players.Count; i++)
             {
-                Image img = assets.Players[winner.Players[i].Index].Normal[0][CurrentTick / 20];
+                Image img = assets.Players[i].Normal[0][CurrentTick / 20];
                 img.Draw(ctx, 320 / 2 - img.Width / 2 - winner.Players.Count * 5 + i * 20, 80 - img.Height);
             }
         }

@@ -78,7 +78,8 @@ namespace MrBoom
                 {
                     ImageType = CellImageType.PowerUpFire,
                     Index = 0,
-                    animateDelay = 6,
+                    animateDelay = Terrain.FIRE_ANIMATION_DELAY,
+                    TimeToNext = Terrain.FIRE_ANIMATION_LENGTH * Terrain.FIRE_ANIMATION_DELAY,
                     Next = new Cell(TerrainType.Free)
                 });
                 PlaySound(Sound.Sac);

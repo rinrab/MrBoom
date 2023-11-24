@@ -27,6 +27,9 @@ namespace MrBoom
         public const int FLAME_ANIMATION_LENGTH = 4;
         private const int WALL_ANIMATION_DELAY = 4;
         public const int WALL_ANIMATION_LENGTH = 8;
+        public const int FIRE_ANIMATION_LENGTH = 6;
+        public const int FIRE_ANIMATION_DELAY = 6;
+
         public int FlameDuration => FLAME_ANIMATION_DELAY * FLAME_ANIMATION_LENGTH;
 
         private readonly Grid<byte> final;
@@ -516,8 +519,8 @@ namespace MrBoom
                         {
                             ImageType = CellImageType.PowerUpFire,
                             Index = 0,
-                            animateDelay = 6,
-                            TimeToNext = FLAME_ANIMATION_LENGTH * 6,
+                            animateDelay = FIRE_ANIMATION_DELAY,
+                            TimeToNext = FIRE_ANIMATION_LENGTH * FIRE_ANIMATION_DELAY,
                             Next = new Cell(TerrainType.Free)
                         };
                         PlaySound(Sound.Sac);

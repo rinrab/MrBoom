@@ -125,7 +125,6 @@ namespace MrBoom
                         data[x, y] = new Cell(TerrainType.PowerUp, time)
                         {
                             ImageType = powerUps[index], // TODO: Add function
-                            Index = 0,
                             animateDelay = 8,
                             PowerUpType = (PowerUpType)index
                         };
@@ -207,7 +206,6 @@ namespace MrBoom
                         data[i] = new Cell(TerrainType.PowerUpFire, time)
                         {
                             ImageType = CellImageType.PowerUpFire,
-                            Index = 0,
                             Next = new Cell(TerrainType.Free, time)
                         };
                         PlaySound(Sound.Sac);
@@ -225,7 +223,6 @@ namespace MrBoom
                         data[i] = new Cell(TerrainType.Apocalypse, time)
                         {
                             ImageType = CellImageType.Apocalypse,
-                            Index = 0,
                             Next = new Cell(TerrainType.PermanentWall, time)
                             {
                                 ImageType = CellImageType.Apocalypse,
@@ -315,27 +312,20 @@ namespace MrBoom
                 for (int x = 0; x < Width; x++)
                 {
                     Cell cell = data[x, y];
-                    if (cell.Index != -1)
-                    {
-                        int animateDelay = (cell.animateDelay <= 0) ? 6 : cell.animateDelay;
-                        if (time % animateDelay == 0) // TODO: increment index correctly
-                        {
-                            cell.Index++;
-                        }
+                    int animateDelay = (cell.animateDelay <= 0) ? 6 : cell.animateDelay;
 
-                        if (cell.TimeToNext != -1)
+                    if (cell.TimeToNext != -1)
+                    {
+                        cell.TimeToNext--;
+                        if (cell.TimeToNext == 0)
                         {
-                            cell.TimeToNext--;
-                            if (cell.TimeToNext == 0)
+                            if (cell.Next == null)
                             {
-                                if (cell.Next == null)
-                                {
-                                    cell.Index = 0;
-                                }
-                                else
-                                {
-                                    data[x, y] = cell.Next;
-                                }
+                                cell.StartTick = time;
+                            }
+                            else
+                            {
+                                data[x, y] = cell.Next;
                             }
                         }
                     }
@@ -507,7 +497,6 @@ namespace MrBoom
                         data[x, y] = new Cell(TerrainType.PermanentWall, time)
                         {
                             ImageType = CellImageType.Walls,
-                            Index = 0,
                             animateDelay = WALL_ANIMATION_DELAY,
                             TimeToNext = WALL_ANIMATION_LENGTH * WALL_ANIMATION_DELAY,
                             Next = next
@@ -519,7 +508,6 @@ namespace MrBoom
                         data[x, y] = new Cell(TerrainType.PowerUpFire, time)
                         {
                             ImageType = CellImageType.PowerUpFire,
-                            Index = 0,
                             animateDelay = FIRE_ANIMATION_DELAY,
                             TimeToNext = FIRE_ANIMATION_LENGTH * FIRE_ANIMATION_DELAY,
                             Next = new Cell(TerrainType.Free, time)
@@ -541,7 +529,6 @@ namespace MrBoom
                         data[x, y] = new Cell(TerrainType.Fire, time)
                         {
                             ImageType = i == maxBoom ? imageEnd : image,
-                            Index = 0,
                             animateDelay = FLAME_ANIMATION_DELAY,
                             TimeToNext = FlameDuration,
                             Next = new Cell(TerrainType.Free, time)
@@ -555,7 +542,6 @@ namespace MrBoom
             data[bombX, bombY] = new Cell(TerrainType.Fire, time)
             {
                 ImageType = CellImageType.BoomMid,
-                Index = 0,
                 animateDelay = FLAME_ANIMATION_DELAY,
                 TimeToNext = FlameDuration,
                 Next = new Cell(TerrainType.Free, time)
@@ -587,7 +573,6 @@ namespace MrBoom
             return new Cell(TerrainType.PowerUp, time)
             {
                 ImageType = powerUps[(int)powerUpType], // TODO: Add function
-                Index = 0,
                 animateDelay = 8,
                 PowerUpType = powerUpType
             };
@@ -598,7 +583,6 @@ namespace MrBoom
             Cell newCell = new Cell(TerrainType.Bomb, time)
             {
                 ImageType = CellImageType.Bomb,
-                Index = 0,
                 animateDelay = 12,
                 bombCountdown = 210,
                 maxBoom = maxBoom,
@@ -724,7 +708,6 @@ namespace MrBoom
                     data[i] = new Cell(TerrainType.PermanentWall, time)
                     {
                         ImageType = CellImageType.Walls,
-                        Index = 0,
                         animateDelay = 4,
                         TimeToNext = WALL_ANIMATION_LENGTH * WALL_ANIMATION_DELAY,
                         Next = next

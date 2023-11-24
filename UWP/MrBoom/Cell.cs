@@ -11,7 +11,6 @@ namespace MrBoom
         public CellImageType ImageType;
         public int StartTick;
         public int TimeToNext;
-        public int Index;
         public int animateDelay;
         public int bombCountdown;
         public int maxBoom;
@@ -28,7 +27,6 @@ namespace MrBoom
         {
             Type = type;
             StartTick = startTick;
-            Index = -1;
             TimeToNext = -1;
             ImageType = CellImageType.Free;
         }

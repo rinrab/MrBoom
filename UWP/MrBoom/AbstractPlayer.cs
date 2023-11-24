@@ -77,8 +77,6 @@ namespace MrBoom
                 terrain.SetCell(cellX, cellY, new Cell(TerrainType.PowerUpFire, terrain.time)
                 {
                     ImageType = CellImageType.PowerUpFire,
-                    Index = 0,
-                    animateDelay = Terrain.FIRE_ANIMATION_DELAY,
                     TimeToNext = Terrain.FIRE_ANIMATION_LENGTH * Terrain.FIRE_ANIMATION_DELAY,
                     Next = new Cell(TerrainType.Free, terrain.time)
                 });

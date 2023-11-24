@@ -118,7 +118,7 @@ namespace MrBoom
 
                     if (images.Length > 0)
                     {
-                        int index = (cell.Index == -1) ? 0 : cell.Index;
+                        int index = (cell.animateDelay == 0) ? 0 : (terrain.time - cell.StartTick) / cell.animateDelay;
 
                         Image image = images[index];
 

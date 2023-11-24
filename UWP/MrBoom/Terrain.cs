@@ -159,7 +159,7 @@ namespace MrBoom
 
                 var data = Random.NextElement(mapData.Monsters);
 
-                AbstractMonster monster = data.GetMonster(this, assets[data.Type], spawn.Value.X * 16, spawn.Value.Y * 16);
+                AbstractMonster monster = data.CreateMonsterSprite(this, assets[data.Type], spawn.Value.X * 16, spawn.Value.Y * 16);
 
                 monsters.Add(monster);
             }

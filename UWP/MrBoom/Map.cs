@@ -30,7 +30,7 @@ namespace MrBoom
                 Speed = 3;
             }
 
-            public abstract AbstractMonster GetMonster(Terrain map, Assets.MovingSpriteAssets animations, int x, int y);
+            public abstract AbstractMonster CreateMonsterSprite(Terrain map, Assets.MovingSpriteAssets animations, int x, int y);
         }
 
         public class BasicMonsterData : MonsterData
@@ -42,7 +42,7 @@ namespace MrBoom
                 WaitAfterTurn = waitAfterTurn;
             }
 
-            public override AbstractMonster GetMonster(Terrain map, Assets.MovingSpriteAssets animations, int x, int y)
+            public override AbstractMonster CreateMonsterSprite(Terrain map, Assets.MovingSpriteAssets animations, int x, int y)
             {
                 return new BasicMonster(map, this, animations, x, y);
             }

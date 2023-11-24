@@ -68,18 +68,17 @@ namespace MrBoom
 
             void pickBonus()
             {
-                terrain.SetCell(cellX, cellY, new Cell(TerrainType.Free));
+                terrain.SetCell(cellX, cellY, new Cell(TerrainType.Free, terrain.time));
                 PlaySound(Sound.Pick);
             }
 
             void burnBonus()
             {
-                terrain.SetCell(cellX, cellY, new Cell(TerrainType.PowerUpFire)
+                terrain.SetCell(cellX, cellY, new Cell(TerrainType.PowerUpFire, terrain.time)
                 {
-                    Images = terrain.assets.Fire,
-                    Index = 0,
-                    animateDelay = 6,
-                    Next = new Cell(TerrainType.Free)
+                    ImageType = CellImageType.PowerUpFire,
+                    TimeToNext = Terrain.FIRE_ANIMATION_LENGTH * Terrain.FIRE_ANIMATION_DELAY,
+                    Next = new Cell(TerrainType.Free, terrain.time)
                 });
                 PlaySound(Sound.Sac);
             }

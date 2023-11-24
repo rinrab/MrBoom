@@ -88,7 +88,7 @@ namespace MrBoom
                         }
                         else
                         {
-                            players.Add(new RemotePlayerState(i, i, name.ToString()));
+                            players.Add(new RemotePlayerState(i, name.ToString()));
                         }
                     }
 

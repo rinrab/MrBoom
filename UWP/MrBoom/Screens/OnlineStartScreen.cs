@@ -54,7 +54,7 @@ namespace MrBoom
                     if (controller.IsKeyDown(PlayerKeys.Bomb))
                     {
                         if (players.Count < 4)
-                            players.Add(new HumanPlayerState(controller, players.Count, nameGenerator.GenerateName()));
+                            players.Add(new HumanPlayerState(controller, nameGenerator.GenerateName()));
                         assets.Sounds.Addplayer.Play();
 
                         toRemove.Add(controller);

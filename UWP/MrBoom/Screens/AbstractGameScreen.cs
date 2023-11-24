@@ -16,6 +16,8 @@ namespace MrBoom
         protected readonly List<IController> controllers;
         protected bool isPause = false;
 
+        private readonly CellImages cellImages;
+        private readonly Assets.Level levelAssets;
         private int bgTick = 0;
 
         private bool isF4Toggle = false;
@@ -30,7 +32,10 @@ namespace MrBoom
 
             int levelIndex = ScreenManager.GetNextLevel();
 
-            terrain = new Terrain(levelIndex, assets);
+            terrain = new Terrain(levelIndex);
+
+            levelAssets = assets.Levels[levelIndex];
+            cellImages = new CellImages(assets, levelAssets);
 
             ScreenManager.NextSong(assets.Sounds, MapData.Data[levelIndex].Song);
         }
@@ -84,9 +89,9 @@ namespace MrBoom
 
         protected override void OnDraw(SpriteBatch ctx)
         {
-            if (terrain.LevelAssets.MovingBackground != null)
+            if (levelAssets.MovingBackground != null)
             {
-                Image img = terrain.LevelAssets.MovingBackground;
+                Image img = levelAssets.MovingBackground;
                 int xCount = 320 / img.Width + 2;
 
                 for (int y = 0; y < 5; y++)
@@ -99,8 +104,8 @@ namespace MrBoom
                 }
             }
 
-            terrain.LevelAssets.Backgrounds[bgTick / 20].Draw(ctx, 0, 0);
-            foreach (var overlay in terrain.LevelAssets.BackgroundSprites)
+            levelAssets.Backgrounds[bgTick / 20].Draw(ctx, 0, 0);
+            foreach (var overlay in levelAssets.BackgroundSprites)
             {
                 overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
             }
@@ -110,12 +115,18 @@ namespace MrBoom
                 for (int x = 0; x < terrain.Width; x++)
                 {
                     Cell cell = terrain.GetCell(x, y);
-                    if (cell.Images != null)
-                    {
-                        int index = (cell.Index == -1) ? 0 : cell.Index;
-                        var image = cell.Images[index];
 
-                        image.Draw(ctx, x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX, y * 16 + 16 - image.Height + cell.OffsetY);
+                    AnimatedImage images = cellImages.GetCellImage(cell.ImageType);
+
+                    if (images.Length > 0)
+                    {
+                        int index = (cell.animateDelay == 0) ? 0 : (terrain.time - cell.StartTick) / cell.animateDelay;
+
+                        Image image = images[index];
+
+                        image.Draw(ctx,
+                                   x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX,
+                                   y * 16 + 16 - image.Height + cell.OffsetY);
                     }
                 }
             }
@@ -129,7 +140,7 @@ namespace MrBoom
                 sprite.Draw(ctx);
             }
 
-            foreach (var overlay in terrain.LevelAssets.Overlays)
+            foreach (var overlay in levelAssets.Overlays)
             {
                 overlay.Images[bgTick / overlay.AnimationDelay].Draw(ctx, overlay.x, overlay.y);
             }

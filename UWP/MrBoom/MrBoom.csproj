@@ -116,6 +116,7 @@
     <Compile Include="Bot\TravelCostGrid.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="CellCoord.cs" />
+    <Compile Include="CellImages.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="GameNetworkConnection.cs" />
     <Compile Include="RemotePlayer.cs" />

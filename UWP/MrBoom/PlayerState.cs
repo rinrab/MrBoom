@@ -11,7 +11,7 @@ namespace MrBoom
         int VictoryCount { get; set; }
         bool IsReplaceble { get; }
 
-        AbstractPlayer CreatePlayerObject(Terrain terrain, int team);
+        AbstractPlayer CreatePlayerObject(Terrain terrain, int team); // TODO: add player assets to CreatePlayerObject
     }
 
     public class HumanPlayerState : IPlayerState

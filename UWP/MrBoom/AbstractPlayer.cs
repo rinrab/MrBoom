@@ -76,7 +76,7 @@ namespace MrBoom
             {
                 terrain.SetCell(cellX, cellY, new Cell(TerrainType.PowerUpFire)
                 {
-                    Images = terrain.assets.Fire,
+                    ImageType = CellImageType.PowerUpFire,
                     Index = 0,
                     animateDelay = 6,
                     Next = new Cell(TerrainType.Free)

@@ -8,6 +8,8 @@ namespace MrBoom
     {
         public readonly TerrainType Type;
         public AnimatedImage Images;
+        public CellImageType ImageType;
+        public int TimeToNext;
         public int Index;
         public int animateDelay;
         public int bombCountdown;
@@ -25,6 +27,8 @@ namespace MrBoom
         {
             Type = type;
             Index = -1;
+            TimeToNext = -1;
+            ImageType = CellImageType.Free;
         }
     }
 

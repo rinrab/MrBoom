@@ -16,6 +16,7 @@ namespace MrBoom
         protected readonly List<IController> controllers;
         protected bool isPause = false;
 
+        private CellImages cellImages;
         private int bgTick = 0;
 
         private bool isF4Toggle = false;
@@ -31,6 +32,8 @@ namespace MrBoom
             int levelIndex = ScreenManager.GetNextLevel();
 
             terrain = new Terrain(levelIndex, assets);
+
+            cellImages = new CellImages(assets, assets.Levels[levelIndex]);
 
             ScreenManager.NextSong(assets.Sounds, MapData.Data[levelIndex].Song);
         }
@@ -110,12 +113,18 @@ namespace MrBoom
                 for (int x = 0; x < terrain.Width; x++)
                 {
                     Cell cell = terrain.GetCell(x, y);
-                    if (cell.Images != null)
+
+                    AnimatedImage images = cellImages.GetCellImage(cell.ImageType);
+
+                    if (images.Length > 0)
                     {
                         int index = (cell.Index == -1) ? 0 : cell.Index;
-                        var image = cell.Images[index];
 
-                        image.Draw(ctx, x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX, y * 16 + 16 - image.Height + cell.OffsetY);
+                        Image image = images[index];
+
+                        image.Draw(ctx,
+                                   x * 16 + 8 + 8 - image.Width / 2 + cell.OffsetX,
+                                   y * 16 + 16 - image.Height + cell.OffsetY);
                     }
                 }
             }

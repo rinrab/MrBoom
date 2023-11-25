@@ -10,7 +10,7 @@ namespace MrBoom
 
         private int livesCount;
 
-        public AbstractMonster(Terrain map,Map.MonsterData monsterData, Assets.MovingSpriteAssets animations,
+        public AbstractMonster(Terrain map,Map.AbstractMonsterData monsterData, Assets.MovingSpriteAssets animations,
                                int x, int y) : base(map, animations, x, y, monsterData.Speed)
         {
             livesCount = monsterData.LivesCount - 1;
@@ -29,7 +29,7 @@ namespace MrBoom
 
             if (IsAlive)
             {
-                Cell cell = terrain.GetCell(CellX, CellY);
+                Cell cell = terrain.GetCell((X + 8) / 16, (Y + 8) / 16);
                 if (cell.Type == TerrainType.Fire && unplugin == 0)
                 {
                     PlaySound(Sound.Ai);
@@ -41,7 +41,7 @@ namespace MrBoom
                     else
                     {
                         Kill();
-                        terrain.SetCell(CellX, CellY, terrain.GeneratePowerUp(PowerUpType.Life));
+                        terrain.SetCell((X + 8) / 16, (Y + 8) / 16, terrain.GeneratePowerUp(PowerUpType.Life));
                     }
                 }
                 if (cell.Type == TerrainType.Apocalypse)

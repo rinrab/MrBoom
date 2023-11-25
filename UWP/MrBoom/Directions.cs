@@ -18,8 +18,10 @@ namespace MrBoom
             {
                 case Directions.Left:
                     return -1;
+
                 case Directions.Right:
                     return 1;
+
                 default:
                     return 0;
             }
@@ -43,8 +45,10 @@ namespace MrBoom
             {
                 case Directions.Up:
                     return -1;
+
                 case Directions.Down:
                     return 1;
+
                 default:
                     return 0;
             }
@@ -66,11 +70,20 @@ namespace MrBoom
         {
             switch (direction)
             {
-                case Directions.Left: return Directions.Right;
-                case Directions.Right: return Directions.Left;
-                case Directions.Up: return Directions.Down;
-                case Directions.Down: return Directions.Up;
-                default: return direction;
+                case Directions.Left:
+                    return Directions.Right;
+
+                case Directions.Right:
+                    return Directions.Left;
+
+                case Directions.Up:
+                    return Directions.Down;
+
+                case Directions.Down:
+                    return Directions.Up;
+
+                default:
+                    return direction;
             }
         }
 

@@ -20,10 +20,10 @@ namespace MrBoom.Screens
             this.gameNetworkConnection = gameNetworkConnection;
             this.gameNetworkConnection.MessageReceived += GameNetworkConnection_MessageReceived;
 
-            terrain = new Terrain(0, 1);
+            InitializeGame(0);
 
             int i = 0;
-            foreach (IPlayerState player in players)
+            foreach (IPlayerState player in players) // TODO: replace with teams
             {
                 terrain.AddPlayer(player.CreatePlayerSprite(terrain, assets.Players[i], i));
                 i++;

@@ -28,6 +28,13 @@ namespace MrBoom
                 new TextMenuItem("QUIT"),
             }, assets, controllers);
 
+            StartGame();
+        }
+
+        private void StartGame()
+        {
+            InitializeGame();
+
             for (int i = 0; i < 4; i++)
             {
                 terrain.AddPlayer(new ComputerPlayer(terrain, assets.Players[i], i, i));
@@ -41,18 +48,7 @@ namespace MrBoom
             base.OnUpdate();
             if (terrain.Result == GameResult.Victory || terrain.Result == GameResult.Draw)
             {
-                int levelIndex = ScreenManager.GetNextLevel();
-
-                terrain = new Terrain(levelIndex);
-
-                ScreenManager.NextSong(assets.Sounds, MapData.Data[levelIndex].Song);
-
-                for (int i = 0; i < 4; i++)
-                {
-                    terrain.AddPlayer(new ComputerPlayer(terrain, assets.Players[i], i, i));
-                }
-
-                terrain.InitializeMonsters(assets.Monsters);
+                StartGame();
             }
 
             demoMenu.Update();

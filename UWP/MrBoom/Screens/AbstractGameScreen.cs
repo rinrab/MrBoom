@@ -16,8 +16,8 @@ namespace MrBoom
         protected readonly List<IController> controllers;
         protected bool isPause = false;
 
-        private readonly CellImages cellImages;
-        private readonly Assets.Level levelAssets;
+        private CellImages cellImages;
+        private Assets.Level levelAssets;
         private int bgTick = 0;
 
         private bool isF4Toggle = false;
@@ -29,8 +29,14 @@ namespace MrBoom
             this.assets = assets;
             this.settings = settings;
             this.controllers = controllers;
+        }
 
-            int levelIndex = ScreenManager.GetNextLevel();
+        protected void InitializeGame(int levelIndex = -1)
+        {
+            if (levelIndex == -1)
+            {
+                levelIndex = ScreenManager.GetNextLevel();
+            }
 
             terrain = new Terrain(levelIndex);
 

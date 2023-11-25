@@ -14,6 +14,10 @@ namespace MrBoom
         public GameScreen(List<Team> teams, Assets assets, Settings settings,
                           List<IController> controllers) : base(teams, assets, settings, controllers)
         {
+            Controller.Reset(controllers);
+
+            InitializeGame();
+
             for (int i = 0; i < teams.Count; i++)
             {
                 for (int j = 0; j < teams[i].Players.Count; j++)
@@ -25,8 +29,6 @@ namespace MrBoom
             }
 
             terrain.InitializeMonsters(assets.Monsters);
-
-            Controller.Reset(controllers);
         }
 
         protected override void OnUpdate()

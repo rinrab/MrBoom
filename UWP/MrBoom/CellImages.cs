@@ -4,49 +4,49 @@ namespace MrBoom
 {
     public class CellImages
     {
-        private readonly Assets assets;
-        private readonly Assets.Level levelAssets;
+        private readonly AnimatedImage[] images;
 
         public CellImages(Assets assets, Assets.Level levelAssets)
         {
-            this.assets = assets;
-            this.levelAssets = levelAssets;
+            images = new AnimatedImage[]
+            {
+                levelAssets.Walls,
+                assets.Bomb,
+                assets.Fire,
+                levelAssets.PermanentWalls,
+
+                // Booms
+                assets.BoomMid,
+                assets.BoomHor,
+                assets.BoomLeftEnd,
+                assets.BoomRightEnd,
+                assets.BoomVert,
+                assets.BoomTopEnd,
+                assets.BoomBottomEnd,
+
+                // Non-image
+                AnimatedImage.Empty,
+                AnimatedImage.Empty,
+                AnimatedImage.Empty,
+
+                // Power-ups
+                assets.PowerUps[0],
+                assets.PowerUps[1],
+                assets.PowerUps[2],
+                assets.PowerUps[3],
+                assets.PowerUps[4],
+                assets.PowerUps[5],
+                assets.PowerUps[6],
+                assets.PowerUps[7],
+                assets.PowerUps[8],
+                assets.PowerUps[9],
+                assets.PowerUps[10],
+            };
         }
 
         public AnimatedImage GetCellImage(CellImageType type)
         {
-            switch (type)
-            {
-                case CellImageType.Walls: return levelAssets.Walls;
-                case CellImageType.Bomb: return assets.Bomb;
-                case CellImageType.PowerUpFire: return assets.Fire;
-                case CellImageType.Apocalypse: return levelAssets.PermanentWalls;
-
-                // Booms
-                case CellImageType.BoomMid: return assets.BoomMid;
-                case CellImageType.BoomHor: return assets.BoomHor;
-                case CellImageType.BoomLeftEnd: return assets.BoomLeftEnd;
-                case CellImageType.BoomRightEnd: return assets.BoomRightEnd;
-                case CellImageType.BoomVert: return assets.BoomVert;
-                case CellImageType.BoomTopEnd: return assets.BoomTopEnd;
-                case CellImageType.BoomBottomEnd: return assets.BoomBottomEnd;
-
-                // Power-ups
-                case CellImageType.Banana: return assets.PowerUps[0];
-                case CellImageType.ExtraBomb: return assets.PowerUps[1];
-                case CellImageType.ExtraFire: return assets.PowerUps[2];
-                case CellImageType.Skull: return assets.PowerUps[3];
-                case CellImageType.Shield: return assets.PowerUps[4];
-                case CellImageType.Life: return assets.PowerUps[5];
-                case CellImageType.RemoteControl: return assets.PowerUps[6];
-                case CellImageType.Kick: return assets.PowerUps[7];
-                case CellImageType.RollerSkate: return assets.PowerUps[8];
-                case CellImageType.Clock: return assets.PowerUps[9];
-                case CellImageType.MultiBomb: return assets.PowerUps[10];
-
-                // Not handled and cells without image
-                default: return AnimatedImage.Empty;
-            }
+            return images[(int)type];
         }
     }
 

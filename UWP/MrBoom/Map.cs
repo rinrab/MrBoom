@@ -16,14 +16,14 @@ namespace MrBoom
             }
         }
 
-        public abstract class AbstractMonsterData
+        public abstract class AbstractMonsterParameters
         {
             public int Speed;
             public int Type { get; }
             public int LivesCount { get; }
             public bool IsSlowStart;
 
-            public AbstractMonsterData(int type, int livesCount)
+            public AbstractMonsterParameters(int type, int livesCount)
             {
                 Type = type;
                 LivesCount = livesCount;
@@ -33,11 +33,11 @@ namespace MrBoom
             public abstract AbstractMonster CreateMonsterSprite(Terrain map, Assets.MovingSpriteAssets animations, int x, int y);
         }
 
-        public class BasicMonsterData : AbstractMonsterData
+        public class BasicMonsterParameters : AbstractMonsterParameters
         {
             public int WaitAfterTurn { get; }
 
-            public BasicMonsterData(int type, int waitAfterTurn, int livesCount) : base(type, livesCount)
+            public BasicMonsterParameters(int type, int waitAfterTurn, int livesCount) : base(type, livesCount)
             {
                 WaitAfterTurn = waitAfterTurn;
             }
@@ -51,7 +51,7 @@ namespace MrBoom
         public string[] Data;
         public int Time;
         public PowerUpData[] PowerUps;
-        public AbstractMonsterData[] Monsters;
+        public AbstractMonsterParameters[] Monsters;
         public byte[] Final;
         public int StartMaxFire = 1;
         public int StartMaxBombsCount = 1;

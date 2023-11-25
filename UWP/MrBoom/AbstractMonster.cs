@@ -10,7 +10,7 @@ namespace MrBoom
 
         private int livesCount;
 
-        public AbstractMonster(Terrain map,Map.AbstractMonsterData monsterData, Assets.MovingSpriteAssets animations,
+        public AbstractMonster(Terrain map,Map.AbstractMonsterParameters monsterData, Assets.MovingSpriteAssets animations,
                                int x, int y) : base(map, animations, x, y, monsterData.Speed)
         {
             livesCount = monsterData.LivesCount - 1;

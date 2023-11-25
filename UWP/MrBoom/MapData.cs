@@ -54,9 +54,9 @@ namespace MrBoom
                     new Map.PowerUpData(PowerUpType.Clock, 1),
                     new Map.PowerUpData(PowerUpType.Skull, 2),
                 },
-                Monsters = new Map.AbstractMonsterData[]
+                Monsters = new Map.AbstractMonsterParameters[]
                 {
-                    new Map.BasicMonsterData(0, 30, 1)
+                    new Map.BasicMonsterParameters(0, 30, 1)
                 },
                 Final = defaultFinal
             },
@@ -91,9 +91,9 @@ namespace MrBoom
                     new Map.PowerUpData(PowerUpType.Clock, 1),
                     new Map.PowerUpData(PowerUpType.Skull, 2),
                 },
-                Monsters = new Map.AbstractMonsterData[]
+                Monsters = new Map.AbstractMonsterParameters[]
                 {
-                    new Map.BasicMonsterData(1, 30, 3)
+                    new Map.BasicMonsterParameters(1, 30, 3)
                 },
                 Final = defaultFinal
             },
@@ -129,9 +129,9 @@ namespace MrBoom
                     new Map.PowerUpData(PowerUpType.Clock, 1),
                     new Map.PowerUpData(PowerUpType.Skull, 2),
                 },
-                Monsters = new Map.AbstractMonsterData[]
+                Monsters = new Map.AbstractMonsterParameters[]
                 {
-                    new Map.BasicMonsterData(4, 60, 1)
+                    new Map.BasicMonsterParameters(4, 60, 1)
                 },
                 Final = defaultFinal
             },
@@ -166,15 +166,15 @@ namespace MrBoom
                     new Map.PowerUpData(PowerUpType.Clock, 1),
                     new Map.PowerUpData(PowerUpType.Skull, 2),
                 },
-                Monsters = new Map.AbstractMonsterData[]
+                Monsters = new Map.AbstractMonsterParameters[]
                 {
-                    new Map.BasicMonsterData(0, 30, 1),
-                    new Map.BasicMonsterData(0, 30, 1),
-                    new Map.BasicMonsterData(1, 30, 3),
-                    new Map.BasicMonsterData(1, 30, 3),
-                    new Map.BasicMonsterData(2, 60, 1) { Speed = 2 },
-                    new Map.BasicMonsterData(3, 90, 3) { Speed = 1 },
-                    new Map.BasicMonsterData(3, 90, 3) { Speed = 1 },
+                    new Map.BasicMonsterParameters(0, 30, 1),
+                    new Map.BasicMonsterParameters(0, 30, 1),
+                    new Map.BasicMonsterParameters(1, 30, 3),
+                    new Map.BasicMonsterParameters(1, 30, 3),
+                    new Map.BasicMonsterParameters(2, 60, 1) { Speed = 2 },
+                    new Map.BasicMonsterParameters(3, 90, 3) { Speed = 1 },
+                    new Map.BasicMonsterParameters(3, 90, 3) { Speed = 1 },
                 },
                 Final = new byte[]
                 {
@@ -225,9 +225,9 @@ namespace MrBoom
                     new Map.PowerUpData(PowerUpType.Clock, 1),
                     new Map.PowerUpData(PowerUpType.Skull, 2),
                 },
-                Monsters = new Map.AbstractMonsterData[]
+                Monsters = new Map.AbstractMonsterParameters[]
                 {
-                    new Map.BasicMonsterData(3, 90, 3) { Speed = 1 },
+                    new Map.BasicMonsterParameters(3, 90, 3) { Speed = 1 },
                 },
                 Final = defaultFinal
             },
@@ -263,10 +263,10 @@ namespace MrBoom
                     new Map.PowerUpData(PowerUpType.Clock, 1),
                     new Map.PowerUpData(PowerUpType.Skull, 2),
                 },
-                Monsters = new Map.AbstractMonsterData[]
+                Monsters = new Map.AbstractMonsterParameters[]
                 {
-                    new Map.BasicMonsterData(1, 30, 3),
-                    new Map.BasicMonsterData(3, 90, 3) { Speed = 1 },
+                    new Map.BasicMonsterParameters(1, 30, 3),
+                    new Map.BasicMonsterParameters(3, 90, 3) { Speed = 1 },
                 },
                 Final = defaultFinal
             },
@@ -302,9 +302,9 @@ namespace MrBoom
                     new Map.PowerUpData(PowerUpType.Clock, 1),
                     new Map.PowerUpData(PowerUpType.Skull, 2),
                 },
-                Monsters = new Map.AbstractMonsterData[]
+                Monsters = new Map.AbstractMonsterParameters[]
                 {
-                    new Map.BasicMonsterData(5, 30, 2),
+                    new Map.BasicMonsterParameters(5, 30, 2),
                 },
                 Final = new byte[]
                 {
@@ -347,9 +347,9 @@ namespace MrBoom
                 Time = 30,
                 PowerUps = new Map.PowerUpData[] { },
                 Song = 2,
-                Monsters = new Map.AbstractMonsterData[]
+                Monsters = new Map.AbstractMonsterParameters[]
                 {
-                    new Map.BasicMonsterData(6, 0, 3) { IsSlowStart = true },
+                    new Map.BasicMonsterParameters(6, 0, 3) { IsSlowStart = true },
                 },
                 Final = new byte[]
                 {

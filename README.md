@@ -1,4 +1,4 @@
-# Mr.Boom
+# Mr. Bomber
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/rinrab/MrBoom)
 [![Static Badge](https://img.shields.io/badge/Trailer-f40606?logo=youtube)](https://youtu.be/EbQTL92C6rs?si=JbDIlzvBzNLy5Fww)
